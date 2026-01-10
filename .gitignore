@@ -1,3 +1,6 @@
+[Bb]uild/
+[Dd]ist/
+
+# Big Files
 lib/libjfxwebkit.so
-build/
-dist/
+*.class
