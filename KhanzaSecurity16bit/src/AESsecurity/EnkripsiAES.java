@@ -16,9 +16,10 @@ import org.apache.commons.codec.binary.Base64;
  * @author khanzamedia
  */
 public class EnkripsiAES {
-    private static String key = "Bar12345Bar12345"; // 128 bit key
-    private static String initVector = "sayangsamakhanza"; // 16 bytes IV
-        
+
+    private static final String key = "Bar12345Bar12345"; // 128 bit key
+    private static final String initVector = "sayangsamakhanza"; // 16 bytes IV
+
     public static String decrypt(String encrypted) {
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
@@ -27,9 +28,8 @@ public class EnkripsiAES {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 
-            byte[] original = cipher.doFinal(Base64.decodeBase64(encrypted));
-
-            return new String(original);
+            byte[] original = Base64.decodeBase64(encrypted);
+            return new String(cipher.doFinal(original));
         } catch (Exception ex) {
             System.out.println("Ciluk Baaaaaaaa!!!!!");
         }
