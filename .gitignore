@@ -1,6 +1,12 @@
 [Bb]uild/
 [Dd]ist/
 
+*.class
+**/build/**
+
 # Big Files
 lib/libjfxwebkit.so
-*.class
+
+
+# Dummy file
+lib/test.java

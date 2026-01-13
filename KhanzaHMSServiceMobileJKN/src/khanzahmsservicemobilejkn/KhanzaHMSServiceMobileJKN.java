@@ -5,22 +5,24 @@
  */
 package khanzahmsservicemobilejkn;
 
+import fungsi.logger.SystemLogger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  *
  * @author windiartonugroho
  */
 public class KhanzaHMSServiceMobileJKN {
-    
+
+    public static final Path logPath = Paths.get("log/khanzahmsservicemobilejkn");
 
     /**
      * @param args the command line arguments
      */
-    
-
     public static void main(String[] args) {
+        SystemLogger.configure(Paths.get("log/khanzahmsservicemobilejkn"), "service-log");
         new frmUtama().setVisible(true);
     }
-    
-    
-    
+
 }
