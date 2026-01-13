@@ -4,14 +4,11 @@
  */
 package fungsi;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
+import fungsi.logger.FileLogger;
+import fungsi.logger.LogType;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -21,43 +18,39 @@ import javax.swing.table.AbstractTableModel;
  */
 public class LogTableModel extends AbstractTableModel {
 
-    private boolean use_as_table_model;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH-mm-ss.SSSSSS");
-    private final Path logPath;
-    private String logName, prefixLogName;
-            
-    public LogTableModel(Path logPath, String prefixLogName, boolean use_as_table_model) {
-        this.use_as_table_model = use_as_table_model;
+    private FileLogger logger;
+    private final String[] columnNames = {"Tanggal", "Log"};
+    private final ArrayList<Object[]> logsData = new ArrayList<Object[]>();
+    private Path logPath;
+    private String prefixLogName;
+
+    public LogTableModel(Path logPath, String prefixLogName) {
         this.logPath = logPath;
         this.prefixLogName = prefixLogName;
-        this.logName = prefixLogName + "-" + LocalDateTime.now(ZoneId.of("Asia/Jakarta")).format(formatter) + ".txt";
-
-        try {
-            Files.createDirectories(logPath);
-        } catch (IOException e) {
-            System.err.println("Failed to create directories.: "+ e);
-            e.printStackTrace();
-        }
-
+        logger = new FileLogger(this.logPath, this.prefixLogName);
     }
 
-    private String[] columnNames = {"Tanggal", "Log",};
-    private ArrayList<Object[]> logsData = new ArrayList<Object[]>();
-
+    @Override
     public int getColumnCount() {
         return this.columnNames.length;
     }
 
+    @Override
     public int getRowCount() {
         return this.logsData.size();
     }
 
+    @Override
     public String getColumnName(int col) {
         return this.columnNames[col];
     }
 
+    @Override
     public Object getValueAt(int row, int col) {
-        return this.logsData.get(row)[col];
+        if (row < 0 || row >= logsData.size() || col < 0 || col >= columnNames.length) {
+            return null;
+        }
+        return logsData.get(row)[col];
     }
 
     /*
@@ -66,14 +59,20 @@ public class LogTableModel extends AbstractTableModel {
         * then the last column would contain text ("true"/"false"),
         * rather than a check box.
      */
-    public Class getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
+    @Override
+    public Class<?> getColumnClass(int col) {
+        if (logsData.isEmpty()) {
+            return Object.class;
+        }
+        Object value = getValueAt(0, col);
+        return (value != null) ? value.getClass() : Object.class;
     }
 
     /*
         * Don't need to implement this method unless your table's
         * editable.
      */
+    @Override
     public boolean isCellEditable(int row, int col) {
         //Note that the logsData/cell address is constant,
         //no matter where the cell appears onscreen.
@@ -85,66 +84,37 @@ public class LogTableModel extends AbstractTableModel {
 //            }
     }
 
-    public void tambahData(Object log, String logType) {
-        Object[] temp = {LocalDateTime.now(ZoneId.of("Asia/Jakarta")).format(formatter).replace("-", ":"), logType, log.toString().replaceAll("\n", "")};
-        this.logsData.add(temp);
-        if (this.use_as_table_model) {
-            fireTableDataChanged();
-        }
-        exportData();
+    public void tambahData(Object log, LogType type) {
+        String waktu = LocalDateTime.now(ZoneId.of("Asia/Jakarta")).format(logger.getDateTimeFormatter());
+        String pesan = (log != null) ? log.toString().replace("\n", " ") : "null";
+        Object[] row = {waktu, pesan, type};
+        logsData.add(row);
+        fireTableDataChanged();
+        logger.log(log, type);
     }
 
-    public void exportData() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(this.logPath + "/" + this.logName))) {
-            for (Object[] i : this.logsData) {
-                bw.write(String.format("[%s] [%s] %s\n", i[0], i[1], i[2]));
-            }
-        } catch (Exception e) {
-            System.out.println("Error export log");
-            e.printStackTrace();
-        }
+    public void tambahData(Object log) {
+        tambahData(log, LogType.LOG);
     }
 
     public void resetData() {
         this.logsData.clear();
-        if (this.use_as_table_model) {
-            fireTableDataChanged();
-        }
-        this.logName = this.prefixLogName + "-" + LocalDateTime.now(ZoneId.of("Asia/Jakarta")).format(formatter) + ".txt";;
+        fireTableDataChanged();
+        logger = new FileLogger(this.logPath, this.prefixLogName);
     }
 
     /*
         * Don't need to implement this method unless your table's
         * logsData can change.
      */
+    @Override
     public void setValueAt(Object value, int row, int col) {
-
         System.out.println("Setting value at " + row + "," + col
                 + " to " + value
                 + " (an instance of "
                 + value.getClass() + ")");
 
         this.logsData.get(row)[col] = value;
-        if (this.use_as_table_model) {
-            fireTableCellUpdated(row, col);
-        }
-
-        System.out.println("New value of data:");
-        printDebugData();
-
-    }
-
-    private void printDebugData() {
-        int numRows = getRowCount();
-        int numCols = getColumnCount();
-
-        for (int i = 0; i < numRows; i++) {
-            System.out.print(" row " + i + ":");
-            for (int j = 0; j < numCols; j++) {
-                System.out.print(" " + this.getValueAt(i, j));
-            }
-            System.out.println();
-        }
-        System.out.println("--------------------------");
+        fireTableCellUpdated(row, col);
     }
 }

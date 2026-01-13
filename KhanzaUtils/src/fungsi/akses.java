@@ -1,5 +1,6 @@
 package fungsi;
 
+import fungsi.logger.SystemLogger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,12 +25,14 @@ public final class akses {
     public static void getInitialPermission() {
         try {
             ps2 = koneksi.prepareStatement("select c.COLUMN_NAME from information_schema.`COLUMNS` c where c.TABLE_NAME = 'user' and c.TABLE_SCHEMA = 'sik' and c.DATA_TYPE = 'enum'");
+            SystemLogger.sql(ps2.toString());
             rs2 = ps2.executeQuery();
             while (rs2.next()) {
                 dataAccess.put(rs2.getString(1), false);
             }
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
+            SystemLogger.error(e);
         }
     }
 
@@ -40,12 +43,16 @@ public final class akses {
             try {
                 ps.setString(1, user);
                 ps.setString(2, pass);
+                SystemLogger.sql(ps.toString());
                 rs = ps.executeQuery();
+
                 rs.last();
 
                 ps2.setString(1, user);
                 ps2.setString(2, pass);
+                SystemLogger.sql(ps2.toString());
                 rs2 = ps2.executeQuery();
+
                 rs2.last();
 
                 akses.setJml1(rs.getRow());
@@ -78,6 +85,7 @@ public final class akses {
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
+                SystemLogger.error(e);
             } finally {
                 if (rs != null) {
                     rs.close();
@@ -94,6 +102,7 @@ public final class akses {
             }
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
+            SystemLogger.error(e);
         }
 
     }
@@ -115,6 +124,7 @@ public final class akses {
             return dataAccess.get(tableName);
         } catch (Exception e) {
             System.out.println("Notifikasi: Permission pada table tersebut tidak ditemukan.");
+            SystemLogger.error(e);
         }
         return false;
     }
@@ -124,6 +134,7 @@ public final class akses {
             dataAccess.replace(tableName, false);
         } catch (Exception e) {
             System.out.println("Notifikasi: " + e);
+            SystemLogger.error(e);
         }
     }
 
