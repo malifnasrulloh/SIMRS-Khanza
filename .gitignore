@@ -2,7 +2,7 @@
 [Dd]ist/
 
 *.class
-**/build/**
+.LCK*
 
 # Big Files
 lib/libjfxwebkit.so
