@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.ApiMobileJKN;
 import fungsi.LogTableModel;
 import fungsi.koneksiDB;
+import fungsi.logger.LogType;
 import fungsi.logger.SystemLogger;
 import fungsi.sekuel;
 import java.awt.event.ActionEvent;
@@ -310,12 +311,12 @@ public class frmUtama extends javax.swing.JFrame {
                                             + "\"kuotanonjkn\": " + rs.getString("kuotanonjkn") + ","
                                             + "\"keterangan\": \"Peserta harap 30 menit lebih awal guna pencatatan administrasi.\""
                                             + "}";
-                                    userTableModel.tambahData("JSON : " + requestJson + "\n");
                                     requestEntity = new HttpEntity(requestJson, headers);
                                     URL = link + "/antrean/add";
-                                    System.out.println("URL : " + URL);
-                                    //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                    System.out.println("Request URL : " + URL);
+                                    userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                     nameNode = root.path("metadata");
                                     if (nameNode.path("code").asText().equals("200") || nameNode.path("code").asText().equals("208") || nameNode.path("message").asText().equals("Ok")) {
                                         Sequel.queryu2("update referensi_mobilejkn_bpjs set statuskirim='Sudah' where nobooking='" + rs.getString("nobooking") + "'");
@@ -356,12 +357,12 @@ public class frmUtama extends javax.swing.JFrame {
                                             + "\"kodebooking\": \"" + rs.getString("nobooking") + "\","
                                             + "\"keterangan\": \"" + rs.getString("keterangan") + "\""
                                             + "}";
-                                    userTableModel.tambahData("JSON : " + requestJson + "\n");
                                     requestEntity = new HttpEntity(requestJson, headers);
                                     URL = link + "/antrean/batal";
-                                    System.out.println("URL : " + URL);
-                                    //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                    System.out.println("Request URL : " + URL);
+                                    userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                     nameNode = root.path("metadata");
                                     if (nameNode.path("code").asText().equals("200")) {
                                         Sequel.queryu2("update referensi_mobilejkn_bpjs_batal set statuskirim='Sudah' where nomorreferensi='" + rs.getString("nomorreferensi") + "'");
@@ -383,12 +384,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                             + "\"taskid\": \"99\","
                                                             + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                             + "}";
-                                                    userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                     requestEntity = new HttpEntity(requestJson, headers);
                                                     URL = link + "/antrean/updatewaktu";
-                                                    System.out.println("URL : " + URL);
-                                                    //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                    System.out.println("Request URL : " + URL);
+                                                    userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                     nameNode = root.path("metadata");
                                                     if (!nameNode.path("code").asText().equals("200")) {
                                                         Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -453,12 +454,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"3\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -489,12 +490,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"4\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -525,12 +526,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"5\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -560,12 +561,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                 + "\"nomorantrean\": " + Integer.parseInt(StringUtils.right(noresep, 4)) + ","
                                                 + "\"keterangan\": \"Resep dibuat secara elektronik di poli\""
                                                 + "}";
-                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                         requestEntity = new HttpEntity(requestJson, headers);
                                         URL = link + "/antrean/farmasi/add";
-                                        System.out.println("URL : " + URL);
-                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                        System.out.println("Request URL : " + URL);
+                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                         nameNode = root.path("metadata");
                                         userTableModel.tambahData("respon WS BPJS : " + nameNode.path("code").asText() + " " + nameNode.path("message").asText() + "\n");
                                     } catch (Exception ex) {
@@ -592,12 +593,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"6\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -628,12 +629,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"7\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -664,12 +665,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                     + "\"taskid\": \"99\","
                                                     + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                     + "}";
-                                            userTableModel.tambahData("JSON : " + requestJson + "\n");
                                             requestEntity = new HttpEntity(requestJson, headers);
                                             URL = link + "/antrean/updatewaktu";
-                                            System.out.println("URL : " + URL);
-                                            //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                             root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                            System.out.println("Request URL : " + URL);
+                                            userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                             nameNode = root.path("metadata");
                                             if (!nameNode.path("code").asText().equals("200")) {
                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -750,12 +751,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                             + "\"kuotanonjkn\": " + rs2.getString("kuota") + ","
                                                             + "\"keterangan\": \"Peserta harap 30 menit lebih awal guna pencatatan administrasi.\""
                                                             + "}";
-                                                    userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                     requestEntity = new HttpEntity(requestJson, headers);
                                                     URL = link + "/antrean/add";
-                                                    System.out.println("URL : " + URL);
-                                                    //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                    System.out.println("Request URL : " + URL);
+                                                    userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                     nameNode = root.path("metadata");
                                                     userTableModel.tambahData("respon WS BPJS : " + nameNode.path("code").asText() + " " + nameNode.path("message").asText() + "\n");
                                                 }
@@ -782,12 +783,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"3\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -818,12 +819,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"4\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -854,12 +855,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"5\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -889,12 +890,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                             + "\"nomorantrean\": " + Integer.parseInt(StringUtils.right(noresep, 4)) + ","
                                                             + "\"keterangan\": \"Resep dibuat secara elektronik di poli\""
                                                             + "}";
-                                                    userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                     requestEntity = new HttpEntity(requestJson, headers);
                                                     URL = link + "/antrean/farmasi/add";
-                                                    System.out.println("URL : " + URL);
-                                                    //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                    System.out.println("Request URL : " + URL);
+                                                    userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                     nameNode = root.path("metadata");
                                                     userTableModel.tambahData("respon WS BPJS : " + nameNode.path("code").asText() + " " + nameNode.path("message").asText() + "\n");
                                                 } catch (Exception ex) {
@@ -921,12 +922,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"6\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -957,12 +958,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"7\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -993,12 +994,12 @@ public class frmUtama extends javax.swing.JFrame {
                                                                 + "\"taskid\": \"99\","
                                                                 + "\"waktu\": \"" + parsedDate.getTime() + "\""
                                                                 + "}";
-                                                        userTableModel.tambahData("JSON : " + requestJson + "\n");
                                                         requestEntity = new HttpEntity(requestJson, headers);
                                                         URL = link + "/antrean/updatewaktu";
-                                                        System.out.println("URL : " + URL);
-                                                        //System.out.println(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                                         root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                                        System.out.println("Request URL : " + URL);
+                                                        userTableModel.tambahData("Request JSON : " + requestJson + "\n");
+                                                        userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                                         nameNode = root.path("metadata");
                                                         if (!nameNode.path("code").asText().equals("200")) {
                                                             Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
