@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import java.util.Calendar;
 import AESsecurity.EnkripsiAES;
 
@@ -11,8 +15,9 @@ class test {
 
     public static void main(String[] args) {
         Object a = "a";
-        ArrayList<Object[]> data = new ArrayList<Object[]>();
-System.out.println("ikiii: "+EnkripsiAES.encrypt(""));
+        
+//        ArrayList<Object[]> data = new ArrayList<Object[]>();
+//System.out.println("ikiii: "+EnkripsiAES.encrypt(""));
 //        System.out.println(a.getClass());
 //System.out.println(LocalDateTime.now());
 //        System.out.println(LocalDateTime.now().getHour());
