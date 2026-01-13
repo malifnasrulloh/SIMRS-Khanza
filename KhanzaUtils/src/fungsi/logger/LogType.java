@@ -10,6 +10,7 @@ package fungsi.logger;
  */
 public enum LogType {
     LOG,
+    HTTP,
     SQL,
     EXCEPTION
 }
