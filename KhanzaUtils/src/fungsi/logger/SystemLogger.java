@@ -5,6 +5,7 @@
 package fungsi.logger;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  *
@@ -47,6 +48,6 @@ public class SystemLogger {
 
     public static void error(Throwable msg) {
         checkInit();
-        LOGGER.log(msg, LogType.EXCEPTION);
+        LOGGER.log(msg + "\n" + Arrays.toString(msg.getStackTrace()).replace(", ", "at "), LogType.EXCEPTION);
     }
 }
