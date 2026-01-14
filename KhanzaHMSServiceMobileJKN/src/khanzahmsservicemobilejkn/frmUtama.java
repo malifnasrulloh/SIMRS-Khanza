@@ -173,6 +173,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new frmUtama().setVisible(true);
             }
@@ -195,6 +196,7 @@ public class frmUtama extends javax.swing.JFrame {
             private int nilai_menit;
             private int nilai_detik;
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 nol_jam = "";
                 nol_menit = "";
@@ -225,6 +227,7 @@ public class frmUtama extends javax.swing.JFrame {
                 detik = nol_detik + Integer.toString(nilai_detik);
                 if (jam.equals("01") && menit.equals("01") && detik.equals("01")) {
                     userTableModel.resetData();
+                    SystemLogger.reconfigure();
                     date = new Date();
                     Tanggal1.setText(tanggalFormat.format(date));
                     Tanggal2.setText(tanggalFormat.format(date));
@@ -277,6 +280,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "order by referensi_mobilejkn_bpjs.tanggalperiksa");
                         try {
                             rs = ps.executeQuery();
+                            SystemLogger.sql(rs.toString());
                             while (rs.next()) {
                                 try {
                                     headers = new HttpHeaders();
@@ -344,6 +348,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 "SELECT * FROM referensi_mobilejkn_bpjs_batal where referensi_mobilejkn_bpjs_batal.statuskirim='Belum' and referensi_mobilejkn_bpjs_batal.tanggalbatal between " + (Tanggal1.getText().equals(Tanggal2.getText()) ? "SUBDATE('" + Tanggal2.getText() + "',INTERVAL 6 DAY) and '" + Tanggal2.getText() + "'" : "'" + Tanggal1.getText() + "' and '" + Tanggal2.getText() + "'"));
                         try {
                             rs = ps.executeQuery();
+                            SystemLogger.sql(rs.toString());
                             while (rs.next()) {
                                 try {
                                     headers = new HttpHeaders();
@@ -435,6 +440,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "order by referensi_mobilejkn_bpjs.tanggalperiksa");
                         try {
                             rs = ps.executeQuery();
+                            SystemLogger.sql(rs.toString());
                             while (rs.next()) {
                                 datajam = Sequel.cariIsi("select mutasi_berkas.dikirim from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.dikirim<>'0000-00-00 00:00:00'", rs.getString("no_rawat"));
                                 if (!datajam.equals("")) {
@@ -704,6 +710,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "order by concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg)");
                         try {
                             rs = ps.executeQuery();
+                            SystemLogger.sql(rs.toString());
                             while (rs.next()) {
                                 ps2 = koneksi.prepareStatement("select * from jadwal where jadwal.hari_kerja=? and jadwal.kd_dokter=? and jadwal.kd_poli=?");
                                 try {
@@ -711,6 +718,7 @@ public class frmUtama extends javax.swing.JFrame {
                                     ps2.setString(2, rs.getString("kd_dokter"));
                                     ps2.setString(3, rs.getString("kd_poli"));
                                     rs2 = ps2.executeQuery();
+                                    SystemLogger.sql(rs2.toString());
                                     if (rs2.next()) {
                                         kodedokter = Sequel.cariIsi("select maping_dokter_dpjpvclaim.kd_dokter_bpjs from maping_dokter_dpjpvclaim where maping_dokter_dpjpvclaim.kd_dokter=?", rs.getString("kd_dokter"));
                                         kodepoli = Sequel.cariIsi("select maping_poli_bpjs.kd_poli_bpjs from maping_poli_bpjs where maping_poli_bpjs.kd_poli_rs=?", rs.getString("kd_poli"));
