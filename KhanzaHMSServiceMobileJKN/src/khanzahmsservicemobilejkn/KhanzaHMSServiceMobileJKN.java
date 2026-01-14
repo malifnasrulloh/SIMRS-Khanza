@@ -21,7 +21,7 @@ public class KhanzaHMSServiceMobileJKN {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SystemLogger.configure(Paths.get("log/khanzahmsservicemobilejkn"), "service-log");
+        SystemLogger.configure(logPath, "service-log");
         new frmUtama().setVisible(true);
     }
 

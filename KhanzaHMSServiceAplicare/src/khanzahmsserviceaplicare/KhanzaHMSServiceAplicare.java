@@ -15,13 +15,13 @@ import java.nio.file.Paths;
  */
 public class KhanzaHMSServiceAplicare {
 
-    public static final Path logPath = Paths.get("log/khanzahmsservicemobilejkn");
+    public static final Path logPath = Paths.get("log/khanzahmsserviceaplicare");
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SystemLogger.configure(Paths.get("log/khanzahmsserviceaplicare"), "service-log");
+        SystemLogger.configure(logPath, "service-log");
         new frmUtama().setVisible(true);
     }
 
