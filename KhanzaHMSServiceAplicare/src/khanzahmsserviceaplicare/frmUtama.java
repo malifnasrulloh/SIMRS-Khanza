@@ -8,7 +8,10 @@ package khanzahmsserviceaplicare;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.BPJSApiAplicare;
+import fungsi.LogTableModel;
 import fungsi.koneksiDB;
+import fungsi.logger.LogType;
+import fungsi.logger.SystemLogger;
 import fungsi.sekuel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,28 +31,33 @@ import org.springframework.http.MediaType;
  * @author windiartonugroho
  */
 public class frmUtama extends javax.swing.JFrame {
-    private  Connection koneksi=koneksiDB.condb();
-    private final sekuel Sequel=new sekuel();
+
+    private Connection koneksi = koneksiDB.condb();
+    private final sekuel Sequel = new sekuel();
     private String requestJson;
-    private final String URL = "";
+    private String URL = "";
     private final String kodeppk = Sequel.cariIsi("select setting.kode_ppk from setting");
-    private final BPJSApiAplicare api=new BPJSApiAplicare();
-    private  HttpHeaders headers;
-    private  HttpEntity requestEntity;
-    private final  ObjectMapper mapper= new ObjectMapper();
-    private  JsonNode root;
-    private  JsonNode nameNode;
-    private  PreparedStatement ps;
-    private  ResultSet rs;
+    private final BPJSApiAplicare api = new BPJSApiAplicare();
+    private HttpHeaders headers;
+    private HttpEntity requestEntity;
+    private final ObjectMapper mapper = new ObjectMapper();
+    private JsonNode root;
+    private JsonNode nameNode;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceAplicare.logPath, "app-log");
 
     /**
      * Creates new form frmUtama
      */
     public frmUtama() {
         initComponents();
-        
-        this.setSize(390,340);
-        
+
+        this.setSize(390, 340);
+
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(210);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(210);
+
         jam();
     }
 
@@ -62,26 +70,30 @@ public class frmUtama extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TeksArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIMKES Khanza Service Aplicare");
 
-        TeksArea.setColumns(20);
-        TeksArea.setRows(5);
-        jScrollPane1.setViewportView(TeksArea);
-
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
         jButton1.setText("Keluar");
+        jButton1.setMaximumSize(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(jButton1, java.awt.BorderLayout.SOUTH);
+
+        jScrollPane2.setMaximumSize(null);
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(16, 16));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(452, 402));
+
+        jTable1.setModel(userTableModel);
+        jScrollPane2.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -108,17 +120,22 @@ public class frmUtama extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new frmUtama().setVisible(true);
             }
@@ -126,15 +143,17 @@ public class frmUtama extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea TeksArea;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
@@ -163,62 +182,70 @@ public class frmUtama extends javax.swing.JFrame {
                 String jam = nol_jam + Integer.toString(nilai_jam);
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
-                if(jam.equals("01")&&menit.equals("01")&&detik.equals("01")){
-                    TeksArea.setText("");
+                if (jam.equals("01") && menit.equals("01") && detik.equals("01")) {
+                    userTableModel.resetData();
+                    SystemLogger.reconfigure();
                 }
-                
-                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
+
+                if ((nilai_jam % 4 == 0) && (detik.equals("01") && menit.equals("01"))) {
                     try {
-                        koneksi=koneksiDB.condb();
-                        TeksArea.append("Memulai update aplicare\n");
-                        ps=koneksi.prepareStatement(
-                                "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal," +
-                                "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas," +
-                                "aplicare_ketersediaan_kamar.tersedia,aplicare_ketersediaan_kamar.tersediapria," +
-                                "aplicare_ketersediaan_kamar.tersediawanita,aplicare_ketersediaan_kamar.tersediapriawanita " +
-                                "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal");
+                        koneksi = koneksiDB.condb();
+                        userTableModel.tambahData("Memulai update aplicare\n");
+                        ps = koneksi.prepareStatement(
+                                "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal,"
+                                + "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas,"
+                                + "aplicare_ketersediaan_kamar.tersedia,aplicare_ketersediaan_kamar.tersediapria,"
+                                + "aplicare_ketersediaan_kamar.tersediawanita,aplicare_ketersediaan_kamar.tersediapriawanita "
+                                + "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal");
                         try {
-                            rs=ps.executeQuery();
-                            while(rs.next()){
-                                TeksArea.append("Mengirimkan kamar "+rs.getString("kode_kelas_aplicare")+" "+rs.getString("nm_bangsal")+"\n");
-                                try {     
+                            rs = ps.executeQuery();
+                            SystemLogger.sql(rs.toString());
+                            while (rs.next()) {
+                                userTableModel.tambahData("Mengirimkan kamar " + rs.getString("kode_kelas_aplicare") + " " + rs.getString("nm_bangsal") + "\n");
+                                try {
                                     headers = new HttpHeaders();
                                     headers.setContentType(MediaType.APPLICATION_JSON);
-                                    headers.add("X-Cons-ID",koneksiDB.CONSIDAPIAPLICARE());
-                                    headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString()));            
-                                    headers.add("X-Signature",api.getHmac());
-                                    requestJson ="{\"kodekelas\":\""+rs.getString("kode_kelas_aplicare")+"\", "+
-                                                  "\"koderuang\":\""+rs.getString("kd_bangsal")+"\","+ 
-                                                  "\"namaruang\":\""+rs.getString("nm_bangsal")+"\","+ 
-                                                  "\"kapasitas\":\""+Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"'")+"\","+ 
-                                                  "\"tersedia\":\""+Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"' and status='KOSONG'")+"\","+
-                                                  "\"tersediapria\":\""+Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"' and status='KOSONG'")+"\","+ 
-                                                  "\"tersediawanita\":\""+Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"' and status='KOSONG'")+"\","+ 
-                                                  "\"tersediapriawanita\":\""+Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"' and status='KOSONG'")+"\""+
-                                                  "}";
-                                    TeksArea.append("JSON dikirim : "+requestJson+"\n");
-                                    requestEntity = new HttpEntity(requestJson,headers);
-                                    //System.out.println(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    root = mapper.readTree(api.getRest().exchange(URL+"/rest/bed/update/"+kodeppk, HttpMethod.POST, requestEntity, String.class).getBody());
+                                    headers.add("X-Cons-ID", koneksiDB.CONSIDAPIAPLICARE());
+                                    headers.add("X-Timestamp", String.valueOf(api.GetUTCdatetimeAsString()));
+                                    headers.add("X-Signature", api.getHmac());
+                                    requestJson = "{\"kodekelas\":\"" + rs.getString("kode_kelas_aplicare") + "\", "
+                                            + "\"koderuang\":\"" + rs.getString("kd_bangsal") + "\","
+                                            + "\"namaruang\":\"" + rs.getString("nm_bangsal") + "\","
+                                            + "\"kapasitas\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'") + "\","
+                                            + "\"tersedia\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
+                                            + "\"tersediapria\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
+                                            + "\"tersediawanita\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
+                                            + "\"tersediapriawanita\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\""
+                                            + "}";
+                                    userTableModel.tambahData("JSON dikirim : " + requestJson + "\n");
+                                    requestEntity = new HttpEntity(requestJson, headers);
+                                    URL = URL + "/rest/bed/update/" + kodeppk;
+                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                    System.out.println("Request URL : " + URL);
+                                    userTableModel.tambahData("Request JSON : " + requestJson);
+                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                     nameNode = root.path("metadata");
-                                    TeksArea.append("respon WS BPJS : "+nameNode.path("message").asText()+"\n");
-                                }catch (Exception ex) {
-                                    System.out.println("Notifikasi Bridging : "+ex);
+                                    userTableModel.tambahData("respon WS BPJS : " + nameNode.path("message").asText() + "\n");
+                                } catch (Exception ex) {
+                                    System.out.println("Notifikasi Bridging : " + ex);
+                                    SystemLogger.error(ex);
                                 }
                             }
                         } catch (Exception ex) {
-                            System.out.println("Notif Ketersediaan : "+ex);
-                        } finally{
-                            if(rs!=null){
+                            System.out.println("Notif Ketersediaan : " + ex);
+                            SystemLogger.error(ex);
+                        } finally {
+                            if (rs != null) {
                                 rs.close();
                             }
-                            if(ps!=null){
+                            if (ps != null) {
                                 ps.close();
                             }
                         }
-                        TeksArea.append("Proses update selesai\n");
+                        userTableModel.tambahData("Proses update selesai\n");
                     } catch (Exception ez) {
-                        System.out.println("Notif : "+ez);
+                        System.out.println("Notif : " + ez);
+                        SystemLogger.error(ez);
                     }
                 }
             }
