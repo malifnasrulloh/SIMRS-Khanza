@@ -97,7 +97,7 @@ public class frmUtama extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SIMKES Khanza Service Mobile JKN");
+        setTitle("SIMKES Khanza Service Mobile JKN ERM");
 
         jPanel1.setMaximumSize(null);
         jPanel1.setMinimumSize(new java.awt.Dimension(327, 33));
