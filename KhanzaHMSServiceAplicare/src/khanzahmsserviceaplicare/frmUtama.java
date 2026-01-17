@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +36,7 @@ public class frmUtama extends javax.swing.JFrame {
     private Connection koneksi = koneksiDB.condb();
     private final sekuel Sequel = new sekuel();
     private String requestJson;
-    private String URL = "";
+    private String URL = "", link = "";
     private final String kodeppk = Sequel.cariIsi("select setting.kode_ppk from setting");
     private final BPJSApiAplicare api = new BPJSApiAplicare();
     private HttpHeaders headers;
@@ -52,6 +53,12 @@ public class frmUtama extends javax.swing.JFrame {
      */
     public frmUtama() {
         initComponents();
+        try {
+            link = koneksiDB.URLAPIAPLICARE();
+        } catch (Exception e) {
+            System.out.println("E : " + e);
+            SystemLogger.error(e);
+        }
 
         this.setSize(390, 340);
 
@@ -187,7 +194,7 @@ public class frmUtama extends javax.swing.JFrame {
                     SystemLogger.reconfigure();
                 }
 
-                if ((nilai_jam % 4 == 0) && (detik.equals("01") && menit.equals("01"))) {
+                if ((nilai_jam % 1 == 0) && (nilai_menit == 1) && (nilai_detik == 1)) {
                     try {
                         koneksi = koneksiDB.condb();
                         userTableModel.tambahData("Memulai update aplicare\n");
@@ -199,7 +206,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal");
                         try {
                             rs = ps.executeQuery();
-                            SystemLogger.sql(rs.toString());
+                            SystemLogger.sql(ps.toString());
                             while (rs.next()) {
                                 userTableModel.tambahData("Mengirimkan kamar " + rs.getString("kode_kelas_aplicare") + " " + rs.getString("nm_bangsal") + "\n");
                                 try {
@@ -211,25 +218,25 @@ public class frmUtama extends javax.swing.JFrame {
                                     requestJson = "{\"kodekelas\":\"" + rs.getString("kode_kelas_aplicare") + "\", "
                                             + "\"koderuang\":\"" + rs.getString("kd_bangsal") + "\","
                                             + "\"namaruang\":\"" + rs.getString("nm_bangsal") + "\","
-                                            + "\"kapasitas\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'") + "\","
-                                            + "\"tersedia\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
-                                            + "\"tersediapria\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
-                                            + "\"tersediawanita\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\","
-                                            + "\"tersediapriawanita\":\"" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + "\""
+                                            + "\"kapasitas\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'") + ","
+                                            + "\"tersedia\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
+                                            + "\"tersediapria\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
+                                            + "\"tersediawanita\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
+                                            + "\"tersediapriawanita\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'")
                                             + "}";
-                                    userTableModel.tambahData("JSON dikirim : " + requestJson + "\n");
                                     requestEntity = new HttpEntity(requestJson, headers);
-                                    URL = URL + "/rest/bed/update/" + kodeppk;
+                                    URL = link + "/rest/bed/update/" + kodeppk;
                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                     System.out.println("Request URL : " + URL);
                                     userTableModel.tambahData("Request JSON : " + requestJson);
                                     userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
                                     nameNode = root.path("metadata");
-                                    userTableModel.tambahData("respon WS BPJS : " + nameNode.path("message").asText() + "\n");
+                                    userTableModel.tambahData("respon WS BPJS : " + nameNode.path("message").asText());
                                 } catch (Exception ex) {
                                     System.out.println("Notifikasi Bridging : " + ex);
                                     SystemLogger.error(ex);
                                 }
+                                TimeUnit.SECONDS.sleep(5);
                             }
                         } catch (Exception ex) {
                             System.out.println("Notif Ketersediaan : " + ex);
