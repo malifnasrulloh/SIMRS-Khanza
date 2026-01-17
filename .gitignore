@@ -9,6 +9,6 @@ lib/libjfxwebkit.so
 
 
 # Dummy file
-lib/test.java
+lib/test.*
 *~
 ~*

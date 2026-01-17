@@ -283,7 +283,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 "order by referensi_mobilejkn_bpjs.tanggalperiksa");
                         try {
                             rs=ps.executeQuery();
-                            SystemLogger.sql(rs.toString());
+                            SystemLogger.sql(rs.toStringexecuteQuery
                             while(rs.next()){
                                 try {     
                                     headers = new HttpHeaders();
@@ -350,7 +350,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 "SELECT * FROM referensi_mobilejkn_bpjs_batal where referensi_mobilejkn_bpjs_batal.statuskirim='Belum' and referensi_mobilejkn_bpjs_batal.tanggalbatal between " + (Tanggal1.getText().equals(Tanggal2.getText()) ? "SUBDATE('" + Tanggal2.getText() + "',INTERVAL 6 DAY) and '" + Tanggal2.getText() + "'" : "'" + Tanggal1.getText() + "' and '" + Tanggal2.getText() + "'"));
                         try {
                             rs = ps.executeQuery();
-                            SystemLogger.sql(rs.toString());
+                            SystemLogger.sql(ps.toString());
                             while (rs.next()) {
                                 try {
                                     headers = new HttpHeaders();
@@ -442,7 +442,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "order by referensi_mobilejkn_bpjs.tanggalperiksa");
                         try {
                             rs = ps.executeQuery();
-                            SystemLogger.sql(rs.toString());
+                            SystemLogger.sql(ps.toString());
                             while (rs.next()) {
                                 task3 = "";
                                 task4 = "";
@@ -454,7 +454,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 try {
                                     ps2.setString(1, rs.getString("no_rawat"));
                                     rs2 = ps2.executeQuery();
-                                    SystemLogger.sql(rs2.toString());
+                                    SystemLogger.sql(ps2.toString());
                                     while (rs2.next()) {
                                         if (rs2.getString("taskid").equals("3")) {
                                             task3 = "Sudah";
@@ -773,7 +773,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 + "order by concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg)");
                         try {
                             rs = ps.executeQuery();
-                            SystemLogger.sql(rs.toString());
+                            SystemLogger.sql(ps.toString());
                             while (rs.next()) {
                                 ps2 = koneksi.prepareStatement("select * from jadwal where jadwal.hari_kerja=? and jadwal.kd_dokter=? and jadwal.kd_poli=?");
                                 try {
@@ -781,7 +781,7 @@ public class frmUtama extends javax.swing.JFrame {
                                     ps2.setString(2, rs.getString("kd_dokter"));
                                     ps2.setString(3, rs.getString("kd_poli"));
                                     rs2 = ps2.executeQuery();
-                                    SystemLogger.sql(rs2.toString());
+                                    SystemLogger.sql(ps2.toString());
                                     if (rs2.next()) {
                                         kodedokter = Sequel.cariIsi("select maping_dokter_dpjpvclaim.kd_dokter_bpjs from maping_dokter_dpjpvclaim where maping_dokter_dpjpvclaim.kd_dokter=?", rs.getString("kd_dokter"));
                                         kodepoli = Sequel.cariIsi("select maping_poli_bpjs.kd_poli_bpjs from maping_poli_bpjs where maping_poli_bpjs.kd_poli_rs=?", rs.getString("kd_poli"));
@@ -796,7 +796,7 @@ public class frmUtama extends javax.swing.JFrame {
                                             try {
                                                 ps3.setString(1, rs.getString("no_rawat"));
                                                 rs3 = ps3.executeQuery();
-                                                SystemLogger.sql(rs3.toString());
+                                                SystemLogger.sql(ps3.toString());
                                                 while (rs3.next()) {
                                                     if (rs3.getString("taskid").equals("3")) {
                                                         task3 = "Sudah";
