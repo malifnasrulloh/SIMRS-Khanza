@@ -45,12 +45,11 @@ public class SystemLogger {
         checkInit();
         LOGGER.log(msg, LogType.SQL);
     }
-    
+
     public static void http(Object msg) {
         checkInit();
         LOGGER.log(msg, LogType.HTTP);
     }
-
 
     public static void error(Throwable msg) {
         checkInit();
