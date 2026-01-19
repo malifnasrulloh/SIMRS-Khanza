@@ -194,7 +194,7 @@ public class frmUtama extends javax.swing.JFrame {
                     SystemLogger.reconfigure();
                 }
 
-                if ((nilai_jam % 1 == 0) && (nilai_menit == 1) && (nilai_detik == 1)) {
+                if ((nilai_menit % 5 == 0) && (nilai_detik == 1)) {
                     try {
                         koneksi = koneksiDB.condb();
                         userTableModel.tambahData("Memulai update aplicare\n");
@@ -215,18 +215,22 @@ public class frmUtama extends javax.swing.JFrame {
                                     headers.add("X-Cons-ID", koneksiDB.CONSIDAPIAPLICARE());
                                     headers.add("X-Timestamp", String.valueOf(api.GetUTCdatetimeAsString()));
                                     headers.add("X-Signature", api.getHmac());
+                                    
+                                    String tersedia = Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'");
+                                    
                                     requestJson = "{\"kodekelas\":\"" + rs.getString("kode_kelas_aplicare") + "\", "
                                             + "\"koderuang\":\"" + rs.getString("kd_bangsal") + "\","
                                             + "\"namaruang\":\"" + rs.getString("nm_bangsal") + "\","
                                             + "\"kapasitas\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'") + ","
-                                            + "\"tersedia\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
-                                            + "\"tersediapria\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
-                                            + "\"tersediawanita\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'") + ","
-                                            + "\"tersediapriawanita\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'")
+                                            + "\"tersedia\":" + tersedia + ","
+                                            + "\"tersediapria\":" + tersedia + ","
+                                            + "\"tersediawanita\":" + tersedia + ","
+                                            + "\"tersediapriawanita\":" + tersedia
                                             + "}";
                                     requestEntity = new HttpEntity(requestJson, headers);
                                     URL = link + "/rest/bed/update/" + kodeppk;
                                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                                    
                                     System.out.println("Request URL : " + URL);
                                     userTableModel.tambahData("Request JSON : " + requestJson);
                                     userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
