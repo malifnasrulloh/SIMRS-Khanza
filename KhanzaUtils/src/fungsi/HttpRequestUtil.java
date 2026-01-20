@@ -41,15 +41,17 @@ public class HttpRequestUtil {
 
     private final RestTemplate restTemplate;
 
+    public RestTemplate getRestTemplate() {
+        return this.restTemplate;
+    }
+
     private HttpRequestUtil() throws NoSuchAlgorithmException, KeyManagementException {
         this.restTemplate = new RestTemplate(getRequestFactory());
     }
 
     private HttpComponentsClientHttpRequestFactory getRequestFactory() {
         CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(
-                        PoolingHttpClientConnectionManagerBuilder.create().build()
-                )
+                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create().build())
                 .build();
 
         HttpComponentsClientHttpRequestFactory factory
