@@ -7,9 +7,14 @@ package fungsi;
 import fungsi.logger.SystemLogger;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.TlsConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.core5.http.ssl.TLS;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,14 +55,28 @@ public class HttpRequestUtil {
     }
 
     private HttpComponentsClientHttpRequestFactory getRequestFactory() {
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create().build())
+        HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create()
+                .setDefaultConnectionConfig(ConnectionConfig.custom()
+                        .setConnectTimeout(Timeout.ofSeconds(30))
+                        .build()
+                )
+                .setDefaultTlsConfig(TlsConfig.custom()
+                        .setHandshakeTimeout(Timeout.ofSeconds(30))
+                        .setSupportedProtocols(TLS.V_1_2, TLS.V_1_3)
+                        .build())
+                .setMaxConnPerRoute(20)
+                .setMaxConnTotal(50)
                 .build();
 
-        HttpComponentsClientHttpRequestFactory factory
-                = new HttpComponentsClientHttpRequestFactory(httpClient);
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(cm)
+                .evictExpiredConnections()
+                .evictIdleConnections(Timeout.ofSeconds(30))
+                .build();
 
-        factory.setConnectionRequestTimeout(10_000);
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+
+        factory.setConnectionRequestTimeout(30_000);
         factory.setReadTimeout(30_000);
         return factory;
     }
