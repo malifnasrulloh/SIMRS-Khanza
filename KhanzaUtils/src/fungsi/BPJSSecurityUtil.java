@@ -22,9 +22,11 @@ public class BPJSSecurityUtil {
 
     public BPJSSecurityUtil(String consId, String secretKey) {
         if (consId == null || consId.trim().isEmpty()) {
+            SystemLogger.error(new IllegalArgumentException("Cons-ID cannot be null or empty"));
             throw new IllegalArgumentException("Cons-ID cannot be null or empty");
         }
         if (secretKey == null || secretKey.trim().isEmpty()) {
+            SystemLogger.error(new IllegalArgumentException("Secret Key cannot be null or empty"));
             throw new IllegalArgumentException("Secret Key cannot be null or empty");
         }
         this.consId = consId;
@@ -46,7 +48,7 @@ public class BPJSSecurityUtil {
         } catch (Exception e) {
             System.out.println("Failed to generate HMAC signature" + e);
             SystemLogger.error(e);
-            throw new RuntimeException("Failed to generate HMAC signature", e);
+            return "";
         }
     }
 
