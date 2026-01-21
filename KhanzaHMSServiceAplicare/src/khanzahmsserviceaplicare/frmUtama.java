@@ -5,9 +5,9 @@
  */
 package khanzahmsserviceaplicare;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fungsi.BPJSApiAplicare;
+import fungsi.BPJSSecurityUtil;
+import fungsi.HttpRequestUtil;
+import fungsi.JsonUtil;
 import fungsi.LogTableModel;
 import fungsi.koneksiDB;
 import fungsi.logger.LogType;
@@ -18,8 +18,8 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
 import org.springframework.http.HttpEntity;
@@ -35,18 +35,14 @@ public class frmUtama extends javax.swing.JFrame {
 
     private Connection koneksi = koneksiDB.condb();
     private final sekuel Sequel = new sekuel();
-    private String requestJson;
     private String URL = "", link = "";
     private final String kodeppk = Sequel.cariIsi("select setting.kode_ppk from setting");
-    private final BPJSApiAplicare api = new BPJSApiAplicare();
     private HttpHeaders headers;
     private HttpEntity requestEntity;
-    private final ObjectMapper mapper = new ObjectMapper();
-    private JsonNode root;
-    private JsonNode nameNode;
     private PreparedStatement ps;
     private ResultSet rs;
     private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceAplicare.logPath, "app-log");
+    private BPJSSecurityUtil security = new BPJSSecurityUtil(koneksiDB.CONSIDAPIAPLICARE(), koneksiDB.SECRETKEYAPIAPLICARE());
 
     /**
      * Creates new form frmUtama
@@ -116,7 +112,7 @@ public class frmUtama extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -141,11 +137,8 @@ public class frmUtama extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new frmUtama().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new frmUtama().setVisible(true);
         });
     }
 
@@ -156,45 +149,20 @@ public class frmUtama extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
-            private int nilai_jam;
-            private int nilai_menit;
-            private int nilai_detik;
+            private int menit;
+            private int detik;
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nol_jam = "";
-                String nol_menit = "";
-                String nol_detik = "";
-                Date now = Calendar.getInstance().getTime();
-                // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                nilai_jam = now.getHours();
-                nilai_menit = now.getMinutes();
-                nilai_detik = now.getSeconds();
-                // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_jam <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_jam = "0";
-                }
-                // Jika nilai MENIT lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_menit <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_menit = "0";
-                }
-                // Jika nilai DETIK lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_detik <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_detik = "0";
-                }
-                // Membuat String JAM, MENIT, DETIK
-                String jam = nol_jam + Integer.toString(nilai_jam);
-                String menit = nol_menit + Integer.toString(nilai_menit);
-                String detik = nol_detik + Integer.toString(nilai_detik);
-                if (jam.equals("01") && menit.equals("01") && detik.equals("01")) {
+                LocalTime now = LocalTime.now();
+                menit = now.getMinute();
+                detik = now.getSecond();
+                if (now.equals(LocalTime.of(1, 1, 1))) {
                     userTableModel.resetData();
                     SystemLogger.reconfigure();
                 }
 
-                if ((nilai_menit % 5 == 0) && (nilai_detik == 1)) {
+                if ((menit % 1 == 0) && (detik == 0)) {
                     try {
                         koneksi = koneksiDB.condb();
                         userTableModel.tambahData("Memulai update aplicare\n");
@@ -207,35 +175,43 @@ public class frmUtama extends javax.swing.JFrame {
                         try {
                             rs = ps.executeQuery();
                             SystemLogger.sql(ps.toString());
+
                             while (rs.next()) {
                                 userTableModel.tambahData("Mengirimkan kamar " + rs.getString("kode_kelas_aplicare") + " " + rs.getString("nm_bangsal") + "\n");
                                 try {
+                                    BPJSSecurityUtil.SignatureResult resultSignature = security.generateSignaturePair();
                                     headers = new HttpHeaders();
                                     headers.setContentType(MediaType.APPLICATION_JSON);
                                     headers.add("X-Cons-ID", koneksiDB.CONSIDAPIAPLICARE());
-                                    headers.add("X-Timestamp", String.valueOf(api.GetUTCdatetimeAsString()));
-                                    headers.add("X-Signature", api.getHmac());
-                                    
-                                    String tersedia = Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'");
-                                    
-                                    requestJson = "{\"kodekelas\":\"" + rs.getString("kode_kelas_aplicare") + "\", "
-                                            + "\"koderuang\":\"" + rs.getString("kd_bangsal") + "\","
-                                            + "\"namaruang\":\"" + rs.getString("nm_bangsal") + "\","
-                                            + "\"kapasitas\":" + Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'") + ","
-                                            + "\"tersedia\":" + tersedia + ","
-                                            + "\"tersediapria\":" + tersedia + ","
-                                            + "\"tersediawanita\":" + tersedia + ","
-                                            + "\"tersediapriawanita\":" + tersedia
-                                            + "}";
+                                    headers.add("X-Timestamp", String.valueOf(resultSignature.timestamp));
+                                    headers.add("X-Signature", resultSignature.signature);
+
+                                    int tersedia = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'"));
+                                    int kapasitas = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'"));
+
+                                    HttpRequestUtil http = HttpRequestUtil.getInstance();
+                                    String requestJson = JsonUtil.createObject()
+                                            .put("kodekelas", rs.getString("kode_kelas_aplicare"))
+                                            .put("koderuang", rs.getString("kd_bangsal"))
+                                            .put("namaruang", rs.getString("nm_bangsal"))
+                                            .put("kapasitas", kapasitas)
+                                            .put("tersedia", tersedia)
+                                            .put("tersediapria", tersedia)
+                                            .put("tersediawanita", tersedia)
+                                            .put("tersediapriawanita", tersedia)
+                                            .build();
+
                                     requestEntity = new HttpEntity(requestJson, headers);
                                     URL = link + "/rest/bed/update/" + kodeppk;
-                                    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                                    
+
+                                    Map<String, Map<String, Object>> response = http.getRestTemplate().exchange(URL, HttpMethod.POST, requestEntity, Map.class).getBody();
+
                                     System.out.println("Request URL : " + URL);
                                     userTableModel.tambahData("Request JSON : " + requestJson);
                                     userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
-                                    nameNode = root.path("metadata");
-                                    userTableModel.tambahData("respon WS BPJS : " + nameNode.path("message").asText());
+
+                                    Map root = response.get("metadata");
+                                    userTableModel.tambahData("respon WS BPJS : " + root.get("message").toString());
                                 } catch (Exception ex) {
                                     System.out.println("Notifikasi Bridging : " + ex);
                                     SystemLogger.error(ex);
@@ -261,7 +237,6 @@ public class frmUtama extends javax.swing.JFrame {
                 }
             }
         };
-        // Timer
         new Timer(1000, taskPerformer).start();
     }
 }
