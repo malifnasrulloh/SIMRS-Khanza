@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -550,11 +551,6 @@ public final class DlgPeriksaLaboratorium extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Input Data Hasil Periksa Laboratorium Patologi Klinis ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
@@ -808,7 +804,7 @@ public final class DlgPeriksaLaboratorium extends javax.swing.JDialog {
         NmPtg.setBounds(546, 42, 249, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-10-2022" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-01-2026" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -1299,7 +1295,7 @@ private void PemeriksaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
 
 private void KdPtgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdPtgKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            NmPtg.setText(petugas.tampil3(KdPtg.getText()));
+            NmPtg.setText(Sequel.CariPetugas(KdPtg.getText()));
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnPetugasActionPerformed(null);
         }else{            
@@ -1387,10 +1383,6 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Valid.pindah(evt, KodePerujuk, Pemeriksaan);
     }//GEN-LAST:event_TanggalKeyPressed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
-    }//GEN-LAST:event_formWindowOpened
-
     private void BtnNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNotaActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         if(tabMode.getRowCount()==0){
@@ -1440,7 +1432,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void KodePerujukKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodePerujukKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            NmPerujuk.setText(dokter.tampil3(KodePerujuk.getText()));
+            NmPerujuk.setText(Sequel.CariDokter(KodePerujuk.getText()));
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnDokterActionPerformed(null);
         }else{            
@@ -2598,7 +2590,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2624,7 +2616,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public void isCek(){
         if(akses.getjml2()>=1){
             KdPtg.setText(akses.getkode());
-            NmPtg.setText(petugas.tampil3(KdPtg.getText()));
+            NmPtg.setText(Sequel.CariPetugas(KdPtg.getText()));
         }else{
             KdPtg.setText("");
             NmPtg.setText("");
@@ -2722,7 +2714,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     "jns_perawatan_lab.tarif_tindakan_dokter,jns_perawatan_lab.tarif_tindakan_petugas,"+
                     "jns_perawatan_lab.kso,jns_perawatan_lab.menejemen,penjab.png_jawab "+
                     "from jns_perawatan_lab inner join penjab on penjab.kd_pj=jns_perawatan_lab.kd_pj where "+
-                    "jns_perawatan_lab.kategori='PK' and jns_perawatan_lab.status='1' and (jns_perawatan_lab.kd_pj=? or jns_perawatan_lab.kd_pj='-') "+
+                    "jns_perawatan_lab.kategori='PK' and jns_perawatan_lab.status='1' and (jns_perawatan_lab.kd_pj=? or jns_perawatan_lab.kd_pj='-') and (jns_perawatan_lab.kelas=? or jns_perawatan_lab.kelas='-') "+
                     (Pemeriksaan.getText().trim().equals("")?"":"and (jns_perawatan_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) ")+
                     "order by jns_perawatan_lab.kd_jenis_prw");
             }else if(cara_bayar_lab.equals("No")&&kelas_lab.equals("Yes")){
@@ -2833,7 +2825,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2864,7 +2856,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2895,7 +2887,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2926,7 +2918,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2957,7 +2949,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2988,7 +2980,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -3019,7 +3011,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -3050,7 +3042,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rssetpj=pssetpj.executeQuery();
                 while(rssetpj.next()){
                     KodePj.setText(rssetpj.getString(1));
-                    NmDokterPj.setText(dokter.tampil3(rssetpj.getString(1)));
+                    NmDokterPj.setText(Sequel.CariDokter(rssetpj.getString(1)));
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -3345,19 +3337,33 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void runBackground(Runnable task) {
         if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
+
         ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        executor.submit(() -> {
-            try {
-                task.run();
-            } finally {
-                ceksukses = false;
-                SwingUtilities.invokeLater(() -> {
-                    this.setCursor(Cursor.getDefaultCursor());
-                });
-            }
-        });
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
     }
 }
