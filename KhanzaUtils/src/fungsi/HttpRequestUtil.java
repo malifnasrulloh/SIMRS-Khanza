@@ -5,6 +5,7 @@
 package fungsi;
 
 import fungsi.logger.SystemLogger;
+import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import org.apache.hc.client5.http.config.ConnectionConfig;
@@ -15,8 +16,13 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuil
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.core5.http.ssl.TLS;
 import org.apache.hc.core5.util.Timeout;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  *
@@ -46,12 +52,30 @@ public class HttpRequestUtil {
 
     private final RestTemplate restTemplate;
 
+    private HttpRequestUtil() throws NoSuchAlgorithmException, KeyManagementException {
+        this.restTemplate = new RestTemplate(getRequestFactory());
+    }
+
     public RestTemplate getRestTemplate() {
         return this.restTemplate;
     }
 
-    private HttpRequestUtil() throws NoSuchAlgorithmException, KeyManagementException {
-        this.restTemplate = new RestTemplate(getRequestFactory());
+    public <T, R> ResponseEntity<T> exchange(String url, HttpMethod method, R body, Class<T> responseType, HttpHeaders headers) {
+        try {
+            URI uri = UriComponentsBuilder.fromUriString(url).build().toUri();
+            RequestEntity<R> requestEntity = (body != null)
+                    ? new RequestEntity(body, headers, method, uri)
+                    : new RequestEntity(headers, method, uri);
+
+            ResponseEntity<T> response = this.restTemplate.exchange(requestEntity, responseType);
+
+            SystemLogger.http(String.format("%s request to %s completed with status %s", method, url, response.getStatusCode()));
+            return response;
+        } catch (Exception e) {
+            System.out.println(String.format("%s request to %s failed: %s", method, url, e.getMessage()));
+            SystemLogger.error(e);
+        }
+        return null;
     }
 
     private HttpComponentsClientHttpRequestFactory getRequestFactory() {
