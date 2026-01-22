@@ -47,6 +47,11 @@ public class JsonUtil {
             return this;
         }
 
+        public JsonObjectBuilder put(String field, long value) {
+            node.put(field, value);
+            return this;
+        }
+
         public JsonObjectBuilder put(String field, boolean value) {
             node.put(field, value);
             return this;
