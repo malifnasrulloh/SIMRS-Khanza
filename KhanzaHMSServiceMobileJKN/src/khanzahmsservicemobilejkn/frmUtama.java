@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import javax.swing.Timer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -296,7 +296,7 @@ public class frmUtama extends javax.swing.JFrame {
                                     response = exchangeMobileJKN(URL, requestJson).getBody();
 
                                     metadata = response.get("metadata");
-                                    
+
                                     userTableModel.tambahData("respon WS BPJS : " + metadata.get("message").toString());
 
                                     if (metadata.get("code").toString().equals("200") || metadata.get("code").toString().equals("208") || metadata.get("message").toString().equals("Ok")) {
