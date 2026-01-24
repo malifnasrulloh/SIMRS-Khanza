@@ -20,12 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalTime;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 /**
  *
@@ -38,11 +37,9 @@ public class frmUtama extends javax.swing.JFrame {
     private String URL = "", link = "";
     private final String kodeppk = Sequel.cariIsi("select setting.kode_ppk from setting");
     private HttpHeaders headers;
-    private HttpEntity requestEntity;
-    private PreparedStatement ps;
-    private ResultSet rs;
-    private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceAplicare.logPath, "app-log");
     private BPJSSecurityUtil security = new BPJSSecurityUtil(koneksiDB.CONSIDAPIAPLICARE(), koneksiDB.SECRETKEYAPIAPLICARE());
+    private Map<String, Object> metadata;
+    private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceAplicare.logPath, "app-log");
 
     /**
      * Creates new form frmUtama
@@ -162,18 +159,16 @@ public class frmUtama extends javax.swing.JFrame {
                     SystemLogger.reconfigure();
                 }
 
-                if ((menit % 1 == 0) && (detik == 0)) {
+                if ((menit % 5 == 0) && (detik == 0)) {
                     try {
                         koneksi = koneksiDB.condb();
                         userTableModel.tambahData("Memulai update aplicare\n");
-                        ps = koneksi.prepareStatement(
+                        try (PreparedStatement ps = koneksi.prepareStatement(
                                 "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal,"
                                 + "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas,"
                                 + "aplicare_ketersediaan_kamar.tersedia,aplicare_ketersediaan_kamar.tersediapria,"
                                 + "aplicare_ketersediaan_kamar.tersediawanita,aplicare_ketersediaan_kamar.tersediapriawanita "
-                                + "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal");
-                        try {
-                            rs = ps.executeQuery();
+                                + "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal"); ResultSet rs = ps.executeQuery();) {
                             SystemLogger.sql(ps.toString());
 
                             while (rs.next()) {
@@ -189,7 +184,6 @@ public class frmUtama extends javax.swing.JFrame {
                                     int tersedia = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'"));
                                     int kapasitas = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'"));
 
-                                    HttpRequestUtil http = HttpRequestUtil.getInstance();
                                     String requestJson = JsonUtil.createObject()
                                             .put("kodekelas", rs.getString("kode_kelas_aplicare"))
                                             .put("koderuang", rs.getString("kd_bangsal"))
@@ -201,33 +195,32 @@ public class frmUtama extends javax.swing.JFrame {
                                             .put("tersediapriawanita", tersedia)
                                             .build();
 
-                                    requestEntity = new HttpEntity(requestJson, headers);
                                     URL = link + "/rest/bed/update/" + kodeppk;
 
-                                    Map<String, Map<String, Object>> response = http.getRestTemplate().exchange(URL, HttpMethod.POST, requestEntity, Map.class).getBody();
+                                    HttpRequestUtil http = HttpRequestUtil.getInstance();
+                                    ResponseEntity<Map> responseEntity = http.exchange(URL, HttpMethod.POST, requestJson, Map.class, headers);
 
-                                    System.out.println("Request URL : " + URL);
-                                    userTableModel.tambahData("Request JSON : " + requestJson);
-                                    userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
+                                    if (responseEntity == null) {
+                                        throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                    }
 
-                                    Map root = response.get("metadata");
-                                    userTableModel.tambahData("respon WS BPJS : " + root.get("message").toString());
+                                    Map responseMap = responseEntity.getBody();
+                                    if (responseMap != null && responseMap.containsKey("metadata")) {
+                                        userTableModel.tambahData("Request URL: " + URL, LogType.HTTP);
+                                        userTableModel.tambahData("Request JSON: " + requestJson, LogType.HTTP);
+                                    }
+
+                                    metadata = (Map<String, Object>) responseEntity.getBody().get("metadata");
+
+                                    userTableModel.tambahData("respon WS BPJS : " + metadata.get("message").toString());
                                 } catch (Exception ex) {
                                     System.out.println("Notifikasi Bridging : " + ex);
                                     SystemLogger.error(ex);
                                 }
-                                TimeUnit.SECONDS.sleep(5);
                             }
                         } catch (Exception ex) {
                             System.out.println("Notif Ketersediaan : " + ex);
                             SystemLogger.error(ex);
-                        } finally {
-                            if (rs != null) {
-                                rs.close();
-                            }
-                            if (ps != null) {
-                                ps.close();
-                            }
                         }
                         userTableModel.tambahData("Proses update selesai\n");
                     } catch (Exception ez) {
