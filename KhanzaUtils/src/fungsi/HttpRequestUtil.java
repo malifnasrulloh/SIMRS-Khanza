@@ -72,7 +72,7 @@ public class HttpRequestUtil {
             SystemLogger.http(String.format("%s request to %s completed with status %s", method, url, response.getStatusCode()));
             return response;
         } catch (Exception e) {
-            System.out.println(String.format("%s request to %s failed: %s", method, url, e.getMessage()));
+            System.out.println(e.getMessage());
             SystemLogger.error(e);
         }
         return null;
