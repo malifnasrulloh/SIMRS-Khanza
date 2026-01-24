@@ -28,7 +28,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -49,7 +52,7 @@ public class frmUtama extends javax.swing.JFrame {
     private Date parsedDateTime;
     private Date dateTime = new Date();
     private BPJSSecurityUtil security = new BPJSSecurityUtil(koneksiDB.CONSIDAPIMOBILEJKN(), koneksiDB.SECRETKEYAPIMOBILEJKN());
-    private Map<String, Map<String, Object>> response;
+    private ResponseEntity<Map> response;
     private Map<String, Object> metadata;
     private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceMobileJKNERM.logPath, "app-log");
 
@@ -201,15 +204,23 @@ public class frmUtama extends javax.swing.JFrame {
             HttpRequestUtil http = HttpRequestUtil.getInstance();
             ResponseEntity<Map> responseEntity = http.exchange(URL, HttpMethod.POST, requestJson, Map.class, headers);
 
-            System.out.println("Request URL : " + URL);
-            userTableModel.tambahData("Request JSON : " + requestJson);
-            userTableModel.tambahData("Request URL : " + URL, LogType.HTTP);
+            if (responseEntity == null) {
+                return null;
+            }
 
+            Map responseMap = responseEntity.getBody();
+            if (responseMap != null && responseMap.containsKey("metadata")) {
+                Map metadataMap = (Map) responseMap.get("metadata");
+                String code = String.valueOf(metadataMap.get("code"));
+                String message = String.valueOf(metadataMap.get("message"));
+
+                userTableModel.tambahData("Request URL: " + URL, LogType.HTTP);
+                userTableModel.tambahData("Request JSON: " + requestJson, LogType.HTTP);
+            }
             return responseEntity;
         } catch (Exception e) {
-            SystemLogger.error(e);
+            return null;
         }
-        return null;
     }
 
     private void jam() {
@@ -239,7 +250,7 @@ public class frmUtama extends javax.swing.JFrame {
                     Tanggal2.setText(dateFormat.format(dateTime));
                 }
 
-                if ((menit % 1 == 0) && (detik == 0)) {
+                if ((menit % 5 == 0) && (detik == 0)) {
                     day = cal.get(Calendar.DAY_OF_WEEK);
                     hari = hariIndonesia[day - 1];
 
@@ -295,9 +306,12 @@ public class frmUtama extends javax.swing.JFrame {
 //
 //                                    URL = link + "/antrean/add";
 //
-//                                    response = exchangeMobileJKN(URL, requestJson).getBody();
+//                                    response = exchangeMobileJKN(URL, requestJson);
+//                                    if (response == null) {
+//                                        throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+//                                    }
 //
-//                                    metadata = response.get("metadata");
+//                                    metadata = (Map<String, Object>) response.getBody().get("metadata");
 //
 //                                    if (metadata.get("code").toString().equals("200") || metadata.get("code").toString().equals("208") || metadata.get("message").toString().equals("Ok")) {
 //                                        Sequel.queryu2("update referensi_mobilejkn_bpjs set statuskirim='Sudah' where nobooking='" + rs.getString("nobooking") + "'");
@@ -334,9 +348,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                     URL = link + "/antrean/batal";
 
-                                    response = exchangeMobileJKN(URL, requestJson).getBody();
+                                    response = exchangeMobileJKN(URL, requestJson);
+                                    if (response == null) {
+                                        throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                    }
 
-                                    metadata = response.get("metadata");
+                                    metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                     if (metadata.get("code").toString().equals("200")) {
                                         Sequel.queryu2("update referensi_mobilejkn_bpjs_batal set statuskirim='Sudah' where nomorreferensi='" + rs.getString("nomorreferensi") + "'");
@@ -354,9 +371,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                     URL = link + "/antrean/updatewaktu";
 
-                                                    response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                    response = exchangeMobileJKN(URL, requestJson);
+                                                    if (response == null) {
+                                                        throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                    }
 
-                                                    metadata = response.get("metadata");
+                                                    metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                     if (!metadata.get("code").toString().equals("200")) {
                                                         Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -462,9 +482,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -496,9 +519,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -530,9 +556,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -560,9 +589,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/farmasi/add";
 
-                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                            response = exchangeMobileJKN(URL, requestJson);
+                                            if (response == null) {
+                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                            }
 
-                                            metadata = response.get("metadata");
+                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                             userTableModel.tambahData("respon WS BPJS : " + metadata.get("code").toString() + " " + metadata.get("message").toString());
                                         } catch (Exception ex) {
@@ -585,9 +617,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -616,9 +651,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -647,9 +685,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                 URL = link + "/antrean/updatewaktu";
 
-                                                response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                response = exchangeMobileJKN(URL, requestJson);
+                                                if (response == null) {
+                                                    throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                }
 
-                                                metadata = response.get("metadata");
+                                                metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                 if (!metadata.get("code").toString().equals("200")) {
                                                     Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -773,9 +814,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/add";
 
-                                                        response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                        response = exchangeMobileJKN(URL, requestJson);
+                                                        if (response == null) {
+                                                            throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                        }
 
-                                                        metadata = response.get("metadata");
+                                                        metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                         userTableModel.tambahData("respon WS BPJS : " + metadata.get("code").toString() + " " + metadata.get("message").toString());
                                                     }
@@ -798,9 +842,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -832,9 +879,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -866,9 +916,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -896,9 +949,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/farmasi/add";
 
-                                                        response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                        response = exchangeMobileJKN(URL, requestJson);
+                                                        if (response == null) {
+                                                            throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                        }
 
-                                                        metadata = response.get("metadata");
+                                                        metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                         userTableModel.tambahData("respon WS BPJS : " + metadata.get("code").toString() + " " + metadata.get("message").toString());
                                                     } catch (Exception ex) {
@@ -921,9 +977,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -952,9 +1011,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -983,9 +1045,12 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                             URL = link + "/antrean/updatewaktu";
 
-                                                            response = exchangeMobileJKN(URL, requestJson).getBody();
+                                                            response = exchangeMobileJKN(URL, requestJson);
+                                                            if (response == null) {
+                                                                throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
+                                                            }
 
-                                                            metadata = response.get("metadata");
+                                                            metadata = (Map<String, Object>) response.getBody().get("metadata");
 
                                                             if (!metadata.get("code").toString().equals("200")) {
                                                                 Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='99' and no_rawat='" + rs.getString("no_rawat") + "'");
@@ -1032,7 +1097,6 @@ public class frmUtama extends javax.swing.JFrame {
             }
         };
         // Timer
-        new Timer(
-                1000, taskPerformer).start();
+        new Timer(1000, taskPerformer).start();
     }
 }
