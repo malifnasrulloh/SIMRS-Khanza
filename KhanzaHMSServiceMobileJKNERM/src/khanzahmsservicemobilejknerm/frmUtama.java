@@ -28,10 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -210,10 +207,6 @@ public class frmUtama extends javax.swing.JFrame {
 
             Map responseMap = responseEntity.getBody();
             if (responseMap != null && responseMap.containsKey("metadata")) {
-                Map metadataMap = (Map) responseMap.get("metadata");
-                String code = String.valueOf(metadataMap.get("code"));
-                String message = String.valueOf(metadataMap.get("message"));
-
                 userTableModel.tambahData("Request URL: " + URL, LogType.HTTP);
                 userTableModel.tambahData("Request JSON: " + requestJson, LogType.HTTP);
             }

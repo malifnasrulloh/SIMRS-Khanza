@@ -206,10 +206,6 @@ public class frmUtama extends javax.swing.JFrame {
 
             Map responseMap = responseEntity.getBody();
             if (responseMap != null && responseMap.containsKey("metadata")) {
-                Map metadataMap = (Map) responseMap.get("metadata");
-                String code = String.valueOf(metadataMap.get("code"));
-                String message = String.valueOf(metadataMap.get("message"));
-
                 userTableModel.tambahData("Request URL: " + URL, LogType.HTTP);
                 userTableModel.tambahData("Request JSON: " + requestJson, LogType.HTTP);
             }
@@ -301,6 +297,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                     URL = link + "/antrean/add";
 
+                                    response = exchangeMobileJKN(URL, requestJson);
                                     if (response == null) {
                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                     }
@@ -345,6 +342,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                     URL = link + "/antrean/batal";
 
+                                    response = exchangeMobileJKN(URL, requestJson);
                                     if (response == null) {
                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                     }
@@ -367,6 +365,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                     URL = link + "/antrean/updatewaktu";
 
+                                                    response = exchangeMobileJKN(URL, requestJson);
                                                     if (response == null) {
                                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                     }
@@ -433,6 +432,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -464,6 +464,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -495,6 +496,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -525,6 +527,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                         URL = link + "/antrean/farmasi/add";
 
+                                        response = exchangeMobileJKN(URL, requestJson);
                                         if (response == null) {
                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                         }
@@ -552,6 +555,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -583,6 +587,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -614,6 +619,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                             URL = link + "/antrean/updatewaktu";
 
+                                            response = exchangeMobileJKN(URL, requestJson);
                                             if (response == null) {
                                                 throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                             }
@@ -706,6 +712,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                     URL = link + "/antrean/add";
 
+                                                    response = exchangeMobileJKN(URL, requestJson);
                                                     if (response == null) {
                                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                     }
@@ -733,6 +740,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
@@ -764,6 +772,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
@@ -795,6 +804,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
@@ -825,6 +835,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                     URL = link + "/antrean/farmasi/add";
 
+                                                    response = exchangeMobileJKN(URL, requestJson);
                                                     if (response == null) {
                                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                     }
@@ -852,6 +863,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
@@ -883,6 +895,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
@@ -914,6 +927,7 @@ public class frmUtama extends javax.swing.JFrame {
 
                                                         URL = link + "/antrean/updatewaktu";
 
+                                                        response = exchangeMobileJKN(URL, requestJson);
                                                         if (response == null) {
                                                             throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                                         }
