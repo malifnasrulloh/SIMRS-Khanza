@@ -2,11 +2,11 @@
 [Dd]ist/
 
 *.class
+*.jasper
 .LCK*
 
 # Big Files
 lib/libjfxwebkit.so
-
 
 # Dummy file
 lib/test.*
