@@ -154,7 +154,7 @@ public class frmUtama extends javax.swing.JFrame {
                 LocalTime now = LocalTime.now();
                 menit = now.getMinute();
                 detik = now.getSecond();
-                if (now.equals(LocalTime.of(1, 1, 1))) {
+                if (now.equals(LocalTime.of(0, 4, 30))) {
                     userTableModel.resetData();
                     SystemLogger.reconfigure();
                 }
@@ -162,7 +162,7 @@ public class frmUtama extends javax.swing.JFrame {
                 if ((menit % 5 == 0) && (detik == 0)) {
                     try {
                         koneksi = koneksiDB.condb();
-                        userTableModel.tambahData("Memulai update aplicare\n");
+                        userTableModel.tambahData("Memulai update aplicare");
                         try (PreparedStatement ps = koneksi.prepareStatement(
                                 "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal,"
                                 + "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas,"
@@ -172,7 +172,7 @@ public class frmUtama extends javax.swing.JFrame {
                             SystemLogger.sql(ps.toString());
 
                             while (rs.next()) {
-                                userTableModel.tambahData("Mengirimkan kamar " + rs.getString("kode_kelas_aplicare") + " " + rs.getString("nm_bangsal") + "\n");
+                                userTableModel.tambahData("Mengirimkan kamar " + rs.getString("kode_kelas_aplicare") + " " + rs.getString("nm_bangsal"));
                                 try {
                                     BPJSSecurityUtil.SignatureResult resultSignature = security.generateSignaturePair();
                                     headers = new HttpHeaders();
@@ -199,7 +199,6 @@ public class frmUtama extends javax.swing.JFrame {
 
                                     HttpRequestUtil http = HttpRequestUtil.getInstance();
                                     ResponseEntity<Map> responseEntity = http.exchange(URL, HttpMethod.POST, requestJson, Map.class, headers);
-
                                     if (responseEntity == null) {
                                         throw new IllegalStateException(String.format("Response WS BPJS {'%s'} kosong / null", URL));
                                     }
@@ -222,7 +221,7 @@ public class frmUtama extends javax.swing.JFrame {
                             System.out.println("Notif Ketersediaan : " + ex);
                             SystemLogger.error(ex);
                         }
-                        userTableModel.tambahData("Proses update selesai\n");
+                        userTableModel.tambahData("Proses update selesai");
                     } catch (Exception ez) {
                         System.out.println("Notif : " + ez);
                         SystemLogger.error(ez);
