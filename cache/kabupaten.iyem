@@ -1,518 +1,2574 @@
-{"kabupaten":
-    [
-        {"id":"1101","id_propinsi":"11","nama":"KABUPATEN SIMEULUE"},
-        {"id":"1102","id_propinsi":"11","nama":"KABUPATEN ACEH SINGKIL"},
-        {"id":"1103","id_propinsi":"11","nama":"KABUPATEN ACEH SELATAN"},
-        {"id":"1104","id_propinsi":"11","nama":"KABUPATEN ACEH TENGGARA"},
-        {"id":"1105","id_propinsi":"11","nama":"KABUPATEN ACEH TIMUR"},
-        {"id":"1106","id_propinsi":"11","nama":"KABUPATEN ACEH TENGAH"},
-        {"id":"1107","id_propinsi":"11","nama":"KABUPATEN ACEH BARAT"},
-        {"id":"1108","id_propinsi":"11","nama":"KABUPATEN ACEH BESAR"},
-        {"id":"1109","id_propinsi":"11","nama":"KABUPATEN PIDIE"},
-        {"id":"1110","id_propinsi":"11","nama":"KABUPATEN BIREUEN"},
-        {"id":"1111","id_propinsi":"11","nama":"KABUPATEN ACEH UTARA"},
-        {"id":"1112","id_propinsi":"11","nama":"KABUPATEN ACEH BARAT DAYA"},
-        {"id":"1113","id_propinsi":"11","nama":"KABUPATEN GAYO LUES"},
-        {"id":"1114","id_propinsi":"11","nama":"KABUPATEN ACEH TAMIANG"},
-        {"id":"1115","id_propinsi":"11","nama":"KABUPATEN NAGAN RAYA"},
-        {"id":"1116","id_propinsi":"11","nama":"KABUPATEN ACEH JAYA"},
-        {"id":"1117","id_propinsi":"11","nama":"KABUPATEN BENER MERIAH"},
-        {"id":"1118","id_propinsi":"11","nama":"KABUPATEN PIDIE JAYA"},
-        {"id":"1171","id_propinsi":"11","nama":"KOTA BANDA ACEH"},
-        {"id":"1172","id_propinsi":"11","nama":"KOTA SABANG"},
-        {"id":"1173","id_propinsi":"11","nama":"KOTA LANGSA"},
-        {"id":"1174","id_propinsi":"11","nama":"KOTA LHOKSEUMAWE"},
-        {"id":"1175","id_propinsi":"11","nama":"KOTA SUBULUSSALAM"},
-        {"id":"1201","id_propinsi":"12","nama":"KABUPATEN NIAS"},
-        {"id":"1202","id_propinsi":"12","nama":"KABUPATEN MANDAILING NATAL"},
-        {"id":"1203","id_propinsi":"12","nama":"KABUPATEN TAPANULI SELATAN"},
-        {"id":"1204","id_propinsi":"12","nama":"KABUPATEN TAPANULI TENGAH"},
-        {"id":"1205","id_propinsi":"12","nama":"KABUPATEN TAPANULI UTARA"},
-        {"id":"1206","id_propinsi":"12","nama":"KABUPATEN TOBA SAMOSIR"},
-        {"id":"1207","id_propinsi":"12","nama":"KABUPATEN LABUHAN BATU"},
-        {"id":"1208","id_propinsi":"12","nama":"KABUPATEN ASAHAN"},
-        {"id":"1209","id_propinsi":"12","nama":"KABUPATEN SIMALUNGUN"},
-        {"id":"1210","id_propinsi":"12","nama":"KABUPATEN DAIRI"},
-        {"id":"1211","id_propinsi":"12","nama":"KABUPATEN KARO"},
-        {"id":"1212","id_propinsi":"12","nama":"KABUPATEN DELI SERDANG"},
-        {"id":"1213","id_propinsi":"12","nama":"KABUPATEN LANGKAT"},
-        {"id":"1214","id_propinsi":"12","nama":"KABUPATEN NIAS SELATAN"},
-        {"id":"1215","id_propinsi":"12","nama":"KABUPATEN HUMBANG HASUNDUTAN"},
-        {"id":"1216","id_propinsi":"12","nama":"KABUPATEN PAKPAK BHARAT"},
-        {"id":"1217","id_propinsi":"12","nama":"KABUPATEN SAMOSIR"},
-        {"id":"1218","id_propinsi":"12","nama":"KABUPATEN SERDANG BEDAGAI"},
-        {"id":"1219","id_propinsi":"12","nama":"KABUPATEN BATU BARA"},
-        {"id":"1220","id_propinsi":"12","nama":"KABUPATEN PADANG LAWAS UTARA"},
-        {"id":"1221","id_propinsi":"12","nama":"KABUPATEN PADANG LAWAS"},
-        {"id":"1222","id_propinsi":"12","nama":"KABUPATEN LABUHAN BATU SELATAN"},
-        {"id":"1223","id_propinsi":"12","nama":"KABUPATEN LABUHAN BATU UTARA"},
-        {"id":"1224","id_propinsi":"12","nama":"KABUPATEN NIAS UTARA"},
-        {"id":"1225","id_propinsi":"12","nama":"KABUPATEN NIAS BARAT"},
-        {"id":"1271","id_propinsi":"12","nama":"KOTA SIBOLGA"},
-        {"id":"1272","id_propinsi":"12","nama":"KOTA TANJUNG BALAI"},
-        {"id":"1273","id_propinsi":"12","nama":"KOTA PEMATANG SIANTAR"},
-        {"id":"1274","id_propinsi":"12","nama":"KOTA TEBING TINGGI"},
-        {"id":"1275","id_propinsi":"12","nama":"KOTA MEDAN"},
-        {"id":"1276","id_propinsi":"12","nama":"KOTA BINJAI"},
-        {"id":"1277","id_propinsi":"12","nama":"KOTA PADANGSIDIMPUAN"},
-        {"id":"1278","id_propinsi":"12","nama":"KOTA GUNUNGSITOLI"},
-        {"id":"1301","id_propinsi":"13","nama":"KABUPATEN KEPULAUAN MENTAWAI"},
-        {"id":"1302","id_propinsi":"13","nama":"KABUPATEN PESISIR SELATAN"},
-        {"id":"1303","id_propinsi":"13","nama":"KABUPATEN SOLOK"},
-        {"id":"1304","id_propinsi":"13","nama":"KABUPATEN SIJUNJUNG"},
-        {"id":"1305","id_propinsi":"13","nama":"KABUPATEN TANAH DATAR"},
-        {"id":"1306","id_propinsi":"13","nama":"KABUPATEN PADANG PARIAMAN"},
-        {"id":"1307","id_propinsi":"13","nama":"KABUPATEN AGAM"},
-        {"id":"1308","id_propinsi":"13","nama":"KABUPATEN LIMA PULUH KOTA"},
-        {"id":"1309","id_propinsi":"13","nama":"KABUPATEN PASAMAN"},
-        {"id":"1310","id_propinsi":"13","nama":"KABUPATEN SOLOK SELATAN"},
-        {"id":"1311","id_propinsi":"13","nama":"KABUPATEN DHARMASRAYA"},
-        {"id":"1312","id_propinsi":"13","nama":"KABUPATEN PASAMAN BARAT"},
-        {"id":"1371","id_propinsi":"13","nama":"KOTA PADANG"},
-        {"id":"1372","id_propinsi":"13","nama":"KOTA SOLOK"},
-        {"id":"1373","id_propinsi":"13","nama":"KOTA SAWAH LUNTO"},
-        {"id":"1374","id_propinsi":"13","nama":"KOTA PADANG PANJANG"},
-        {"id":"1375","id_propinsi":"13","nama":"KOTA BUKITTINGGI"},
-        {"id":"1376","id_propinsi":"13","nama":"KOTA PAYAKUMBUH"},
-        {"id":"1377","id_propinsi":"13","nama":"KOTA PARIAMAN"},
-        {"id":"1401","id_propinsi":"14","nama":"KABUPATEN KUANTAN SINGINGI"},
-        {"id":"1402","id_propinsi":"14","nama":"KABUPATEN INDRAGIRI HULU"},
-        {"id":"1403","id_propinsi":"14","nama":"KABUPATEN INDRAGIRI HILIR"},
-        {"id":"1404","id_propinsi":"14","nama":"KABUPATEN PELALAWAN"},
-        {"id":"1405","id_propinsi":"14","nama":"KABUPATEN S I A K"},
-        {"id":"1406","id_propinsi":"14","nama":"KABUPATEN KAMPAR"},
-        {"id":"1407","id_propinsi":"14","nama":"KABUPATEN ROKAN HULU"},
-        {"id":"1408","id_propinsi":"14","nama":"KABUPATEN BENGKALIS"},
-        {"id":"1409","id_propinsi":"14","nama":"KABUPATEN ROKAN HILIR"},
-        {"id":"1410","id_propinsi":"14","nama":"KABUPATEN KEPULAUAN MERANTI"},
-        {"id":"1471","id_propinsi":"14","nama":"KOTA PEKANBARU"},
-        {"id":"1473","id_propinsi":"14","nama":"KOTA D U M A I"},
-        {"id":"1501","id_propinsi":"15","nama":"KABUPATEN KERINCI"},
-        {"id":"1502","id_propinsi":"15","nama":"KABUPATEN MERANGIN"},
-        {"id":"1503","id_propinsi":"15","nama":"KABUPATEN SAROLANGUN"},
-        {"id":"1504","id_propinsi":"15","nama":"KABUPATEN BATANG HARI"},
-        {"id":"1505","id_propinsi":"15","nama":"KABUPATEN MUARO JAMBI"},
-        {"id":"1506","id_propinsi":"15","nama":"KABUPATEN TANJUNG JABUNG TIMUR"},
-        {"id":"1507","id_propinsi":"15","nama":"KABUPATEN TANJUNG JABUNG BARAT"},
-        {"id":"1508","id_propinsi":"15","nama":"KABUPATEN TEBO"},
-        {"id":"1509","id_propinsi":"15","nama":"KABUPATEN BUNGO"},
-        {"id":"1571","id_propinsi":"15","nama":"KOTA JAMBI"},
-        {"id":"1572","id_propinsi":"15","nama":"KOTA SUNGAI PENUH"},
-        {"id":"1601","id_propinsi":"16","nama":"KABUPATEN OGAN KOMERING ULU"},
-        {"id":"1602","id_propinsi":"16","nama":"KABUPATEN OGAN KOMERING ILIR"},
-        {"id":"1603","id_propinsi":"16","nama":"KABUPATEN MUARA ENIM"},
-        {"id":"1604","id_propinsi":"16","nama":"KABUPATEN LAHAT"},
-        {"id":"1605","id_propinsi":"16","nama":"KABUPATEN MUSI RAWAS"},
-        {"id":"1606","id_propinsi":"16","nama":"KABUPATEN MUSI BANYUASIN"},
-        {"id":"1607","id_propinsi":"16","nama":"KABUPATEN BANYU ASIN"},
-        {"id":"1608","id_propinsi":"16","nama":"KABUPATEN OGAN KOMERING ULU SELATAN"},
-        {"id":"1609","id_propinsi":"16","nama":"KABUPATEN OGAN KOMERING ULU TIMUR"},
-        {"id":"1610","id_propinsi":"16","nama":"KABUPATEN OGAN ILIR"},
-        {"id":"1611","id_propinsi":"16","nama":"KABUPATEN EMPAT LAWANG"},
-        {"id":"1612","id_propinsi":"16","nama":"KABUPATEN PENUKAL ABAB LEMATANG ILIR"},
-        {"id":"1613","id_propinsi":"16","nama":"KABUPATEN MUSI RAWAS UTARA"},
-        {"id":"1671","id_propinsi":"16","nama":"KOTA PALEMBANG"},
-        {"id":"1672","id_propinsi":"16","nama":"KOTA PRABUMULIH"},
-        {"id":"1673","id_propinsi":"16","nama":"KOTA PAGAR ALAM"},
-        {"id":"1674","id_propinsi":"16","nama":"KOTA LUBUKLINGGAU"},
-        {"id":"1701","id_propinsi":"17","nama":"KABUPATEN BENGKULU SELATAN"},
-        {"id":"1702","id_propinsi":"17","nama":"KABUPATEN REJANG LEBONG"},
-        {"id":"1703","id_propinsi":"17","nama":"KABUPATEN BENGKULU UTARA"},
-        {"id":"1704","id_propinsi":"17","nama":"KABUPATEN KAUR"},
-        {"id":"1705","id_propinsi":"17","nama":"KABUPATEN SELUMA"},
-        {"id":"1706","id_propinsi":"17","nama":"KABUPATEN MUKOMUKO"},
-        {"id":"1707","id_propinsi":"17","nama":"KABUPATEN LEBONG"},
-        {"id":"1708","id_propinsi":"17","nama":"KABUPATEN KEPAHIANG"},
-        {"id":"1709","id_propinsi":"17","nama":"KABUPATEN BENGKULU TENGAH"},
-        {"id":"1771","id_propinsi":"17","nama":"KOTA BENGKULU"},
-        {"id":"1801","id_propinsi":"18","nama":"KABUPATEN LAMPUNG BARAT"},
-        {"id":"1802","id_propinsi":"18","nama":"KABUPATEN TANGGAMUS"},
-        {"id":"1803","id_propinsi":"18","nama":"KABUPATEN LAMPUNG SELATAN"},
-        {"id":"1804","id_propinsi":"18","nama":"KABUPATEN LAMPUNG TIMUR"},
-        {"id":"1805","id_propinsi":"18","nama":"KABUPATEN LAMPUNG TENGAH"},
-        {"id":"1806","id_propinsi":"18","nama":"KABUPATEN LAMPUNG UTARA"},
-        {"id":"1807","id_propinsi":"18","nama":"KABUPATEN WAY KANAN"},
-        {"id":"1808","id_propinsi":"18","nama":"KABUPATEN TULANGBAWANG"},
-        {"id":"1809","id_propinsi":"18","nama":"KABUPATEN PESAWARAN"},
-        {"id":"1810","id_propinsi":"18","nama":"KABUPATEN PRINGSEWU"},
-        {"id":"1811","id_propinsi":"18","nama":"KABUPATEN MESUJI"},
-        {"id":"1812","id_propinsi":"18","nama":"KABUPATEN TULANG BAWANG BARAT"},
-        {"id":"1813","id_propinsi":"18","nama":"KABUPATEN PESISIR BARAT"},
-        {"id":"1871","id_propinsi":"18","nama":"KOTA BANDAR LAMPUNG"},
-        {"id":"1872","id_propinsi":"18","nama":"KOTA METRO"},
-        {"id":"1901","id_propinsi":"19","nama":"KABUPATEN BANGKA"},
-        {"id":"1902","id_propinsi":"19","nama":"KABUPATEN BELITUNG"},
-        {"id":"1903","id_propinsi":"19","nama":"KABUPATEN BANGKA BARAT"},
-        {"id":"1904","id_propinsi":"19","nama":"KABUPATEN BANGKA TENGAH"},
-        {"id":"1905","id_propinsi":"19","nama":"KABUPATEN BANGKA SELATAN"},
-        {"id":"1906","id_propinsi":"19","nama":"KABUPATEN BELITUNG TIMUR"},
-        {"id":"1971","id_propinsi":"19","nama":"KOTA PANGKAL PINANG"},
-        {"id":"2101","id_propinsi":"21","nama":"KABUPATEN KARIMUN"},
-        {"id":"2102","id_propinsi":"21","nama":"KABUPATEN BINTAN"},
-        {"id":"2103","id_propinsi":"21","nama":"KABUPATEN NATUNA"},
-        {"id":"2104","id_propinsi":"21","nama":"KABUPATEN LINGGA"},
-        {"id":"2105","id_propinsi":"21","nama":"KABUPATEN KEPULAUAN ANAMBAS"},
-        {"id":"2171","id_propinsi":"21","nama":"KOTA B A T A M"},
-        {"id":"2172","id_propinsi":"21","nama":"KOTA TANJUNG PINANG"},
-        {"id":"3101","id_propinsi":"31","nama":"KABUPATEN KEPULAUAN SERIBU"},
-        {"id":"3171","id_propinsi":"31","nama":"KOTA JAKARTA SELATAN"},
-        {"id":"3172","id_propinsi":"31","nama":"KOTA JAKARTA TIMUR"},
-        {"id":"3173","id_propinsi":"31","nama":"KOTA JAKARTA PUSAT"},
-        {"id":"3174","id_propinsi":"31","nama":"KOTA JAKARTA BARAT"},
-        {"id":"3175","id_propinsi":"31","nama":"KOTA JAKARTA UTARA"},
-        {"id":"3201","id_propinsi":"32","nama":"KABUPATEN BOGOR"},
-        {"id":"3202","id_propinsi":"32","nama":"KABUPATEN SUKABUMI"},
-        {"id":"3203","id_propinsi":"32","nama":"KABUPATEN CIANJUR"},
-        {"id":"3204","id_propinsi":"32","nama":"KABUPATEN BANDUNG"},
-        {"id":"3205","id_propinsi":"32","nama":"KABUPATEN GARUT"},
-        {"id":"3206","id_propinsi":"32","nama":"KABUPATEN TASIKMALAYA"},
-        {"id":"3207","id_propinsi":"32","nama":"KABUPATEN CIAMIS"},
-        {"id":"3208","id_propinsi":"32","nama":"KABUPATEN KUNINGAN"},
-        {"id":"3209","id_propinsi":"32","nama":"KABUPATEN CIREBON"},
-        {"id":"3210","id_propinsi":"32","nama":"KABUPATEN MAJALENGKA"},
-        {"id":"3211","id_propinsi":"32","nama":"KABUPATEN SUMEDANG"},
-        {"id":"3212","id_propinsi":"32","nama":"KABUPATEN INDRAMAYU"},
-        {"id":"3213","id_propinsi":"32","nama":"KABUPATEN SUBANG"},
-        {"id":"3214","id_propinsi":"32","nama":"KABUPATEN PURWAKARTA"},
-        {"id":"3215","id_propinsi":"32","nama":"KABUPATEN KARAWANG"},
-        {"id":"3216","id_propinsi":"32","nama":"KABUPATEN BEKASI"},
-        {"id":"3217","id_propinsi":"32","nama":"KABUPATEN BANDUNG BARAT"},
-        {"id":"3218","id_propinsi":"32","nama":"KABUPATEN PANGANDARAN"},
-        {"id":"3271","id_propinsi":"32","nama":"KOTA BOGOR"},
-        {"id":"3272","id_propinsi":"32","nama":"KOTA SUKABUMI"},
-        {"id":"3273","id_propinsi":"32","nama":"KOTA BANDUNG"},
-        {"id":"3274","id_propinsi":"32","nama":"KOTA CIREBON"},
-        {"id":"3275","id_propinsi":"32","nama":"KOTA BEKASI"},
-        {"id":"3276","id_propinsi":"32","nama":"KOTA DEPOK"},
-        {"id":"3277","id_propinsi":"32","nama":"KOTA CIMAHI"},
-        {"id":"3278","id_propinsi":"32","nama":"KOTA TASIKMALAYA"},
-        {"id":"3279","id_propinsi":"32","nama":"KOTA BANJAR"},
-        {"id":"3301","id_propinsi":"33","nama":"KABUPATEN CILACAP"},
-        {"id":"3302","id_propinsi":"33","nama":"KABUPATEN BANYUMAS"},
-        {"id":"3303","id_propinsi":"33","nama":"KABUPATEN PURBALINGGA"},
-        {"id":"3304","id_propinsi":"33","nama":"KABUPATEN BANJARNEGARA"},
-        {"id":"3305","id_propinsi":"33","nama":"KABUPATEN KEBUMEN"},
-        {"id":"3306","id_propinsi":"33","nama":"KABUPATEN PURWOREJO"},
-        {"id":"3307","id_propinsi":"33","nama":"KABUPATEN WONOSOBO"},
-        {"id":"3308","id_propinsi":"33","nama":"KABUPATEN MAGELANG"},
-        {"id":"3309","id_propinsi":"33","nama":"KABUPATEN BOYOLALI"},
-        {"id":"3310","id_propinsi":"33","nama":"KABUPATEN KLATEN"},
-        {"id":"3311","id_propinsi":"33","nama":"KABUPATEN SUKOHARJO"},
-        {"id":"3312","id_propinsi":"33","nama":"KABUPATEN WONOGIRI"},
-        {"id":"3313","id_propinsi":"33","nama":"KABUPATEN KARANGANYAR"},
-        {"id":"3314","id_propinsi":"33","nama":"KABUPATEN SRAGEN"},
-        {"id":"3315","id_propinsi":"33","nama":"KABUPATEN GROBOGAN"},
-        {"id":"3316","id_propinsi":"33","nama":"KABUPATEN BLORA"},
-        {"id":"3317","id_propinsi":"33","nama":"KABUPATEN REMBANG"},
-        {"id":"3318","id_propinsi":"33","nama":"KABUPATEN PATI"},
-        {"id":"3319","id_propinsi":"33","nama":"KABUPATEN KUDUS"},
-        {"id":"3320","id_propinsi":"33","nama":"KABUPATEN JEPARA"},
-        {"id":"3321","id_propinsi":"33","nama":"KABUPATEN DEMAK"},
-        {"id":"3322","id_propinsi":"33","nama":"KABUPATEN SEMARANG"},
-        {"id":"3323","id_propinsi":"33","nama":"KABUPATEN TEMANGGUNG"},
-        {"id":"3324","id_propinsi":"33","nama":"KABUPATEN KENDAL"},
-        {"id":"3325","id_propinsi":"33","nama":"KABUPATEN BATANG"},
-        {"id":"3326","id_propinsi":"33","nama":"KABUPATEN PEKALONGAN"},
-        {"id":"3327","id_propinsi":"33","nama":"KABUPATEN PEMALANG"},
-        {"id":"3328","id_propinsi":"33","nama":"KABUPATEN TEGAL"},
-        {"id":"3329","id_propinsi":"33","nama":"KABUPATEN BREBES"},
-        {"id":"3371","id_propinsi":"33","nama":"KOTA MAGELANG"},
-        {"id":"3372","id_propinsi":"33","nama":"KOTA SURAKARTA"},
-        {"id":"3373","id_propinsi":"33","nama":"KOTA SALATIGA"},
-        {"id":"3374","id_propinsi":"33","nama":"KOTA SEMARANG"},
-        {"id":"3375","id_propinsi":"33","nama":"KOTA PEKALONGAN"},
-        {"id":"3376","id_propinsi":"33","nama":"KOTA TEGAL"},
-        {"id":"3401","id_propinsi":"34","nama":"KABUPATEN KULON PROGO"},
-        {"id":"3402","id_propinsi":"34","nama":"KABUPATEN BANTUL"},
-        {"id":"3403","id_propinsi":"34","nama":"KABUPATEN GUNUNG KIDUL"},
-        {"id":"3404","id_propinsi":"34","nama":"KABUPATEN SLEMAN"},
-        {"id":"3471","id_propinsi":"34","nama":"KOTA YOGYAKARTA"},
-        {"id":"3501","id_propinsi":"35","nama":"KABUPATEN PACITAN"},
-        {"id":"3502","id_propinsi":"35","nama":"KABUPATEN PONOROGO"},
-        {"id":"3503","id_propinsi":"35","nama":"KABUPATEN TRENGGALEK"},
-        {"id":"3504","id_propinsi":"35","nama":"KABUPATEN TULUNGAGUNG"},
-        {"id":"3505","id_propinsi":"35","nama":"KABUPATEN BLITAR"},
-        {"id":"3506","id_propinsi":"35","nama":"KABUPATEN KEDIRI"},
-        {"id":"3507","id_propinsi":"35","nama":"KABUPATEN MALANG"},
-        {"id":"3508","id_propinsi":"35","nama":"KABUPATEN LUMAJANG"},
-        {"id":"3509","id_propinsi":"35","nama":"KABUPATEN JEMBER"},
-        {"id":"3510","id_propinsi":"35","nama":"KABUPATEN BANYUWANGI"},
-        {"id":"3511","id_propinsi":"35","nama":"KABUPATEN BONDOWOSO"},
-        {"id":"3512","id_propinsi":"35","nama":"KABUPATEN SITUBONDO"},
-        {"id":"3513","id_propinsi":"35","nama":"KABUPATEN PROBOLINGGO"},
-        {"id":"3514","id_propinsi":"35","nama":"KABUPATEN PASURUAN"},
-        {"id":"3515","id_propinsi":"35","nama":"KABUPATEN SIDOARJO"},
-        {"id":"3516","id_propinsi":"35","nama":"KABUPATEN MOJOKERTO"},
-        {"id":"3517","id_propinsi":"35","nama":"KABUPATEN JOMBANG"},
-        {"id":"3518","id_propinsi":"35","nama":"KABUPATEN NGANJUK"},
-        {"id":"3519","id_propinsi":"35","nama":"KABUPATEN MADIUN"},
-        {"id":"3520","id_propinsi":"35","nama":"KABUPATEN MAGETAN"},
-        {"id":"3521","id_propinsi":"35","nama":"KABUPATEN NGAWI"},
-        {"id":"3522","id_propinsi":"35","nama":"KABUPATEN BOJONEGORO"},
-        {"id":"3523","id_propinsi":"35","nama":"KABUPATEN TUBAN"},
-        {"id":"3524","id_propinsi":"35","nama":"KABUPATEN LAMONGAN"},
-        {"id":"3525","id_propinsi":"35","nama":"KABUPATEN GRESIK"},
-        {"id":"3526","id_propinsi":"35","nama":"KABUPATEN BANGKALAN"},
-        {"id":"3527","id_propinsi":"35","nama":"KABUPATEN SAMPANG"},
-        {"id":"3528","id_propinsi":"35","nama":"KABUPATEN PAMEKASAN"},
-        {"id":"3529","id_propinsi":"35","nama":"KABUPATEN SUMENEP"},
-        {"id":"3571","id_propinsi":"35","nama":"KOTA KEDIRI"},
-        {"id":"3572","id_propinsi":"35","nama":"KOTA BLITAR"},
-        {"id":"3573","id_propinsi":"35","nama":"KOTA MALANG"},
-        {"id":"3574","id_propinsi":"35","nama":"KOTA PROBOLINGGO"},
-        {"id":"3575","id_propinsi":"35","nama":"KOTA PASURUAN"},
-        {"id":"3576","id_propinsi":"35","nama":"KOTA MOJOKERTO"},
-        {"id":"3577","id_propinsi":"35","nama":"KOTA MADIUN"},
-        {"id":"3578","id_propinsi":"35","nama":"KOTA SURABAYA"},
-        {"id":"3579","id_propinsi":"35","nama":"KOTA BATU"},
-        {"id":"3601","id_propinsi":"36","nama":"KABUPATEN PANDEGLANG"},
-        {"id":"3602","id_propinsi":"36","nama":"KABUPATEN LEBAK"},
-        {"id":"3603","id_propinsi":"36","nama":"KABUPATEN TANGERANG"},
-        {"id":"3604","id_propinsi":"36","nama":"KABUPATEN SERANG"},
-        {"id":"3671","id_propinsi":"36","nama":"KOTA TANGERANG"},
-        {"id":"3672","id_propinsi":"36","nama":"KOTA CILEGON"},
-        {"id":"3673","id_propinsi":"36","nama":"KOTA SERANG"},
-        {"id":"3674","id_propinsi":"36","nama":"KOTA TANGERANG SELATAN"},
-        {"id":"5101","id_propinsi":"51","nama":"KABUPATEN JEMBRANA"},
-        {"id":"5102","id_propinsi":"51","nama":"KABUPATEN TABANAN"},
-        {"id":"5103","id_propinsi":"51","nama":"KABUPATEN BADUNG"},
-        {"id":"5104","id_propinsi":"51","nama":"KABUPATEN GIANYAR"},
-        {"id":"5105","id_propinsi":"51","nama":"KABUPATEN KLUNGKUNG"},
-        {"id":"5106","id_propinsi":"51","nama":"KABUPATEN BANGLI"},
-        {"id":"5107","id_propinsi":"51","nama":"KABUPATEN KARANG ASEM"},
-        {"id":"5108","id_propinsi":"51","nama":"KABUPATEN BULELENG"},
-        {"id":"5171","id_propinsi":"51","nama":"KOTA DENPASAR"},
-        {"id":"5201","id_propinsi":"52","nama":"KABUPATEN LOMBOK BARAT"},
-        {"id":"5202","id_propinsi":"52","nama":"KABUPATEN LOMBOK TENGAH"},
-        {"id":"5203","id_propinsi":"52","nama":"KABUPATEN LOMBOK TIMUR"},
-        {"id":"5204","id_propinsi":"52","nama":"KABUPATEN SUMBAWA"},
-        {"id":"5205","id_propinsi":"52","nama":"KABUPATEN DOMPU"},
-        {"id":"5206","id_propinsi":"52","nama":"KABUPATEN BIMA"},
-        {"id":"5207","id_propinsi":"52","nama":"KABUPATEN SUMBAWA BARAT"},
-        {"id":"5208","id_propinsi":"52","nama":"KABUPATEN LOMBOK UTARA"},
-        {"id":"5271","id_propinsi":"52","nama":"KOTA MATARAM"},
-        {"id":"5272","id_propinsi":"52","nama":"KOTA BIMA"},
-        {"id":"5301","id_propinsi":"53","nama":"KABUPATEN SUMBA BARAT"},
-        {"id":"5302","id_propinsi":"53","nama":"KABUPATEN SUMBA TIMUR"},
-        {"id":"5303","id_propinsi":"53","nama":"KABUPATEN KUPANG"},
-        {"id":"5304","id_propinsi":"53","nama":"KABUPATEN TIMOR TENGAH SELATAN"},
-        {"id":"5305","id_propinsi":"53","nama":"KABUPATEN TIMOR TENGAH UTARA"},
-        {"id":"5306","id_propinsi":"53","nama":"KABUPATEN BELU"},
-        {"id":"5307","id_propinsi":"53","nama":"KABUPATEN ALOR"},
-        {"id":"5308","id_propinsi":"53","nama":"KABUPATEN LEMBATA"},
-        {"id":"5309","id_propinsi":"53","nama":"KABUPATEN FLORES TIMUR"},
-        {"id":"5310","id_propinsi":"53","nama":"KABUPATEN SIKKA"},
-        {"id":"5311","id_propinsi":"53","nama":"KABUPATEN ENDE"},
-        {"id":"5312","id_propinsi":"53","nama":"KABUPATEN NGADA"},
-        {"id":"5313","id_propinsi":"53","nama":"KABUPATEN MANGGARAI"},
-        {"id":"5314","id_propinsi":"53","nama":"KABUPATEN ROTE NDAO"},
-        {"id":"5315","id_propinsi":"53","nama":"KABUPATEN MANGGARAI BARAT"},
-        {"id":"5316","id_propinsi":"53","nama":"KABUPATEN SUMBA TENGAH"},
-        {"id":"5317","id_propinsi":"53","nama":"KABUPATEN SUMBA BARAT DAYA"},
-        {"id":"5318","id_propinsi":"53","nama":"KABUPATEN NAGEKEO"},
-        {"id":"5319","id_propinsi":"53","nama":"KABUPATEN MANGGARAI TIMUR"},
-        {"id":"5320","id_propinsi":"53","nama":"KABUPATEN SABU RAIJUA"},
-        {"id":"5321","id_propinsi":"53","nama":"KABUPATEN MALAKA"},
-        {"id":"5371","id_propinsi":"53","nama":"KOTA KUPANG"},
-        {"id":"6101","id_propinsi":"61","nama":"KABUPATEN SAMBAS"},
-        {"id":"6102","id_propinsi":"61","nama":"KABUPATEN BENGKAYANG"},
-        {"id":"6103","id_propinsi":"61","nama":"KABUPATEN LANDAK"},
-        {"id":"6104","id_propinsi":"61","nama":"KABUPATEN MEMPAWAH"},
-        {"id":"6105","id_propinsi":"61","nama":"KABUPATEN SANGGAU"},
-        {"id":"6106","id_propinsi":"61","nama":"KABUPATEN KETAPANG"},
-        {"id":"6107","id_propinsi":"61","nama":"KABUPATEN SINTANG"},
-        {"id":"6108","id_propinsi":"61","nama":"KABUPATEN KAPUAS HULU"},
-        {"id":"6109","id_propinsi":"61","nama":"KABUPATEN SEKADAU"},
-        {"id":"6110","id_propinsi":"61","nama":"KABUPATEN MELAWI"},
-        {"id":"6111","id_propinsi":"61","nama":"KABUPATEN KAYONG UTARA"},
-        {"id":"6112","id_propinsi":"61","nama":"KABUPATEN KUBU RAYA"},
-        {"id":"6171","id_propinsi":"61","nama":"KOTA PONTIANAK"},
-        {"id":"6172","id_propinsi":"61","nama":"KOTA SINGKAWANG"},
-        {"id":"6201","id_propinsi":"62","nama":"KABUPATEN KOTAWARINGIN BARAT"},
-        {"id":"6202","id_propinsi":"62","nama":"KABUPATEN KOTAWARINGIN TIMUR"},
-        {"id":"6203","id_propinsi":"62","nama":"KABUPATEN KAPUAS"},
-        {"id":"6204","id_propinsi":"62","nama":"KABUPATEN BARITO SELATAN"},
-        {"id":"6205","id_propinsi":"62","nama":"KABUPATEN BARITO UTARA"},
-        {"id":"6206","id_propinsi":"62","nama":"KABUPATEN SUKAMARA"},
-        {"id":"6207","id_propinsi":"62","nama":"KABUPATEN LAMANDAU"},
-        {"id":"6208","id_propinsi":"62","nama":"KABUPATEN SERUYAN"},
-        {"id":"6209","id_propinsi":"62","nama":"KABUPATEN KATINGAN"},
-        {"id":"6210","id_propinsi":"62","nama":"KABUPATEN PULANG PISAU"},
-        {"id":"6211","id_propinsi":"62","nama":"KABUPATEN GUNUNG MAS"},
-        {"id":"6212","id_propinsi":"62","nama":"KABUPATEN BARITO TIMUR"},
-        {"id":"6213","id_propinsi":"62","nama":"KABUPATEN MURUNG RAYA"},
-        {"id":"6271","id_propinsi":"62","nama":"KOTA PALANGKA RAYA"},
-        {"id":"6301","id_propinsi":"63","nama":"KABUPATEN TANAH LAUT"},
-        {"id":"6302","id_propinsi":"63","nama":"KABUPATEN KOTA BARU"},
-        {"id":"6303","id_propinsi":"63","nama":"KABUPATEN BANJAR"},
-        {"id":"6304","id_propinsi":"63","nama":"KABUPATEN BARITO KUALA"},
-        {"id":"6305","id_propinsi":"63","nama":"KABUPATEN TAPIN"},
-        {"id":"6306","id_propinsi":"63","nama":"KABUPATEN HULU SUNGAI SELATAN"},
-        {"id":"6307","id_propinsi":"63","nama":"KABUPATEN HULU SUNGAI TENGAH"},
-        {"id":"6308","id_propinsi":"63","nama":"KABUPATEN HULU SUNGAI UTARA"},
-        {"id":"6309","id_propinsi":"63","nama":"KABUPATEN TABALONG"},
-        {"id":"6310","id_propinsi":"63","nama":"KABUPATEN TANAH BUMBU"},
-        {"id":"6311","id_propinsi":"63","nama":"KABUPATEN BALANGAN"},
-        {"id":"6371","id_propinsi":"63","nama":"KOTA BANJARMASIN"},
-        {"id":"6372","id_propinsi":"63","nama":"KOTA BANJAR BARU"},
-        {"id":"6401","id_propinsi":"64","nama":"KABUPATEN PASER"},
-        {"id":"6402","id_propinsi":"64","nama":"KABUPATEN KUTAI BARAT"},
-        {"id":"6403","id_propinsi":"64","nama":"KABUPATEN KUTAI KARTANEGARA"},
-        {"id":"6404","id_propinsi":"64","nama":"KABUPATEN KUTAI TIMUR"},
-        {"id":"6405","id_propinsi":"64","nama":"KABUPATEN BERAU"},
-        {"id":"6409","id_propinsi":"64","nama":"KABUPATEN PENAJAM PASER UTARA"},
-        {"id":"6411","id_propinsi":"64","nama":"KABUPATEN MAHAKAM HULU"},
-        {"id":"6471","id_propinsi":"64","nama":"KOTA BALIKPAPAN"},
-        {"id":"6472","id_propinsi":"64","nama":"KOTA SAMARINDA"},
-        {"id":"6474","id_propinsi":"64","nama":"KOTA BONTANG"},
-        {"id":"6501","id_propinsi":"65","nama":"KABUPATEN MALINAU"},
-        {"id":"6502","id_propinsi":"65","nama":"KABUPATEN BULUNGAN"},
-        {"id":"6503","id_propinsi":"65","nama":"KABUPATEN TANA TIDUNG"},
-        {"id":"6504","id_propinsi":"65","nama":"KABUPATEN NUNUKAN"},
-        {"id":"6571","id_propinsi":"65","nama":"KOTA TARAKAN"},
-        {"id":"7101","id_propinsi":"71","nama":"KABUPATEN BOLAANG MONGONDOW"},
-        {"id":"7102","id_propinsi":"71","nama":"KABUPATEN MINAHASA"},
-        {"id":"7103","id_propinsi":"71","nama":"KABUPATEN KEPULAUAN SANGIHE"},
-        {"id":"7104","id_propinsi":"71","nama":"KABUPATEN KEPULAUAN TALAUD"},
-        {"id":"7105","id_propinsi":"71","nama":"KABUPATEN MINAHASA SELATAN"},
-        {"id":"7106","id_propinsi":"71","nama":"KABUPATEN MINAHASA UTARA"},
-        {"id":"7107","id_propinsi":"71","nama":"KABUPATEN BOLAANG MONGONDOW UTARA"},
-        {"id":"7108","id_propinsi":"71","nama":"KABUPATEN SIAU TAGULANDANG BIARO"},
-        {"id":"7109","id_propinsi":"71","nama":"KABUPATEN MINAHASA TENGGARA"},
-        {"id":"7110","id_propinsi":"71","nama":"KABUPATEN BOLAANG MONGONDOW SELATAN"},
-        {"id":"7111","id_propinsi":"71","nama":"KABUPATEN BOLAANG MONGONDOW TIMUR"},
-        {"id":"7171","id_propinsi":"71","nama":"KOTA MANADO"},
-        {"id":"7172","id_propinsi":"71","nama":"KOTA BITUNG"},
-        {"id":"7173","id_propinsi":"71","nama":"KOTA TOMOHON"},
-        {"id":"7174","id_propinsi":"71","nama":"KOTA KOTAMOBAGU"},
-        {"id":"7201","id_propinsi":"72","nama":"KABUPATEN BANGGAI KEPULAUAN"},
-        {"id":"7202","id_propinsi":"72","nama":"KABUPATEN BANGGAI"},
-        {"id":"7203","id_propinsi":"72","nama":"KABUPATEN MOROWALI"},
-        {"id":"7204","id_propinsi":"72","nama":"KABUPATEN POSO"},
-        {"id":"7205","id_propinsi":"72","nama":"KABUPATEN DONGGALA"},
-        {"id":"7206","id_propinsi":"72","nama":"KABUPATEN TOLI-TOLI"},
-        {"id":"7207","id_propinsi":"72","nama":"KABUPATEN BUOL"},
-        {"id":"7208","id_propinsi":"72","nama":"KABUPATEN PARIGI MOUTONG"},
-        {"id":"7209","id_propinsi":"72","nama":"KABUPATEN TOJO UNA-UNA"},
-        {"id":"7210","id_propinsi":"72","nama":"KABUPATEN SIGI"},
-        {"id":"7211","id_propinsi":"72","nama":"KABUPATEN BANGGAI LAUT"},
-        {"id":"7212","id_propinsi":"72","nama":"KABUPATEN MOROWALI UTARA"},
-        {"id":"7271","id_propinsi":"72","nama":"KOTA PALU"},
-        {"id":"7301","id_propinsi":"73","nama":"KABUPATEN KEPULAUAN SELAYAR"},
-        {"id":"7302","id_propinsi":"73","nama":"KABUPATEN BULUKUMBA"},
-        {"id":"7303","id_propinsi":"73","nama":"KABUPATEN BANTAENG"},
-        {"id":"7304","id_propinsi":"73","nama":"KABUPATEN JENEPONTO"},
-        {"id":"7305","id_propinsi":"73","nama":"KABUPATEN TAKALAR"},
-        {"id":"7306","id_propinsi":"73","nama":"KABUPATEN GOWA"},
-        {"id":"7307","id_propinsi":"73","nama":"KABUPATEN SINJAI"},
-        {"id":"7308","id_propinsi":"73","nama":"KABUPATEN MAROS"},
-        {"id":"7309","id_propinsi":"73","nama":"KABUPATEN PANGKAJENE DAN KEPULAUAN"},
-        {"id":"7310","id_propinsi":"73","nama":"KABUPATEN BARRU"},
-        {"id":"7311","id_propinsi":"73","nama":"KABUPATEN BONE"},
-        {"id":"7312","id_propinsi":"73","nama":"KABUPATEN SOPPENG"},
-        {"id":"7313","id_propinsi":"73","nama":"KABUPATEN WAJO"},
-        {"id":"7314","id_propinsi":"73","nama":"KABUPATEN SIDENRENG RAPPANG"},
-        {"id":"7315","id_propinsi":"73","nama":"KABUPATEN PINRANG"},
-        {"id":"7316","id_propinsi":"73","nama":"KABUPATEN ENREKANG"},
-        {"id":"7317","id_propinsi":"73","nama":"KABUPATEN LUWU"},
-        {"id":"7318","id_propinsi":"73","nama":"KABUPATEN TANA TORAJA"},
-        {"id":"7322","id_propinsi":"73","nama":"KABUPATEN LUWU UTARA"},
-        {"id":"7325","id_propinsi":"73","nama":"KABUPATEN LUWU TIMUR"},
-        {"id":"7326","id_propinsi":"73","nama":"KABUPATEN TORAJA UTARA"},
-        {"id":"7371","id_propinsi":"73","nama":"KOTA MAKASSAR"},
-        {"id":"7372","id_propinsi":"73","nama":"KOTA PAREPARE"},
-        {"id":"7373","id_propinsi":"73","nama":"KOTA PALOPO"},
-        {"id":"7401","id_propinsi":"74","nama":"KABUPATEN BUTON"},
-        {"id":"7402","id_propinsi":"74","nama":"KABUPATEN MUNA"},
-        {"id":"7403","id_propinsi":"74","nama":"KABUPATEN KONAWE"},
-        {"id":"7404","id_propinsi":"74","nama":"KABUPATEN KOLAKA"},
-        {"id":"7405","id_propinsi":"74","nama":"KABUPATEN KONAWE SELATAN"},
-        {"id":"7406","id_propinsi":"74","nama":"KABUPATEN BOMBANA"},
-        {"id":"7407","id_propinsi":"74","nama":"KABUPATEN WAKATOBI"},
-        {"id":"7408","id_propinsi":"74","nama":"KABUPATEN KOLAKA UTARA"},
-        {"id":"7409","id_propinsi":"74","nama":"KABUPATEN BUTON UTARA"},
-        {"id":"7410","id_propinsi":"74","nama":"KABUPATEN KONAWE UTARA"},
-        {"id":"7411","id_propinsi":"74","nama":"KABUPATEN KOLAKA TIMUR"},
-        {"id":"7412","id_propinsi":"74","nama":"KABUPATEN KONAWE KEPULAUAN"},
-        {"id":"7413","id_propinsi":"74","nama":"KABUPATEN MUNA BARAT"},
-        {"id":"7414","id_propinsi":"74","nama":"KABUPATEN BUTON TENGAH"},
-        {"id":"7415","id_propinsi":"74","nama":"KABUPATEN BUTON SELATAN"},
-        {"id":"7471","id_propinsi":"74","nama":"KOTA KENDARI"},
-        {"id":"7472","id_propinsi":"74","nama":"KOTA BAUBAU"},
-        {"id":"7501","id_propinsi":"75","nama":"KABUPATEN BOALEMO"},
-        {"id":"7502","id_propinsi":"75","nama":"KABUPATEN GORONTALO"},
-        {"id":"7503","id_propinsi":"75","nama":"KABUPATEN POHUWATO"},
-        {"id":"7504","id_propinsi":"75","nama":"KABUPATEN BONE BOLANGO"},
-        {"id":"7505","id_propinsi":"75","nama":"KABUPATEN GORONTALO UTARA"},
-        {"id":"7571","id_propinsi":"75","nama":"KOTA GORONTALO"},
-        {"id":"7601","id_propinsi":"76","nama":"KABUPATEN MAJENE"},
-        {"id":"7602","id_propinsi":"76","nama":"KABUPATEN POLEWALI MANDAR"},
-        {"id":"7603","id_propinsi":"76","nama":"KABUPATEN MAMASA"},
-        {"id":"7604","id_propinsi":"76","nama":"KABUPATEN MAMUJU"},
-        {"id":"7605","id_propinsi":"76","nama":"KABUPATEN MAMUJU UTARA"},
-        {"id":"7606","id_propinsi":"76","nama":"KABUPATEN MAMUJU TENGAH"},
-        {"id":"8101","id_propinsi":"81","nama":"KABUPATEN MALUKU TENGGARA BARAT"},
-        {"id":"8102","id_propinsi":"81","nama":"KABUPATEN MALUKU TENGGARA"},
-        {"id":"8103","id_propinsi":"81","nama":"KABUPATEN MALUKU TENGAH"},
-        {"id":"8104","id_propinsi":"81","nama":"KABUPATEN BURU"},
-        {"id":"8105","id_propinsi":"81","nama":"KABUPATEN KEPULAUAN ARU"},
-        {"id":"8106","id_propinsi":"81","nama":"KABUPATEN SERAM BAGIAN BARAT"},
-        {"id":"8107","id_propinsi":"81","nama":"KABUPATEN SERAM BAGIAN TIMUR"},
-        {"id":"8108","id_propinsi":"81","nama":"KABUPATEN MALUKU BARAT DAYA"},
-        {"id":"8109","id_propinsi":"81","nama":"KABUPATEN BURU SELATAN"},
-        {"id":"8171","id_propinsi":"81","nama":"KOTA AMBON"},
-        {"id":"8172","id_propinsi":"81","nama":"KOTA TUAL"},
-        {"id":"8201","id_propinsi":"82","nama":"KABUPATEN HALMAHERA BARAT"},
-        {"id":"8202","id_propinsi":"82","nama":"KABUPATEN HALMAHERA TENGAH"},
-        {"id":"8203","id_propinsi":"82","nama":"KABUPATEN KEPULAUAN SULA"},
-        {"id":"8204","id_propinsi":"82","nama":"KABUPATEN HALMAHERA SELATAN"},
-        {"id":"8205","id_propinsi":"82","nama":"KABUPATEN HALMAHERA UTARA"},
-        {"id":"8206","id_propinsi":"82","nama":"KABUPATEN HALMAHERA TIMUR"},
-        {"id":"8207","id_propinsi":"82","nama":"KABUPATEN PULAU MOROTAI"},
-        {"id":"8208","id_propinsi":"82","nama":"KABUPATEN PULAU TALIABU"},
-        {"id":"8271","id_propinsi":"82","nama":"KOTA TERNATE"},
-        {"id":"8272","id_propinsi":"82","nama":"KOTA TIDORE KEPULAUAN"},
-        {"id":"9101","id_propinsi":"91","nama":"KABUPATEN FAKFAK"},
-        {"id":"9102","id_propinsi":"91","nama":"KABUPATEN KAIMANA"},
-        {"id":"9103","id_propinsi":"91","nama":"KABUPATEN TELUK WONDAMA"},
-        {"id":"9104","id_propinsi":"91","nama":"KABUPATEN TELUK BINTUNI"},
-        {"id":"9105","id_propinsi":"91","nama":"KABUPATEN MANOKWARI"},
-        {"id":"9106","id_propinsi":"91","nama":"KABUPATEN SORONG SELATAN"},
-        {"id":"9107","id_propinsi":"91","nama":"KABUPATEN SORONG"},
-        {"id":"9108","id_propinsi":"91","nama":"KABUPATEN RAJA AMPAT"},
-        {"id":"9109","id_propinsi":"91","nama":"KABUPATEN TAMBRAUW"},
-        {"id":"9110","id_propinsi":"91","nama":"KABUPATEN MAYBRAT"},
-        {"id":"9111","id_propinsi":"91","nama":"KABUPATEN MANOKWARI SELATAN"},
-        {"id":"9112","id_propinsi":"91","nama":"KABUPATEN PEGUNUNGAN ARFAK"},
-        {"id":"9171","id_propinsi":"91","nama":"KOTA SORONG"},
-        {"id":"9401","id_propinsi":"94","nama":"KABUPATEN MERAUKE"},
-        {"id":"9402","id_propinsi":"94","nama":"KABUPATEN JAYAWIJAYA"},
-        {"id":"9403","id_propinsi":"94","nama":"KABUPATEN JAYAPURA"},
-        {"id":"9404","id_propinsi":"94","nama":"KABUPATEN NABIRE"},
-        {"id":"9408","id_propinsi":"94","nama":"KABUPATEN KEPULAUAN YAPEN"},
-        {"id":"9409","id_propinsi":"94","nama":"KABUPATEN BIAK NUMFOR"},
-        {"id":"9410","id_propinsi":"94","nama":"KABUPATEN PANIAI"},
-        {"id":"9411","id_propinsi":"94","nama":"KABUPATEN PUNCAK JAYA"},
-        {"id":"9412","id_propinsi":"94","nama":"KABUPATEN MIMIKA"},
-        {"id":"9413","id_propinsi":"94","nama":"KABUPATEN BOVEN DIGOEL"},
-        {"id":"9414","id_propinsi":"94","nama":"KABUPATEN MAPPI"},
-        {"id":"9415","id_propinsi":"94","nama":"KABUPATEN ASMAT"},
-        {"id":"9416","id_propinsi":"94","nama":"KABUPATEN YAHUKIMO"},
-        {"id":"9417","id_propinsi":"94","nama":"KABUPATEN PEGUNUNGAN BINTANG"},
-        {"id":"9418","id_propinsi":"94","nama":"KABUPATEN TOLIKARA"},
-        {"id":"9419","id_propinsi":"94","nama":"KABUPATEN SARMI"},
-        {"id":"9420","id_propinsi":"94","nama":"KABUPATEN KEEROM"},
-        {"id":"9426","id_propinsi":"94","nama":"KABUPATEN WAROPEN"},
-        {"id":"9427","id_propinsi":"94","nama":"KABUPATEN SUPIORI"},
-        {"id":"9428","id_propinsi":"94","nama":"KABUPATEN MAMBERAMO RAYA"},
-        {"id":"9429","id_propinsi":"94","nama":"KABUPATEN NDUGA"},
-        {"id":"9430","id_propinsi":"94","nama":"KABUPATEN LANNY JAYA"},
-        {"id":"9431","id_propinsi":"94","nama":"KABUPATEN MAMBERAMO TENGAH"},
-        {"id":"9432","id_propinsi":"94","nama":"KABUPATEN YALIMO"},
-        {"id":"9433","id_propinsi":"94","nama":"KABUPATEN PUNCAK"},
-        {"id":"9434","id_propinsi":"94","nama":"KABUPATEN DOGIYAI"},
-        {"id":"9435","id_propinsi":"94","nama":"KABUPATEN INTAN JAYA"},
-        {"id":"9436","id_propinsi":"94","nama":"KABUPATEN DEIYAI"},
-        {"id":"9471","id_propinsi":"94","nama":"KOTA JAYAPURA"}
+{
+    "kabupaten": [
+        {
+            "id": "1101",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Selatan"
+        },
+        {
+            "id": "1102",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Tenggara"
+        },
+        {
+            "id": "1103",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Timur"
+        },
+        {
+            "id": "1104",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Tengah"
+        },
+        {
+            "id": "1105",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Barat"
+        },
+        {
+            "id": "1106",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Besar"
+        },
+        {
+            "id": "1107",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Pidie"
+        },
+        {
+            "id": "1108",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Utara"
+        },
+        {
+            "id": "1109",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Simeulue"
+        },
+        {
+            "id": "1110",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Singkil"
+        },
+        {
+            "id": "1111",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Bireuen"
+        },
+        {
+            "id": "1112",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Barat Daya"
+        },
+        {
+            "id": "1113",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Gayo Lues"
+        },
+        {
+            "id": "1114",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Jaya"
+        },
+        {
+            "id": "1115",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Nagan Raya"
+        },
+        {
+            "id": "1116",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Aceh Tamiang"
+        },
+        {
+            "id": "1117",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Bener Meriah"
+        },
+        {
+            "id": "1118",
+            "id_propinsi": "11",
+            "nama": "Kabupaten Pidie Jaya"
+        },
+        {
+            "id": "1171",
+            "id_propinsi": "11",
+            "nama": "Kota Banda Aceh"
+        },
+        {
+            "id": "1172",
+            "id_propinsi": "11",
+            "nama": "Kota Sabang"
+        },
+        {
+            "id": "1173",
+            "id_propinsi": "11",
+            "nama": "Kota Lhokseumawe"
+        },
+        {
+            "id": "1174",
+            "id_propinsi": "11",
+            "nama": "Kota Langsa"
+        },
+        {
+            "id": "1175",
+            "id_propinsi": "11",
+            "nama": "Kota Subulussalam"
+        },
+        {
+            "id": "1201",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Tapanuli Tengah"
+        },
+        {
+            "id": "1202",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Tapanuli Utara"
+        },
+        {
+            "id": "1203",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Tapanuli Selatan"
+        },
+        {
+            "id": "1204",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Nias"
+        },
+        {
+            "id": "1205",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Langkat"
+        },
+        {
+            "id": "1206",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Karo"
+        },
+        {
+            "id": "1207",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Deli Serdang"
+        },
+        {
+            "id": "1208",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Simalungun"
+        },
+        {
+            "id": "1209",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Asahan"
+        },
+        {
+            "id": "1210",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Labuhanbatu"
+        },
+        {
+            "id": "1211",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Dairi"
+        },
+        {
+            "id": "1212",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Toba"
+        },
+        {
+            "id": "1213",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Mandailing Natal"
+        },
+        {
+            "id": "1214",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Nias Selatan"
+        },
+        {
+            "id": "1215",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Pakpak Bharat"
+        },
+        {
+            "id": "1216",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Humbang Hasundutan"
+        },
+        {
+            "id": "1217",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Samosir"
+        },
+        {
+            "id": "1218",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Serdang Bedagai"
+        },
+        {
+            "id": "1219",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Batu Bara"
+        },
+        {
+            "id": "1220",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Padang Lawas Utara"
+        },
+        {
+            "id": "1221",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Padang Lawas"
+        },
+        {
+            "id": "1222",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Labuhanbatu Selatan"
+        },
+        {
+            "id": "1223",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Labuhanbatu Utara"
+        },
+        {
+            "id": "1224",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Nias Utara"
+        },
+        {
+            "id": "1225",
+            "id_propinsi": "12",
+            "nama": "Kabupaten Nias Barat"
+        },
+        {
+            "id": "1271",
+            "id_propinsi": "12",
+            "nama": "Kota Medan"
+        },
+        {
+            "id": "1272",
+            "id_propinsi": "12",
+            "nama": "Kota Pematangsiantar"
+        },
+        {
+            "id": "1273",
+            "id_propinsi": "12",
+            "nama": "Kota Sibolga"
+        },
+        {
+            "id": "1274",
+            "id_propinsi": "12",
+            "nama": "Kota Tanjungbalai"
+        },
+        {
+            "id": "1275",
+            "id_propinsi": "12",
+            "nama": "Kota Binjai"
+        },
+        {
+            "id": "1276",
+            "id_propinsi": "12",
+            "nama": "Kota Tebing Tinggi"
+        },
+        {
+            "id": "1277",
+            "id_propinsi": "12",
+            "nama": "Kota Padangsidimpuan"
+        },
+        {
+            "id": "1278",
+            "id_propinsi": "12",
+            "nama": "Kota Gunungsitoli"
+        },
+        {
+            "id": "1301",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Pesisir Selatan"
+        },
+        {
+            "id": "1302",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Solok"
+        },
+        {
+            "id": "1303",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Sijunjung"
+        },
+        {
+            "id": "1304",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Tanah Datar"
+        },
+        {
+            "id": "1305",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Padang Pariaman"
+        },
+        {
+            "id": "1306",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Agam"
+        },
+        {
+            "id": "1307",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Lima Puluh Kota"
+        },
+        {
+            "id": "1308",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Pasaman"
+        },
+        {
+            "id": "1309",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Kepulauan Mentawai"
+        },
+        {
+            "id": "1310",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Dharmasraya"
+        },
+        {
+            "id": "1311",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Solok Selatan"
+        },
+        {
+            "id": "1312",
+            "id_propinsi": "13",
+            "nama": "Kabupaten Pasaman Barat"
+        },
+        {
+            "id": "1371",
+            "id_propinsi": "13",
+            "nama": "Kota Padang"
+        },
+        {
+            "id": "1372",
+            "id_propinsi": "13",
+            "nama": "Kota Solok"
+        },
+        {
+            "id": "1373",
+            "id_propinsi": "13",
+            "nama": "Kota Sawahlunto"
+        },
+        {
+            "id": "1374",
+            "id_propinsi": "13",
+            "nama": "Kota Padang Panjang"
+        },
+        {
+            "id": "1375",
+            "id_propinsi": "13",
+            "nama": "Kota Bukittinggi"
+        },
+        {
+            "id": "1376",
+            "id_propinsi": "13",
+            "nama": "Kota Payakumbuh"
+        },
+        {
+            "id": "1377",
+            "id_propinsi": "13",
+            "nama": "Kota Pariaman"
+        },
+        {
+            "id": "1401",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Kampar"
+        },
+        {
+            "id": "1402",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Indragiri Hulu"
+        },
+        {
+            "id": "1403",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Bengkalis"
+        },
+        {
+            "id": "1404",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Indragiri Hilir"
+        },
+        {
+            "id": "1405",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Pelalawan"
+        },
+        {
+            "id": "1406",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Rokan Hulu"
+        },
+        {
+            "id": "1407",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Rokan Hilir"
+        },
+        {
+            "id": "1408",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Siak"
+        },
+        {
+            "id": "1409",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Kuantan Singingi"
+        },
+        {
+            "id": "1410",
+            "id_propinsi": "14",
+            "nama": "Kabupaten Kepulauan Meranti"
+        },
+        {
+            "id": "1471",
+            "id_propinsi": "14",
+            "nama": "Kota Pekanbaru"
+        },
+        {
+            "id": "1472",
+            "id_propinsi": "14",
+            "nama": "Kota Dumai"
+        },
+        {
+            "id": "1501",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Kerinci"
+        },
+        {
+            "id": "1502",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Merangin"
+        },
+        {
+            "id": "1503",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Sarolangun"
+        },
+        {
+            "id": "1504",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Batanghari"
+        },
+        {
+            "id": "1505",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Muaro Jambi"
+        },
+        {
+            "id": "1506",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Tanjung Jabung Barat"
+        },
+        {
+            "id": "1507",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Tanjung Jabung Timur"
+        },
+        {
+            "id": "1508",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Bungo"
+        },
+        {
+            "id": "1509",
+            "id_propinsi": "15",
+            "nama": "Kabupaten Tebo"
+        },
+        {
+            "id": "1571",
+            "id_propinsi": "15",
+            "nama": "Kota Jambi"
+        },
+        {
+            "id": "1572",
+            "id_propinsi": "15",
+            "nama": "Kota Sungai Penuh"
+        },
+        {
+            "id": "1601",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Ogan Komering Ulu"
+        },
+        {
+            "id": "1602",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Ogan Komering Ilir"
+        },
+        {
+            "id": "1603",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Muara Enim"
+        },
+        {
+            "id": "1604",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Lahat"
+        },
+        {
+            "id": "1605",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Musi Rawas"
+        },
+        {
+            "id": "1606",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Musi Banyuasin"
+        },
+        {
+            "id": "1607",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Banyuasin"
+        },
+        {
+            "id": "1608",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Ogan Komering Ulu Timur"
+        },
+        {
+            "id": "1609",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Ogan Komering Ulu Selatan"
+        },
+        {
+            "id": "1610",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Ogan Ilir"
+        },
+        {
+            "id": "1611",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Empat Lawang"
+        },
+        {
+            "id": "1612",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Penukal Abab Lematang Ilir"
+        },
+        {
+            "id": "1613",
+            "id_propinsi": "16",
+            "nama": "Kabupaten Musi Rawas Utara"
+        },
+        {
+            "id": "1671",
+            "id_propinsi": "16",
+            "nama": "Kota Palembang"
+        },
+        {
+            "id": "1672",
+            "id_propinsi": "16",
+            "nama": "Kota Pagar Alam"
+        },
+        {
+            "id": "1673",
+            "id_propinsi": "16",
+            "nama": "Kota Lubuk Linggau"
+        },
+        {
+            "id": "1674",
+            "id_propinsi": "16",
+            "nama": "Kota Prabumulih"
+        },
+        {
+            "id": "1701",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Bengkulu Selatan"
+        },
+        {
+            "id": "1702",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Rejang Lebong"
+        },
+        {
+            "id": "1703",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Bengkulu Utara"
+        },
+        {
+            "id": "1704",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Kaur"
+        },
+        {
+            "id": "1705",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Seluma"
+        },
+        {
+            "id": "1706",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Mukomuko"
+        },
+        {
+            "id": "1707",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Lebong"
+        },
+        {
+            "id": "1708",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Kepahiang"
+        },
+        {
+            "id": "1709",
+            "id_propinsi": "17",
+            "nama": "Kabupaten Bengkulu Tengah"
+        },
+        {
+            "id": "1771",
+            "id_propinsi": "17",
+            "nama": "Kota Bengkulu"
+        },
+        {
+            "id": "1801",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Lampung Selatan"
+        },
+        {
+            "id": "1802",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Lampung Tengah"
+        },
+        {
+            "id": "1803",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Lampung Utara"
+        },
+        {
+            "id": "1804",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Lampung Barat"
+        },
+        {
+            "id": "1805",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Tulang Bawang"
+        },
+        {
+            "id": "1806",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Tanggamus"
+        },
+        {
+            "id": "1807",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Lampung Timur"
+        },
+        {
+            "id": "1808",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Way Kanan"
+        },
+        {
+            "id": "1809",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Pesawaran"
+        },
+        {
+            "id": "1810",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Pringsewu"
+        },
+        {
+            "id": "1811",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Mesuji"
+        },
+        {
+            "id": "1812",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Tulang Bawang Barat"
+        },
+        {
+            "id": "1813",
+            "id_propinsi": "18",
+            "nama": "Kabupaten Pesisir Barat"
+        },
+        {
+            "id": "1871",
+            "id_propinsi": "18",
+            "nama": "Kota Bandar Lampung"
+        },
+        {
+            "id": "1872",
+            "id_propinsi": "18",
+            "nama": "Kota Metro"
+        },
+        {
+            "id": "1901",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Bangka"
+        },
+        {
+            "id": "1902",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Belitung"
+        },
+        {
+            "id": "1903",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Bangka Selatan"
+        },
+        {
+            "id": "1904",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Bangka Tengah"
+        },
+        {
+            "id": "1905",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Bangka Barat"
+        },
+        {
+            "id": "1906",
+            "id_propinsi": "19",
+            "nama": "Kabupaten Belitung Timur"
+        },
+        {
+            "id": "1971",
+            "id_propinsi": "19",
+            "nama": "Kota Pangkal Pinang"
+        },
+        {
+            "id": "2101",
+            "id_propinsi": "21",
+            "nama": "Kabupaten Bintan"
+        },
+        {
+            "id": "2102",
+            "id_propinsi": "21",
+            "nama": "Kabupaten Karimun"
+        },
+        {
+            "id": "2103",
+            "id_propinsi": "21",
+            "nama": "Kabupaten Natuna"
+        },
+        {
+            "id": "2104",
+            "id_propinsi": "21",
+            "nama": "Kabupaten Lingga"
+        },
+        {
+            "id": "2105",
+            "id_propinsi": "21",
+            "nama": "Kabupaten Kepulauan Anambas"
+        },
+        {
+            "id": "2171",
+            "id_propinsi": "21",
+            "nama": "Kota Batam"
+        },
+        {
+            "id": "2172",
+            "id_propinsi": "21",
+            "nama": "Kota Tanjung Pinang"
+        },
+        {
+            "id": "3101",
+            "id_propinsi": "31",
+            "nama": "Kabupaten Administrasi Kepulauan Seribu"
+        },
+        {
+            "id": "3171",
+            "id_propinsi": "31",
+            "nama": "Kota Administrasi Jakarta Pusat"
+        },
+        {
+            "id": "3172",
+            "id_propinsi": "31",
+            "nama": "Kota Administrasi Jakarta Utara "
+        },
+        {
+            "id": "3173",
+            "id_propinsi": "31",
+            "nama": "Kota Administrasi Jakarta Barat"
+        },
+        {
+            "id": "3174",
+            "id_propinsi": "31",
+            "nama": "Kota Administrasi Jakarta Selatan"
+        },
+        {
+            "id": "3175",
+            "id_propinsi": "31",
+            "nama": "Kota Administrasi Jakarta Timur"
+        },
+        {
+            "id": "3201",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Bogor"
+        },
+        {
+            "id": "3202",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Sukabumi"
+        },
+        {
+            "id": "3203",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Cianjur"
+        },
+        {
+            "id": "3204",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Bandung"
+        },
+        {
+            "id": "3205",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Garut"
+        },
+        {
+            "id": "3206",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Tasikmalaya"
+        },
+        {
+            "id": "3207",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Ciamis"
+        },
+        {
+            "id": "3208",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Kuningan"
+        },
+        {
+            "id": "3209",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Cirebon"
+        },
+        {
+            "id": "3210",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Majalengka"
+        },
+        {
+            "id": "3211",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Sumedang"
+        },
+        {
+            "id": "3212",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Indramayu"
+        },
+        {
+            "id": "3213",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Subang"
+        },
+        {
+            "id": "3214",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Purwakarta"
+        },
+        {
+            "id": "3215",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Karawang"
+        },
+        {
+            "id": "3216",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Bekasi"
+        },
+        {
+            "id": "3217",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Bandung Barat"
+        },
+        {
+            "id": "3218",
+            "id_propinsi": "32",
+            "nama": "Kabupaten Pangandaran"
+        },
+        {
+            "id": "3271",
+            "id_propinsi": "32",
+            "nama": "Kota Bogor"
+        },
+        {
+            "id": "3272",
+            "id_propinsi": "32",
+            "nama": "Kota Sukabumi"
+        },
+        {
+            "id": "3273",
+            "id_propinsi": "32",
+            "nama": "Kota Bandung"
+        },
+        {
+            "id": "3274",
+            "id_propinsi": "32",
+            "nama": "Kota Cirebon"
+        },
+        {
+            "id": "3275",
+            "id_propinsi": "32",
+            "nama": "Kota Bekasi"
+        },
+        {
+            "id": "3276",
+            "id_propinsi": "32",
+            "nama": "Kota Depok"
+        },
+        {
+            "id": "3277",
+            "id_propinsi": "32",
+            "nama": "Kota Cimahi"
+        },
+        {
+            "id": "3278",
+            "id_propinsi": "32",
+            "nama": "Kota Tasikmalaya"
+        },
+        {
+            "id": "3279",
+            "id_propinsi": "32",
+            "nama": "Kota Banjar"
+        },
+        {
+            "id": "3301",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Cilacap"
+        },
+        {
+            "id": "3302",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Banyumas"
+        },
+        {
+            "id": "3303",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Purbalingga"
+        },
+        {
+            "id": "3304",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Banjarnegara"
+        },
+        {
+            "id": "3305",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Kebumen"
+        },
+        {
+            "id": "3306",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Purworejo"
+        },
+        {
+            "id": "3307",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Wonosobo"
+        },
+        {
+            "id": "3308",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Magelang"
+        },
+        {
+            "id": "3309",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Boyolali"
+        },
+        {
+            "id": "3310",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Klaten"
+        },
+        {
+            "id": "3311",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Sukoharjo"
+        },
+        {
+            "id": "3312",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Wonogiri"
+        },
+        {
+            "id": "3313",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Karanganyar"
+        },
+        {
+            "id": "3314",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Sragen"
+        },
+        {
+            "id": "3315",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Grobogan"
+        },
+        {
+            "id": "3316",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Blora"
+        },
+        {
+            "id": "3317",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Rembang"
+        },
+        {
+            "id": "3318",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Pati"
+        },
+        {
+            "id": "3319",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Kudus"
+        },
+        {
+            "id": "3320",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Jepara"
+        },
+        {
+            "id": "3321",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Demak"
+        },
+        {
+            "id": "3322",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Semarang"
+        },
+        {
+            "id": "3323",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Temanggung"
+        },
+        {
+            "id": "3324",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Kendal"
+        },
+        {
+            "id": "3325",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Batang"
+        },
+        {
+            "id": "3326",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Pekalongan"
+        },
+        {
+            "id": "3327",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Pemalang"
+        },
+        {
+            "id": "3328",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Tegal"
+        },
+        {
+            "id": "3329",
+            "id_propinsi": "33",
+            "nama": "Kabupaten Brebes"
+        },
+        {
+            "id": "3371",
+            "id_propinsi": "33",
+            "nama": "Kota Magelang"
+        },
+        {
+            "id": "3372",
+            "id_propinsi": "33",
+            "nama": "Kota Surakarta"
+        },
+        {
+            "id": "3373",
+            "id_propinsi": "33",
+            "nama": "Kota Salatiga"
+        },
+        {
+            "id": "3374",
+            "id_propinsi": "33",
+            "nama": "Kota Semarang"
+        },
+        {
+            "id": "3375",
+            "id_propinsi": "33",
+            "nama": "Kota Pekalongan"
+        },
+        {
+            "id": "3376",
+            "id_propinsi": "33",
+            "nama": "Kota Tegal"
+        },
+        {
+            "id": "3401",
+            "id_propinsi": "34",
+            "nama": "Kabupaten Kulon Progo"
+        },
+        {
+            "id": "3402",
+            "id_propinsi": "34",
+            "nama": "Kabupaten Bantul"
+        },
+        {
+            "id": "3403",
+            "id_propinsi": "34",
+            "nama": "Kabupaten Gunungkidul"
+        },
+        {
+            "id": "3404",
+            "id_propinsi": "34",
+            "nama": "Kabupaten Sleman"
+        },
+        {
+            "id": "3471",
+            "id_propinsi": "34",
+            "nama": "Kota Yogyakarta"
+        },
+        {
+            "id": "3501",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Pacitan"
+        },
+        {
+            "id": "3502",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Ponorogo"
+        },
+        {
+            "id": "3503",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Trenggalek"
+        },
+        {
+            "id": "3504",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Tulungagung"
+        },
+        {
+            "id": "3505",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Blitar"
+        },
+        {
+            "id": "3506",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Kediri"
+        },
+        {
+            "id": "3507",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Malang"
+        },
+        {
+            "id": "3508",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Lumajang"
+        },
+        {
+            "id": "3509",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Jember"
+        },
+        {
+            "id": "3510",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Banyuwangi"
+        },
+        {
+            "id": "3511",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Bondowoso"
+        },
+        {
+            "id": "3512",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Situbondo"
+        },
+        {
+            "id": "3513",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Probolinggo"
+        },
+        {
+            "id": "3514",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Pasuruan"
+        },
+        {
+            "id": "3515",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Sidoarjo"
+        },
+        {
+            "id": "3516",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Mojokerto"
+        },
+        {
+            "id": "3517",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Jombang"
+        },
+        {
+            "id": "3518",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Nganjuk"
+        },
+        {
+            "id": "3519",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Madiun"
+        },
+        {
+            "id": "3520",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Magetan"
+        },
+        {
+            "id": "3521",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Ngawi"
+        },
+        {
+            "id": "3522",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Bojonegoro"
+        },
+        {
+            "id": "3523",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Tuban"
+        },
+        {
+            "id": "3524",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Lamongan"
+        },
+        {
+            "id": "3525",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Gresik"
+        },
+        {
+            "id": "3526",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Bangkalan"
+        },
+        {
+            "id": "3527",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Sampang"
+        },
+        {
+            "id": "3528",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Pamekasan"
+        },
+        {
+            "id": "3529",
+            "id_propinsi": "35",
+            "nama": "Kabupaten Sumenep"
+        },
+        {
+            "id": "3571",
+            "id_propinsi": "35",
+            "nama": "Kota Kediri"
+        },
+        {
+            "id": "3572",
+            "id_propinsi": "35",
+            "nama": "Kota Blitar"
+        },
+        {
+            "id": "3573",
+            "id_propinsi": "35",
+            "nama": "Kota Malang"
+        },
+        {
+            "id": "3574",
+            "id_propinsi": "35",
+            "nama": "Kota Probolinggo"
+        },
+        {
+            "id": "3575",
+            "id_propinsi": "35",
+            "nama": "Kota Pasuruan"
+        },
+        {
+            "id": "3576",
+            "id_propinsi": "35",
+            "nama": "Kota Mojokerto"
+        },
+        {
+            "id": "3577",
+            "id_propinsi": "35",
+            "nama": "Kota Madiun"
+        },
+        {
+            "id": "3578",
+            "id_propinsi": "35",
+            "nama": "Kota Surabaya"
+        },
+        {
+            "id": "3579",
+            "id_propinsi": "35",
+            "nama": "Kota Batu"
+        },
+        {
+            "id": "3601",
+            "id_propinsi": "36",
+            "nama": "Kabupaten Pandeglang"
+        },
+        {
+            "id": "3602",
+            "id_propinsi": "36",
+            "nama": "Kabupaten Lebak"
+        },
+        {
+            "id": "3603",
+            "id_propinsi": "36",
+            "nama": "Kabupaten Tangerang"
+        },
+        {
+            "id": "3604",
+            "id_propinsi": "36",
+            "nama": "Kabupaten Serang"
+        },
+        {
+            "id": "3671",
+            "id_propinsi": "36",
+            "nama": "Kota Tangerang"
+        },
+        {
+            "id": "3672",
+            "id_propinsi": "36",
+            "nama": "Kota Cilegon"
+        },
+        {
+            "id": "3673",
+            "id_propinsi": "36",
+            "nama": "Kota Serang"
+        },
+        {
+            "id": "3674",
+            "id_propinsi": "36",
+            "nama": "Kota Tangerang Selatan"
+        },
+        {
+            "id": "5101",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Jembrana"
+        },
+        {
+            "id": "5102",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Tabanan"
+        },
+        {
+            "id": "5103",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Badung"
+        },
+        {
+            "id": "5104",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Gianyar"
+        },
+        {
+            "id": "5105",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Klungkung"
+        },
+        {
+            "id": "5106",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Bangli"
+        },
+        {
+            "id": "5107",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Karangasem"
+        },
+        {
+            "id": "5108",
+            "id_propinsi": "51",
+            "nama": "Kabupaten Buleleng"
+        },
+        {
+            "id": "5171",
+            "id_propinsi": "51",
+            "nama": "Kota Denpasar"
+        },
+        {
+            "id": "5201",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Lombok Barat"
+        },
+        {
+            "id": "5202",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Lombok Tengah"
+        },
+        {
+            "id": "5203",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Lombok Timur"
+        },
+        {
+            "id": "5204",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Sumbawa"
+        },
+        {
+            "id": "5205",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Dompu"
+        },
+        {
+            "id": "5206",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Bima"
+        },
+        {
+            "id": "5207",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Sumbawa Barat"
+        },
+        {
+            "id": "5208",
+            "id_propinsi": "52",
+            "nama": "Kabupaten Lombok Utara"
+        },
+        {
+            "id": "5271",
+            "id_propinsi": "52",
+            "nama": "Kota Mataram"
+        },
+        {
+            "id": "5272",
+            "id_propinsi": "52",
+            "nama": "Kota Bima"
+        },
+        {
+            "id": "5301",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Kupang"
+        },
+        {
+            "id": "5302",
+            "id_propinsi": "53",
+            "nama": "Kab Timor Tengah Selatan"
+        },
+        {
+            "id": "5303",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Timor Tengah Utara"
+        },
+        {
+            "id": "5304",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Belu"
+        },
+        {
+            "id": "5305",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Alor"
+        },
+        {
+            "id": "5306",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Flores Timur"
+        },
+        {
+            "id": "5307",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sikka"
+        },
+        {
+            "id": "5308",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Ende"
+        },
+        {
+            "id": "5309",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Ngada"
+        },
+        {
+            "id": "5310",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Manggarai"
+        },
+        {
+            "id": "5311",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sumba Timur"
+        },
+        {
+            "id": "5312",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sumba Barat"
+        },
+        {
+            "id": "5313",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Lembata"
+        },
+        {
+            "id": "5314",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Rote Ndao"
+        },
+        {
+            "id": "5315",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Manggarai Barat"
+        },
+        {
+            "id": "5316",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Nagekeo"
+        },
+        {
+            "id": "5317",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sumba Tengah"
+        },
+        {
+            "id": "5318",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sumba Barat Daya"
+        },
+        {
+            "id": "5319",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Manggarai Timur"
+        },
+        {
+            "id": "5320",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Sabu Raijua"
+        },
+        {
+            "id": "5321",
+            "id_propinsi": "53",
+            "nama": "Kabupaten Malaka"
+        },
+        {
+            "id": "5371",
+            "id_propinsi": "53",
+            "nama": "Kota Kupang"
+        },
+        {
+            "id": "6101",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Sambas"
+        },
+        {
+            "id": "6102",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Mempawah"
+        },
+        {
+            "id": "6103",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Sanggau"
+        },
+        {
+            "id": "6104",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Ketapang"
+        },
+        {
+            "id": "6105",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Sintang"
+        },
+        {
+            "id": "6106",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Kapuas Hulu"
+        },
+        {
+            "id": "6107",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Bengkayang"
+        },
+        {
+            "id": "6108",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Landak"
+        },
+        {
+            "id": "6109",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Sekadau"
+        },
+        {
+            "id": "6110",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Melawi"
+        },
+        {
+            "id": "6111",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Kayong Utara"
+        },
+        {
+            "id": "6112",
+            "id_propinsi": "61",
+            "nama": "Kabupaten Kubu Raya"
+        },
+        {
+            "id": "6171",
+            "id_propinsi": "61",
+            "nama": "Kota Pontianak"
+        },
+        {
+            "id": "6172",
+            "id_propinsi": "61",
+            "nama": "Kota Singkawang"
+        },
+        {
+            "id": "6201",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Kotawaringin Barat"
+        },
+        {
+            "id": "6202",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Kotawaringin Timur"
+        },
+        {
+            "id": "6203",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Kapuas"
+        },
+        {
+            "id": "6204",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Barito Selatan"
+        },
+        {
+            "id": "6205",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Barito Utara"
+        },
+        {
+            "id": "6206",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Katingan"
+        },
+        {
+            "id": "6207",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Seruyan"
+        },
+        {
+            "id": "6208",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Sukamara"
+        },
+        {
+            "id": "6209",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Lamandau"
+        },
+        {
+            "id": "6210",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Gunung Mas"
+        },
+        {
+            "id": "6211",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Pulang Pisau"
+        },
+        {
+            "id": "6212",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Murung Raya"
+        },
+        {
+            "id": "6213",
+            "id_propinsi": "62",
+            "nama": "Kabupaten Barito Timur"
+        },
+        {
+            "id": "6271",
+            "id_propinsi": "62",
+            "nama": "Kota Palangkaraya"
+        },
+        {
+            "id": "6301",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Tanah Laut"
+        },
+        {
+            "id": "6302",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Kotabaru"
+        },
+        {
+            "id": "6303",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Banjar"
+        },
+        {
+            "id": "6304",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Barito Kuala"
+        },
+        {
+            "id": "6305",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Tapin"
+        },
+        {
+            "id": "6306",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Hulu Sungai Selatan"
+        },
+        {
+            "id": "6307",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Hulu Sungai Tengah"
+        },
+        {
+            "id": "6308",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Hulu Sungai Utara"
+        },
+        {
+            "id": "6309",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Tabalong"
+        },
+        {
+            "id": "6310",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Tanah Bumbu"
+        },
+        {
+            "id": "6311",
+            "id_propinsi": "63",
+            "nama": "Kabupaten Balangan"
+        },
+        {
+            "id": "6371",
+            "id_propinsi": "63",
+            "nama": "Kota Banjarmasin"
+        },
+        {
+            "id": "6372",
+            "id_propinsi": "63",
+            "nama": "Kota Banjarbaru"
+        },
+        {
+            "id": "6401",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Paser"
+        },
+        {
+            "id": "6402",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Kutai Kartanegara"
+        },
+        {
+            "id": "6403",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Berau"
+        },
+        {
+            "id": "6407",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Kutai Barat"
+        },
+        {
+            "id": "6408",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Kutai Timur"
+        },
+        {
+            "id": "6409",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Penajam Paser Utara"
+        },
+        {
+            "id": "6411",
+            "id_propinsi": "64",
+            "nama": "Kabupaten Mahakam Ulu"
+        },
+        {
+            "id": "6471",
+            "id_propinsi": "64",
+            "nama": "Kota Balikpapan"
+        },
+        {
+            "id": "6472",
+            "id_propinsi": "64",
+            "nama": "Kota Samarinda"
+        },
+        {
+            "id": "6474",
+            "id_propinsi": "64",
+            "nama": "Kota Bontang"
+        },
+        {
+            "id": "6501",
+            "id_propinsi": "65",
+            "nama": "Kabupaten Bulungan"
+        },
+        {
+            "id": "6502",
+            "id_propinsi": "65",
+            "nama": "Kabupaten Malinau"
+        },
+        {
+            "id": "6503",
+            "id_propinsi": "65",
+            "nama": "Kabupaten Nunukan"
+        },
+        {
+            "id": "6504",
+            "id_propinsi": "65",
+            "nama": "Kabupaten Tana Tidung"
+        },
+        {
+            "id": "6571",
+            "id_propinsi": "65",
+            "nama": "Kota Tarakan"
+        },
+        {
+            "id": "7101",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Bolaang Mongondow"
+        },
+        {
+            "id": "7102",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Minahasa"
+        },
+        {
+            "id": "7103",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Kepulauan Sangihe"
+        },
+        {
+            "id": "7104",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Kepulauan Talaud"
+        },
+        {
+            "id": "7105",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Minahasa Selatan"
+        },
+        {
+            "id": "7106",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Minahasa Utara"
+        },
+        {
+            "id": "7107",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Minahasa Tenggara"
+        },
+        {
+            "id": "7108",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Bolaang Mongondow Utara"
+        },
+        {
+            "id": "7109",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Kep. Siau Tagulandang Biaro"
+        },
+        {
+            "id": "7110",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Bolaang Mongondow Timur"
+        },
+        {
+            "id": "7111",
+            "id_propinsi": "71",
+            "nama": "Kabupaten Bolaang Mongondow Selatan"
+        },
+        {
+            "id": "7171",
+            "id_propinsi": "71",
+            "nama": "Kota Manado"
+        },
+        {
+            "id": "7172",
+            "id_propinsi": "71",
+            "nama": "Kota Bitung"
+        },
+        {
+            "id": "7173",
+            "id_propinsi": "71",
+            "nama": "Kota Tomohon"
+        },
+        {
+            "id": "7174",
+            "id_propinsi": "71",
+            "nama": "Kota Kotamobagu"
+        },
+        {
+            "id": "7201",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Banggai"
+        },
+        {
+            "id": "7202",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Poso"
+        },
+        {
+            "id": "7203",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Donggala"
+        },
+        {
+            "id": "7204",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Toli-Toli"
+        },
+        {
+            "id": "7205",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Buol"
+        },
+        {
+            "id": "7206",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Morowali"
+        },
+        {
+            "id": "7207",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Banggai Kepulauan"
+        },
+        {
+            "id": "7208",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Parigi Moutong"
+        },
+        {
+            "id": "7209",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Tojo Una Una"
+        },
+        {
+            "id": "7210",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Sigi"
+        },
+        {
+            "id": "7211",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Banggai Laut"
+        },
+        {
+            "id": "7212",
+            "id_propinsi": "72",
+            "nama": "Kabupaten Morowali Utara"
+        },
+        {
+            "id": "7271",
+            "id_propinsi": "72",
+            "nama": "Kota Palu"
+        },
+        {
+            "id": "7301",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Kepulauan Selayar"
+        },
+        {
+            "id": "7302",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Bulukumba"
+        },
+        {
+            "id": "7303",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Bantaeng"
+        },
+        {
+            "id": "7304",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Jeneponto"
+        },
+        {
+            "id": "7305",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Takalar"
+        },
+        {
+            "id": "7306",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Gowa"
+        },
+        {
+            "id": "7307",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Sinjai"
+        },
+        {
+            "id": "7308",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Bone"
+        },
+        {
+            "id": "7309",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Maros"
+        },
+        {
+            "id": "7310",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Pangkajene dan Kepulauan"
+        },
+        {
+            "id": "7311",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Barru"
+        },
+        {
+            "id": "7312",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Soppeng"
+        },
+        {
+            "id": "7313",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Wajo"
+        },
+        {
+            "id": "7314",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Sidenreng Rappang"
+        },
+        {
+            "id": "7315",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Pinrang"
+        },
+        {
+            "id": "7316",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Enrekang"
+        },
+        {
+            "id": "7317",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Luwu"
+        },
+        {
+            "id": "7318",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Tana Toraja"
+        },
+        {
+            "id": "7322",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Luwu Utara"
+        },
+        {
+            "id": "7324",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Luwu Timur"
+        },
+        {
+            "id": "7326",
+            "id_propinsi": "73",
+            "nama": "Kabupaten Toraja Utara"
+        },
+        {
+            "id": "7371",
+            "id_propinsi": "73",
+            "nama": "Kota Makassar"
+        },
+        {
+            "id": "7372",
+            "id_propinsi": "73",
+            "nama": "Kota Parepare"
+        },
+        {
+            "id": "7373",
+            "id_propinsi": "73",
+            "nama": "Kota Palopo"
+        },
+        {
+            "id": "7401",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Kolaka"
+        },
+        {
+            "id": "7402",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Konawe"
+        },
+        {
+            "id": "7403",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Muna"
+        },
+        {
+            "id": "7404",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Buton"
+        },
+        {
+            "id": "7405",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Konawe Selatan"
+        },
+        {
+            "id": "7406",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Bombana"
+        },
+        {
+            "id": "7407",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Wakatobi"
+        },
+        {
+            "id": "7408",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Kolaka Utara"
+        },
+        {
+            "id": "7409",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Konawe Utara"
+        },
+        {
+            "id": "7410",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Buton Utara"
+        },
+        {
+            "id": "7411",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Kolaka Timur"
+        },
+        {
+            "id": "7412",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Konawe Kepulauan"
+        },
+        {
+            "id": "7413",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Muna Barat"
+        },
+        {
+            "id": "7414",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Buton Tengah"
+        },
+        {
+            "id": "7415",
+            "id_propinsi": "74",
+            "nama": "Kabupaten Buton Selatan"
+        },
+        {
+            "id": "7471",
+            "id_propinsi": "74",
+            "nama": "Kota Kendari"
+        },
+        {
+            "id": "7472",
+            "id_propinsi": "74",
+            "nama": "Kota Bau Bau"
+        },
+        {
+            "id": "7501",
+            "id_propinsi": "75",
+            "nama": "Kabupaten Gorontalo"
+        },
+        {
+            "id": "7502",
+            "id_propinsi": "75",
+            "nama": "Kabupaten Boalemo"
+        },
+        {
+            "id": "7503",
+            "id_propinsi": "75",
+            "nama": "Kabupaten Bone Bolango"
+        },
+        {
+            "id": "7504",
+            "id_propinsi": "75",
+            "nama": "Kabupaten Pohuwato"
+        },
+        {
+            "id": "7505",
+            "id_propinsi": "75",
+            "nama": "Kabupaten Gorontalo Utara"
+        },
+        {
+            "id": "7571",
+            "id_propinsi": "75",
+            "nama": "Kota Gorontalo"
+        },
+        {
+            "id": "7601",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Pasangkayu"
+        },
+        {
+            "id": "7602",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Mamuju"
+        },
+        {
+            "id": "7603",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Mamasa"
+        },
+        {
+            "id": "7604",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Polewali Mandar"
+        },
+        {
+            "id": "7605",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Majene"
+        },
+        {
+            "id": "7606",
+            "id_propinsi": "76",
+            "nama": "Kabupaten Mamuju Tengah"
+        },
+        {
+            "id": "8101",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Maluku Tengah"
+        },
+        {
+            "id": "8102",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Maluku Tenggara"
+        },
+        {
+            "id": "8103",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Kepulauan Tanimbar"
+        },
+        {
+            "id": "8104",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Buru"
+        },
+        {
+            "id": "8105",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Seram Bagian Timur"
+        },
+        {
+            "id": "8106",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Seram Bagian Barat"
+        },
+        {
+            "id": "8107",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Kepulauan Aru"
+        },
+        {
+            "id": "8108",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Maluku Barat Daya"
+        },
+        {
+            "id": "8109",
+            "id_propinsi": "81",
+            "nama": "Kabupaten Buru Selatan"
+        },
+        {
+            "id": "8171",
+            "id_propinsi": "81",
+            "nama": "Kota Ambon"
+        },
+        {
+            "id": "8172",
+            "id_propinsi": "81",
+            "nama": "Kota Tual"
+        },
+        {
+            "id": "8201",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Halmahera Barat"
+        },
+        {
+            "id": "8202",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Halmahera Tengah"
+        },
+        {
+            "id": "8203",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Halmahera Utara"
+        },
+        {
+            "id": "8204",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Halmahera Selatan"
+        },
+        {
+            "id": "8205",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Kepulauan Sula"
+        },
+        {
+            "id": "8206",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Halmahera Timur"
+        },
+        {
+            "id": "8207",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Pulau Morotai"
+        },
+        {
+            "id": "8208",
+            "id_propinsi": "82",
+            "nama": "Kabupaten Pulau Taliabu"
+        },
+        {
+            "id": "8271",
+            "id_propinsi": "82",
+            "nama": "Kota Ternate"
+        },
+        {
+            "id": "8272",
+            "id_propinsi": "82",
+            "nama": "Kota Tidore Kepulauan"
+        },
+        {
+            "id": "9103",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Jayapura"
+        },
+        {
+            "id": "9105",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Kepulauan Yapen"
+        },
+        {
+            "id": "9106",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Biak Numfor"
+        },
+        {
+            "id": "9110",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Sarmi"
+        },
+        {
+            "id": "9111",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Keerom"
+        },
+        {
+            "id": "9115",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Waropen"
+        },
+        {
+            "id": "9119",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Supiori"
+        },
+        {
+            "id": "9120",
+            "id_propinsi": "91",
+            "nama": "Kabupaten Mamberamo Raya"
+        },
+        {
+            "id": "9171",
+            "id_propinsi": "91",
+            "nama": "Kota Jayapura"
+        },
+        {
+            "id": "9202",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Manokwari"
+        },
+        {
+            "id": "9203",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Fak Fak"
+        },
+        {
+            "id": "9206",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Teluk Bintuni"
+        },
+        {
+            "id": "9207",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Teluk Wondama"
+        },
+        {
+            "id": "9208",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Kaimana"
+        },
+        {
+            "id": "9211",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Manokwari Selatan"
+        },
+        {
+            "id": "9212",
+            "id_propinsi": "92",
+            "nama": "Kabupaten Pegunungan Arfak"
+        },
+        {
+            "id": "9301",
+            "id_propinsi": "93",
+            "nama": "Kabupaten Merauke"
+        },
+        {
+            "id": "9302",
+            "id_propinsi": "93",
+            "nama": "Kabupaten Boven Digoel"
+        },
+        {
+            "id": "9303",
+            "id_propinsi": "93",
+            "nama": "Kabupaten Mappi"
+        },
+        {
+            "id": "9304",
+            "id_propinsi": "93",
+            "nama": "Kabupaten Asmat"
+        },
+        {
+            "id": "9401",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Nabire"
+        },
+        {
+            "id": "9402",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Puncak Jaya"
+        },
+        {
+            "id": "9403",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Paniai"
+        },
+        {
+            "id": "9404",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Mimika"
+        },
+        {
+            "id": "9405",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Puncak"
+        },
+        {
+            "id": "9406",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Dogiyai"
+        },
+        {
+            "id": "9407",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Intan Jaya"
+        },
+        {
+            "id": "9408",
+            "id_propinsi": "94",
+            "nama": "Kabupaten Deiyai"
+        },
+        {
+            "id": "9501",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Jayawijaya"
+        },
+        {
+            "id": "9502",
+            "id_propinsi": "95",
+            "nama": "Kab Pegunungan Bintang"
+        },
+        {
+            "id": "9503",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Yahukimo"
+        },
+        {
+            "id": "9504",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Tolikara"
+        },
+        {
+            "id": "9505",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Mamberamo Tengah"
+        },
+        {
+            "id": "9506",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Yalimo"
+        },
+        {
+            "id": "9507",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Lanny Jaya"
+        },
+        {
+            "id": "9508",
+            "id_propinsi": "95",
+            "nama": "Kabupaten Nduga"
+        },
+        {
+            "id": "9601",
+            "id_propinsi": "96",
+            "nama": "Kabupaten Sorong"
+        },
+        {
+            "id": "9602",
+            "id_propinsi": "96",
+            "nama": "Kabupaten Sorong Selatan"
+        },
+        {
+            "id": "9603",
+            "id_propinsi": "96",
+            "nama": "Kabupaten Raja Ampat"
+        },
+        {
+            "id": "9604",
+            "id_propinsi": "96",
+            "nama": "Kabupaten Tambrauw"
+        },
+        {
+            "id": "9605",
+            "id_propinsi": "96",
+            "nama": "Kabupaten Maybrat"
+        },
+        {
+            "id": "9671",
+            "id_propinsi": "96",
+            "nama": "Kota Sorong"
+        }
     ]
 }
