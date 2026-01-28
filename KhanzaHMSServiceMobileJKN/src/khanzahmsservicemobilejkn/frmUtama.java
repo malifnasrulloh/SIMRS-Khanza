@@ -233,7 +233,7 @@ public class frmUtama extends javax.swing.JFrame {
                 LocalTime now = LocalTime.now();
                 menit = now.getMinute();
                 detik = now.getSecond();
-                if (now.equals(LocalTime.of(1, 1, 1))) {
+                if (now.equals(LocalTime.of(0, 9, 30))) {
                     userTableModel.resetData();
                     SystemLogger.reconfigure();
 
