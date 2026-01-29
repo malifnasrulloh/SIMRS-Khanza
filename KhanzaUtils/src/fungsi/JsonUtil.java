@@ -7,6 +7,7 @@ package fungsi;
 import fungsi.logger.SystemLogger;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.ArrayNode;
 
 /**
  *
@@ -18,6 +19,10 @@ public class JsonUtil {
 
     public static JsonObjectBuilder createObject() {
         return new JsonObjectBuilder(mapper.createObjectNode());
+    }
+
+    public static JsonArrayBuilder createArray() {
+        return new JsonArrayBuilder(mapper.createArrayNode());
     }
 
     public static boolean isValidJson(String json) {
@@ -62,6 +67,26 @@ public class JsonUtil {
             return this;
         }
 
+        public JsonObjectBuilder put(String field, JsonObjectBuilder value) {
+            node.set(field, value.getNode());
+            return this;
+        }
+
+        public JsonObjectBuilder put(String field, ObjectNode value) {
+            node.set(field, value);
+            return this;
+        }
+
+        public JsonObjectBuilder put(String field, JsonArrayBuilder value) {
+            node.set(field, value.getNode());
+            return this;
+        }
+
+        public JsonObjectBuilder put(String field, ArrayNode value) {
+            node.set(field, value);
+            return this;
+        }
+
         public JsonObjectBuilder putNull(String field) {
             node.putNull(field);
             return this;
@@ -79,6 +104,69 @@ public class JsonUtil {
 
         public ObjectNode getNode() {
             return node.deepCopy();
+        }
+    }
+
+    public static class JsonArrayBuilder {
+
+        private final ArrayNode array;
+
+        private JsonArrayBuilder(ArrayNode array) {
+            this.array = array;
+        }
+
+        public JsonArrayBuilder add(String value) {
+            array.add(value);
+            return this;
+        }
+
+        public JsonArrayBuilder add(int value) {
+            array.add(value);
+            return this;
+        }
+
+        public JsonArrayBuilder add(long value) {
+            array.add(value);
+            return this;
+        }
+
+        public JsonArrayBuilder add(double value) {
+            array.add(value);
+            return this;
+        }
+
+        public JsonArrayBuilder add(boolean value) {
+            array.add(value);
+            return this;
+        }
+
+        public JsonArrayBuilder addNull() {
+            array.addNull();
+            return this;
+        }
+
+        public JsonArrayBuilder add(JsonObjectBuilder object) {
+            array.add(object.getNode());
+            return this;
+        }
+
+        public JsonArrayBuilder add(ObjectNode node) {
+            array.add(node);
+            return this;
+        }
+
+        public ArrayNode getNode() {
+            return array.deepCopy();
+        }
+
+        public String build() throws RuntimeException {
+            try {
+                return mapper.writeValueAsString(array);
+            } catch (Exception e) {
+                System.out.println("Failed to serialize JSON array " + e);
+                SystemLogger.error(e);
+            }
+            return null;
         }
     }
 }
