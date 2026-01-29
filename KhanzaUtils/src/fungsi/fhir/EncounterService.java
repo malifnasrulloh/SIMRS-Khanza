@@ -12,7 +12,7 @@ import java.util.Map;
  * @author malifnasrulloh
  */
 public class EncounterService {
-    
+
     public static String buildEncounterBody(Map<String, String> data) {
         String encounterId = data.get("id_encounter");
         String status = data.get("status");

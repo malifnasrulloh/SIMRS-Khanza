@@ -52,6 +52,7 @@ public class SatuSehatHelper {
         this.baseURL = baseURL;
         this.dataWilayah = new DataWilayah("./cache/propinsi.iyem", "./cache/kabupaten.iyem", "./cache/kecamatan.iyem", "./cache/kelurahan.iyem");
     }
+
     private void validate(String value, String name) {
         if (value == null || value.trim().isEmpty()) {
             SystemLogger.error(new IllegalArgumentException(name + " cannot be null or empty"));
