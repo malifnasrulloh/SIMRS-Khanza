@@ -21,7 +21,7 @@ public class DataWilayah {
     private final JsonNode dataKelurahan;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public DataWilayah(String propinsiFile, String kabupatenFile, String kecamatanFile, String kelurahanFile) throws IOException {
+    public DataWilayah(String propinsiFile, String kabupatenFile, String kecamatanFile, String kelurahanFile) {
         dataPropinsi = mapper.readTree(new File(propinsiFile)).path("propinsi");
         dataKabupaten = mapper.readTree(new File(kabupatenFile)).path("kabupaten");
         dataKecamatan = mapper.readTree(new File(kecamatanFile)).path("kecamatan");
