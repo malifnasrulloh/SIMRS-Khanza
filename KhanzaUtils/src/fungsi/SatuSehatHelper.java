@@ -3,7 +3,6 @@ package fungsi;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import fungsi.logger.SystemLogger;
-import java.io.IOException;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.ContactPoint;
@@ -39,14 +38,7 @@ public class SatuSehatHelper {
     private final IParser parser = ctx.newJsonParser();
     private final DataWilayah dataWilayah;
 
-    private void validate(String value, String name) {
-        if (value == null || value.trim().isEmpty()) {
-            SystemLogger.error(new IllegalArgumentException(name + " cannot be null or empty"));
-            throw new IllegalArgumentException(name + " cannot be null or empty");
-        }
-    }
-
-    public SatuSehatHelper(String clientID, String clientSecret, String orgID, String authURL, String baseURL) throws IOException {
+    public SatuSehatHelper(String clientID, String clientSecret, String orgID, String authURL, String baseURL) {
         validate(clientID, "ClientID");
         validate(clientSecret, "ClientSecret");
         validate(orgID, "OrganizationID");
@@ -59,6 +51,12 @@ public class SatuSehatHelper {
         this.authURL = authURL;
         this.baseURL = baseURL;
         this.dataWilayah = new DataWilayah("./cache/propinsi.iyem", "./cache/kabupaten.iyem", "./cache/kecamatan.iyem", "./cache/kelurahan.iyem");
+    }
+    private void validate(String value, String name) {
+        if (value == null || value.trim().isEmpty()) {
+            SystemLogger.error(new IllegalArgumentException(name + " cannot be null or empty"));
+            throw new IllegalArgumentException(name + " cannot be null or empty");
+        }
     }
 
     public String getAuthToken() {
