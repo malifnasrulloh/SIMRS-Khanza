@@ -4,8 +4,14 @@
  */
 package fungsi.fhir;
 
-import fungsi.JsonUtil;
-import java.util.Map;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Encounter;
+import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Period;
+import org.hl7.fhir.r4.model.Reference;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  *
@@ -13,95 +19,44 @@ import java.util.Map;
  */
 public class EncounterService {
 
-    public static String buildEncounterBody(Map<String, String> data) {
-        String encounterId = data.get("id_encounter");
-        String status = data.get("status");
-        String codeClass = data.get("code_class");
-        String displayClass = data.get("display_class");
-        String idPasien = data.get("id_pasien");
-        String nmPasien = data.get("nm_pasien");
-        String idDokter = data.get("id_dokter");
-        String namaDokter = data.get("nama_dokter");
-        String tglRegistrasi = data.get("tgl_registrasi");
-        String jamReg = data.get("jam_reg");
-        String pulang = data.get("pulang");
-        String idLokasi = data.get("id_lokasi");
-        String nmPoli = data.get("nm_poli");
-        String noRawat = data.get("no_rawat");
-        String serviceProviderId = data.get("service_provider_id");
+    public static Encounter buildEncounter(ObjectNode data) {
+        Encounter encounter = new Encounter();
 
-        JsonUtil.JsonObjectBuilder jsonBuilder = JsonUtil.createObject();
+        encounter.setStatus(Encounter.EncounterStatus.fromCode(data.path("status").asString()));
+        encounter.setClass_(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v3-ActCode").setCode(data.path("code_class").asString()).setDisplay(data.path("display_class").asString()));
+        encounter.setSubject(new Reference("Patient/" + data.path("id_pasien").asString()).setDisplay(data.path("nm_pasien").asString()));
 
-        if (encounterId != null) {
-            jsonBuilder.put("id", encounterId);
-        }
+        Encounter.EncounterParticipantComponent participant = new Encounter.EncounterParticipantComponent();
+        participant.addType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v3-ParticipationType").setCode("ATND").setDisplay("attender")));
+        participant.setIndividual(new Reference("Practitioner/" + data.path("id_dokter").asString()).setDisplay(data.path("nama_dokter").asString()));
+        encounter.addParticipant(participant);
 
-        JsonUtil.JsonObjectBuilder classNode = JsonUtil.createObject()
-                .put("system", "http://terminology.hl7.org/CodeSystem/v3-ActCode")
-                .put("code", codeClass)
-                .put("display", displayClass);
+        Period period = new Period();
+        period.setStartElement(new DateTimeType(data.path("tgl_registrasi").asString() + "T" + data.path("jam_reg").asString() + "+07:00"));
+        encounter.setPeriod(period);
 
-        JsonUtil.JsonObjectBuilder subjectNode = JsonUtil.createObject()
-                .put("reference", "Patient/" + idPasien)
-                .put("display", nmPasien);
+        Encounter.EncounterLocationComponent location = new Encounter.EncounterLocationComponent();
+        location.setLocation(new Reference("Location/" + data.path("id_lokasi").asString()).setDisplay(data.path("nm_poli").asString()));
+        encounter.addLocation(location);
 
-        JsonUtil.JsonObjectBuilder codingNode = JsonUtil.createObject()
-                .put("system", "http://terminology.hl7.org/CodeSystem/v3-ParticipationType")
-                .put("code", "ATND")
-                .put("display", "attender");
+        Encounter.StatusHistoryComponent statusHistory = new Encounter.StatusHistoryComponent();
+        statusHistory.setStatus(Encounter.EncounterStatus.ARRIVED);
+        statusHistory.setPeriod(new Period().setStartElement(new DateTimeType(data.path("tgl_registrasi").asString() + "T" + data.path("jam_reg").asString() + "+07:00")).setEndElement(new DateTimeType(data.path("pulang").asString())));
+        encounter.addStatusHistory(statusHistory);
 
-        JsonUtil.JsonObjectBuilder typeNode = JsonUtil.createObject()
-                .put("coding", JsonUtil.createArray().add(codingNode));
+        encounter.setServiceProvider(new Reference("Organization/" + data.path("service_provider_id").asString()));
+        encounter.addIdentifier(new Identifier().setSystem("http://sys-ids.kemkes.go.id/encounter/" + data.path("service_provider_id").asString()).setValue(data.path("no_rawat").asString()));
 
-        JsonUtil.JsonObjectBuilder individualNode = JsonUtil.createObject()
-                .put("reference", "Practitioner/" + idDokter)
-                .put("display", namaDokter);
-
-        JsonUtil.JsonObjectBuilder participantNode = JsonUtil.createObject()
-                .put("type", JsonUtil.createArray().add(typeNode))
-                .put("individual", individualNode);
-
-        JsonUtil.JsonArrayBuilder participantArray = JsonUtil.createArray().add(participantNode);
-
-        JsonUtil.JsonObjectBuilder periodNode = JsonUtil.createObject()
-                .put("start", tglRegistrasi + "T" + jamReg + "+07:00");
-
-        JsonUtil.JsonObjectBuilder locationNode = JsonUtil.createObject()
-                .put("location", JsonUtil.createObject()
-                        .put("reference", "Location/" + idLokasi)
-                        .put("display", nmPoli));
-
-        JsonUtil.JsonArrayBuilder locationArray = JsonUtil.createArray().add(locationNode);
-
-        JsonUtil.JsonObjectBuilder statusHistoryNode = JsonUtil.createObject()
-                .put("status", "arrived")
-                .put("period", JsonUtil.createObject()
-                        .put("start", tglRegistrasi + "T" + jamReg + "+07:00")
-                        .put("end", pulang));
-
-        JsonUtil.JsonArrayBuilder statusHistoryArray = JsonUtil.createArray().add(statusHistoryNode);
-
-        JsonUtil.JsonObjectBuilder serviceProviderNode = JsonUtil.createObject()
-                .put("reference", "Organization/" + serviceProviderId);
-
-        JsonUtil.JsonObjectBuilder identifierNode = JsonUtil.createObject()
-                .put("system", "http://sys-ids.kemkes.go.id/encounter/" + serviceProviderId)
-                .put("value", noRawat);
-
-        JsonUtil.JsonArrayBuilder identifierArray = JsonUtil.createArray().add(identifierNode);
-
-        jsonBuilder
-                .put("resourceType", "Encounter")
-                .put("status", status)
-                .put("class", classNode)
-                .put("subject", subjectNode)
-                .put("participant", participantArray)
-                .put("period", periodNode)
-                .put("location", locationArray)
-                .put("statusHistory", statusHistoryArray)
-                .put("serviceProvider", serviceProviderNode)
-                .put("identifier", identifierArray);
-
-        return jsonBuilder.build();
+        return encounter;
     }
+
+    public static Encounter buildEncounterWithID(String encounterID, ObjectNode data) {
+        Encounter encounter = buildEncounter(data);
+        if (encounterID != null && !encounterID.isEmpty()) {
+            encounter.setId(encounterID);
+        }
+        return encounter;
+
+    }
+
 }
