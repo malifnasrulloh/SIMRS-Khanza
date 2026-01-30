@@ -6,9 +6,11 @@
 package khanzahmsservicesatusehat;
 
 import fungsi.HttpRequestUtil;
+import fungsi.JsonUtil;
 import fungsi.LogTableModel;
 import fungsi.SatuSehatHelper;
 import fungsi.fhir.EncounterService;
+import fungsi.fhir.FHIRPayload;
 import fungsi.koneksiDB;
 import fungsi.logger.LogType;
 import fungsi.logger.SystemLogger;
@@ -21,8 +23,6 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.Timer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -49,7 +49,6 @@ public class frmUtama extends javax.swing.JFrame {
     private Date dateTime = new Date();
     private SatuSehatHelper satuSehatHelper = new SatuSehatHelper(koneksiDB.CLIENTIDSATUSEHAT(), koneksiDB.SECRETKEYSATUSEHAT(), koneksiDB.IDSATUSEHAT(), koneksiDB.URLAUTHSATUSEHAT(), koneksiDB.URLFHIRSATUSEHAT());
     private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceSatuSehat.logPath, "app-log");
-    private Map<String, String> requestMap = new HashMap<>();
 
     /**
      * Creates new form frmUtama
@@ -231,7 +230,7 @@ public class frmUtama extends javax.swing.JFrame {
 //                    encounter2();
 //                    servicerequestradiologi();
 //                }
-                if ((jam % 1 == 0) && (detik == 0) && (menit == 0)) {
+                if ((menit % 10 == 0) && (detik == 0)) {
                     encounter();
 //                    observationTTV();
 //                    vaksin();
@@ -283,21 +282,24 @@ public class frmUtama extends javax.swing.JFrame {
                             iddokter = satuSehatHelper.getPractitionerIDByNIK(rs.getString("ktpdokter"));
                             idpasien = satuSehatHelper.getPatientIDByNIK(rs.getString("no_ktp"));
                             try {
-                                requestMap.put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP");
-                                requestMap.put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter");
-                                requestMap.put("id_pasien", idpasien);
-                                requestMap.put("nm_pasien", rs.getString("nm_pasien"));
-                                requestMap.put("id_dokter", iddokter);
-                                requestMap.put("nama_dokter", rs.getString("nama"));
-                                requestMap.put("tgl_registrasi", rs.getString("tgl_registrasi"));
-                                requestMap.put("jam_reg", rs.getString("jam_reg"));
-                                requestMap.put("pulang", rs.getString("pulang"));
-                                requestMap.put("id_lokasi", rs.getString("id_lokasi_satusehat"));
-                                requestMap.put("nm_poli", rs.getString("nm_poli"));
-                                requestMap.put("no_rawat", rs.getString("no_rawat"));
-                                requestMap.put("service_provider_id", koneksiDB.IDSATUSEHAT());
-                                requestMap.put("status", "arrived");
-                                requestJson = EncounterService.buildEncounterBody(requestMap);
+                                requestJson = FHIRPayload.from(
+                                        EncounterService.buildEncounter(
+                                                JsonUtil.createObject()
+                                                        .put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP")
+                                                        .put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter")
+                                                        .put("id_pasien", idpasien)
+                                                        .put("nm_pasien", rs.getString("nm_pasien"))
+                                                        .put("id_dokter", iddokter)
+                                                        .put("nama_dokter", rs.getString("nama"))
+                                                        .put("tgl_registrasi", rs.getString("tgl_registrasi"))
+                                                        .put("jam_reg", rs.getString("jam_reg"))
+                                                        .put("pulang", rs.getString("pulang"))
+                                                        .put("id_lokasi", rs.getString("id_lokasi_satusehat"))
+                                                        .put("nm_poli", rs.getString("nm_poli"))
+                                                        .put("no_rawat", rs.getString("no_rawat"))
+                                                        .put("service_provider_id", koneksiDB.IDSATUSEHAT())
+                                                        .put("status", "arrived")
+                                                        .getNode())).toJson();
 
                                 URL = link + "/Encounter";
 
@@ -327,22 +329,25 @@ public class frmUtama extends javax.swing.JFrame {
                             iddokter = satuSehatHelper.getPractitionerIDByNIK(rs.getString("ktpdokter"));
                             idpasien = satuSehatHelper.getPatientIDByNIK(rs.getString("no_ktp"));
                             try {
-                                requestMap.put("id_encounter", rs.getString("id_encounter"));
-                                requestMap.put("status", "finished");
-                                requestMap.put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP");
-                                requestMap.put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter");
-                                requestMap.put("id_pasien", idpasien);
-                                requestMap.put("nm_pasien", rs.getString("nm_pasien"));
-                                requestMap.put("id_dokter", iddokter);
-                                requestMap.put("nama_dokter", rs.getString("nama"));
-                                requestMap.put("tgl_registrasi", rs.getString("tgl_registrasi"));
-                                requestMap.put("jam_reg", rs.getString("jam_reg"));
-                                requestMap.put("pulang", rs.getString("pulang"));
-                                requestMap.put("id_lokasi", rs.getString("id_lokasi_satusehat"));
-                                requestMap.put("nm_poli", rs.getString("nm_poli"));
-                                requestMap.put("no_rawat", rs.getString("no_rawat"));
-                                requestMap.put("service_provider_id", koneksiDB.IDSATUSEHAT());
-                                requestJson = EncounterService.buildEncounterBody(requestMap);
+                                requestJson = FHIRPayload.from(
+                                        EncounterService.buildEncounter(
+                                                JsonUtil.createObject()
+                                                        .put("id_encounter", rs.getString("id_encounter"))
+                                                        .put("status", "finished")
+                                                        .put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP")
+                                                        .put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter")
+                                                        .put("id_pasien", idpasien)
+                                                        .put("nm_pasien", rs.getString("nm_pasien"))
+                                                        .put("id_dokter", iddokter)
+                                                        .put("nama_dokter", rs.getString("nama"))
+                                                        .put("tgl_registrasi", rs.getString("tgl_registrasi"))
+                                                        .put("jam_reg", rs.getString("jam_reg"))
+                                                        .put("pulang", rs.getString("pulang"))
+                                                        .put("id_lokasi", rs.getString("id_lokasi_satusehat"))
+                                                        .put("nm_poli", rs.getString("nm_poli"))
+                                                        .put("no_rawat", rs.getString("no_rawat"))
+                                                        .put("service_provider_id", koneksiDB.IDSATUSEHAT())
+                                                        .getNode())).toJson();
 
                                 URL = link + "/Encounter/" + rs.getString("id_encounter");
 
@@ -409,21 +414,25 @@ public class frmUtama extends javax.swing.JFrame {
                             iddokter = satuSehatHelper.getPractitionerIDByNIK(rs.getString("ktpdokter"));
                             idpasien = satuSehatHelper.getPatientIDByNIK(rs.getString("no_ktp"));
                             try {
-                                requestMap.put("status", "arrived");
-                                requestMap.put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP");
-                                requestMap.put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter");
-                                requestMap.put("id_pasien", idpasien);
-                                requestMap.put("nm_pasien", rs.getString("nm_pasien"));
-                                requestMap.put("id_dokter", iddokter);
-                                requestMap.put("nama_dokter", rs.getString("nama"));
-                                requestMap.put("tgl_registrasi", rs.getString("tgl_registrasi"));
-                                requestMap.put("jam_reg", rs.getString("jam_reg"));
-                                requestMap.put("pulang", rs.getString("pulang"));
-                                requestMap.put("id_lokasi", rs.getString("id_lokasi_satusehat"));
-                                requestMap.put("nm_poli", rs.getString("nm_poli"));
-                                requestMap.put("no_rawat", rs.getString("no_rawat"));
-                                requestMap.put("service_provider_id", koneksiDB.IDSATUSEHAT());
-                                requestJson = EncounterService.buildEncounterBody(requestMap);
+                                requestJson = FHIRPayload.from(
+                                        EncounterService.buildEncounter(
+                                                JsonUtil.createObject()
+                                                        .put("status", "arrived")
+                                                        .put("code_class", rs.getString("status_lanjut").equals("Ralan") ? "AMB" : "IMP")
+                                                        .put("display_class", rs.getString("status_lanjut").equals("Ralan") ? "ambulatory" : "inpatient encounter")
+                                                        .put("id_pasien", idpasien)
+                                                        .put("nm_pasien", rs.getString("nm_pasien"))
+                                                        .put("id_dokter", iddokter)
+                                                        .put("nama_dokter", rs.getString("nama"))
+                                                        .put("tgl_registrasi", rs.getString("tgl_registrasi"))
+                                                        .put("jam_reg", rs.getString("jam_reg"))
+                                                        .put("pulang", rs.getString("pulang"))
+                                                        .put("id_lokasi", rs.getString("id_lokasi_satusehat"))
+                                                        .put("nm_poli", rs.getString("nm_poli"))
+                                                        .put("no_rawat", rs.getString("no_rawat"))
+                                                        .put("service_provider_id", koneksiDB.IDSATUSEHAT())
+                                                        .getNode())).toJson();
+                                requestJson = FHIRPayload.from(EncounterService.buildEncounter(JsonUtil.createObject().getNode())).toJson();
 
                                 URL = link + "/Encounter";
 
