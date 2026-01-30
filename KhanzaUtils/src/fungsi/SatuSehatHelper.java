@@ -1,5 +1,6 @@
 package fungsi;
 
+import fungsi.fhir.PatientModel;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import fungsi.logger.SystemLogger;
@@ -80,7 +81,7 @@ public class SatuSehatHelper {
 
     public String getPatientIDByNIK(String NIK) {
         if (!NIK.matches("\\d+")) {
-            throw new IllegalArgumentException("NIK should be only numeric");
+            throw new IllegalArgumentException("NIK harus hanya berupa angka");
         }
         HttpRequestUtil http = HttpRequestUtil.getInstance();
         HttpHeaders headers = new HttpHeaders();
@@ -109,7 +110,7 @@ public class SatuSehatHelper {
 
     public String getPractitionerIDByNIK(String NIK) {
         if (!NIK.matches("\\d+")) {
-            throw new IllegalArgumentException("NIK should be only numeric");
+            throw new IllegalArgumentException("NIK harus hanya berupa angka");
         }
         HttpRequestUtil http = HttpRequestUtil.getInstance();
         HttpHeaders headers = new HttpHeaders();
