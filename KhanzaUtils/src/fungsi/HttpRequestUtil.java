@@ -9,6 +9,7 @@ import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.config.TlsConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -72,10 +73,9 @@ public class HttpRequestUtil {
             SystemLogger.http(String.format("%s request to %s completed with status %s", method, url, response.getStatusCode()));
             return response;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             SystemLogger.error(e);
+            throw new RuntimeException("HTTP request failed", e);
         }
-        return null;
     }
 
     private HttpComponentsClientHttpRequestFactory getRequestFactory() {
@@ -88,11 +88,14 @@ public class HttpRequestUtil {
                         .setHandshakeTimeout(Timeout.ofSeconds(30))
                         .setSupportedProtocols(TLS.V_1_2, TLS.V_1_3)
                         .build())
-                .setMaxConnPerRoute(20)
-                .setMaxConnTotal(50)
+                .setMaxConnPerRoute(100)
+                .setMaxConnTotal(250)
                 .build();
 
         CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(RequestConfig.custom()
+                        .setResponseTimeout(Timeout.ofSeconds(30))
+                        .build())
                 .setConnectionManager(cm)
                 .evictExpiredConnections()
                 .evictIdleConnections(Timeout.ofSeconds(30))
@@ -100,8 +103,8 @@ public class HttpRequestUtil {
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
-        factory.setConnectionRequestTimeout(30_000);
-        factory.setReadTimeout(30_000);
+        factory.setConnectionRequestTimeout(Timeout.ofSeconds(30).toDuration());
+        factory.setReadTimeout(Timeout.ofSeconds(30).toDuration());
         return factory;
     }
 }
