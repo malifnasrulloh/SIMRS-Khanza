@@ -5951,7 +5951,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 }else if(R3.isSelected()==true){
                                     dlgrjk.setNoRm(norawat.getText(),DTPCari3.getDate(),DTPCari4.getDate()); 
                                 }
-                                dlgrjk.tampil();
                                 dlgrjk.setVisible(true);
                             }
                         } catch (Exception e) {
@@ -6565,7 +6564,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 }else if(R3.isSelected()==true){
                                     dlgrjk.setNoRm(rs2.getString("no_rawat2"),DTPCari3.getDate(),DTPCari4.getDate()); 
                                 }
-                                dlgrjk.tampil();
                                 dlgrjk.setVisible(true);
                             }else{
                                   JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -6597,7 +6595,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     }else if(R3.isSelected()==true){
                         dlgrjk.setNoRm(norawat.getText(),DTPCari3.getDate(),DTPCari4.getDate()); 
                     }
-                    dlgrjk.tampil();
                     dlgrjk.setVisible(true);
                 }
           }
@@ -7489,7 +7486,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 dlgrjk.setLocationRelativeTo(internalFrame1);
                                 dlgrjk.isCek();
                                 dlgrjk.setNoRm(rs2.getString("no_rawat2"),rs2.getString("no_rkm_medis")+" "+rs2.getString("nm_pasien")); 
-                                dlgrjk.tampil();
                                 dlgrjk.setVisible(true);
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -7524,7 +7520,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     dlgrjk.setLocationRelativeTo(internalFrame1);
                     dlgrjk.isCek();
                     dlgrjk.setNoRm(norawat.getText(),TNoRM.getText()+" "+TPasien.getText()); 
-                    dlgrjk.tampil();
                     dlgrjk.setVisible(true);
                 }
             }
@@ -12876,7 +12871,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 }else if(R3.isSelected()==true){
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
-                                form.tampil();
                                 form.setVisible(true);
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
@@ -12909,7 +12903,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     }else if(R3.isSelected()==true){
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }   
-                    form.tampil();
                     form.setVisible(true);
                     this.setCursor(Cursor.getDefaultCursor());
                 }
@@ -12943,7 +12936,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 }else if(R3.isSelected()==true){
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
-                                form.tampil();
                                 form.setVisible(true);
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
@@ -12976,7 +12968,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     }else if(R3.isSelected()==true){
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }   
-                    form.tampil();
                     form.setVisible(true);
                     this.setCursor(Cursor.getDefaultCursor());
                 }
@@ -13151,7 +13142,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     form.setNoRm(norawat.getText(),DTPCari4.getDate());
                 }
                 form.emptTeks();
-                form.tampil();
                 this.setCursor(Cursor.getDefaultCursor());
             }
         }
@@ -13294,7 +13284,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     form.setNoRm(norawat.getText(),DTPCari4.getDate());
                 }
                 form.emptTeks();
-                form.tampil();
                 this.setCursor(Cursor.getDefaultCursor());
             }
         }
@@ -15915,7 +15904,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -15949,7 +15937,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -15984,7 +15971,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -16018,7 +16004,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -16053,7 +16038,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -16087,7 +16071,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -16122,7 +16105,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -16156,7 +16138,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -16201,7 +16182,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -16235,7 +16215,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -17288,7 +17267,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 }else if(R3.isSelected()==true){
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
-                                form.tampil();
                                 form.setVisible(true);
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
@@ -17322,7 +17300,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     }else if(R3.isSelected()==true){
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }   
-                    form.tampil();
                     form.setVisible(true);
                     this.setCursor(Cursor.getDefaultCursor());
                 }
@@ -17358,7 +17335,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -17392,7 +17368,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -17963,7 +17938,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -17997,7 +17971,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -18032,7 +18005,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -18066,7 +18038,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
@@ -18483,7 +18454,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     form.setNoRm(norawat.getText(),DTPCari4.getDate());
                 }  
                 form.emptTeks();
-                form.tampil();
                 this.setCursor(Cursor.getDefaultCursor());
             }
         } 
@@ -18517,7 +18487,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     form.setNoRm(rs2.getString("no_rawat2"),DTPCari4.getDate());
                                 }
                                 form.emptTeks();
-                                form.tampil();
                                 this.setCursor(Cursor.getDefaultCursor());
                             }else{
                                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
@@ -18551,7 +18520,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         form.setNoRm(norawat.getText(),DTPCari4.getDate());
                     }  
                     form.emptTeks();
-                    form.tampil();
                     this.setCursor(Cursor.getDefaultCursor());
                 }
             }
