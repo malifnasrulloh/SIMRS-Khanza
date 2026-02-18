@@ -5,56 +5,57 @@
  */
 package khanzahmsservicesirsyankes;
 
-import fungsi.SirsApi;
+import fungsi.HttpRequestUtil;
+import fungsi.JsonUtil;
+import fungsi.LogTableModel;
+import fungsi.SIRSSecurityUtil;
 import fungsi.koneksiDB;
+import fungsi.logger.LogType;
+import fungsi.logger.SystemLogger;
 import fungsi.sekuel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
-import javax.swing.Timer;
-import org.springframework.http.HttpEntity;
+import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javax.swing.SwingUtilities;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 /**
  *
  * @author windiartonugroho
  */
 public class frmUtama extends javax.swing.JFrame {
-    private  Properties prop = new Properties();
-    private  Connection koneksi=koneksiDB.condb();
-    private  sekuel Sequel=new sekuel();
-    private  String requestXML,URL="";
-    private  SirsApi api=new SirsApi();
-    private  HttpHeaders headers;
-    private  HttpEntity requestEntity;
-    private  PreparedStatement ps;
-    private  ResultSet rs;
-    private int totaltt=0,tersedia=0,menunggu=0,terpakai=0;
+
+    private sekuel Sequel = new sekuel();
+    private String URL = "";
+    private SIRSSecurityUtil security = new SIRSSecurityUtil(koneksiDB.IDSIRS(), koneksiDB.PASSSIRS());
+    private LogTableModel userTableModel = new LogTableModel(KhanzaHMSServiceSIRSYankes.logPath, "app-log");
+    private final int UPDATE_INTERVAL_MINUTES = 5;
 
     /**
      * Creates new form frmUtama
      */
     public frmUtama() {
+        koneksiDB.condb();
         initComponents();
         try {
-            prop.loadFromXML(new FileInputStream("setting/database.xml"));
-            URL = koneksiDB.URLAPISIRS();	
+            URL = koneksiDB.URLAPISIRS();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
+            SystemLogger.error(e);
         }
-        
-        this.setSize(390,340);
-        
-        jam();
+
+        this.setSize(390, 340);
+
+        startScheduler();
     }
 
     /**
@@ -66,18 +67,12 @@ public class frmUtama extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TeksArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIMKES Khanza Service SIRANAP");
-
-        TeksArea.setColumns(20);
-        TeksArea.setRows(5);
-        jScrollPane1.setViewportView(TeksArea);
-
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jButton1.setText("Keluar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +81,13 @@ public class frmUtama extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, java.awt.BorderLayout.PAGE_END);
+
+        jScrollPane2.setMaximumSize(null);
+
+        jTable1.setModel(userTableModel);
+        jScrollPane2.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -112,131 +114,101 @@ public class frmUtama extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(frmUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            SystemLogger.error(ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmUtama().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new frmUtama().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea TeksArea;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
-            private int nilai_jam;
-            private int nilai_menit;
-            private int nilai_detik;
-            public void actionPerformed(ActionEvent e) {
-                String nol_jam = "";
-                String nol_menit = "";
-                String nol_detik = "";
-                Date now = Calendar.getInstance().getTime();
-                // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                nilai_jam = now.getHours();
-                nilai_menit = now.getMinutes();
-                nilai_detik = now.getSeconds();
-                // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_jam <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_jam = "0";
-                }
-                // Jika nilai MENIT lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_menit <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_menit = "0";
-                }
-                // Jika nilai DETIK lebih kecil dari 10 (hanya 1 digit)
-                if (nilai_detik <= 9) {
-                    // Tambahkan "0" didepannya
-                    nol_detik = "0";
-                }
-                // Membuat String JAM, MENIT, DETIK
-                String jam = nol_jam + Integer.toString(nilai_jam);
-                String menit = nol_menit + Integer.toString(nilai_menit);
-                String detik = nol_detik + Integer.toString(nilai_detik);
-                TeksArea.append(jam+":"+menit+":"+detik+"\n");
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-                if(menit.equals("01")&&detik.equals("01")){
-                    if(jam.equals("01")&&menit.equals("01")&&detik.equals("01")){
-                        TeksArea.setText("");
-                    }
-                        
-                    try {
-                        koneksi=koneksiDB.condb();
-                        TeksArea.append("Memulai update Siranap\n");
-                        ps=koneksi.prepareStatement(
-                                "select siranap_ketersediaan_kamar.kode_ruang_siranap,siranap_ketersediaan_kamar.kelas_ruang_siranap,siranap_ketersediaan_kamar.kd_bangsal," +
-                                "bangsal.nm_bangsal,siranap_ketersediaan_kamar.kelas,siranap_ketersediaan_kamar.kapasitas," +
-                                "siranap_ketersediaan_kamar.tersedia,siranap_ketersediaan_kamar.tersediapria," +
-                                "siranap_ketersediaan_kamar.tersediawanita,siranap_ketersediaan_kamar.menunggu " +
-                                "from siranap_ketersediaan_kamar inner join bangsal on siranap_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal");
-                        try {
-                            rs=ps.executeQuery();
-                            while(rs.next()){
-                                TeksArea.append("Mengirimkan kamar "+rs.getString("kode_ruang_siranap")+" "+rs.getString("nm_bangsal")+"\n");
-                                try {    
-                                    totaltt=Sequel.cariInteger("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and kd_bangsal='"+rs.getString("kd_bangsal")+"'");
-                                    tersedia=Sequel.cariInteger("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and status='KOSONG' and kd_bangsal='"+rs.getString("kd_bangsal")+"'");
-                                    terpakai=Sequel.cariInteger("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and status='ISI' and kd_bangsal='"+rs.getString("kd_bangsal")+"'");
-                                    menunggu=Sequel.cariInteger("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+rs.getString("kelas")+"' and status='DIBERSIHKAN' and kd_bangsal='"+rs.getString("kd_bangsal")+"'");
-                                    headers = new HttpHeaders();
-                                    headers.add("X-rs-id",koneksiDB.IDSIRS()); 
-                                    headers.add("X-pass",api.getHmac()); 
-                                    headers.add("Content-Type","application/xml; charset=ISO-8859-1");
-                                    requestXML ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
-                                    "<xml>\n"+    
-                                        "<data>\n"+
-                                            "<kode_ruang>"+rs.getString("kelas_ruang_siranap").substring(0,4)+"</kode_ruang>\n"+
-                                            "<tipe_pasien>"+rs.getString("kode_ruang_siranap").substring(0,4)+"</tipe_pasien>\n"+
-                                            "<total_TT>"+Integer.toString(totaltt)+"</total_TT>\n"+
-                                            "<terpakai_male>"+Integer.toString(terpakai)+"</terpakai_male>\n"+
-                                            "<terpakai_female>"+Integer.toString(terpakai)+"</terpakai_female>\n"+
-                                            "<kosong_male>"+Integer.toString(tersedia)+"</kosong_male>\n"+
-                                            "<kosong_female>"+Integer.toString(tersedia)+"</kosong_female>\n"+
-                                            "<waiting>"+Integer.toString(menunggu)+"</waiting>\n"+
-                                            "<tgl_update>"+dateFormat.format(date)+"</tgl_update>\n"+
-                                        "</data>\n"+
-                                    "</xml>";              
-                                    TeksArea.append("JSON dikirim : "+requestXML+"\n");
-                                    requestEntity = new HttpEntity(requestXML,headers);
-                                    requestXML=api.getRest().exchange(URL+"/ranap", HttpMethod.POST, requestEntity, String.class).getBody();
-                                    TeksArea.append("respon WS BPJS : "+requestXML+"\n");
-                                }catch (Exception ex) {
-                                    System.out.println("Notifikasi Bridging : "+ex);
-                                }
-                            }
-                        } catch (Exception ex) {
-                            System.out.println("Notif Ketersediaan : "+ex);
-                        } finally{
-                            if(rs!=null){
-                                rs.close();
-                            }
-                            if(ps!=null){
-                                ps.close();
-                            }
-                        }
-                        TeksArea.append("Proses update selesai\n");
-                    } catch (Exception ez) {
-                        System.out.println("Notif : "+ez);
-                    }
-                }
+
+    private void startScheduler() {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+        Runnable task = () -> {
+            LocalTime now = LocalTime.now();
+
+            if (now.equals(LocalTime.of(0, 0, 0))) {
+                SwingUtilities.invokeLater(() -> {
+                    userTableModel.resetData();
+                    SystemLogger.reconfigure();
+                    System.out.println("Daily log reset at " + now.toString());
+                });
+            }
+
+            if (now.getMinute() % UPDATE_INTERVAL_MINUTES == 0 && now.getSecond() == 0) {
+                updateSiranap();
             }
         };
-        // Timer
-        new Timer(1000, taskPerformer).start();
+        scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
     }
+
+    private void updateSiranap() {
+        try (Connection conn = koneksiDB.condb(); PreparedStatement ps = conn.prepareStatement(
+                "SELECT k.kode_ruang_siranap, k.kelas_ruang_siranap, k.kd_bangsal, "
+                + "b.nm_bangsal, k.kelas, k.kapasitas, k.tersedia, k.tersediapria, "
+                + "k.tersediawanita, k.menunggu "
+                + "FROM siranap_ketersediaan_kamar k "
+                + "INNER JOIN bangsal b ON k.kd_bangsal = b.kd_bangsal"
+        ); ResultSet rs = ps.executeQuery()) {
+            SwingUtilities.invokeLater(() -> userTableModel.tambahData("Memulai update Siranap"));
+
+            while (rs.next()) {
+                try {
+                    String kodeRuang = rs.getString("kode_ruang_siranap");
+                    String namaBangsal = rs.getString("nm_bangsal");
+                    SwingUtilities.invokeLater(() -> userTableModel.tambahData("Mengirim kamar " + kodeRuang + " " + namaBangsal));
+
+                    int total = Sequel.cariInteger("SELECT COUNT(kd_kamar) FROM kamar " + "WHERE statusdata='1' AND kelas='" + rs.getString("kelas") + "' " + "AND kd_bangsal='" + rs.getString("kd_bangsal") + "'");
+                    int terpakai = Sequel.cariInteger("SELECT COUNT(kd_kamar) FROM kamar " + "WHERE statusdata='1' AND kelas='" + rs.getString("kelas") + "' AND status='ISI' " + "AND kd_bangsal='" + rs.getString("kd_bangsal") + "'");
+
+                    SIRSSecurityUtil.SignatureResult resultSignature = security.generateSignaturePair();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.add("X-rs-id", resultSignature.rsId);
+                    headers.add("X-pass", resultSignature.md5pass);
+                    headers.add("X-Timestamp", String.valueOf(resultSignature.timestamp));
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    
+//                  TODO: align implementation with latest API documentation
+                    String requestJson = JsonUtil.createObject()
+                            .put("id_tt", rs.getString("kelas_ruang_siranap").substring(0, 4))
+                            .put("jumlah_ruang", "")
+                            .put("jumlah", String.valueOf(total))
+                            .put("terpakai", String.valueOf(terpakai))
+                            .build();
+
+                    ResponseEntity<Map> response = HttpRequestUtil.getInstance().exchange(URL, HttpMethod.POST, requestJson, Map.class, headers);
+
+                    SwingUtilities.invokeLater(() -> {
+                        userTableModel.tambahData("Request URL: " + URL, LogType.HTTP);
+                        userTableModel.tambahData("Request JSON: " + requestJson, LogType.HTTP);
+                        userTableModel.tambahData("Respon WS SIRS: " + response.getBody(), LogType.HTTP);
+                    });
+                } catch (Exception ex) {
+                    SystemLogger.error(ex);
+                    System.out.println(ex);
+                }
+            }
+            SwingUtilities.invokeLater(() -> userTableModel.tambahData("Proses update selesai"));
+        } catch (Exception e) {
+            SystemLogger.error(e);
+            System.out.println(e);
+        }
+    }
+
 }

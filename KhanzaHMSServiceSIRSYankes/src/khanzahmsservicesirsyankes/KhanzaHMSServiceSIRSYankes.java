@@ -5,22 +5,24 @@
  */
 package khanzahmsservicesirsyankes;
 
+import fungsi.logger.SystemLogger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  *
  * @author windiartonugroho
  */
 public class KhanzaHMSServiceSIRSYankes {
-    
+
+    public static final Path logPath = Paths.get("log/khanzahmsservicesirsyankes");
 
     /**
      * @param args the command line arguments
      */
-    
-
     public static void main(String[] args) {
+        SystemLogger.configure(logPath, "service-log");
         new frmUtama().setVisible(true);
     }
-    
-    
-    
+
 }
