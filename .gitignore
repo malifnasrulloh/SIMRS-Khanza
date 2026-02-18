@@ -1,5 +1,6 @@
 [Bb]uild/
 [Dd]ist/
+[Tt]arget/
 
 *.class
 *.jasper
