@@ -9,7 +9,7 @@
  * Created on May 22, 2010, 9:37:21 PM
  */
 
-package simrskhanza;
+package pcraicra;
 import fungsi.WarnaTable;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
@@ -37,7 +37,7 @@ import javax.swing.table.TableColumn;
  *
  * @author dosen
  */
-public final class DlgJabatan extends javax.swing.JDialog {
+public final class PCRAICRAJenisAktivitasProyek extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private Connection koneksi=koneksiDB.condb();
     private sekuel Sequel=new sekuel();
@@ -50,7 +50,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
     /** Creates new form DlgJabatan
      * @param parent
      * @param modal */
-    public DlgJabatan(java.awt.Frame parent, boolean modal) {
+    public PCRAICRAJenisAktivitasProyek(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(10,10);
@@ -77,8 +77,8 @@ public final class DlgJabatan extends javax.swing.JDialog {
         }
         tbJabatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)4).getKata(TKd));
-        TNm.setDocument(new batasInput((byte)25).getKata(TNm));
+        KodeAktivitas.setDocument(new batasInput((byte)5).getKata(KodeAktivitas));
+        NamaAktivitas.setDocument(new batasInput((byte)40).getKata(NamaAktivitas));
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
     }
 
@@ -96,9 +96,9 @@ public final class DlgJabatan extends javax.swing.JDialog {
         tbJabatan = new widget.Table();
         panelGlass7 = new widget.panelisi();
         jLabel3 = new widget.Label();
-        TKd = new widget.TextBox();
+        KodeAktivitas = new widget.TextBox();
         jLabel4 = new widget.Label();
-        TNm = new widget.TextBox();
+        NamaAktivitas = new widget.TextBox();
         jPanel3 = new javax.swing.JPanel();
         panelGlass8 = new widget.panelisi();
         BtnSimpan = new widget.Button();
@@ -123,7 +123,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Jabatan ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Jenis Aktivitas Proyek ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -151,34 +151,34 @@ public final class DlgJabatan extends javax.swing.JDialog {
         panelGlass7.setPreferredSize(new java.awt.Dimension(44, 47));
         panelGlass7.setLayout(null);
 
-        jLabel3.setText("Kode Jabatan :");
+        jLabel3.setText("Kode Aktivitas :");
         jLabel3.setName("jLabel3"); // NOI18N
         panelGlass7.add(jLabel3);
         jLabel3.setBounds(0, 12, 95, 23);
 
-        TKd.setHighlighter(null);
-        TKd.setName("TKd"); // NOI18N
-        TKd.addKeyListener(new java.awt.event.KeyAdapter() {
+        KodeAktivitas.setHighlighter(null);
+        KodeAktivitas.setName("KodeAktivitas"); // NOI18N
+        KodeAktivitas.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                TKdKeyPressed(evt);
+                KodeAktivitasKeyPressed(evt);
             }
         });
-        panelGlass7.add(TKd);
-        TKd.setBounds(98, 12, 60, 23);
+        panelGlass7.add(KodeAktivitas);
+        KodeAktivitas.setBounds(98, 12, 60, 23);
 
-        jLabel4.setText("Nama Jabatan :");
+        jLabel4.setText("Nama Aktivitas :");
         jLabel4.setName("jLabel4"); // NOI18N
         panelGlass7.add(jLabel4);
         jLabel4.setBounds(178, 12, 90, 23);
 
-        TNm.setName("TNm"); // NOI18N
-        TNm.addKeyListener(new java.awt.event.KeyAdapter() {
+        NamaAktivitas.setName("NamaAktivitas"); // NOI18N
+        NamaAktivitas.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                TNmKeyPressed(evt);
+                NamaAktivitasKeyPressed(evt);
             }
         });
-        panelGlass7.add(TNm);
-        TNm.setBounds(271, 12, 245, 23);
+        panelGlass7.add(NamaAktivitas);
+        NamaAktivitas.setBounds(271, 12, 245, 23);
 
         internalFrame1.add(panelGlass7, java.awt.BorderLayout.PAGE_START);
 
@@ -358,23 +358,23 @@ public final class DlgJabatan extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TKdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-        Valid.pindah(evt,TCari,TNm);
-}//GEN-LAST:event_TKdKeyPressed
+    private void KodeAktivitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodeAktivitasKeyPressed
+        Valid.pindah(evt,TCari,NamaAktivitas);
+}//GEN-LAST:event_KodeAktivitasKeyPressed
 
-    private void TNmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNmKeyPressed
-        Valid.pindah(evt,TKd,BtnSimpan);
-}//GEN-LAST:event_TNmKeyPressed
+    private void NamaAktivitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaAktivitasKeyPressed
+        Valid.pindah(evt,KodeAktivitas,BtnSimpan);
+}//GEN-LAST:event_NamaAktivitasKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TKd.getText().trim().equals("")){
-            Valid.textKosong(TKd,"kode jabatan");
-        }else if(TNm.getText().trim().equals("")){
-            Valid.textKosong(TNm,"nama jabatan");
+        if(KodeAktivitas.getText().trim().equals("")){
+            Valid.textKosong(KodeAktivitas,"kode aktvitas");
+        }else if(NamaAktivitas.getText().trim().equals("")){
+            Valid.textKosong(NamaAktivitas,"nama aktivitas");
         }else{
-            if(Sequel.menyimpantf("jabatan","'"+TKd.getText()+"','"+TNm.getText()+"'","Kode Jabatan")==true){
+            if(Sequel.menyimpantf("pcra_icra_jenis_aktivitas_proyek","'"+KodeAktivitas.getText()+"','"+NamaAktivitas.getText()+"'","Kode Jabatan")==true){
                 tabMode.addRow(new Object[]{
-                    TKd.getText(),TNm.getText()
+                    KodeAktivitas.getText(),NamaAktivitas.getText()
                 });
                 emptTeks();
                 LCount.setText(""+tabMode.getRowCount());
@@ -386,7 +386,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             BtnSimpanActionPerformed(null);
         }else{
-            Valid.pindah(evt,TNm,BtnBatal);
+            Valid.pindah(evt,NamaAktivitas,BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -402,7 +402,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         if(tbJabatan.getSelectedRow()!= -1){
-            if(Sequel.meghapustf("jabatan","kd_jbtn",tbJabatan.getValueAt(tbJabatan.getSelectedRow(),0).toString())==true){
+            if(Sequel.meghapustf("pcra_icra_jenis_aktivitas_proyek","kode_aktivitas",tbJabatan.getValueAt(tbJabatan.getSelectedRow(),0).toString())==true){
                 tabMode.removeRow(tbJabatan.getSelectedRow());
                 emptTeks();
                 LCount.setText(""+tabMode.getRowCount());
@@ -421,17 +421,17 @@ public final class DlgJabatan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TKd.getText().trim().equals("")){
-            Valid.textKosong(TKd,"kode jabatan");
-        }else if(TNm.getText().trim().equals("")){
-            Valid.textKosong(TNm,"nama jabatan");
+        if(KodeAktivitas.getText().trim().equals("")){
+            Valid.textKosong(KodeAktivitas,"kode aktvitas");
+        }else if(NamaAktivitas.getText().trim().equals("")){
+            Valid.textKosong(NamaAktivitas,"nama aktivitas");
         }else{
             if(tbJabatan.getSelectedRow()>-1){
-                if(Sequel.mengedittf("jabatan","kd_jbtn=?","kd_jbtn=?,nm_jbtn=?",3,new String[]{
-                        TKd.getText(),TNm.getText(),tbJabatan.getValueAt(tbJabatan.getSelectedRow(), 0).toString()
+                if(Sequel.mengedittf("pcra_icra_jenis_aktivitas_proyek","kode_aktivitas=?","kode_aktivitas=?,nama_aktivitas=?",3,new String[]{
+                        KodeAktivitas.getText(),NamaAktivitas.getText(),tbJabatan.getValueAt(tbJabatan.getSelectedRow(), 0).toString()
                     })==true){
-                    tabMode.setValueAt(TKd.getText(),tbJabatan.getSelectedRow(),0);
-                    tabMode.setValueAt(TNm.getText(),tbJabatan.getSelectedRow(),1);
+                    tabMode.setValueAt(KodeAktivitas.getText(),tbJabatan.getSelectedRow(),0);
+                    tabMode.setValueAt(NamaAktivitas.getText(),tbJabatan.getSelectedRow(),1);
                     emptTeks();
                 }
             }else{
@@ -493,7 +493,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             BtnAllActionPerformed(null);
         }else{
-            Valid.pindah(evt, BtnCari, TKd);
+            Valid.pindah(evt, BtnCari, KodeAktivitas);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
@@ -548,7 +548,7 @@ public final class DlgJabatan extends javax.swing.JDialog {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgJabatan dialog = new DlgJabatan(new javax.swing.JFrame(), true);
+            PCRAICRAJenisAktivitasProyek dialog = new PCRAICRAJenisAktivitasProyek(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -567,11 +567,11 @@ public final class DlgJabatan extends javax.swing.JDialog {
     private widget.Button BtnHapus;
     private widget.Button BtnKeluar;
     private widget.Button BtnSimpan;
+    private widget.TextBox KodeAktivitas;
     private widget.Label LCount;
+    private widget.TextBox NamaAktivitas;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
-    private widget.TextBox TKd;
-    private widget.TextBox TNm;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel3;
     private widget.Label jLabel4;
@@ -588,13 +588,13 @@ public final class DlgJabatan extends javax.swing.JDialog {
         Valid.tabelKosong(tabMode);
         try{
             ps=koneksi.prepareStatement(
-                "select jabatan.kd_jbtn,jabatan.nm_jbtn from jabatan "+(TCari.getText().trim().equals("")?"":"where jabatan.kd_jbtn like ? or jabatan.nm_jbtn like ? ")+"order by jabatan.kd_jbtn"
+                "select pcra_icra_jenis_aktivitas_proyek.kode_aktivitas,pcra_icra_jenis_aktivitas_proyek.nama_aktivitas from pcra_icra_jenis_aktivitas_proyek "+(TCari.getText().trim().equals("")?"":"where pcra_icra_jenis_aktivitas_proyek.kode_aktivitas like ? or pcra_icra_jenis_aktivitas_proyek.nama_aktivitas like ? ")+"order by pcra_icra_jenis_aktivitas_proyek.kode_aktivitas"
             );
             try {
                 if(!TCari.getText().trim().equals("")){
                     ps.setString(1,"%"+TCari.getText().trim()+"%");
                     ps.setString(2,"%"+TCari.getText().trim()+"%");
-                }   
+                }
                 rs=ps.executeQuery();
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
@@ -620,21 +620,21 @@ public final class DlgJabatan extends javax.swing.JDialog {
 
     private void getData() {
         if(tbJabatan.getSelectedRow()!= -1){
-            TKd.setText(tbJabatan.getValueAt(tbJabatan.getSelectedRow(),0).toString());
-            TNm.setText(tbJabatan.getValueAt(tbJabatan.getSelectedRow(),1).toString());
+            KodeAktivitas.setText(tbJabatan.getValueAt(tbJabatan.getSelectedRow(),0).toString());
+            NamaAktivitas.setText(tbJabatan.getValueAt(tbJabatan.getSelectedRow(),1).toString());
         }
     }
 
     public void emptTeks() {
-        TKd.setText("");
-        TNm.setText("");
+        KodeAktivitas.setText("");
+        NamaAktivitas.setText("");
         TCari.setText("");
-        TKd.requestFocus();
-        Valid.autoNomer(" jabatan ","J",3,TKd);
+        KodeAktivitas.requestFocus();
+        Valid.autoNomer(" pcra_icra_jenis_aktivitas_proyek ","AP",3,KodeAktivitas);
     }
     
     public JTextField getTextField(){
-        return TKd;
+        return KodeAktivitas;
     }
 
     public JButton getButton(){
