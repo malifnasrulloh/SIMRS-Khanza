@@ -170,10 +170,10 @@ public class frmUtama extends javax.swing.JFrame {
             userTableModel.tambahData("Memulai update aplicare");
             try (PreparedStatement ps = koneksi.prepareStatement(
                     "SELECT aplicare_ketersediaan_kamar.kode_kelas_aplicare, aplicare_ketersediaan_kamar.kd_bangsal, bangsal.nm_bangsal,"
-                    + "COUNT(k.kd_kamar) AS kapasitas, SUM(k.status = 'KOSONG') AS tersedia"
-                    + "FROM aplicare_ketersediaan_kamar INNER JOIN bangsal ON aplicare_ketersediaan_kamar.kd_bangsal = bangsal.kd_bangsal"
-                    + "LEFT JOIN kamar k ON bangsal.kd_bangsal = k.kd_bangsal AND k.statusdata = '1'"
-                    + "GROUP BY aplicare_ketersediaan_kamar.kd_bangsal"
+                    + " COUNT(k.kd_kamar) AS kapasitas, SUM(k.status = 'KOSONG') AS tersedia"
+                    + " FROM aplicare_ketersediaan_kamar INNER JOIN bangsal ON aplicare_ketersediaan_kamar.kd_bangsal = bangsal.kd_bangsal"
+                    + " LEFT JOIN kamar k ON bangsal.kd_bangsal = k.kd_bangsal AND k.statusdata = '1'"
+                    + " GROUP BY aplicare_ketersediaan_kamar.kd_bangsal"
             ); ResultSet rs = ps.executeQuery();) {
                 SystemLogger.sql(ps.toString());
 
