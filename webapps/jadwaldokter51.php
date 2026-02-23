@@ -358,7 +358,7 @@ $jam = date("H:i");
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
     <script type="text/javascript">
         var auto_refresh = setInterval(function() {
-            $('#data').load('data_jadwal.php');
+            $('#data').load('data_jadwaldokter.php');
         }, 5000);
     </script>
 
