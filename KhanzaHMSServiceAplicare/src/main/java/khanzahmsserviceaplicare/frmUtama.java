@@ -169,11 +169,12 @@ public class frmUtama extends javax.swing.JFrame {
             koneksi = koneksiDB.condb();
             userTableModel.tambahData("Memulai update aplicare");
             try (PreparedStatement ps = koneksi.prepareStatement(
-                    "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal,"
-                    + "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas,"
-                    + "aplicare_ketersediaan_kamar.tersedia,aplicare_ketersediaan_kamar.tersediapria,"
-                    + "aplicare_ketersediaan_kamar.tersediawanita,aplicare_ketersediaan_kamar.tersediapriawanita "
-                    + "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal"); ResultSet rs = ps.executeQuery();) {
+                    "SELECT aplicare_ketersediaan_kamar.kode_kelas_aplicare, aplicare_ketersediaan_kamar.kd_bangsal, bangsal.nm_bangsal,"
+                    + "COUNT(k.kd_kamar) AS kapasitas, SUM(k.status = 'KOSONG') AS tersedia"
+                    + "FROM aplicare_ketersediaan_kamar INNER JOIN bangsal ON aplicare_ketersediaan_kamar.kd_bangsal = bangsal.kd_bangsal"
+                    + "LEFT JOIN kamar k ON bangsal.kd_bangsal = k.kd_bangsal AND k.statusdata = '1'"
+                    + "GROUP BY aplicare_ketersediaan_kamar.kd_bangsal"
+            ); ResultSet rs = ps.executeQuery();) {
                 SystemLogger.sql(ps.toString());
 
                 while (rs.next()) {
@@ -188,8 +189,8 @@ public class frmUtama extends javax.swing.JFrame {
                         headers.add("X-Timestamp", String.valueOf(resultSignature.timestamp));
                         headers.add("X-Signature", resultSignature.signature);
 
-                        int tersedia = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "' and status='KOSONG'"));
-                        int kapasitas = Integer.parseInt(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='" + rs.getString("kelas") + "' and kd_bangsal='" + rs.getString("kd_bangsal") + "'"));
+                        int tersedia = rs.getInt("tersedia");
+                        int kapasitas = rs.getInt("kapasitas");
 
                         String requestJson = AplicareHelper.buildUpdateKamarJson(rs.getString("kode_kelas_aplicare"), rs.getString("kd_bangsal"), rs.getString("nm_bangsal"), kapasitas, tersedia, tersedia, tersedia, tersedia);
 
