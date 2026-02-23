@@ -31,6 +31,7 @@ $jam = date("H:i");
     <style type="text/css">
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
         }
 
         .bg::before {
@@ -45,13 +46,14 @@ $jam = date("H:i");
             bottom: 0;
             left: 0;
             right: 0;
-            opacity: 0.08;
-            filter: blur(3px);
+            opacity: 0.05;
+            filter: blur(4px);
         }
 
-        /* Navbar */
+        /* ===== NAVBAR ===== */
         nav {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #42a5f5, #1e88e5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .nav-wrapper a {
@@ -60,62 +62,65 @@ $jam = date("H:i");
             letter-spacing: 1px;
         }
 
-        /* Header Card */
+        /* ===== HEADER CARD ===== */
         #header-instansi .card {
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            padding: 10px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            padding: 15px;
         }
 
         .logo {
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             border: 4px solid white;
             margin-right: 20px;
             object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .ins {
             font-weight: 700;
-            font-size: 28px;
+            font-size: 30px;
             margin-bottom: 5px;
         }
 
         .almt {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 15px;
+            opacity: 0.95;
         }
 
-        /* Video */
+        /* ===== VIDEO ===== */
         .player {
             width: 100%;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Jam */
-        #jam {
+        /* ===== DATE TIME ===== */
+        #header-date,
+        #header-time {
             font-size: 20px;
             font-weight: bold;
         }
 
-        /* Data Container */
+        /* ===== DATA CONTAINER ===== */
         #data {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             min-height: 250px;
         }
 
-        /* ====== Ruang Ranap Styling ====== */
+        /* ====== RUANG RANAP TABLE ====== */
         h5.center {
             font-weight: 700;
-            font-size: 26px;
-            color: #e65100;
-            margin-bottom: 20px;
+            font-size: 28px;
+            color: #1565c0;
+            margin-bottom: 25px;
             letter-spacing: 1px;
         }
 
@@ -123,45 +128,40 @@ $jam = date("H:i");
             width: 100%;
             border-collapse: collapse;
             background: #ffffff;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
 
         .default thead {
-            background: linear-gradient(45deg, #ff7043, #f4511e);
+            background: linear-gradient(45deg, #64b5f6, #1e88e5);
             color: white;
             font-size: 18px;
         }
 
         .default th {
-            padding: 15px;
+            padding: 16px;
             text-align: center;
         }
 
         .default td {
-            padding: 15px;
+            padding: 16px;
             font-size: 18px;
             text-align: center;
         }
 
         .default tbody tr:nth-child(even) {
-            background-color: #fff3e0;
+            background-color: #e3f2fd;
         }
 
-        .default tbody tr:hover {
-            background-color: #ffe0b2;
+        tbody tr:hover {
+            background-color: #bbdefb;
             transform: scale(1.01);
             transition: 0.3s ease;
         }
 
-        .default tbody tr {
+        tbody tr {
             transition: all 0.3s ease;
-        }
-
-        /* Animasi muncul */
-        .default {
-            animation: fadeIn 0.8s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -176,28 +176,43 @@ $jam = date("H:i");
             }
         }
 
-        /* Footer */
+        /* ===== FOOTER ===== */
         .page-footer {
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .footer-copyright {
             font-size: 18px;
             font-weight: 600;
             letter-spacing: 1px;
+            background: linear-gradient(45deg, #42a5f5, #1565c0);
+        }
+
+        .marquee {
+            margin-left: 5%;
+        }
+
+        .marquee-sibling {
+            display: contents;
+        }
+
+        .marquee-sibling,
+        .simple-marquee-container {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background-color: transparent;
         }
 
         .marquee-content-items {
-            margin-right: 40px;
             font-size: 18px;
             font-weight: bold;
             color: #fff;
         }
 
-        /* Animasi Fade */
+        /* ===== Animations ===== */
         #header-instansi,
-        .player,
-        #data {
+        .player {
             animation: fadeInUp 1s ease-in-out;
         }
 
@@ -224,7 +239,7 @@ $jam = date("H:i");
     <!-- Header START -->
     <header>
 
-        <nav class="deep-orange accent-3">
+        <nav class="accent-3">
             <div class="nav-wrapper">
                 <ul class="center hide-on-med-and-down" id="nv">
                     <li>
@@ -232,36 +247,13 @@ $jam = date("H:i");
                     </li>
                     <li class="right" style="margin-right: 10px;">
                         <i class="material-icons">perm_contact_calendar</i>
-                        <a href="" class="white-text">
-                            <?php
-                            //menentukan hari
-                            $a_hari = array(1 => "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu");
-                            $hari = $a_hari[date("N")];
-
-                            //menentukan tanggal
-                            $tanggal = date("j");
-
-                            //menentukan bulan
-                            $a_bulan = array(1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-                            $bulan = $a_bulan[date("n")];
-
-                            //menentukan tahun
-                            $tahun = date("Y");
-
-                            //dan untuk menampilkan nya dengan format contoh Jumat, 22 Februari 2013
-                            echo $hari . ", " . $tanggal . " " . $bulan . " " . $tahun;
-
-                            ?>
-                        </a>
+                        <a href="" class="white-text" id="header-date"></a>
                         <i class="material-icons md-12">query_builder</i>
-                        <a href="" class="white-text" id="jam"></a>
+                        <a href="" class="white-text" id="header-time"></a>
                     </li>
                 </ul>
             </div>
         </nav>
-
-
-
 
     </header>
     <!-- Header END -->
@@ -276,7 +268,7 @@ $jam = date("H:i");
                 <?php $setting =  mysqli_fetch_array(bukaquery("select setting.nama_instansi,setting.alamat_instansi,setting.kabupaten,setting.propinsi,setting.kontak,setting.email,setting.logo from setting"));
                 ?>
                 <div class="col s8" id="header-instansi">
-                    <div class="card deep-orange accent-3 white-text">
+                    <div class="card accent-3 white-text">
                         <div class="card-content">
                             <div class="left">
                                 <img class="logo" src="data:image/jpeg;base64,<?php echo base64_encode($setting['logo']); ?>" />
@@ -297,9 +289,7 @@ $jam = date("H:i");
             <!-- Row END -->
         </div>
         <!-- container END -->
-        <div class="container-fluid" id="data">
-
-        </div>
+        <div class="container-fluid" id="data"></div>
 
     </main>
     <!-- Main END -->
@@ -308,8 +298,8 @@ $jam = date("H:i");
 
     <!-- Footer START -->
     <footer class="page-footer">
-        <div class="footer-copyright deep-orange accent-3 white-text">
-            <div class="container simple-marquee-container" id="footer">
+        <div class="footer-copyright white-text">
+            <div class="container simple-marquee-container">
                 <div class="marquee-sibling">
                     Tarif Kamar Umum
                 </div>
@@ -340,28 +330,35 @@ $jam = date("H:i");
         }
 
         function jam() {
-            var e = document.getElementById('jam'),
-                d = new Date(),
-                h, m, s;
-            h = d.getHours();
-            m = set(d.getMinutes());
-            s = set(d.getSeconds());
+            var ht = document.getElementById('header-time'),
+                hd = document.getElementById('header-date'),
+                date = new Date()
 
-            e.innerHTML = h + ':' + m + ':' + s;
+            var d = date.toLocaleDateString("id-ID", {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+
+            var t = date.toLocaleTimeString("id-ID", {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: "2-digit"
+            });
+
+            hd.innerHTML = d
+            ht.innerHTML = t;
 
             setTimeout('jam()', 1000);
-        }
-
-        function set(e) {
-            e = e < 10 ? '0' + e : e;
-            return e;
         }
     </script>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
     <script type="text/javascript">
         var auto_refresh = setInterval(function() {
-            $('#data').load('data_kamar.php').fadeIn("slow");
+            $('#data').load('data_kamar.php');
         }, 5000);
     </script>
 
