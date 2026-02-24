@@ -243,7 +243,7 @@ $jam = date("H:i");
             <div class="nav-wrapper">
                 <ul class="center hide-on-med-and-down" id="nv">
                     <li>
-                        <a href="./" class="ams hide-on-med-and-down"><i class="material-icons md-36">local_hospital</i> Informasi</a>
+                        <a href="" class="ams hide-on-med-and-down"><i class="material-icons md-36">local_hospital</i> Informasi</a>
                     </li>
                     <li class="right" style="margin-right: 10px;">
                         <i class="material-icons">perm_contact_calendar</i>

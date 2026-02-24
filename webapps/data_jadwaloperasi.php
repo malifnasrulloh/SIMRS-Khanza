@@ -56,7 +56,7 @@
 						}
 					} else {
 						echo "<tr>
-								<td colspan='4' style='text-align:center; font-size:20px; padding:20px;'>
+								<td colspan='9' style='text-align:center; font-size:20px; padding:20px;'>
 								Tidak ada jadwal operasi pada hari ini
 								</td>
           					</tr>";
