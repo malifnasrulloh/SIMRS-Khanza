@@ -40,7 +40,7 @@ elseif ($hari == "Saturday")  $namahari = "SABTU";
 <div style="display:flex; gap:10px; width:100%; height:100%;">
 
     <!-- ── LEFT: Jadwal Dokter ─────────────────────── -->
-    <div class="table-card" style="flex:1; min-width:0; overflow:hidden;">
+    <div class="table-card" style="flex:6; min-width:0;">
         <div class="table-card-header">
             <span class="material-icons">assignment_ind</span>
             Jadwal Praktek Dokter &nbsp;
@@ -92,7 +92,7 @@ elseif ($hari == "Saturday")  $namahari = "SABTU";
     </div>
 
     <!-- ── RIGHT: Daftar Kamar ────────────────────── -->
-    <div class="table-card" style="flex:1; min-width:0; overflow:hidden;">
+    <div class="table-card" style="flex:4; min-width:0;">
         <div class="table-card-header">
             <span class="material-icons">hotel</span>
             Daftar Ruang Rawat Inap
