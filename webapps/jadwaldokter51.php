@@ -165,11 +165,6 @@ $jam = date("H:i");
             white-space: nowrap;
         }
 
-        100% {
-            transform: translateX(-50%);
-        }
-        }
-
         .ticker-item {
             color: rgba(255, 255, 255, 0.92);
             font-weight: 600;
