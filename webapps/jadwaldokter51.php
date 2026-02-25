@@ -161,20 +161,13 @@ $jam = date("H:i");
         }
 
         .ticker-inner {
-            display: flex;
-            gap: 40px;
-            animation: tickerScroll 30s linear infinite;
+            display: inline-flex;
             white-space: nowrap;
         }
 
-        @keyframes tickerScroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
+        100% {
+            transform: translateX(-50%);
+        }
         }
 
         .ticker-item {
@@ -320,8 +313,8 @@ $jam = date("H:i");
                     while ($data = mysqli_fetch_array($hasil)) {
                         $items[] = '<span class="ticker-item">🛏 ' . htmlspecialchars($data['kelas']) . ' &nbsp; <b>Rp ' . number_format($data['trf_kamar'], 0, ".", ",") . '</b></span>';
                     }
-                    $all = implode('<span style="opacity:0.4">  ·  </span>', $items);
-                    echo $all . '<span style="opacity:0.4">  ·  </span>' . $all;
+                    $all = implode('<span style="opacity:0.35; padding:0 28px;">·</span>', $items);
+                    echo $all;
                     ?>
                 </div>
             </div>
@@ -332,6 +325,7 @@ $jam = date("H:i");
     <script src="assets/js/jquery-2.1.1.min.js"></script>
     <script src="assets/js/materialize.min.js"></script>
     <script>
+        // ── Clock ────────────────────────────────────────
         (function tick() {
             var now = new Date();
             document.getElementById('header-time').textContent = now.toLocaleTimeString('id-ID', {
@@ -349,28 +343,78 @@ $jam = date("H:i");
             setTimeout(tick, 1000);
         })();
 
+        // ── Infinite Ticker (no reset glitch) ────────────
+        (function initTicker() {
+            var track = document.querySelector('.ticker-track');
+            var orig = document.querySelector('.ticker-inner');
+            if (!track || !orig) return;
+
+            // Build a runner with 3 clones so the window never runs out of content
+            var runner = document.createElement('div');
+            runner.style.cssText = 'display:inline-flex; white-space:nowrap; will-change:transform; flex-shrink:0;';
+
+            function makeClone() {
+                var wrap = document.createElement('div');
+                wrap.style.cssText = 'display:inline-flex; align-items:center; flex-shrink:0;';
+                var clone = orig.cloneNode(true);
+                var sep = document.createElement('span');
+                sep.style.cssText = 'opacity:0.35; padding:0 28px; flex-shrink:0;';
+                sep.textContent = '·';
+                wrap.appendChild(clone);
+                wrap.appendChild(sep);
+                return wrap;
+            }
+
+            runner.appendChild(makeClone());
+            runner.appendChild(makeClone());
+            runner.appendChild(makeClone());
+
+            track.innerHTML = '';
+            track.style.overflow = 'hidden';
+            track.appendChild(runner);
+
+            var pos = 0;
+            var speed = 0.8; // px per rAF tick (~48px/s @ 60fps)
+            var loopW = 0; // measured ONCE after layout
+
+            function step() {
+                pos -= speed;
+                // while-loop handles any overshoot (slow frame, tab switch, etc.)
+                while (loopW > 0 && pos <= -loopW) {
+                    pos += loopW;
+                }
+                runner.style.transform = 'translateX(' + pos + 'px)';
+                requestAnimationFrame(step);
+            }
+
+            // Measure after fonts + layout settle, then start — never re-measure inside rAF
+            setTimeout(function() {
+                loopW = runner.scrollWidth / 3; // one third = one clone unit
+                requestAnimationFrame(step);
+            }, 800);
+        })();
+
+        // ── Auto-scroll for tables ────────────────────────
         function setupAutoScroll() {
             document.querySelectorAll('.table-scroll-wrap').forEach(function(wrap) {
                 var inner = wrap.querySelector('.auto-scroll-inner');
                 if (!inner) return;
                 inner.classList.remove('scrolling');
                 void inner.offsetWidth;
-                var wrapH = wrap.clientHeight;
-                var innerH = inner.scrollHeight;
-                if (innerH <= wrapH) return;
-                var speed = Math.round((innerH / 60) * 1000);
-                inner.style.setProperty('--scroll-dist', '-' + innerH + 'px');
-                inner.style.animationDuration = speed + 'ms';
+                if (inner.scrollHeight <= wrap.clientHeight) return;
+                var spd = Math.round((inner.scrollHeight / 60) * 1000);
+                inner.style.setProperty('--scroll-dist', '-' + inner.scrollHeight + 'px');
+                inner.style.animationDuration = spd + 'ms';
                 inner.classList.add('scrolling');
             });
         }
 
+        // ── Load data ─────────────────────────────────────
         function loadData() {
             $('#data').load('data_jadwaldokter.php', function() {
                 setupAutoScroll();
             });
         }
-
         loadData();
         setInterval(loadData, 10000);
     </script>
