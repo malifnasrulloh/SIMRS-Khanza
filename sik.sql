@@ -3353,26 +3353,20 @@ CREATE TABLE `bridging_resep_apotek_bpjs` (
   `no_sep` varchar(40) DEFAULT NULL,
   `no_sep_apotek` varchar(40) NOT NULL,
   `tgl_sep` datetime NOT NULL,
-  `kdpoli` varchar(15) NOT NULL,
-  `nmpoli` varchar(50) NOT NULL,
   `kdjenis` enum('1. Obat PRB','2. Obat Kronis Blm Stabil','3. Obat Kemoterapi') DEFAULT NULL,
-  `nota_piutang` varchar(20) DEFAULT NULL,
   `id_user_sep` varchar(50) DEFAULT NULL,
+  `no_resep` varchar(14) NOT NULL,
   `tgl_resep` datetime DEFAULT NULL,
   `tgl_pelayanan` datetime DEFAULT NULL,
-  `kodedpjp` varchar(10) NOT NULL,
-  `nmdpjp` varchar(100) NOT NULL,
   `iterasi` enum('0. Non Iterasi','1. Iterasi') NOT NULL,
-  `no_kartu` varchar(25) NOT NULL,
-  `nama_pasien` varchar(100) NOT NULL,
   `kdppkrujukan` varchar(12) NOT NULL,
-  `nmppkpelayanan` varchar(200) NOT NULL,
   `byTagRsp` double NOT NULL,
   `byVerRsp` double NOT NULL,
-  `status` enum('Piutang','Non Piutang') NOT NULL,
   PRIMARY KEY (`no_sep_apotek`),
   KEY `no_sep` (`no_sep`),
-  CONSTRAINT `bridging_resep_apotek_bpjs_ibfk_1` FOREIGN KEY (`no_sep`) REFERENCES `bridging_sep` (`no_sep`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `no_resep` (`no_resep`),
+  CONSTRAINT `bridging_resep_apotek_bpjs_ibfk_1` FOREIGN KEY (`no_sep`) REFERENCES `bridging_sep` (`no_sep`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bridging_resep_apotek_bpjs_ibfk_2` FOREIGN KEY (`no_resep`) REFERENCES `resep_obat` (`no_resep`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3394,16 +3388,18 @@ DROP TABLE IF EXISTS `bridging_resep_apotek_bpjs_nonracikan`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bridging_resep_apotek_bpjs_nonracikan` (
   `no_sep_apotek` varchar(40) NOT NULL,
-  `kode_brng` varchar(15) DEFAULT NULL,
+  `no_resep` varchar(14) NOT NULL,
+  `kode_brng_apotek_bpjs` varchar(15) DEFAULT NULL,
   `signa1` varchar(5) DEFAULT NULL,
   `signa2` varchar(5) DEFAULT NULL,
   `jml_obat` double DEFAULT NULL,
   `jho` double DEFAULT NULL,
-  `catatan` varchar(40) DEFAULT NULL,
   KEY `no_sep_apotek` (`no_sep_apotek`),
-  KEY `kode_brng` (`kode_brng`),
+  KEY `kode_brng` (`kode_brng_apotek_bpjs`),
+  KEY `no_resep` (`no_resep`),
   CONSTRAINT `bridging_resep_apotek_bpjs_nonracikan_ibfk_1` FOREIGN KEY (`no_sep_apotek`) REFERENCES `bridging_resep_apotek_bpjs` (`no_sep_apotek`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bridging_resep_apotek_bpjs_nonracikan_ibfk_2` FOREIGN KEY (`kode_brng`) REFERENCES `maping_obat_apotek_bpjs` (`kode_brng`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bridging_resep_apotek_bpjs_nonracikan_ibfk_2` FOREIGN KEY (`kode_brng_apotek_bpjs`) REFERENCES `maping_obat_apotek_bpjs` (`kode_brng_apotek_bpjs`) ON UPDATE CASCADE,
+  CONSTRAINT `bridging_resep_apotek_bpjs_nonracikan_ibfk_3` FOREIGN KEY (`no_resep`) REFERENCES `resep_obat` (`no_resep`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3417,6 +3413,32 @@ LOCK TABLES `bridging_resep_apotek_bpjs_nonracikan` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `bridging_resep_apotek_bpjs_piutang`
+--
+
+DROP TABLE IF EXISTS `bridging_resep_apotek_bpjs_piutang`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bridging_resep_apotek_bpjs_piutang` (
+  `no_sep_apotek` varchar(40) NOT NULL,
+  `nota_piutang` varchar(20) DEFAULT NULL,
+  KEY `no_sep_apotek` (`no_sep_apotek`),
+  KEY `nota_piutang` (`nota_piutang`),
+  CONSTRAINT `bridging_resep_apotek_bpjs_piutang_ibfk_1` FOREIGN KEY (`no_sep_apotek`) REFERENCES `bridging_resep_apotek_bpjs` (`no_sep_apotek`) ON UPDATE CASCADE,
+  CONSTRAINT `bridging_resep_apotek_bpjs_piutang_ibfk_2` FOREIGN KEY (`nota_piutang`) REFERENCES `piutang` (`nota_piutang`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bridging_resep_apotek_bpjs_piutang`
+--
+
+LOCK TABLES `bridging_resep_apotek_bpjs_piutang` WRITE;
+/*!40000 ALTER TABLE `bridging_resep_apotek_bpjs_piutang` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bridging_resep_apotek_bpjs_piutang` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bridging_resep_apotek_bpjs_racikan`
 --
 
@@ -3425,18 +3447,20 @@ DROP TABLE IF EXISTS `bridging_resep_apotek_bpjs_racikan`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bridging_resep_apotek_bpjs_racikan` (
   `no_sep_apotek` varchar(40) NOT NULL,
-  `nomor_racik` varchar(3) DEFAULT NULL,
-  `kode_brng` varchar(15) DEFAULT NULL,
+  `nomor_racik` varchar(6) DEFAULT NULL,
+  `no_resep` varchar(14) NOT NULL,
+  `kode_brng_apotek_bpjs` varchar(15) DEFAULT NULL,
   `signa1` varchar(5) DEFAULT NULL,
   `signa2` varchar(5) DEFAULT NULL,
   `jml_obat` double DEFAULT NULL,
   `permintaan` double DEFAULT NULL,
   `jho` double DEFAULT NULL,
-  `catatan` varchar(40) DEFAULT NULL,
   KEY `no_sep_apotek` (`no_sep_apotek`),
-  KEY `kode_brng` (`kode_brng`),
+  KEY `kode_brng` (`kode_brng_apotek_bpjs`),
+  KEY `no_resep` (`no_resep`),
   CONSTRAINT `bridging_resep_apotek_bpjs_racikan_ibfk_1` FOREIGN KEY (`no_sep_apotek`) REFERENCES `bridging_resep_apotek_bpjs` (`no_sep_apotek`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bridging_resep_apotek_bpjs_racikan_ibfk_2` FOREIGN KEY (`kode_brng`) REFERENCES `maping_obat_apotek_bpjs` (`kode_brng`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bridging_resep_apotek_bpjs_racikan_ibfk_2` FOREIGN KEY (`kode_brng_apotek_bpjs`) REFERENCES `maping_obat_apotek_bpjs` (`kode_brng_apotek_bpjs`) ON UPDATE CASCADE,
+  CONSTRAINT `bridging_resep_apotek_bpjs_racikan_ibfk_3` FOREIGN KEY (`no_resep`) REFERENCES `resep_obat` (`no_resep`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42377,4 +42401,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-26  7:59:43
+-- Dump completed on 2026-03-01 14:11:29
