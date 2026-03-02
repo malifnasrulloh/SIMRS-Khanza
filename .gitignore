@@ -4,12 +4,13 @@
 
 *.class
 *.jasper
-.LCK*
+.python-version
 
 # Big Files
 lib/libjfxwebkit.so
 
 # Dummy file
 lib/test.*
+.LCK*
 *~
 ~*
