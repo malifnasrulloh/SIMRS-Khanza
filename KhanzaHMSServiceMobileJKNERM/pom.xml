@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>khanzahmsservicemobilejknerm.KhanzaHMSServiceMobileJKNERM</exec.mainClass>
-        <deploy.dir>C:/KhanzaHMSWindowsAlip</deploy.dir>
+        <deploy.dir>${user.home}/Downloads/KhanzaHMSWindowsAlip</deploy.dir>
     </properties>
     <build>
         <finalName>${project.artifactId}</finalName>
