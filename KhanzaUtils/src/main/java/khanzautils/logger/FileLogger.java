@@ -72,7 +72,7 @@ public class FileLogger {
             e.printStackTrace();
         }
 
-        String fileName = type == LogType.EXCEPTION ? prefixLogName + "-error.json" : prefixLogName + "-success.json";
+        String fileName = type == LogType.EXCEPTION ? prefixLogName + "-error.json" : prefixLogName + ".json";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(logPath.resolve(fileName).toFile(), true))) {
             bw.write(jsonLine);
