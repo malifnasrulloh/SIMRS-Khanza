@@ -88,7 +88,7 @@ public class BPJSSecurityUtil {
     public String getSecretKey() {
         return secretKey;
     }
-    
+
     /**
      * @return the userKey
      */

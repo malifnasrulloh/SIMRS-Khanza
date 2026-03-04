@@ -21,7 +21,7 @@ public class LogTableModel extends AbstractTableModel {
 
     private FileLogger logger;
     private final String[] columnNames = {"Tanggal", "Log"};
-    private final ArrayList<Object[]> logsData = new ArrayList<Object[]>();
+    private final ArrayList<Object[]> logsData = new ArrayList<>();
     private final Path logPath;
     private final String prefixLogName;
 
@@ -97,7 +97,7 @@ public class LogTableModel extends AbstractTableModel {
     }
 
     public void tambahData(Object log) {
-        tambahData(log, LogType.LOG);
+        tambahData(log, LogType.INFO);
     }
 
     public void resetData() {

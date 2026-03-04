@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
  * @author malifnasrulloh
  */
 public class BPJSHelper {
+
     public static ResponseEntity<Map> exchangeMobileJKN(String URL, String requestJson, BPJSSecurityUtil security, LogTableModel logTableModel) {
         try {
             BPJSSecurityUtil.SignatureResult resultSignature = security.generateSignaturePair();

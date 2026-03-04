@@ -9,7 +9,7 @@ package khanzautils.logger;
  * @author malifnasrulloh
  */
 public enum LogType {
-    LOG,
+    INFO,
     HTTP,
     SQL,
     EXCEPTION

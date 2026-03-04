@@ -5,7 +5,6 @@
 package khanzautils.logger;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 
 /**
  *
@@ -21,7 +20,9 @@ public class SystemLogger {
     }
 
     public static void reconfigure() {
-        LOGGER = new FileLogger(SystemLogger.logPath, SystemLogger.prefixLogName);
+        if (logPath != null && prefixLogName != null) {
+            LOGGER = new FileLogger(SystemLogger.logPath, SystemLogger.prefixLogName);
+        }
     }
 
     public static void configure(Path logPath, String prefixLogName) {
@@ -38,7 +39,7 @@ public class SystemLogger {
 
     public static void info(Object msg) {
         checkInit();
-        LOGGER.log(msg, LogType.LOG);
+        LOGGER.log(msg, LogType.INFO);
     }
 
     public static void sql(Object msg) {
@@ -53,6 +54,6 @@ public class SystemLogger {
 
     public static void error(Throwable msg) {
         checkInit();
-        LOGGER.log(msg + "\n" + Arrays.toString(msg.getStackTrace()).replace(", ", "at "), LogType.EXCEPTION);
+        LOGGER.log(msg, LogType.EXCEPTION);
     }
 }
