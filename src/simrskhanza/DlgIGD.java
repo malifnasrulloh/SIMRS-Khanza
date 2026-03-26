@@ -240,6 +240,7 @@ public final class DlgIGD extends javax.swing.JDialog {
     private Connection koneksi=koneksiDB.condb();
     private DlgPasien pasien=new DlgPasien(null,false);
     private PreparedStatement ps,ps3,pscaripiutang;
+    private DlgPeresepanDokter resepobat;
     private DlgCariCaraBayar penjab;
     private DlgKabupaten kab;
     private DlgKecamatan kec;
@@ -6340,10 +6341,10 @@ private void MnRawatJalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     }
                     if (dlgrwjl == null) return;
                     if (!dlgrwjl.isVisible()) {
-                        dlgrwjl.isCek();
                         dlgrwjl.SetPoli("IGDK");
                         dlgrwjl.SetPj(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),19).toString());
                         dlgrwjl.setNoRm(TNoRw.getText(),DTPCari1.getDate(),DTPCari2.getDate());  
+                        dlgrwjl.isCek();
                     }
 
                     if (dlgrwjl.isVisible()) {
@@ -7043,7 +7044,6 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                 dlgro.emptTeks();
                 dlgro.isCek();
                 dlgro.setNoRm(TNoRw.getText(),"Ralan");  
-                dlgro.tampil();
                 dlgro.setVisible(true);
                 this.setCursor(Cursor.getDefaultCursor());
             }
@@ -7691,14 +7691,31 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             if(Sequel.cariInteger("select count(kamar_inap.no_rawat) from kamar_inap where kamar_inap.no_rawat=?",TNoRw.getText())>0){
                 JOptionPane.showMessageDialog(null,"Maaf, Pasien sudah masuk Kamar Inap. Gunakan billing Ranap..!!!");
             }else {
-                DlgPeresepanDokter resep=new DlgPeresepanDokter(null,false);
-                resep.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-                resep.setLocationRelativeTo(internalFrame1);
-                resep.setNoRm(TNoRw.getText(),new Date(),CmbJam.getSelectedItem().toString(),CmbMenit.getSelectedItem().toString(),CmbDetik.getSelectedItem().toString(),
-                    KdDokter.getText(),TDokter.getText(),"ralan");
-                resep.isCek();
-                resep.tampilobat();
-                resep.setVisible(true);
+                if (resepobat == null || !resepobat.isDisplayable()) {
+                    resepobat=new DlgPeresepanDokter(null,false);
+                    resepobat.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    resepobat.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            resepobat=null;
+                        }
+                    }); 
+
+                    resepobat.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                    resepobat.setLocationRelativeTo(internalFrame1);
+                }
+                if (resepobat == null) return;
+                if (!resepobat.isVisible()) {
+                    resepobat.setNoRm(TNoRw.getText(),new Date(),CmbJam.getSelectedItem().toString(),CmbMenit.getSelectedItem().toString(),CmbDetik.getSelectedItem().toString(),KdDokter.getText(),TDokter.getText(),"ralan");
+                    resepobat.isCek();
+                    resepobat.tampilobat();
+                }
+
+                if (resepobat.isVisible()) {
+                    resepobat.toFront();
+                    return;
+                }
+                resepobat.setVisible(true);
             }
         }
     }//GEN-LAST:event_MnResepDOkterActionPerformed
@@ -12566,15 +12583,14 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                             rs=ps.executeQuery();
                             i=0;
                             while(rs.next()){
-                                Object[] row = new Object[]{
+                                i++;
+                                publish(new Object[]{
                                     false,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
                                     rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),
                                     rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),
                                     Valid.SetAngka(rs.getDouble(15)),rs.getString(16),rs.getString(17),rs.getString(18),
                                     rs.getString("kd_pj"),rs.getString("status_bayar")
-                                };
-                                i++;
-                                publish(row);
+                                });
                             }
                         } catch (Exception e) {
                             System.out.println("Notif : "+e);

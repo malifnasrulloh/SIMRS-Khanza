@@ -40,6 +40,7 @@ import bridging.ApotekBPJSCekReferensiPoli;
 import bridging.ApotekBPJSCekReferensiSettingPPK;
 import bridging.ApotekBPJSCekReferensiSpesialistik;
 import bridging.ApotekBPJSDaftarPelayananObat;
+import bridging.ApotekBPJSDaftarPermintaanResepIterasi;
 import bridging.ApotekBPJSDaftarResepObat;
 import bridging.ApotekBPJSKunjunganSEP;
 import bridging.ApotekBPJSMapingObat;
@@ -847,6 +848,8 @@ import pcraicra.PCRAICRAIdentifikasiRisikoUtilitas;
 import pcraicra.PCRAICRAJenisAktivitasProyek;
 import pcraicra.PCRAICRAKelasRisikoPencegahan;
 import pcraicra.PCRAICRALokasiKelompokRisikoArea;
+import pcraicra.PCRAICRAPengkajianRisikoPraKonstruksi;
+import pcraicra.PCRAICRAPersyaratanHarusDipenuhi;
 import pcraicra.PCRAICRATindakanPengendalian;
 import permintaan.DlgBookingMCUPerusahaan;
 import surat.MasterMenolakAnjuranMedis;
@@ -1200,9 +1203,6 @@ public class frmUtama extends javax.swing.JFrame {
     private final Connection koneksi=koneksiDB.condb();
     private final sekuel Sequel=new sekuel();
     private final validasi Valid=new validasi();
-    private final DlgKasirRalan kasirralan=new DlgKasirRalan(this,false);
-    private final DlgReg reg=new DlgReg(this,false);
-    private final DlgKamarInap kamarinap=new DlgKamarInap(null,false);
     private final INACBGHybrid inacbgklaim=new INACBGHybrid(this,false);
     private final INACBGCariCoderNIK cariNIK=new INACBGCariCoderNIK(this,false);
     private static frmUtama myInstance;
@@ -1260,7 +1260,7 @@ public class frmUtama extends javax.swing.JFrame {
     }
     
     public static frmUtama getInstance() {
-        if (myInstance == null)
+        if (myInstance == null) 
             myInstance = new frmUtama();
 
         return myInstance;
@@ -2055,7 +2055,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "04/03/2026" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11/03/2026" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -8297,6 +8297,7 @@ public class frmUtama extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        isTutup();
         DlgHome.dispose();
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
@@ -8486,6 +8487,7 @@ public class frmUtama extends javax.swing.JFrame {
     private void BtnToolKamnapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolKamnapActionPerformed
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgKamarInap kamarinap=new DlgKamarInap(null,false);
         kamarinap.isCek();
         kamarinap.emptTeks();  
         kamarinap.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
@@ -8528,6 +8530,7 @@ private void BtnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void BtnToolKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolKasirActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         isTutup();
+        DlgKasirRalan kasirralan=new DlgKasirRalan(this,false);
         kasirralan.isCek();      
         kasirralan.setCariKosong();  
         kasirralan.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
@@ -8540,6 +8543,7 @@ private void BtnToolKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 private void BtnToolRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolRegActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         isTutup();
+        DlgReg reg=new DlgReg(this,false);
         reg.emptTeks();    
         reg.isCek();
         reg.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
@@ -8681,11 +8685,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        reg.pasien.emptTeks();
-        reg.pasien.isCek();
-        reg.pasien.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
-        reg.pasien.setLocationRelativeTo(PanelUtama);
-        reg.pasien.setVisible(true);
+        DlgPasien pasien=new DlgPasien(null,false);
+        pasien.emptTeks();
+        pasien.isCek();
+        pasien.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        pasien.setLocationRelativeTo(PanelUtama);
+        pasien.setVisible(true);
         DlgHome.dispose();
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_btnPasienActionPerformed
@@ -8693,6 +8698,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private void btnRegistrasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrasiActionPerformed
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgReg reg=new DlgReg(this,false);
         reg.emptTeks();
         reg.isCek();
         reg.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
@@ -8706,12 +8712,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         DlgRawatJalan form=new DlgRawatJalan(null,false);
-        form.isCek();
         form.SetPj("-");
         form.SetPoli("-");
         form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
         form.setVisible(true);
+        form.isCek();
         DlgHome.dispose();
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_btnRalanActionPerformed
@@ -8719,6 +8725,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private void btnKamarInapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKamarInapActionPerformed
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgKamarInap kamarinap=new DlgKamarInap(null,false);
         kamarinap.isCek();
         kamarinap.emptTeks();
         kamarinap.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
@@ -23294,6 +23301,41 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
     
+    private void btnPermintaanResepIterasiApotekBPJSActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        ApotekBPJSDaftarPermintaanResepIterasi form=new ApotekBPJSDaftarPermintaanResepIterasi(this,false);
+        form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnPCRAICRAPengkajianRisikoPraKonstruksiActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));        
+        isTutup();
+        PCRAICRAPengkajianRisikoPraKonstruksi form=new PCRAICRAPengkajianRisikoPraKonstruksi(this,false);
+        form.emptTeks();
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnPCRAICRAPersyaratanHarusDipenuhiActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));        
+        isTutup();
+        PCRAICRAPersyaratanHarusDipenuhi form=new PCRAICRAPersyaratanHarusDipenuhi(this,false);
+        form.emptTeks();
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
     /**
     * @param args the command line arguments
     */
@@ -24009,7 +24051,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnLabKeslingVerifikasiPengujianSampel,btnLabKeslingValidasiPengujianSampel,btnLabKeslingRekapPelayanan,btnLabKeslingPembyaranPengujianSampel,btnLabKeslingRekapPembayaran,
             btnSkriningCURB65,btnBPJSPotensiPRB,btnBPJSRiwayatPelayananObatApotek,btnSkriningGiziKehamilan,btnBPJSRekapPesertaPRBObatApotek,btnSuratSerahTerimaBarangAnggotaTubuh,btnPCRAICRAJenisAktivitasProyek,
             btnPCRAICRALokasiKelompokRisiko,btnPCRAICRAKelasRisikoPencegahan,btnPCRAICRATindakanPengendalian,btnPCRAICRAIdentifikasiRisikoInfeksi,btnPCRAICRAIdentifikasiRisikoKeselamatan,
-            btnPCRAICRAIdentifikasiRisikoKebakaran,btnPCRAICRAIdentifikasiRisikoUtilitas,btnBPJSResepObatApotek,btnObatApolApotekBPJS;
+            btnPCRAICRAIdentifikasiRisikoKebakaran,btnPCRAICRAIdentifikasiRisikoUtilitas,btnBPJSResepObatApotek,btnObatApolApotekBPJS,btnPermintaanResepIterasiApotekBPJS,btnPCRAICRAPengkajianRisikoPraKonstruksi,
+            btnPCRAICRAPersyaratanHarusDipenuhi;
     
     public void isWall(){
         try{            
@@ -27017,6 +27060,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
                 jmlmenu++;
             }
             
+            if(akses.getdaftar_permintaan_resep_iterasi_bpjs()==true){
+                Panelmenu.add(btnPermintaanResepIterasiApotekBPJS);
+                jmlmenu++;
+            }
+            
             if(akses.getriwayat_perawatan_icare_bpjs()==true){
                 Panelmenu.add(btnRiwayatPerawatanICare);
                 jmlmenu++;
@@ -29679,6 +29727,16 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             
             if(akses.getpcra_icra_identifkasi_risiko_utilitas()==true){
                 Panelmenu.add(btnPCRAICRAIdentifikasiRisikoUtilitas);
+                jmlmenu++;
+            }
+            
+            if(akses.getpcra_icra_persyaratan_harus_dipenuhi()==true){
+                Panelmenu.add(btnPCRAICRAPersyaratanHarusDipenuhi);
+                jmlmenu++;
+            }
+            
+            if(akses.getpcra_icra_pengkajian_risiko_prakonstruksi()==true){
+                Panelmenu.add(btnPCRAICRAPengkajianRisikoPraKonstruksi);
                 jmlmenu++;
             }
         }else if(cmbMenu.getSelectedIndex()==18){  
@@ -32901,6 +32959,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             jmlmenu++;
         }
         
+        if(akses.getdaftar_permintaan_resep_iterasi_bpjs()==true){
+            Panelmenu.add(btnPermintaanResepIterasiApotekBPJS);
+            jmlmenu++;
+        }
+        
         if(akses.getriwayat_perawatan_icare_bpjs()==true){
             Panelmenu.add(btnRiwayatPerawatanICare);
             jmlmenu++;
@@ -35557,6 +35620,16 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         
         if(akses.getpcra_icra_identifkasi_risiko_utilitas()==true){
             Panelmenu.add(btnPCRAICRAIdentifikasiRisikoUtilitas);
+            jmlmenu++;
+        }
+        
+        if(akses.getpcra_icra_persyaratan_harus_dipenuhi()==true){
+            Panelmenu.add(btnPCRAICRAPersyaratanHarusDipenuhi);
+            jmlmenu++;
+        }
+        
+        if(akses.getpcra_icra_pengkajian_risiko_prakonstruksi()==true){
+            Panelmenu.add(btnPCRAICRAPengkajianRisikoPraKonstruksi);
             jmlmenu++;
         }
 
@@ -39923,6 +39996,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             }
         }
         
+        if(akses.getdaftar_permintaan_resep_iterasi_bpjs()==true){
+            if(btnPermintaanResepIterasiApotekBPJS.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
+                Panelmenu.add(btnPermintaanResepIterasiApotekBPJS);
+                jmlmenu++;
+            }
+        }
+        
         if(akses.getriwayat_perawatan_icare_bpjs()==true){
             if(btnRiwayatPerawatanICare.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
                 Panelmenu.add(btnRiwayatPerawatanICare);
@@ -43631,6 +43711,20 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         if(akses.getpcra_icra_identifkasi_risiko_utilitas()==true){
             if(btnPCRAICRAIdentifikasiRisikoUtilitas.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
                 Panelmenu.add(btnPCRAICRAIdentifikasiRisikoUtilitas);
+                jmlmenu++;
+            }
+        }
+        
+        if(akses.getpcra_icra_persyaratan_harus_dipenuhi()==true){
+            if(btnPCRAICRAPersyaratanHarusDipenuhi.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
+                Panelmenu.add(btnPCRAICRAPersyaratanHarusDipenuhi);
+                jmlmenu++;
+            }
+        }
+        
+        if(akses.getpcra_icra_pengkajian_risiko_prakonstruksi()==true){
+            if(btnPCRAICRAPengkajianRisikoPraKonstruksi.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
+                Panelmenu.add(btnPCRAICRAPengkajianRisikoPraKonstruksi);
                 jmlmenu++;
             }
         }
@@ -49899,5 +49993,29 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnObatApolApotekBPJS.setName("btnObatApolApotekBPJS"); 
         btnObatApolApotekBPJS.setPreferredSize(new java.awt.Dimension(200, 90));
         btnObatApolApotekBPJS.addActionListener(this::btnObatApolApotekBPJSActionPerformed);
+        
+        btnPermintaanResepIterasiApotekBPJS = new widget.ButtonBig();
+        btnPermintaanResepIterasiApotekBPJS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/bpjs_apotek.png")));
+        btnPermintaanResepIterasiApotekBPJS.setText("Permintaan Resep Iterasi Apotek BPJS");
+        btnPermintaanResepIterasiApotekBPJS.setIconTextGap(0);
+        btnPermintaanResepIterasiApotekBPJS.setName("btnPermintaanResepIterasiApotekBPJS"); 
+        btnPermintaanResepIterasiApotekBPJS.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnPermintaanResepIterasiApotekBPJS.addActionListener(this::btnPermintaanResepIterasiApotekBPJSActionPerformed);
+        
+        btnPCRAICRAPengkajianRisikoPraKonstruksi = new widget.ButtonBig();
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/crane_2515356.png")));
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.setText("Pengkajian Risiko Pra Konstruksi/PCRA");
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.setIconTextGap(0);
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.setName("btnPCRAICRAPengkajianRisikoPraKonstruksi"); 
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnPCRAICRAPengkajianRisikoPraKonstruksi.addActionListener(this::btnPCRAICRAPengkajianRisikoPraKonstruksiActionPerformed);
+        
+        btnPCRAICRAPersyaratanHarusDipenuhi = new widget.ButtonBig();
+        btnPCRAICRAPersyaratanHarusDipenuhi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/hammer_10279817.png")));
+        btnPCRAICRAPersyaratanHarusDipenuhi.setText("Persyaratan Harus Dipenuhi PCRA");
+        btnPCRAICRAPersyaratanHarusDipenuhi.setIconTextGap(0);
+        btnPCRAICRAPersyaratanHarusDipenuhi.setName("btnPCRAICRAPersyaratanHarusDipenuhi"); 
+        btnPCRAICRAPersyaratanHarusDipenuhi.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnPCRAICRAPersyaratanHarusDipenuhi.addActionListener(this::btnPCRAICRAPersyaratanHarusDipenuhiActionPerformed);
     }
 }

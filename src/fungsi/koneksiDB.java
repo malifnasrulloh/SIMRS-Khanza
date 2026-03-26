@@ -71,7 +71,7 @@ public class koneksiDB {
         try (FileInputStream fis =new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
         }
-        dataSource.setURL("jdbc:mysql://"+EnkripsiAES.decrypt(prop.getProperty("HOST"))+":"+EnkripsiAES.decrypt(prop.getProperty("PORT"))+"/"+EnkripsiAES.decrypt(prop.getProperty("DATABASE"))+"?zeroDateTimeBehavior=convertToNull&tcpKeepAlive=true&connectTimeout=10000&socketTimeout=60000&maintainTimeStats=false");
+        dataSource.setURL("jdbc:mysql://"+EnkripsiAES.decrypt(prop.getProperty("HOST"))+":"+EnkripsiAES.decrypt(prop.getProperty("PORT"))+"/"+EnkripsiAES.decrypt(prop.getProperty("DATABASE"))+"?zeroDateTimeBehavior=convertToNull&tcpKeepAlive=true&connectTimeout=10000&socketTimeout=60000&maintainTimeStats=false&autoReconnect=true");
         dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USER")));
         dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PAS")));
         dataSource.setCachePreparedStatements(true);
@@ -545,6 +545,16 @@ public class koneksiDB {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
             var=prop.getProperty("JADIKANPIUTANGAPOTEKBPJS");
+        }catch(Exception e){
+            var="no"; 
+        }
+        return var;
+    }
+    
+    public static String AKTIFKANRESEPITERDOKTER(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("AKTIFKANRESEPITERDOKTER");
         }catch(Exception e){
             var="no"; 
         }
@@ -1049,6 +1059,26 @@ public class koneksiDB {
             var="no"; 
         }
         return var;
+    }
+    
+    public static String NOTIFMAKSIMALNOMINALRESEPRAJAL(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFMAKSIMALNOMINALRESEPRAJAL");
+        }catch(Exception e){
+            var="no"; 
+        }
+        return var;
+    }
+    
+    public static Double MAKSIMALNOMINALRESEPRAJAL(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("MAKSIMALNOMINALRESEPRAJAL");
+        }catch(Exception e){
+            var="no"; 
+        }
+        return Double.parseDouble(var);
     }
     
     public static String TAMPILKANCOPYRESEPDOKTERLAIN(){
