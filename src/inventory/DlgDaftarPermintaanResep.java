@@ -1,14 +1,15 @@
 package inventory;
+import AESsecurity.EnkripsiAES;
 import bridging.ApotekBPJSInputResepObat;
 import bridging.BPJSDataSEP;
 import fungsi.BackgroundMusic;
 import fungsi.WarnaTable;
+import fungsi.akses;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
+import fungsi.lokasidepoutama;
 import fungsi.sekuel;
 import fungsi.validasi;
-import fungsi.akses;
-import fungsi.lokasidepoutama;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -2306,6 +2307,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         Sequel.queryu("delete from antriapotek3");
                         Sequel.queryu("insert into antriapotek3 values('"+NoResep+"','1','"+NoRawat+"')");
                         Sequel.queryu("delete from bukti_penyerahan_resep_obat where no_resep='"+NoResep+"'");
+                        
+                        String iyem_auth = EnkripsiAES.encrypt_decrypt("{\"usere\":\""+koneksiDB.USERHYBRIDWEB()+"\",\"passwordte\":\""+koneksiDB.PASHYBRIDWEB()+"\"}", "e").trim();
+                        Valid.panggilUrl("penyerahanresep/login.php?iyem="+iyem_auth);
                     }
                 }else{
                     JOptionPane.showMessageDialog(null,"Maaf, Anda tidak punya hak akses untuk mengvalidasi...!!!!");
