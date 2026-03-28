@@ -96,9 +96,4 @@ public class EnkripsiAES {
         }
         return hexString.toString();
     }
-
-    public static void main(String[] args) {
-        System.out.println(encrypt_decrypt("{\"usere\":\"yanghack\",\"passwordte\":\"sialselamanya\"}", "e"));
-        System.out.println(encrypt_decrypt("QTVOd0RDTjlzVHdOK3RYT3ozVVBrYkoveU52WWVqaXBhc1NuNGxYK3A4cUxrTnRVaGRqR1JCMzVKaWwyV2J3dkpJeWEvOTRHRjJZL3N6cDhPdmVZZ3c9PQ==", "d"));
-    }
 }
