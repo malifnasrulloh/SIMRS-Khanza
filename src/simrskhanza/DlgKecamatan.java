@@ -547,6 +547,8 @@ public class DlgKecamatan extends javax.swing.JDialog {
             iyembuilder=null;
         }catch(Exception e){
             System.out.println("Notifikasi : "+e);
+        }finally {
+            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
         }
         LCount.setText(""+tabMode.getRowCount());
     }
@@ -624,6 +626,7 @@ public class DlgKecamatan extends javax.swing.JDialog {
                 for(JsonNode list:response){
                     if(list.path("NamaKec").asText().toLowerCase().equals(nama)){
                         iyem=list.path("KodeKec").asText();
+                        break;
                     }
                 }
             }

@@ -543,6 +543,8 @@ public class DlgPropinsi extends javax.swing.JDialog {
             iyembuilder=null;
         }catch(Exception e){
             System.out.println("Notifikasi : "+e);
+        }finally {
+            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
         }
         LCount.setText(""+tabMode.getRowCount());
     }
@@ -620,6 +622,7 @@ public class DlgPropinsi extends javax.swing.JDialog {
                 for(JsonNode list:response){
                     if(list.path("NamaProp").asText().toLowerCase().equals(nama)){
                         iyem=list.path("KodeProp").asText();
+                        break;
                     }
                 }
             }

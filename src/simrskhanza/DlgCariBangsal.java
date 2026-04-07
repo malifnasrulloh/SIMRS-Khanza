@@ -414,6 +414,8 @@ public final class DlgCariBangsal extends javax.swing.JDialog {
             iyembuilder.setLength(0);
         }catch(Exception e){
             System.out.println("Notifikasi : "+e);
+        } finally {
+            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
         }
         LCount.setText(""+tabMode.getRowCount());
     }
@@ -488,6 +490,7 @@ public final class DlgCariBangsal extends javax.swing.JDialog {
                 for(JsonNode list:response){
                     if(list.path("KodeKamar").asText().equalsIgnoreCase(kode)){
                         iyem=list.path("NamaKamar").asText();
+                        break;
                     }
                 }
             }
