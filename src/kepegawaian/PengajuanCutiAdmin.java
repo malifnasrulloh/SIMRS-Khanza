@@ -70,7 +70,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
 
         tabMode = new DefaultTableModel(null, new Object[]{
             "No.Pengajuan", "Tanggal", "Tgl Awal", "Tgl Akhir", "NIK", "Diajukan Oleh", "Bidang", "Departemen", "Jenis Cuti", "Alamat Tujuan",
-            "Jml Cuti", "Kepentingan Cuti", "NIK P.J.", "P.J. Terkait", "Status"
+            "Jml Cuti", "Kepentingan Cuti", "NIK P.J.", "P.J. Terkait", "Status", "Status Manajemen"
         }) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -83,38 +83,59 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 15; i++) {
+        for (i = 0; i < tabMode.getColumnCount(); i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if (i == 0) {
-                column.setPreferredWidth(85);
-            } else if (i == 1) {
-                column.setPreferredWidth(65);
-            } else if (i == 2) {
-                column.setPreferredWidth(65);
-            } else if (i == 3) {
-                column.setPreferredWidth(65);
-            } else if (i == 4) {
-                column.setPreferredWidth(85);
-            } else if (i == 5) {
-                column.setPreferredWidth(160);
-            } else if (i == 6) {
-                column.setPreferredWidth(70);
-            } else if (i == 7) {
-                column.setPreferredWidth(70);
-            } else if (i == 8) {
-                column.setPreferredWidth(110);
-            } else if (i == 9) {
-                column.setPreferredWidth(170);
-            } else if (i == 10) {
-                column.setPreferredWidth(80);
-            } else if (i == 11) {
-                column.setPreferredWidth(170);
-            } else if (i == 12) {
-                column.setPreferredWidth(85);
-            } else if (i == 13) {
-                column.setPreferredWidth(160);
-            } else if (i == 14) {
-                column.setPreferredWidth(95);
+            switch (i) {
+                case 0:
+                    column.setPreferredWidth(85);
+                    break;
+                case 1:
+                    column.setPreferredWidth(65);
+                    break;
+                case 2:
+                    column.setPreferredWidth(65);
+                    break;
+                case 3:
+                    column.setPreferredWidth(65);
+                    break;
+                case 4:
+                    column.setPreferredWidth(85);
+                    break;
+                case 5:
+                    column.setPreferredWidth(160);
+                    break;
+                case 6:
+                    column.setPreferredWidth(70);
+                    break;
+                case 7:
+                    column.setPreferredWidth(70);
+                    break;
+                case 8:
+                    column.setPreferredWidth(110);
+                    break;
+                case 9:
+                    column.setPreferredWidth(170);
+                    break;
+                case 10:
+                    column.setPreferredWidth(80);
+                    break;
+                case 11:
+                    column.setPreferredWidth(170);
+                    break;
+                case 12:
+                    column.setPreferredWidth(85);
+                    break;
+                case 13:
+                    column.setPreferredWidth(160);
+                    break;
+                case 14:
+                    column.setPreferredWidth(95);
+                    break;
+                case 15:
+                    column.setPreferredWidth(95);
+                    break;
+                default:
+                    break;
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
@@ -198,8 +219,9 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         jLabel23 = new widget.Label();
         Status = new widget.ComboBox();
         jLabel13 = new widget.Label();
-        Jumlah1 = new widget.TextBox();
         jLabel24 = new widget.Label();
+        lblStatusManajemen = new widget.Label();
+        cmbStatusManajemen = new widget.ComboBox();
         ChkInput = new widget.CekBox();
         PanelAccor = new widget.PanelBiasa();
         ChkAccor = new widget.CekBox();
@@ -361,7 +383,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-04-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -375,7 +397,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-04-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -478,10 +500,10 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         jLabel8.setText("Tgl. Pengajuan :");
         jLabel8.setName("jLabel8"); // NOI18N
         FormInput.add(jLabel8);
-        jLabel8.setBounds(226, 10, 99, 23);
+        jLabel8.setBounds(227, 10, 99, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-04-2026" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -491,18 +513,18 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tanggal);
-        Tanggal.setBounds(329, 10, 90, 23);
+        Tanggal.setBounds(330, 10, 90, 23);
 
         jLabel5.setText("Alamat Tujuan :");
         jLabel5.setName("jLabel5"); // NOI18N
         FormInput.add(jLabel5);
-        jLabel5.setBounds(436, 70, 95, 23);
+        jLabel5.setBounds(480, 73, 95, 27);
 
         KdPetugas.setEditable(false);
         KdPetugas.setHighlighter(null);
         KdPetugas.setName("KdPetugas"); // NOI18N
         FormInput.add(KdPetugas);
-        KdPetugas.setBounds(92, 40, 110, 23);
+        KdPetugas.setBounds(93, 39, 110, 27);
 
         btnPetugas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         btnPetugas.setMnemonic('2');
@@ -519,13 +541,13 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(btnPetugas);
-        btnPetugas.setBounds(391, 40, 28, 23);
+        btnPetugas.setBounds(392, 39, 28, 27);
 
         NmPetugas.setEditable(false);
         NmPetugas.setHighlighter(null);
         NmPetugas.setName("NmPetugas"); // NOI18N
         FormInput.add(NmPetugas);
-        NmPetugas.setBounds(204, 40, 185, 23);
+        NmPetugas.setBounds(205, 39, 185, 27);
 
         scrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         scrollPane1.setName("scrollPane1"); // NOI18N
@@ -542,27 +564,27 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         scrollPane1.setViewportView(Alamat);
 
         FormInput.add(scrollPane1);
-        scrollPane1.setBounds(535, 70, 235, 52);
+        scrollPane1.setBounds(587, 73, 290, 52);
 
         jLabel9.setText("Diajukan Oleh :");
         jLabel9.setName("jLabel9"); // NOI18N
         FormInput.add(jLabel9);
-        jLabel9.setBounds(0, 40, 88, 23);
+        jLabel9.setBounds(1, 39, 88, 27);
 
         jLabel3.setText("No.Pengajuan :");
         jLabel3.setName("jLabel3"); // NOI18N
         FormInput.add(jLabel3);
-        jLabel3.setBounds(0, 10, 88, 23);
+        jLabel3.setBounds(1, 10, 88, 23);
 
         NoPengajuan.setHighlighter(null);
         NoPengajuan.setName("NoPengajuan"); // NOI18N
         FormInput.add(NoPengajuan);
-        NoPengajuan.setBounds(92, 10, 130, 23);
+        NoPengajuan.setBounds(93, 10, 130, 23);
 
         jLabel20.setText("Jenis Cuti :");
         jLabel20.setName("jLabel20"); // NOI18N
         FormInput.add(jLabel20);
-        jLabel20.setBounds(436, 10, 95, 23);
+        jLabel20.setBounds(432, 10, 95, 23);
 
         Urgensi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tahunan", "Besar", "Sakit", "Bersalin", "Alasan Penting", "Keterangan Lainnya" }));
         Urgensi.setName("Urgensi"); // NOI18N
@@ -573,12 +595,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Urgensi);
-        Urgensi.setBounds(535, 10, 159, 23);
+        Urgensi.setBounds(531, 10, 159, 23);
 
         jLabel4.setText("Kepentingan Cuti :");
         jLabel4.setName("jLabel4"); // NOI18N
         FormInput.add(jLabel4);
-        jLabel4.setBounds(250, 130, 120, 23);
+        jLabel4.setBounds(515, 132, 120, 23);
 
         Kepentingan.setHighlighter(null);
         Kepentingan.setName("Kepentingan"); // NOI18N
@@ -588,12 +610,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Kepentingan);
-        Kepentingan.setBounds(374, 130, 396, 23);
+        Kepentingan.setBounds(641, 133, 240, 24);
 
         jLabel11.setText("Jml. Cuti :");
         jLabel11.setName("jLabel11"); // NOI18N
         FormInput.add(jLabel11);
-        jLabel11.setBounds(305, 100, 65, 23);
+        jLabel11.setBounds(306, 102, 65, 23);
 
         Jumlah.setHighlighter(null);
         Jumlah.setName("Jumlah"); // NOI18N
@@ -603,12 +625,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Jumlah);
-        Jumlah.setBounds(374, 100, 45, 23);
+        Jumlah.setBounds(375, 102, 45, 23);
 
         jLabel15.setText("Bidang :");
         jLabel15.setName("jLabel15"); // NOI18N
         FormInput.add(jLabel15);
-        jLabel15.setBounds(423, 40, 50, 23);
+        jLabel15.setBounds(432, 39, 50, 27);
 
         Bidang.setEditable(false);
         Bidang.setHighlighter(null);
@@ -619,12 +641,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Bidang);
-        Bidang.setBounds(477, 40, 95, 23);
+        Bidang.setBounds(486, 39, 137, 27);
 
         jLabel16.setText("Departemen :");
         jLabel16.setName("jLabel16"); // NOI18N
         FormInput.add(jLabel16);
-        jLabel16.setBounds(581, 40, 70, 23);
+        jLabel16.setBounds(629, 39, 82, 27);
 
         Departemen.setEditable(false);
         Departemen.setHighlighter(null);
@@ -635,24 +657,24 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Departemen);
-        Departemen.setBounds(655, 40, 115, 23);
+        Departemen.setBounds(717, 39, 164, 27);
 
         jLabel17.setText("P.J.Terkait :");
         jLabel17.setName("jLabel17"); // NOI18N
         FormInput.add(jLabel17);
-        jLabel17.setBounds(0, 70, 88, 23);
+        jLabel17.setBounds(1, 73, 88, 22);
 
         KdPetugasPJ.setEditable(false);
         KdPetugasPJ.setHighlighter(null);
         KdPetugasPJ.setName("KdPetugasPJ"); // NOI18N
         FormInput.add(KdPetugasPJ);
-        KdPetugasPJ.setBounds(92, 70, 110, 23);
+        KdPetugasPJ.setBounds(93, 73, 110, 22);
 
         NmPetugasPJ.setEditable(false);
         NmPetugasPJ.setHighlighter(null);
         NmPetugasPJ.setName("NmPetugasPJ"); // NOI18N
         FormInput.add(NmPetugasPJ);
-        NmPetugasPJ.setBounds(204, 70, 185, 23);
+        NmPetugasPJ.setBounds(205, 73, 185, 22);
 
         btnPetugasPJ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         btnPetugasPJ.setMnemonic('2');
@@ -669,15 +691,15 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(btnPetugasPJ);
-        btnPetugasPJ.setBounds(391, 70, 28, 23);
+        btnPetugasPJ.setBounds(392, 73, 28, 22);
 
         jLabel14.setText("Tanggal Cuti :");
         jLabel14.setName("jLabel14"); // NOI18N
         FormInput.add(jLabel14);
-        jLabel14.setBounds(0, 100, 88, 23);
+        jLabel14.setBounds(1, 102, 88, 23);
 
         Tgl1.setForeground(new java.awt.Color(50, 70, 50));
-        Tgl1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-04-2026" }));
+        Tgl1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
         Tgl1.setDisplayFormat("dd-MM-yyyy");
         Tgl1.setName("Tgl1"); // NOI18N
         Tgl1.setOpaque(false);
@@ -692,16 +714,16 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tgl1);
-        Tgl1.setBounds(92, 100, 90, 23);
+        Tgl1.setBounds(93, 102, 90, 23);
 
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setText("s/d");
         jLabel22.setName("jLabel22"); // NOI18N
         FormInput.add(jLabel22);
-        jLabel22.setBounds(184, 100, 25, 23);
+        jLabel22.setBounds(185, 102, 25, 23);
 
         Tgl2.setForeground(new java.awt.Color(50, 70, 50));
-        Tgl2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-04-2026" }));
+        Tgl2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
         Tgl2.setDisplayFormat("dd-MM-yyyy");
         Tgl2.setName("Tgl2"); // NOI18N
         Tgl2.setOpaque(false);
@@ -716,18 +738,18 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tgl2);
-        Tgl2.setBounds(211, 100, 90, 23);
+        Tgl2.setBounds(212, 102, 90, 23);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setText("Hari");
         jLabel12.setName("jLabel12"); // NOI18N
         FormInput.add(jLabel12);
-        jLabel12.setBounds(421, 100, 40, 23);
+        jLabel12.setBounds(422, 102, 40, 23);
 
         jLabel23.setText("Status :");
         jLabel23.setName("jLabel23"); // NOI18N
         FormInput.add(jLabel23);
-        jLabel23.setBounds(0, 130, 88, 23);
+        jLabel23.setBounds(1, 132, 88, 23);
 
         Status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Proses Pengajuan", "Disetujui", "Ditolak" }));
         Status.setName("Status"); // NOI18N
@@ -738,28 +760,29 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             }
         });
         FormInput.add(Status);
-        Status.setBounds(92, 130, 159, 23);
+        Status.setBounds(93, 132, 159, 23);
 
         jLabel13.setText("Jml. Cuti :");
         jLabel13.setName("jLabel13"); // NOI18N
         FormInput.add(jLabel13);
-        jLabel13.setBounds(305, 100, 65, 23);
-
-        Jumlah1.setHighlighter(null);
-        Jumlah1.setName("Jumlah1"); // NOI18N
-        Jumlah1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                Jumlah1KeyPressed(evt);
-            }
-        });
-        FormInput.add(Jumlah1);
-        Jumlah1.setBounds(374, 100, 45, 23);
+        jLabel13.setBounds(306, 102, 65, 23);
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel24.setText("Hari");
         jLabel24.setName("jLabel24"); // NOI18N
         FormInput.add(jLabel24);
-        jLabel24.setBounds(421, 100, 40, 23);
+        jLabel24.setBounds(422, 102, 40, 23);
+
+        lblStatusManajemen.setText("Status Manajemen :");
+        lblStatusManajemen.setName("lblStatusManajemen"); // NOI18N
+        FormInput.add(lblStatusManajemen);
+        lblStatusManajemen.setBounds(258, 132, 117, 23);
+
+        cmbStatusManajemen.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Proses Pengajuan", "Disetujui", "Ditolak" }));
+        cmbStatusManajemen.setName("cmbStatusManajemen"); // NOI18N
+        cmbStatusManajemen.setPreferredSize(new java.awt.Dimension(55, 28));
+        FormInput.add(cmbStatusManajemen);
+        cmbStatusManajemen.setBounds(381, 132, 128, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -868,10 +891,10 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                     return;
                 }
             }
-            if (Sequel.menyimpantf("pengajuan_cuti", "?,?,?,?,?,?,?,?,?,?,?", "Data", 11, new String[]{
+            if (Sequel.menyimpantf("pengajuan_cuti", "?,?,?,?,?,?,?,?,?,?,?,?", "Data", 12, new String[]{
                 NoPengajuan.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""),
                 KdPetugas.getText(), Urgensi.getSelectedItem().toString(), Alamat.getText(), Jumlah.getText(), Kepentingan.getText(), KdPetugasPJ.getText(),
-                Status.getSelectedItem().toString()
+                Status.getSelectedItem().toString(), cmbStatusManajemen.getSelectedItem().toString()
             }) == true) {
                 runBackground(() -> tampil());
                 emptTeks();
@@ -939,9 +962,9 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                         return;
                     }
                 }
-                if (Sequel.mengedittf("pengajuan_cuti", "no_pengajuan=?", "no_pengajuan=?,tanggal=?,tanggal_awal=?,tanggal_akhir=?,nik=?,urgensi=?,alamat=?,jumlah=?,kepentingan=?,nik_pj=?,status=?", 12, new String[]{
+                if (Sequel.mengedittf("pengajuan_cuti", "no_pengajuan=?", "no_pengajuan=?,tanggal=?,tanggal_awal=?,tanggal_akhir=?,nik=?,urgensi=?,alamat=?,jumlah=?,kepentingan=?,nik_pj=?,status=?,status_manajemen=?", 13, new String[]{
                     NoPengajuan.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""), KdPetugas.getText(), Urgensi.getSelectedItem().toString(),
-                    Alamat.getText(), Jumlah.getText(), Kepentingan.getText(), KdPetugasPJ.getText(), Status.getSelectedItem().toString(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    Alamat.getText(), Jumlah.getText(), Kepentingan.getText(), KdPetugasPJ.getText(), Status.getSelectedItem().toString(), cmbStatusManajemen.getSelectedItem().toString(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
                 }) == true) {
                     runBackground(() -> tampil());
                     emptTeks();
@@ -988,7 +1011,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                 Valid.MyReportqry("rptPengajuanCutiAdmin.jasper", "report", "::[ Data Pengajuan Cuti ]::",
                         "select pengajuan_cuti.no_pengajuan,pengajuan_cuti.tanggal,pengajuan_cuti.tanggal_awal,pengajuan_cuti.tanggal_akhir,"
                         + "pengajuan_cuti.nik,peg1.nama as namapengaju,peg1.bidang,peg1.departemen,pengajuan_cuti.urgensi,pengajuan_cuti.alamat,"
-                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status "
+                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status, pengajuan_cuti.status_manajemen "
                         + "from pengajuan_cuti inner join pegawai as peg1 on pengajuan_cuti.nik=peg1.nik "
                         + "inner join pegawai as peg2 on pengajuan_cuti.nik_pj=peg2.nik where "
                         + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' order by pengajuan_cuti.tanggal", param);
@@ -996,20 +1019,23 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                 Valid.MyReportqry("rptPengajuanCutiAdmin.jasper", "report", "::[ Data Pengajuan Cuti ]::",
                         "select pengajuan_cuti.no_pengajuan,pengajuan_cuti.tanggal,pengajuan_cuti.tanggal_awal,pengajuan_cuti.tanggal_akhir,"
                         + "pengajuan_cuti.nik,peg1.nama as namapengaju,peg1.bidang,peg1.departemen,pengajuan_cuti.urgensi,pengajuan_cuti.alamat,"
-                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status "
+                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status, pengajuan_cuti.status_manajemen "
                         + "from pengajuan_cuti inner join pegawai as peg1 on pengajuan_cuti.nik=peg1.nik "
                         + "inner join pegawai as peg2 on pengajuan_cuti.nik_pj=peg2.nik where "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.no_pengajuan like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.nik like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and peg1.nama like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and peg1.bidang like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and peg1.departemen like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.urgensi like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.alamat like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.kepentingan like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.nik_pj like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and peg2.nama like '%" + TCari.getText().trim() + "%' or "
-                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and pengajuan_cuti.status like '%" + TCari.getText().trim() + "%' order by pengajuan_cuti.tanggal", param);
+                        + "pengajuan_cuti.tanggal between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' and ( "
+                        + "pengajuan_cuti.no_pengajuan like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.nik like '%" + TCari.getText().trim() + "%' or "
+                        + "peg1.nama like '%" + TCari.getText().trim() + "%' or "
+                        + "peg1.bidang like '%" + TCari.getText().trim() + "%' or "
+                        + "peg1.departemen like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.urgensi like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.alamat like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.kepentingan like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.nik_pj like '%" + TCari.getText().trim() + "%' or "
+                        + "peg2.nama like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.status like '%" + TCari.getText().trim() + "%' or "
+                        + "pengajuan_cuti.status_manajemen like '%" + TCari.getText().trim() + "%' ) "
+                        + "order by pengajuan_cuti.tanggal", param);
             }
 
         }
@@ -1025,12 +1051,18 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            BtnCariActionPerformed(null);
-        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-            BtnCari.requestFocus();
-        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-            BtnKeluar.requestFocus();
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                BtnCariActionPerformed(null);
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                BtnCari.requestFocus();
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                BtnKeluar.requestFocus();
+                break;
+            default:
+                break;
         }
 }//GEN-LAST:event_TCariKeyPressed
 
@@ -1282,10 +1314,6 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         larangCuti.setVisible(true);
     }//GEN-LAST:event_BtnSetCutiActionPerformed
 
-    private void Jumlah1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jumlah1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Jumlah1KeyPressed
-
     /**
      * @param args the command line arguments
      */
@@ -1322,7 +1350,6 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.PanelBiasa FormInput;
     private widget.PanelBiasa FormMenu;
     private widget.TextBox Jumlah;
-    private widget.TextBox Jumlah1;
     private widget.TextBox KdPetugas;
     private widget.TextBox KdPetugasPJ;
     private widget.TextBox Kepentingan;
@@ -1343,6 +1370,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.ComboBox Urgensi;
     private widget.Button btnPetugas;
     private widget.Button btnPetugasPJ;
+    private widget.ComboBox cmbStatusManajemen;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel11;
     private widget.Label jLabel12;
@@ -1366,12 +1394,13 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
+    private widget.Label lblStatusManajemen;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.ScrollPane scrollPane1;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-
+    
     private void isMenu() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
@@ -1393,7 +1422,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps = koneksi.prepareStatement(
                         "select pengajuan_cuti.no_pengajuan,pengajuan_cuti.tanggal,pengajuan_cuti.tanggal_awal,pengajuan_cuti.tanggal_akhir,"
                         + "pengajuan_cuti.nik,peg1.nama as namapengaju,peg1.bidang,peg1.departemen,pengajuan_cuti.urgensi,pengajuan_cuti.alamat,"
-                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status "
+                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status, pengajuan_cuti.status_manajemen "
                         + "from pengajuan_cuti inner join pegawai as peg1 on pengajuan_cuti.nik=peg1.nik "
                         + "inner join pegawai as peg2 on pengajuan_cuti.nik_pj=peg2.nik where "
                         + "pengajuan_cuti.tanggal between ? and ? order by pengajuan_cuti.tanggal");
@@ -1401,20 +1430,22 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps = koneksi.prepareStatement(
                         "select pengajuan_cuti.no_pengajuan,pengajuan_cuti.tanggal,pengajuan_cuti.tanggal_awal,pengajuan_cuti.tanggal_akhir,"
                         + "pengajuan_cuti.nik,peg1.nama as namapengaju,peg1.bidang,peg1.departemen,pengajuan_cuti.urgensi,pengajuan_cuti.alamat,"
-                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status "
+                        + "pengajuan_cuti.jumlah,pengajuan_cuti.kepentingan,pengajuan_cuti.nik_pj,peg2.nama as namapj,pengajuan_cuti.status, pengajuan_cuti.status_manajemen "
                         + "from pengajuan_cuti inner join pegawai as peg1 on pengajuan_cuti.nik=peg1.nik "
                         + "inner join pegawai as peg2 on pengajuan_cuti.nik_pj=peg2.nik where "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.no_pengajuan like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.nik like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and peg1.nama like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and peg1.bidang like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and peg1.departemen like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.urgensi like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.alamat like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.kepentingan like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.nik_pj like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and peg2.nama like ? or "
-                        + "pengajuan_cuti.tanggal between ? and ? and pengajuan_cuti.status like ? "
+                        + "pengajuan_cuti.tanggal between ? and ? and ( "
+                        + "pengajuan_cuti.no_pengajuan like ? or "
+                        + "pengajuan_cuti.nik like ? or "
+                        + "peg1.nama like ? or "
+                        + "peg1.bidang like ? or "
+                        + "peg1.departemen like ? or "
+                        + "pengajuan_cuti.urgensi like ? or "
+                        + "pengajuan_cuti.alamat like ? or "
+                        + "pengajuan_cuti.kepentingan like ? or "
+                        + "pengajuan_cuti.nik_pj like ? or "
+                        + "peg2.nama like ? or "
+                        + "pengajuan_cuti.status like ? or "
+                        + "pengajuan_cuti.status_manajemen like ? ) "
                         + "order by pengajuan_cuti.tanggal");
             }
 
@@ -1426,36 +1457,17 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
                     ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText().trim() + "%");
-                    ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                    ps.setString(5, "%" + TCari.getText().trim() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
-                    ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(7, "%" + TCari.getText().trim() + "%");
+                    ps.setString(8, "%" + TCari.getText().trim() + "%");
                     ps.setString(9, "%" + TCari.getText().trim() + "%");
-                    ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(10, "%" + TCari.getText().trim() + "%");
+                    ps.setString(11, "%" + TCari.getText().trim() + "%");
                     ps.setString(12, "%" + TCari.getText().trim() + "%");
-                    ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(15, "%" + TCari.getText().trim() + "%");
-                    ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(18, "%" + TCari.getText().trim() + "%");
-                    ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(21, "%" + TCari.getText().trim() + "%");
-                    ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(24, "%" + TCari.getText().trim() + "%");
-                    ps.setString(25, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(26, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(27, "%" + TCari.getText().trim() + "%");
-                    ps.setString(28, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(29, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(30, "%" + TCari.getText().trim() + "%");
-                    ps.setString(31, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(32, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                    ps.setString(33, "%" + TCari.getText().trim() + "%");
+                    ps.setString(13, "%" + TCari.getText().trim() + "%");
+                    ps.setString(14, "%" + TCari.getText().trim() + "%");
                 }
 
                 rs = ps.executeQuery();
@@ -1465,7 +1477,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         rs.getString("no_pengajuan"), rs.getString("tanggal"), rs.getString("tanggal_awal"), rs.getString("tanggal_akhir"),
                         rs.getString("nik"), rs.getString("namapengaju"), rs.getString("bidang"), rs.getString("departemen"),
                         rs.getString("urgensi"), rs.getString("alamat"), rs.getString("jumlah"), rs.getString("kepentingan"),
-                        rs.getString("nik_pj"), rs.getString("namapj"), rs.getString("status")
+                        rs.getString("nik_pj"), rs.getString("namapj"), rs.getString("status"), rs.getString("status_manajemen")
                     });
                     total = total + rs.getDouble("jumlah");
                 }
@@ -1517,6 +1529,16 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             Kepentingan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
             KdPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
             NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Status.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            cmbStatusManajemen.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            
+            if(!Status.getSelectedItem().toString().equalsIgnoreCase("Disetujui")){
+                cmbStatusManajemen.setEditable(false);
+                cmbStatusManajemen.setEnabled(false);
+            }else{
+                cmbStatusManajemen.setEditable(true);
+                cmbStatusManajemen.setEnabled(true);
+            }
         }
     }
 
@@ -1538,6 +1560,14 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         BtnSimpan.setEnabled(akses.getpengajuan_cuti());
         BtnHapus.setEnabled(akses.getpengajuan_cuti());
         BtnEdit.setEnabled(akses.getpengajuan_cuti());
+        isManajemen();
+    }
+    
+    private void isManajemen(){
+        lblStatusManajemen.setEnabled(akses.getmanajemen());
+        lblStatusManajemen.setVisible(akses.getmanajemen());
+        cmbStatusManajemen.setEnabled(akses.getmanajemen());
+        cmbStatusManajemen.setVisible(akses.getmanajemen());
     }
 
     private void autoNomor() {

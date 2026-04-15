@@ -284,7 +284,7 @@ public class DlgUser extends javax.swing.JDialog {
                 "[M]Skrining CURB-65","[L]Potensi PRB di VClaim","[L]Riwayat Pelayanan Obat Apotek BPJS","[M]Skrining Gizi Kehamilan","[L]Rekap Peserta PRB Apotek BPJS","[P]Serah Terima Anggota Tubuh/Barang",
                 "[R]Jenis Aktivitas Proyek PCRA","[R]Lokasi & Kelompok Risiko Area PCRA","[R]Kelas Risiko/Kelas Pencegahan PCRA","[R]Tindakan Pengendalian PCRA","[R]Identifikasi Risiko Infeksi PCRA",
                 "[R]Identifikasi Risiko Keselamatan PCRA","[R]Identifikasi Risiko Kebakaran PCRA","[R]Identifikasi Risiko Utilitas PCRA","[L]Daftar Resep Apotek BPJS","[L]Permintaan Resep Iterasi Apotek BPJS",
-                "[R]Pengkajian Risiko Pra Konstruksi/PCRA","[R]Persyaratan Harus Dipenuhi PCRA","[L]Kirim Q.R. Telaah Farmasi Satu Sehat","[L]Kirim Allergy Intolerance Satu Sehat","[M]Konsultasi Perawat"
+                "[R]Pengkajian Risiko Pra Konstruksi/PCRA","[R]Persyaratan Harus Dipenuhi PCRA","[L]Kirim Q.R. Telaah Farmasi Satu Sehat","[L]Kirim Allergy Intolerance Satu Sehat","[M]Konsultasi Perawat","[C]Manajemen"
         };
         
         tabMode=new DefaultTableModel(null,row){
@@ -297,7 +297,7 @@ public class DlgUser extends javax.swing.JDialog {
                     return a;
               }              
               Class[] types = new Class[] {
-                java.lang.Object.class, java.lang.Object.class,java.lang.Object.class,java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class, 
+                java.lang.Object.class, java.lang.Object.class,java.lang.Object.class,java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, 
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, 
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, 
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, 
@@ -617,7 +617,7 @@ public class DlgUser extends javax.swing.JDialog {
         tbUser.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbUser.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 1192;i++) {
+        for (i = 0; i < 1193;i++) {
             TableColumn column = tbUser.getColumnModel().getColumn(i);
             switch (i) {
                 case 0:
@@ -3647,6 +3647,9 @@ public class DlgUser extends javax.swing.JDialog {
                 case 1191:
                     column.setPreferredWidth(117);
                     break;
+                case 1192:
+                    column.setPreferredWidth(60);
+                    break;
                 default:
                     column.setPreferredWidth(133);
                     break;
@@ -4049,7 +4052,7 @@ public class DlgUser extends javax.swing.JDialog {
         }else if(TPass.getText().trim().equals("")){
             Valid.textKosong(TPass,"Password");
         }else{
-            if(Sequel.menyimpantf("user","AES_ENCRYPT('"+TKd.getText()+"','nur'),AES_ENCRYPT('"+TPass.getText()+"','windi'),'false','false','false','false','false','false','false','false',"+
+            if(Sequel.menyimpantf("user","AES_ENCRYPT('"+TKd.getText()+"','nur'),AES_ENCRYPT('"+TPass.getText()+"','windi'),'false','false','false','false','false','false','false','false','false',"+
                     "'false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false',"+
                     "'false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false',"+
                     "'false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false',"+
@@ -4080,7 +4083,7 @@ public class DlgUser extends javax.swing.JDialog {
                     "'false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false','false',"+
                     "'false','false','false','false'","User")==true){
                 tabMode.addRow(new Object[]{
-                    TKd.getText(),TNmUser.getText(),Jabatan.getText(),TPass.getText(),false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,
+                    TKd.getText(),TNmUser.getText(),Jabatan.getText(),TPass.getText(),false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,
                     false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,
                     false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,
                     false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,
@@ -5347,7 +5350,8 @@ public class DlgUser extends javax.swing.JDialog {
                     "pcra_icra_persyaratan_harus_dipenuhi='"+tbUser.getValueAt(i,1188).toString()+"',"+
                     "satu_sehat_kirim_questionresponse_telaah_farmasi='"+tbUser.getValueAt(i,1189).toString()+"',"+
                     "satu_sehat_kirim_allergy_intolerance='"+tbUser.getValueAt(i,1190).toString()+"',"+
-                    "konsultasi_perawat='"+tbUser.getValueAt(i,1191).toString()+"'")==true){
+                    "konsultasi_perawat='"+tbUser.getValueAt(i,1191).toString()+"',"+
+                    "manajemen='"+tbUser.getValueAt(i,1192).toString()+"'")==true){
                     emptTeks();
                 }
             }         
@@ -6823,7 +6827,8 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                         "pcra_icra_persyaratan_harus_dipenuhi='"+tbUser.getValueAt(barisdicopy,1188).toString()+"',"+
                                         "satu_sehat_kirim_questionresponse_telaah_farmasi='"+tbUser.getValueAt(barisdicopy,1189).toString()+"',"+
                                         "satu_sehat_kirim_allergy_intolerance='"+tbUser.getValueAt(barisdicopy,1190).toString()+"',"+
-                                        "konsultasi_perawat='"+tbUser.getValueAt(barisdicopy,1191).toString()+"'");
+                                        "konsultasi_perawat='"+tbUser.getValueAt(barisdicopy,1191).toString()+"',"+
+                                        "manajemen='"+tbUser.getValueAt(barisdicopy,1192).toString()+"'");
                                 }
                                 userdicopy="";
                                 copyhakakses="";
@@ -7159,7 +7164,7 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             "user.pcra_icra_kelas_risiko_pencegahan,user.pcra_icra_tindakan_pengendalian,user.pcra_icra_identifkasi_risiko_infeksi,user.pcra_icra_identifkasi_risiko_keselamatan,"+
                             "user.pcra_icra_identifkasi_risiko_kebakaran,user.pcra_icra_identifkasi_risiko_utilitas,user.bpjs_daftar_resep_apotek,user.daftar_permintaan_resep_iterasi_bpjs,"+
                             "user.pcra_icra_pengkajian_risiko_prakonstruksi,user.pcra_icra_persyaratan_harus_dipenuhi,user.satu_sehat_kirim_questionresponse_telaah_farmasi,"+
-                            "user.satu_sehat_kirim_allergy_intolerance,user.konsultasi_perawat from user order by AES_DECRYPT(user.id_user,'nur')");
+                            "user.satu_sehat_kirim_allergy_intolerance,user.konsultasi_perawat,user.manajemen from user order by AES_DECRYPT(user.id_user,'nur')");
                         try {
                             rs=ps.executeQuery();
                             i=0;
@@ -8365,7 +8370,8 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                            rs.getBoolean("pcra_icra_persyaratan_harus_dipenuhi"),
                                            rs.getBoolean("satu_sehat_kirim_questionresponse_telaah_farmasi"),
                                            rs.getBoolean("satu_sehat_kirim_allergy_intolerance"),
-                                           rs.getBoolean("konsultasi_perawat")
+                                           rs.getBoolean("konsultasi_perawat"),
+                                           rs.getBoolean("manajemen")
                                         });
                                     }   
                                 } catch (Exception e) {
@@ -9559,7 +9565,8 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                        rs.getBoolean("pcra_icra_persyaratan_harus_dipenuhi"),
                                        rs.getBoolean("satu_sehat_kirim_questionresponse_telaah_farmasi"),
                                        rs.getBoolean("satu_sehat_kirim_allergy_intolerance"),
-                                       rs.getBoolean("konsultasi_perawat")
+                                       rs.getBoolean("konsultasi_perawat"),
+                                       rs.getBoolean("manajemen")
                                     });
                                 }                                             
                              }

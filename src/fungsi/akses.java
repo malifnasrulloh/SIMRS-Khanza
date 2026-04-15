@@ -20,7 +20,7 @@ public final class akses {
     private static ResultSet rs,rs2;
     private static String kode="",kdbangsal="",alamatip="",namars="",alamatrs="",kabupatenrs="",propinsirs="",kontakrs="",emailrs="",form="",namauser="",kode_ppk=""; 
     private static int jml1=0,jml2=0,lebar=0,tinggi=0;
-    private static boolean aktif=false,admin=false,user=false,vakum=false,aplikasi=false,penyakit=false,obat_penyakit=false,dokter=false,jadwal_praktek=false,petugas=false,pasien=false,registrasi=false,
+    private static boolean aktif=false,admin=false,user=false,manajemen=false,vakum=false,aplikasi=false,penyakit=false,obat_penyakit=false,dokter=false,jadwal_praktek=false,petugas=false,pasien=false,registrasi=false,
             tindakan_ralan=false,kamar_inap=false,tindakan_ranap=false,operasi=false,rujukan_keluar=false,rujukan_masuk=false,beri_obat=false,
             resep_pulang=false,pasien_meninggal=false,diet_pasien=false,kelahiran_bayi=false,periksa_lab=false,periksa_radiologi=false,
             kasir_ralan=false,deposit_pasien=false,piutang_pasien=false,peminjaman_berkas=false,barcode=false,presensi_harian=false,
@@ -280,6 +280,7 @@ public final class akses {
                     akses.jml2=rs2.getRow();               
                     if(rs.getRow()>=1){
                         akses.kode="Admin Utama";
+                        akses.manajemen=true;
                         akses.penyakit=true;
                         akses.obat_penyakit=true;
                         akses.dokter=true;
@@ -1476,6 +1477,7 @@ public final class akses {
                         rs2.beforeFirst();
                         rs2.next();
                         akses.kode=user;
+                        akses.manajemen=rs2.getBoolean("manajemen");
                         akses.penyakit=rs2.getBoolean("penyakit");
                         akses.obat_penyakit=rs2.getBoolean("obat_penyakit");
                         akses.dokter=rs2.getBoolean("dokter");
@@ -2694,7 +2696,8 @@ public final class akses {
     }
     
     public static void setLogOut(){
-        akses.kode="";                  
+        akses.kode="";       
+        akses.manajemen=false;
         akses.penyakit= false;
         akses.obat_penyakit= false;
         akses.dokter= false;
@@ -3892,7 +3895,8 @@ public final class akses {
     public static int getjml1() {return akses.jml1;}    
     public static int getjml2() {return akses.jml2;}    
     public static boolean getadmin(){return akses.admin;}        
-    public static boolean getuser(){return akses.user;} 
+    public static boolean getuser(){return akses.user;}
+    public static boolean getmanajemen(){return akses.manajemen;}
     public static boolean gete_eksekutif(){return akses.e_eksekutif;}
     public static boolean getvakum(){return akses.vakum;} 
     public static boolean getaplikasi(){return akses.aplikasi;} 
