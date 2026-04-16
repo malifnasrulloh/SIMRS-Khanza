@@ -712,6 +712,10 @@ public final class PengajuanCutiPegawai extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, valCuti.getPesanError());
                 return;
             }
+            if (!valCuti.cekValidasiPengajuan(Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Integer.parseInt(Jumlah.getText()), KdPetugas.getText(), NoPengajuan.getText())) {
+                JOptionPane.showMessageDialog(null, valCuti.getPesanError());
+                return;
+            }
             if (Sequel.menyimpantf("pengajuan_cuti", "?,?,?,?,?,?,?,?,?,?,?,?", "Data", 12, new String[]{
                 NoPengajuan.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""),
                 KdPetugas.getText(), Urgensi.getSelectedItem().toString(), Alamat.getText(), Jumlah.getText(), Kepentingan.getText(), KdPetugasPJ.getText(),
@@ -783,6 +787,10 @@ public final class PengajuanCutiPegawai extends javax.swing.JDialog {
                 if (!tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString().equals("Disetujui") && !tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().equals("Disetujui")) {
                     fungsi.ValidasiCuti valCuti = new fungsi.ValidasiCuti();
                     if (!valCuti.cekValidasi(Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""))) {
+                        JOptionPane.showMessageDialog(null, valCuti.getPesanError());
+                        return;
+                    }
+                    if (!valCuti.cekValidasiPengajuan(Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Integer.parseInt(Jumlah.getText()), KdPetugas.getText(), NoPengajuan.getText())) {
                         JOptionPane.showMessageDialog(null, valCuti.getPesanError());
                         return;
                     }

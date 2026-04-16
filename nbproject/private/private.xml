@@ -23,11 +23,12 @@
         <group>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/fungsi/ValidasiCuti.java</file>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/kepegawaian/PengajuanCutiAdmin.java</file>
-            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/kepegawaian/SetCuti.java</file>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/kepegawaian/PengajuanCutiPegawai.java</file>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/fungsi/validasi.java</file>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/fungsi/sekuel.java</file>
             <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/fungsi/akses.java</file>
+            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/setting/DlgSetRM.java</file>
+            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/setting/DlgSetCuti.java</file>
         </group>
     </open-files>
 </project-private>

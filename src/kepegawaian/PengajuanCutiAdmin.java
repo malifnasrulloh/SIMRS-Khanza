@@ -45,7 +45,7 @@ import javax.swing.table.TableColumn;
 public final class PengajuanCutiAdmin extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
-    private SetCuti larangCuti;
+    private setting.DlgSetCuti dlgSetCuti;
     private Connection koneksi = koneksiDB.condb();
     private sekuel Sequel = new sekuel();
     private validasi Valid = new validasi();
@@ -182,6 +182,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         BtnAll = new widget.Button();
         jLabel18 = new widget.Label();
         LCount1 = new widget.Label();
+        lblInfoSisaCuti = new widget.Label();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
         PanelInput = new javax.swing.JPanel();
@@ -375,39 +376,33 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
 
         panelGlass9.setName("panelGlass9"); // NOI18N
         panelGlass9.setPreferredSize(new java.awt.Dimension(44, 44));
-        panelGlass9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
 
         jLabel19.setText("Tanggal :");
         jLabel19.setName("jLabel19"); // NOI18N
         jLabel19.setPreferredSize(new java.awt.Dimension(55, 23));
-        panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
         DTPCari1.setPreferredSize(new java.awt.Dimension(90, 23));
-        panelGlass9.add(DTPCari1);
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("s.d.");
         jLabel21.setName("jLabel21"); // NOI18N
         jLabel21.setPreferredSize(new java.awt.Dimension(23, 23));
-        panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
         DTPCari2.setPreferredSize(new java.awt.Dimension(90, 23));
-        panelGlass9.add(DTPCari2);
 
         jLabel6.setText("Key Word :");
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(65, 23));
-        panelGlass9.add(jLabel6);
 
         TCari.setName("TCari"); // NOI18N
         TCari.setPreferredSize(new java.awt.Dimension(190, 23));
@@ -416,7 +411,6 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                 TCariKeyPressed(evt);
             }
         });
-        panelGlass9.add(TCari);
 
         BtnCari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/accept.png"))); // NOI18N
         BtnCari.setMnemonic('3');
@@ -433,7 +427,6 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                 BtnCariKeyPressed(evt);
             }
         });
-        panelGlass9.add(BtnCari);
 
         BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
         BtnAll.setMnemonic('M');
@@ -450,18 +443,67 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                 BtnAllKeyPressed(evt);
             }
         });
-        panelGlass9.add(BtnAll);
 
         jLabel18.setText("Pengajuan :");
         jLabel18.setName("jLabel18"); // NOI18N
         jLabel18.setPreferredSize(new java.awt.Dimension(70, 23));
-        panelGlass9.add(jLabel18);
 
         LCount1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LCount1.setText("0");
         LCount1.setName("LCount1"); // NOI18N
-        LCount1.setPreferredSize(new java.awt.Dimension(80, 23));
-        panelGlass9.add(LCount1);
+        LCount1.setPreferredSize(new java.awt.Dimension(33, 23));
+
+        lblInfoSisaCuti.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblInfoSisaCuti.setToolTipText("");
+        lblInfoSisaCuti.setName("lblInfoSisaCuti"); // NOI18N
+        lblInfoSisaCuti.setPreferredSize(new java.awt.Dimension(33, 23));
+
+        javax.swing.GroupLayout panelGlass9Layout = new javax.swing.GroupLayout(panelGlass9);
+        panelGlass9.setLayout(panelGlass9Layout);
+        panelGlass9Layout.setHorizontalGroup(
+            panelGlass9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelGlass9Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(DTPCari1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(DTPCari2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(TCari, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(BtnAll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(LCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInfoSisaCuti, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelGlass9Layout.setVerticalGroup(
+            panelGlass9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelGlass9Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(panelGlass9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DTPCari1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DTPCari2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnAll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LCount1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblInfoSisaCuti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         jPanel3.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -503,7 +545,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         jLabel8.setBounds(227, 10, 99, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -699,7 +741,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         jLabel14.setBounds(1, 102, 88, 23);
 
         Tgl1.setForeground(new java.awt.Color(50, 70, 50));
-        Tgl1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
+        Tgl1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         Tgl1.setDisplayFormat("dd-MM-yyyy");
         Tgl1.setName("Tgl1"); // NOI18N
         Tgl1.setOpaque(false);
@@ -723,7 +765,7 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
         jLabel22.setBounds(185, 102, 25, 23);
 
         Tgl2.setForeground(new java.awt.Color(50, 70, 50));
-        Tgl2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2026" }));
+        Tgl2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         Tgl2.setDisplayFormat("dd-MM-yyyy");
         Tgl2.setName("Tgl2"); // NOI18N
         Tgl2.setOpaque(false);
@@ -891,6 +933,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
                     return;
                 }
             }
+            if (!valCuti.cekValidasiPengajuan(Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Integer.parseInt(Jumlah.getText()), KdPetugas.getText(), NoPengajuan.getText())) {
+                int reply = JOptionPane.showConfirmDialog(null, valCuti.getPesanError() + "\nApakah Anda ingin tetap memproses pengajuan ini (Bypass)?", "Konfirmasi Larangan Cuti", JOptionPane.YES_NO_OPTION);
+                if (reply != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
             if (Sequel.menyimpantf("pengajuan_cuti", "?,?,?,?,?,?,?,?,?,?,?,?", "Data", 12, new String[]{
                 NoPengajuan.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""),
                 KdPetugas.getText(), Urgensi.getSelectedItem().toString(), Alamat.getText(), Jumlah.getText(), Kepentingan.getText(), KdPetugasPJ.getText(),
@@ -957,6 +1005,12 @@ public final class PengajuanCutiAdmin extends javax.swing.JDialog {
             if (tbObat.getSelectedRow() > -1) {
                 fungsi.ValidasiCuti valCuti = new fungsi.ValidasiCuti();
                 if (!valCuti.cekValidasi(Valid.SetTgl(Tgl1.getSelectedItem() + ""), Valid.SetTgl(Tgl2.getSelectedItem() + ""))) {
+                    int reply = JOptionPane.showConfirmDialog(null, valCuti.getPesanError() + "\nApakah Anda ingin tetap memproses pengajuan ini (Bypass)?", "Konfirmasi Larangan Cuti", JOptionPane.YES_NO_OPTION);
+                    if (reply != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+                if (!valCuti.cekValidasiPengajuan(Valid.SetTgl(Tanggal.getSelectedItem() + ""), Valid.SetTgl(Tgl1.getSelectedItem() + ""), Integer.parseInt(Jumlah.getText()), KdPetugas.getText(), NoPengajuan.getText())) {
                     int reply = JOptionPane.showConfirmDialog(null, valCuti.getPesanError() + "\nApakah Anda ingin tetap memproses pengajuan ini (Bypass)?", "Konfirmasi Larangan Cuti", JOptionPane.YES_NO_OPTION);
                     if (reply != JOptionPane.YES_OPTION) {
                         return;
@@ -1290,28 +1344,32 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_ChkAccorActionPerformed
 
     private void BtnSetCutiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSetCutiActionPerformed
-        if (larangCuti == null || !larangCuti.isDisplayable()) {
-            larangCuti = new SetCuti(null, true);
-            larangCuti.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            larangCuti.addWindowListener(new WindowAdapter() {
+        if (!akses.getadmin()) {
+            JOptionPane.showMessageDialog(null, "Maaf, Hanya Admin yang dapat mengakses pengaturan ini.");
+            return;
+        }
+        if (dlgSetCuti == null || !dlgSetCuti.isDisplayable()) {
+            dlgSetCuti = new setting.DlgSetCuti(null, true);
+            dlgSetCuti.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            dlgSetCuti.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    larangCuti = null;
+                    dlgSetCuti = null;
                 }
             });
 
-            larangCuti.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
-            larangCuti.setLocationRelativeTo(internalFrame1);
+            dlgSetCuti.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+            dlgSetCuti.setLocationRelativeTo(internalFrame1);
         }
-        if (larangCuti == null) {
+        if (dlgSetCuti == null) {
             return;
         }
 
-        if (larangCuti.isVisible()) {
-            larangCuti.toFront();
+        if (dlgSetCuti.isVisible()) {
+            dlgSetCuti.toFront();
             return;
         }
-        larangCuti.setVisible(true);
+        dlgSetCuti.setVisible(true);
     }//GEN-LAST:event_BtnSetCutiActionPerformed
 
     /**
@@ -1394,24 +1452,32 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
+    private widget.Label lblInfoSisaCuti;
     private widget.Label lblStatusManajemen;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.ScrollPane scrollPane1;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     private void isMenu() {
-        if (ChkAccor.isSelected() == true) {
+        if (akses.getadmin()) {
+            PanelAccor.setVisible(true);
+            if (ChkAccor.isSelected() == true) {
+                ChkAccor.setVisible(false);
+                PanelAccor.setPreferredSize(new Dimension(155, HEIGHT));
+                FormMenu.setVisible(true);
+                ChkAccor.setVisible(true);
+            } else if (ChkAccor.isSelected() == false) {
+                ChkAccor.setVisible(false);
+                PanelAccor.setPreferredSize(new Dimension(15, HEIGHT));
+                FormMenu.setVisible(false);
+                ChkAccor.setVisible(true);
+            }
+        } else {
+            PanelAccor.setVisible(false);
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(155, HEIGHT));
-            FormMenu.setVisible(true);
-            ChkAccor.setVisible(true);
-        } else if (ChkAccor.isSelected() == false) {
-            ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(15, HEIGHT));
             FormMenu.setVisible(false);
-            ChkAccor.setVisible(true);
         }
     }
 
@@ -1531,13 +1597,54 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
             Status.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
             cmbStatusManajemen.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
-            
-            if(!Status.getSelectedItem().toString().equalsIgnoreCase("Disetujui")){
+
+            if (!Status.getSelectedItem().toString().equalsIgnoreCase("Disetujui")) {
                 cmbStatusManajemen.setEditable(false);
                 cmbStatusManajemen.setEnabled(false);
-            }else{
+            } else {
                 cmbStatusManajemen.setEditable(true);
                 cmbStatusManajemen.setEnabled(true);
+            }
+
+            try {
+                String nik = KdPetugas.getText();
+                String tanggalAwal = tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString();
+                int maksJatahSemester = 0;
+                
+                ps = koneksi.prepareStatement("SELECT maks_jatah_semester FROM set_pengaturan_cuti LIMIT 1");
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    maksJatahSemester = rs.getInt("maks_jatah_semester");
+                }
+                rs.close();
+                ps.close();
+
+                java.time.LocalDate awal = java.time.LocalDate.parse(tanggalAwal, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                int bulan = awal.getMonthValue();
+                int tahun = awal.getYear();
+                String queryQuota;
+                String infoSemester = "Semester " + (bulan <= 6 ? "1" : "2") + " " + tahun;
+
+                if (bulan <= 6) {
+                    queryQuota = "SELECT sum(jumlah) FROM pengajuan_cuti WHERE nik=? AND year(tanggal_awal)=? AND month(tanggal_awal) BETWEEN 1 AND 6 AND status<>'Ditolak' AND status_manajemen<>'Ditolak'";
+                } else {
+                    queryQuota = "SELECT sum(jumlah) FROM pengajuan_cuti WHERE nik=? AND year(tanggal_awal)=? AND month(tanggal_awal) BETWEEN 7 AND 12 AND status<>'Ditolak' AND status_manajemen<>'Ditolak'";
+                }
+
+                ps = koneksi.prepareStatement(queryQuota);
+                ps.setString(1, nik);
+                ps.setInt(2, tahun);
+                rs = ps.executeQuery();
+                int jatahTerpakai = 0;
+                if (rs.next()) {
+                    jatahTerpakai = rs.getInt(1);
+                }
+                rs.close();
+                ps.close();
+
+                lblInfoSisaCuti.setText("Sisa Jatah " + infoSemester + " : " + (maksJatahSemester - jatahTerpakai) + " Hari");
+            } catch (Exception e) {
+                System.out.println("Notif Sisa Cuti: " + e);
             }
         }
     }
@@ -1562,8 +1669,8 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         BtnEdit.setEnabled(akses.getpengajuan_cuti());
         isManajemen();
     }
-    
-    private void isManajemen(){
+
+    private void isManajemen() {
         lblStatusManajemen.setEnabled(akses.getmanajemen());
         lblStatusManajemen.setVisible(akses.getmanajemen());
         cmbStatusManajemen.setEnabled(akses.getmanajemen());
