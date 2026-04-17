@@ -40,8 +40,6 @@ import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 
