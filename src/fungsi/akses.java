@@ -1329,4 +1329,5 @@ public final class akses {
     public static boolean getsatu_sehat_kirim_questionresponse_telaah_farmasi() {return hakAkses.get(EnumAkses.satu_sehat_kirim_questionresponse_telaah_farmasi);}
     public static boolean getsatu_sehat_kirim_allergy_intolerance() {return hakAkses.get(EnumAkses.satu_sehat_kirim_allergy_intolerance);}
     public static boolean getkonsultasi_perawat() {return hakAkses.get(EnumAkses.konsultasi_perawat);}
+    public static boolean getjawaban_konsultasi_perawat(){return hakAkses.get(EnumAkses.jawaban_konsultasi_perawat);}
 }
