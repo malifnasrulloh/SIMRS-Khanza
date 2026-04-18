@@ -1202,8 +1202,9 @@ public enum EnumAkses {
     satu_sehat_kirim_questionresponse_telaah_farmasi("satu_sehat_kirim_questionresponse_telaah_farmasi", "[L]Kirim Q.R. Telaah Farmasi Satu Sehat"),
     satu_sehat_kirim_allergy_intolerance("satu_sehat_kirim_allergy_intolerance", "[L]Kirim Allergy Intolerance Satu Sehat"),
     konsultasi_perawat("konsultasi_perawat", "[M]Konsultasi Perawat"),
-    manajemen("manajemen", "[C]Manajemen"),
-    jawaban_konsultasi_perawat("jawaban_konsultasi_perawat","[M]Jawaban Konsultasi Perawat");
+    jawaban_konsultasi_perawat("jawaban_konsultasi_perawat", "[M]Jawaban Konsultasi Perawat"),
+    //Tambahan kolom
+    manajemen("manajemen", "[C]Manajemen");
 
     private final String alias;
     private final String dbTableColumn;
