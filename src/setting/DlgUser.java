@@ -19,7 +19,6 @@ import fungsi.batasInput;
 import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -57,7 +56,7 @@ public class DlgUser extends javax.swing.JDialog {
     private ResultSet rs;
     private String user = "", jabatan = "", copyhakakses = "", userdicopy = "";
     List<String> columnNames = Arrays.stream(EnumAkses.values()).map(EnumAkses::getAlias).collect(Collectors.toList());
-    private int i = 0, barisdicopy = -1;
+    private int i = 0;
     private boolean ceksukses = false;
     private DlgCariDokter dlgdokter;
     private DlgCariPetugas dlgpetugas;
@@ -541,10 +540,10 @@ public class DlgUser extends javax.swing.JDialog {
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         if (tabMode.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
+            JOptionPane.showMessageDialog(this, "Maaf, data sudah habis...!!!!");
             TKd.requestFocus();
         } else if (TPass.getText().trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            JOptionPane.showMessageDialog(this, "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
         } else if (!TPass.getText().trim().equals("")) {
             if (Sequel.queryutf("delete from user where id_user=AES_ENCRYPT('" + TKd.getText() + "','nur')") == true) {
                 if (tbUser.getSelectedRow() != -1) {
@@ -701,7 +700,7 @@ public class DlgUser extends javax.swing.JDialog {
 private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     if (tabMode.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        JOptionPane.showMessageDialog(this, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
         TKd.requestFocus();
     } else if (tabMode.getRowCount() != 0) {
         Map<String, Object> param = new HashMap<>();
@@ -761,14 +760,21 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_formWindowOpened
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            BtnCariActionPerformed(null);
-        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-            BtnCari.requestFocus();
-        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-            BtnKeluar.requestFocus();
-        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
-            tbUser.requestFocus();
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                BtnCariActionPerformed(null);
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                BtnCari.requestFocus();
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                BtnKeluar.requestFocus();
+                break;
+            case KeyEvent.VK_UP:
+                tbUser.requestFocus();
+                break;
+            default:
+                break;
         }
     }//GEN-LAST:event_TCariKeyPressed
 
@@ -812,18 +818,15 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void MnCopyHakAksesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnCopyHakAksesActionPerformed
         if (tabMode.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "Maaf, data user...!!!!");
+            JOptionPane.showMessageDialog(this, "Maaf, data user...!!!!");
             TCari.requestFocus();
         } else if (TKd.getText().trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu data user yang mau dicopy hak aksesnya...!!!");
+            JOptionPane.showMessageDialog(this, "Maaf, Silahkan anda pilih dulu data user yang mau dicopy hak aksesnya...!!!");
             tbUser.requestFocus();
         } else {
             copyhakakses = "copy";
             userdicopy = TKd.getText();
-            if (tbUser.getSelectedRow() != -1) {
-                barisdicopy = tbUser.getSelectedRow();
-            }
-            JOptionPane.showMessageDialog(null, "Silahkan pilih user tujuan..!!");
+            JOptionPane.showMessageDialog(this, "Silahkan pilih user tujuan..!!");
         }
     }//GEN-LAST:event_MnCopyHakAksesActionPerformed
 
@@ -855,7 +858,7 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 personal.setVisible(true);
             }
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Silahkan pilih dulu nama user..!!");
+            JOptionPane.showMessageDialog(this, "Silahkan pilih dulu nama user..!!");
         }
     }//GEN-LAST:event_MnSetUserActionPerformed
 
@@ -869,12 +872,12 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             if (evt.getClickCount() == 1) {
                 if (copyhakakses.equals("copy")) {
                     if (userdicopy.equals(TKd.getText())) {
-                        JOptionPane.showMessageDialog(null, "Copy hak akses gagal karena user dicopy dan user tujuan yang dipilih sama..!!");
+                        JOptionPane.showMessageDialog(this, "Copy hak akses gagal karena user dicopy dan user tujuan yang dipilih sama..!!");
                         userdicopy = "";
                         copyhakakses = "";
-                        barisdicopy = -1;
                     } else {
-                        int reply = JOptionPane.showConfirmDialog(rootPane, "Eeiiiiiits, udah bener belum data copy hak aksesnya..??", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                        int reply = JOptionPane.showConfirmDialog(this, "Eeiiiiiits, udah bener belum data copy hak aksesnya..??", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+
                         if (reply == JOptionPane.YES_OPTION) {
                             try {
                                 i = tbUser.getSelectedRow();
@@ -882,26 +885,21 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     String sqlAksesValue = "";
 
                                     for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
-                                        sqlAksesValue += ", " + colName.getDBTableColumn() + "='" + tbUser.getValueAt(i, colName.ordinal() + 2).toString() + "'"; // +2 karena pada table (GUI) terdapat 2 kolom tambahan didepan
+                                        sqlAksesValue += "destination." + colName.getDBTableColumn() + "=source." + colName.getDBTableColumn() + ",";
                                     }
-                                    Sequel.mengedit("user", "id_user=AES_ENCRYPT('" + tbUser.getValueAt(i, 0).toString() + "','nur')",
-                                            "id_user=AES_ENCRYPT('" + TKd.getText() + "','nur'),"
-                                            + "password=AES_ENCRYPT('" + TPass.getText() + "','windi')"
-                                            + sqlAksesValue
+                                    Sequel.copyColumnValue("user", "source.id_user=AES_ENCRYPT('" + userdicopy + "','nur')", "destination.id_user=AES_ENCRYPT('" + tbUser.getValueAt(i, 0).toString() + "','nur')",
+                                            sqlAksesValue.substring(0, sqlAksesValue.length() - 1)
                                     );
                                 }
                                 userdicopy = "";
                                 copyhakakses = "";
-                                barisdicopy = -1;
                                 tampil();
                             } catch (Exception e) {
                                 userdicopy = "";
-                                barisdicopy = -1;
                                 copyhakakses = "";
                             }
                         } else {
                             userdicopy = "";
-                            barisdicopy = -1;
                             copyhakakses = "";
                         }
                     }

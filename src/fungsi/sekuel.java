@@ -843,6 +843,25 @@ public final class sekuel {
         }
     }
     
+    public void copyColumnValue(String table, String sourceAcuanField, String destinationAcuanField, String sourceValue){
+        try {
+            ps=connect.prepareStatement("update "+table+" as destination join "+table+" as source on "+sourceAcuanField+" set "+sourceValue+" where "+destinationAcuanField);
+            try{                        
+                ps.executeUpdate();       
+             }catch(Exception e){
+                System.out.println("Notifikasi : "+e);
+                JOptionPane.showMessageDialog(null,"Maaf, Gagal Mengedit. Mungkin kode sudah digunakan sebelumnya...!!!!");
+             }finally{
+                if(ps != null){
+                    ps.close();
+                }
+            }
+            SimpanTrack("update "+table+" as destination join "+table+" as source on "+sourceAcuanField+"' set "+sourceValue+" where "+destinationAcuanField);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : "+e);
+        }
+    }
+    
     public boolean mengedittf(String table,String acuan_field,String update){
         bool=true;
         try {

@@ -669,7 +669,7 @@ public class DlgUpdateUser extends javax.swing.JDialog {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Proses update hak akses selesai..!!");
+        JOptionPane.showMessageDialog(this, "Proses update hak akses selesai..!!");
     }
 
     private void runBackground(Runnable task) {
