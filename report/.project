@@ -5,13 +5,7 @@
 	<projects>
 	</projects>
 	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.babel.editor.rbeBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>com.jaspersoft.studio.babel.editor.rbeNature</nature>
 	</natures>
 </projectDescription>
