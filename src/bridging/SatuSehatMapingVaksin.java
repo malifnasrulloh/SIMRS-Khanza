@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bridging;
+
 import fungsi.WarnaTable;
+import fungsi.akses;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
-import fungsi.akses;
 import inventory.DlgBarang;
 import inventory.DlgCariKfa;
 import java.awt.Cursor;
@@ -38,196 +38,117 @@ import javax.swing.table.TableColumn;
  * @author dosen
  */
 public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
-    private ResultSet rs;    
-    private int i=0;
+    private ResultSet rs;
+    private int i = 0;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
-    private DlgBarang barang=new DlgBarang(null,false);
-    private DlgCariKfa kfa=new DlgCariKfa(null,false);
 
-    /** Creates new form DlgJnsPerawatanRalan
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SatuSehatMapingVaksin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "Vaksin Code","Vaksin System","Kode Vaksin","Nama Vaksin","Vaksin Display","Route Code",
-                "Route System","Route Display","Dose Code","Dose System","Dose Unit"
-            }){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Vaksin Code", "Vaksin System", "Kode Vaksin", "Nama Vaksin", "Vaksin Display", "Route Code",
+            "Route System", "Route Display", "Dose Code", "Dose System", "Dose Unit"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 11; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(90);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(170);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(170);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(90);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(170);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(170);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(62);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(170);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(59);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        KodeBarang.setDocument(new batasInput((byte)15).getKata(KodeBarang)); 
-        VaksinCode.setDocument(new batasInput((byte)15).getKata(VaksinCode)); 
-        VaksinSystem.setDocument(new batasInput((byte)100).getKata(VaksinSystem)); 
-        VaksinDisplay.setDocument(new batasInput((byte)80).getKata(VaksinDisplay)); 
-        RouteCode.setDocument(new batasInput((byte)30).getKata(RouteCode)); 
-        RouteSystem.setDocument(new batasInput((byte)100).getKata(RouteSystem)); 
-        RouteDisplay.setDocument(new batasInput((byte)80).getKata(RouteDisplay)); 
-        DoseCode.setDocument(new batasInput((byte)15).getKata(DoseCode)); 
-        DoseUnit.setDocument(new batasInput((byte)15).getKata(DoseUnit)); 
-        DoseSystem.setDocument(new batasInput((byte)80).getKata(DoseSystem)); 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));                  
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        KodeBarang.setDocument(new batasInput((byte) 15).getKata(KodeBarang));
+        VaksinCode.setDocument(new batasInput((byte) 15).getKata(VaksinCode));
+        VaksinSystem.setDocument(new batasInput((byte) 100).getKata(VaksinSystem));
+        VaksinDisplay.setDocument(new batasInput((byte) 80).getKata(VaksinDisplay));
+        RouteCode.setDocument(new batasInput((byte) 30).getKata(RouteCode));
+        RouteSystem.setDocument(new batasInput((byte) 100).getKata(RouteSystem));
+        RouteDisplay.setDocument(new batasInput((byte) 80).getKata(RouteDisplay));
+        DoseCode.setDocument(new batasInput((byte) 15).getKata(DoseCode));
+        DoseUnit.setDocument(new batasInput((byte) 15).getKata(DoseUnit));
+        DoseSystem.setDocument(new batasInput((byte) 80).getKata(DoseSystem));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
             });
-        }  
-        
-        barang.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(barang.getTable().getSelectedRow()!= -1){                    
-                    KodeBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());
-                    NamaBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),2).toString());
-                }
-                btnBarang.requestFocus();
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
-        barang.getTable().addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    barang.dispose();
-                }  
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        });
-        
-        // Tombol Cari KFA
-        widget.Button btnKfa = new widget.Button();
-        btnKfa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png")));
-        btnKfa.setMnemonic('3');
-        btnKfa.setToolTipText("Alt+3 Cari KFA");
-        btnKfa.setName("btnKfa");
-        btnKfa.addActionListener(e -> {
-            kfa.isCek();
-            kfa.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-            kfa.setLocationRelativeTo(internalFrame1);
-            kfa.setVisible(true);
-        });
-        FormInput.add(btnKfa);
-        btnKfa.setBounds(157, 10, 28, 23);
-
-        kfa.addWindowListener(new WindowListener() {
-            @Override public void windowOpened(WindowEvent e) {}
-            @Override public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(kfa.getTable().getSelectedRow()!= -1){
-                    VaksinCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),0).toString());
-                    VaksinDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),1).toString());
-                    VaksinSystem.setText("http://sys-ids.kemkes.go.id/kfa");
-                    RouteCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),6).toString());
-                    RouteDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),7).toString());
-                    RouteSystem.setText("http://www.whocc.no/atc");
-                    DoseCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),4).toString());
-                    DoseSystem.setText("http://unitsofmeasure.org/");
-                    DoseUnit.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),4).toString());
-                }
-                VaksinSystem.requestFocus();
-            }
-            @Override public void windowIconified(WindowEvent e) {}
-            @Override public void windowDeiconified(WindowEvent e) {}
-            @Override public void windowActivated(WindowEvent e) {}
-            @Override public void windowDeactivated(WindowEvent e) {}
-        });
-
-        kfa.getTable().addKeyListener(new KeyListener() {
-            @Override public void keyTyped(KeyEvent e) {}
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    kfa.dispose();
-                }
-            }
-            @Override public void keyReleased(KeyEvent e) {}
-        });
+        }
 
         ChkInput.setSelected(false);
         isForm();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -275,6 +196,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
         DoseSystem = new widget.TextBox();
         DoseUnit = new widget.TextBox();
         VaksinSystem = new widget.TextBox();
+        btnKfa = new widget.Button();
 
         NamaBarang.setEditable(false);
         NamaBarang.setHighlighter(null);
@@ -532,13 +454,13 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
         jLabel4.setText("Vaksin System :");
         jLabel4.setName("jLabel4"); // NOI18N
         FormInput.add(jLabel4);
-        jLabel4.setBounds(155, 10, 90, 23);
+        jLabel4.setBounds(198, 10, 90, 23);
 
         KodeBarang.setEditable(false);
         KodeBarang.setHighlighter(null);
         KodeBarang.setName("KodeBarang"); // NOI18N
         FormInput.add(KodeBarang);
-        KodeBarang.setBounds(410, 10, 80, 23);
+        KodeBarang.setBounds(453, 10, 80, 23);
 
         btnBarang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         btnBarang.setMnemonic('1');
@@ -555,12 +477,12 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(btnBarang);
-        btnBarang.setBounds(492, 10, 28, 23);
+        btnBarang.setBounds(535, 10, 28, 23);
 
         jLabel5.setText("Route Code :");
         jLabel5.setName("jLabel5"); // NOI18N
         FormInput.add(jLabel5);
-        jLabel5.setBounds(0, 40, 81, 23);
+        jLabel5.setBounds(1, 40, 81, 23);
 
         RouteCode.setHighlighter(null);
         RouteCode.setName("RouteCode"); // NOI18N
@@ -570,12 +492,12 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(RouteCode);
-        RouteCode.setBounds(85, 40, 70, 23);
+        RouteCode.setBounds(86, 40, 70, 23);
 
         jLabel8.setText("Dose Code :");
         jLabel8.setName("jLabel8"); // NOI18N
         FormInput.add(jLabel8);
-        jLabel8.setBounds(0, 70, 81, 23);
+        jLabel8.setBounds(1, 70, 81, 23);
 
         DoseCode.setHighlighter(null);
         DoseCode.setName("DoseCode"); // NOI18N
@@ -585,7 +507,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(DoseCode);
-        DoseCode.setBounds(85, 70, 70, 23);
+        DoseCode.setBounds(86, 70, 70, 23);
 
         VaksinCode.setHighlighter(null);
         VaksinCode.setName("VaksinCode"); // NOI18N
@@ -595,17 +517,17 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(VaksinCode);
-        VaksinCode.setBounds(85, 10, 70, 23);
+        VaksinCode.setBounds(86, 10, 70, 23);
 
         jLabel9.setText("Vaksin Code :");
         jLabel9.setName("jLabel9"); // NOI18N
         FormInput.add(jLabel9);
-        jLabel9.setBounds(0, 10, 81, 23);
+        jLabel9.setBounds(1, 10, 81, 23);
 
         jLabel10.setText("Display :");
         jLabel10.setName("jLabel10"); // NOI18N
         FormInput.add(jLabel10);
-        jLabel10.setBounds(526, 10, 60, 23);
+        jLabel10.setBounds(569, 10, 60, 23);
 
         VaksinDisplay.setHighlighter(null);
         VaksinDisplay.setName("VaksinDisplay"); // NOI18N
@@ -615,12 +537,12 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(VaksinDisplay);
-        VaksinDisplay.setBounds(590, 10, 140, 23);
+        VaksinDisplay.setBounds(633, 10, 98, 23);
 
         jLabel11.setText("Route System :");
         jLabel11.setName("jLabel11"); // NOI18N
         FormInput.add(jLabel11);
-        jLabel11.setBounds(155, 40, 90, 23);
+        jLabel11.setBounds(156, 40, 90, 23);
 
         RouteSystem.setHighlighter(null);
         RouteSystem.setName("RouteSystem"); // NOI18N
@@ -630,7 +552,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(RouteSystem);
-        RouteSystem.setBounds(249, 40, 241, 23);
+        RouteSystem.setBounds(250, 40, 241, 23);
 
         RouteDisplay.setHighlighter(null);
         RouteDisplay.setName("RouteDisplay"); // NOI18N
@@ -640,22 +562,22 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(RouteDisplay);
-        RouteDisplay.setBounds(590, 40, 140, 23);
+        RouteDisplay.setBounds(591, 40, 140, 23);
 
         jLabel12.setText("Route Display :");
         jLabel12.setName("jLabel12"); // NOI18N
         FormInput.add(jLabel12);
-        jLabel12.setBounds(490, 40, 96, 23);
+        jLabel12.setBounds(491, 40, 96, 23);
 
         jLabel13.setText("Dose Unit :");
         jLabel13.setName("jLabel13"); // NOI18N
         FormInput.add(jLabel13);
-        jLabel13.setBounds(490, 70, 96, 23);
+        jLabel13.setBounds(491, 70, 96, 23);
 
         jLabel14.setText("Dose System :");
         jLabel14.setName("jLabel14"); // NOI18N
         FormInput.add(jLabel14);
-        jLabel14.setBounds(155, 70, 90, 23);
+        jLabel14.setBounds(156, 70, 90, 23);
 
         DoseSystem.setHighlighter(null);
         DoseSystem.setName("DoseSystem"); // NOI18N
@@ -665,7 +587,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(DoseSystem);
-        DoseSystem.setBounds(249, 70, 241, 23);
+        DoseSystem.setBounds(250, 70, 241, 23);
 
         DoseUnit.setHighlighter(null);
         DoseUnit.setName("DoseUnit"); // NOI18N
@@ -675,7 +597,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(DoseUnit);
-        DoseUnit.setBounds(590, 70, 70, 23);
+        DoseUnit.setBounds(591, 70, 70, 23);
 
         VaksinSystem.setHighlighter(null);
         VaksinSystem.setName("VaksinSystem"); // NOI18N
@@ -685,7 +607,24 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             }
         });
         FormInput.add(VaksinSystem);
-        VaksinSystem.setBounds(249, 10, 159, 23);
+        VaksinSystem.setBounds(292, 10, 159, 23);
+
+        btnKfa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        btnKfa.setMnemonic('3');
+        btnKfa.setToolTipText("Alt+3 Cari KFA");
+        btnKfa.setName("btnKfa"); // NOI18N
+        btnKfa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKfaActionPerformed(evt);
+            }
+        });
+        btnKfa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnKfaKeyPressed(evt);
+            }
+        });
+        FormInput.add(btnKfa);
+        btnKfa.setBounds(158, 10, 28, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -697,44 +636,60 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarangActionPerformed
-        DlgBarang barang=new DlgBarang(null,false);
+        DlgBarang barang = new DlgBarang(null, false);
         barang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(barang.getTable().getSelectedRow()!= -1){                    
-                    KodeBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());
-                    NamaBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),2).toString());
+                if (barang.getTable().getSelectedRow() != -1) {
+                    KodeBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    NamaBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                 }
                 btnBarang.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
+
         barang.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     barang.dispose();
-                }  
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
         barang.isCek();
-        barang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        barang.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
         barang.setLocationRelativeTo(internalFrame1);
         barang.setVisible(true);
 }//GEN-LAST:event_btnBarangActionPerformed
@@ -744,46 +699,48 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
 }//GEN-LAST:event_btnBarangKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(VaksinCode.getText().trim().equals("")){
-            Valid.textKosong(VaksinCode,"Vaksin Code");
-        }else if(VaksinSystem.getText().trim().equals("")){
-            Valid.textKosong(VaksinSystem,"Vaksin System");
-        }else if(KodeBarang.getText().trim().equals("")){
-            Valid.textKosong(KodeBarang,"Obat/Vaksin");
-        }else if(VaksinDisplay.getText().trim().equals("")){
-            Valid.textKosong(VaksinDisplay,"Vaksin Display");
-        }else if(RouteCode.getText().trim().equals("")){
-            Valid.textKosong(RouteCode,"Route Code");
-        }else if(RouteSystem.getText().trim().equals("")){
-            Valid.textKosong(RouteSystem,"Route System");
-        }else if(RouteDisplay.getText().trim().equals("")){
-            Valid.textKosong(RouteDisplay,"Route Display");
-        }else if(DoseCode.getText().trim().equals("")){
-            Valid.textKosong(DoseCode,"Dose Code");
-        }else if(DoseSystem.getText().trim().equals("")){
-            Valid.textKosong(DoseSystem,"Dose System");
-        }else if(DoseUnit.getText().trim().equals("")){
-            Valid.textKosong(DoseUnit,"Dose Unit");
-        }else{
-            if(Sequel.menyimpantf("satu_sehat_mapping_vaksin","?,?,?,?,?,?,?,?,?,?","Mapping Vaksin",10,new String[]{
-                KodeBarang.getText(),VaksinCode.getText(),VaksinSystem.getText(),VaksinDisplay.getText(),RouteCode.getText(),
-                RouteSystem.getText(),RouteDisplay.getText(),DoseCode.getText(),DoseSystem.getText(),DoseUnit.getText()
-            })==true){
+        if (VaksinCode.getText().trim().equals("")) {
+            Valid.textKosong(VaksinCode, "Vaksin Code");
+        } else if (VaksinSystem.getText().trim().equals("")) {
+            Valid.textKosong(VaksinSystem, "Vaksin System");
+        } else if (KodeBarang.getText().trim().equals("")) {
+            Valid.textKosong(KodeBarang, "Obat/Vaksin");
+        } else if (VaksinDisplay.getText().trim().equals("")) {
+            Valid.textKosong(VaksinDisplay, "Vaksin Display");
+        } else if (RouteCode.getText().trim().equals("")) {
+            Valid.textKosong(RouteCode, "Route Code");
+        } else if (RouteSystem.getText().trim().equals("")) {
+            Valid.textKosong(RouteSystem, "Route System");
+        } else if (RouteDisplay.getText().trim().equals("")) {
+            Valid.textKosong(RouteDisplay, "Route Display");
+        } else if (DoseCode.getText().trim().equals("")) {
+            Valid.textKosong(DoseCode, "Dose Code");
+        } else if (DoseSystem.getText().trim().equals("")) {
+            Valid.textKosong(DoseSystem, "Dose System");
+        } else if (DoseUnit.getText().trim().equals("")) {
+            Valid.textKosong(DoseUnit, "Dose Unit");
+        } else {
+            if (Sequel.menyimpantf("satu_sehat_mapping_vaksin", "?,?,?,?,?,?,?,?,?,?", "Mapping Vaksin", 10, new String[]{
+                KodeBarang.getText(), VaksinCode.getText(), VaksinSystem.getText(), VaksinDisplay.getText(), RouteCode.getText(),
+                RouteSystem.getText(), RouteDisplay.getText(), DoseCode.getText(), DoseSystem.getText(), DoseUnit.getText()
+            }) == true) {
                 tabMode.addRow(new String[]{
-                    VaksinCode.getText(),VaksinSystem.getText(),KodeBarang.getText(),NamaBarang.getText(),VaksinDisplay.getText(),
-                    RouteCode.getText(),RouteSystem.getText(),RouteDisplay.getText(),DoseCode.getText(),DoseSystem.getText(),
+                    VaksinCode.getText(), VaksinSystem.getText(), KodeBarang.getText(), NamaBarang.getText(), VaksinDisplay.getText(),
+                    RouteCode.getText(), RouteSystem.getText(), RouteDisplay.getText(), DoseCode.getText(), DoseSystem.getText(),
                     DoseUnit.getText()
                 });
                 emptTeks();
-                LCount.setText(""+tabMode.getRowCount());
-            }                
+                LCount.setText("" + tabMode.getRowCount());
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{Valid.pindah(evt,DoseUnit, BtnBatal);}
+        } else {
+            Valid.pindah(evt, DoseUnit, BtnBatal);
+        }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
@@ -791,76 +748,78 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Valid.hapusTabletf(tabMode,KodeBarang,"satu_sehat_mapping_vaksin","kode_brng")==true){
+        if (Valid.hapusTabletf(tabMode, KodeBarang, "satu_sehat_mapping_vaksin", "kode_brng") == true) {
             tabMode.removeRow(tbJnsPerawatan.getSelectedRow());
             emptTeks();
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(VaksinCode.getText().trim().equals("")){
-            Valid.textKosong(VaksinCode,"Vaksin Code");
-        }else if(VaksinSystem.getText().trim().equals("")){
-            Valid.textKosong(VaksinSystem,"Vaksin System");
-        }else if(KodeBarang.getText().trim().equals("")){
-            Valid.textKosong(KodeBarang,"Obat/Vaksin");
-        }else if(VaksinDisplay.getText().trim().equals("")){
-            Valid.textKosong(VaksinDisplay,"Vaksin Display");
-        }else if(RouteCode.getText().trim().equals("")){
-            Valid.textKosong(RouteCode,"Route Code");
-        }else if(RouteSystem.getText().trim().equals("")){
-            Valid.textKosong(RouteSystem,"Route System");
-        }else if(RouteDisplay.getText().trim().equals("")){
-            Valid.textKosong(RouteDisplay,"Route Display");
-        }else if(DoseCode.getText().trim().equals("")){
-            Valid.textKosong(DoseCode,"Dose Code");
-        }else if(DoseSystem.getText().trim().equals("")){
-            Valid.textKosong(DoseSystem,"Dose System");
-        }else if(DoseUnit.getText().trim().equals("")){
-            Valid.textKosong(DoseUnit,"Dose Unit");
-        }else{
-            if(tbJnsPerawatan.getSelectedRow()>-1){
-                if(Sequel.mengedittf("satu_sehat_mapping_vaksin","kode_brng=?","kode_brng=?,vaksin_code=?,vaksin_system=?,vaksin_display=?,"+
-                        "route_code=?,route_system=?,route_display=?,dose_quantity_code=?,dose_quantity_system=?,dose_quantity_unit=?",11,new String[]{
-                        KodeBarang.getText(),VaksinCode.getText(),VaksinSystem.getText(),VaksinDisplay.getText(),RouteCode.getText(),
-                        RouteSystem.getText(),RouteDisplay.getText(),DoseCode.getText(),DoseSystem.getText(),DoseUnit.getText(),
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString()
-                    })==true){
-                    tabMode.setValueAt(KodeBarang.getText(),tbJnsPerawatan.getSelectedRow(),0);
-                    tabMode.setValueAt(VaksinCode.getText(),tbJnsPerawatan.getSelectedRow(),1);
-                    tabMode.setValueAt(VaksinSystem.getText(),tbJnsPerawatan.getSelectedRow(),2);
-                    tabMode.setValueAt(VaksinDisplay.getText(),tbJnsPerawatan.getSelectedRow(),3);
-                    tabMode.setValueAt(RouteCode.getText(),tbJnsPerawatan.getSelectedRow(),4);
-                    tabMode.setValueAt(RouteSystem.getText(),tbJnsPerawatan.getSelectedRow(),5);
-                    tabMode.setValueAt(RouteDisplay.getText(),tbJnsPerawatan.getSelectedRow(),6);
-                    tabMode.setValueAt(DoseCode.getText(),tbJnsPerawatan.getSelectedRow(),7);
-                    tabMode.setValueAt(DoseSystem.getText(),tbJnsPerawatan.getSelectedRow(),8);
-                    tabMode.setValueAt(DoseUnit.getText(),tbJnsPerawatan.getSelectedRow(),9);
+        if (VaksinCode.getText().trim().equals("")) {
+            Valid.textKosong(VaksinCode, "Vaksin Code");
+        } else if (VaksinSystem.getText().trim().equals("")) {
+            Valid.textKosong(VaksinSystem, "Vaksin System");
+        } else if (KodeBarang.getText().trim().equals("")) {
+            Valid.textKosong(KodeBarang, "Obat/Vaksin");
+        } else if (VaksinDisplay.getText().trim().equals("")) {
+            Valid.textKosong(VaksinDisplay, "Vaksin Display");
+        } else if (RouteCode.getText().trim().equals("")) {
+            Valid.textKosong(RouteCode, "Route Code");
+        } else if (RouteSystem.getText().trim().equals("")) {
+            Valid.textKosong(RouteSystem, "Route System");
+        } else if (RouteDisplay.getText().trim().equals("")) {
+            Valid.textKosong(RouteDisplay, "Route Display");
+        } else if (DoseCode.getText().trim().equals("")) {
+            Valid.textKosong(DoseCode, "Dose Code");
+        } else if (DoseSystem.getText().trim().equals("")) {
+            Valid.textKosong(DoseSystem, "Dose System");
+        } else if (DoseUnit.getText().trim().equals("")) {
+            Valid.textKosong(DoseUnit, "Dose Unit");
+        } else {
+            if (tbJnsPerawatan.getSelectedRow() > -1) {
+                if (Sequel.mengedittf("satu_sehat_mapping_vaksin", "kode_brng=?", "kode_brng=?,vaksin_code=?,vaksin_system=?,vaksin_display=?,"
+                        + "route_code=?,route_system=?,route_display=?,dose_quantity_code=?,dose_quantity_system=?,dose_quantity_unit=?", 11, new String[]{
+                            KodeBarang.getText(), VaksinCode.getText(), VaksinSystem.getText(), VaksinDisplay.getText(), RouteCode.getText(),
+                            RouteSystem.getText(), RouteDisplay.getText(), DoseCode.getText(), DoseSystem.getText(), DoseUnit.getText(),
+                            tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString()
+                        }) == true) {
+                    tabMode.setValueAt(KodeBarang.getText(), tbJnsPerawatan.getSelectedRow(), 0);
+                    tabMode.setValueAt(VaksinCode.getText(), tbJnsPerawatan.getSelectedRow(), 1);
+                    tabMode.setValueAt(VaksinSystem.getText(), tbJnsPerawatan.getSelectedRow(), 2);
+                    tabMode.setValueAt(VaksinDisplay.getText(), tbJnsPerawatan.getSelectedRow(), 3);
+                    tabMode.setValueAt(RouteCode.getText(), tbJnsPerawatan.getSelectedRow(), 4);
+                    tabMode.setValueAt(RouteSystem.getText(), tbJnsPerawatan.getSelectedRow(), 5);
+                    tabMode.setValueAt(RouteDisplay.getText(), tbJnsPerawatan.getSelectedRow(), 6);
+                    tabMode.setValueAt(DoseCode.getText(), tbJnsPerawatan.getSelectedRow(), 7);
+                    tabMode.setValueAt(DoseSystem.getText(), tbJnsPerawatan.getSelectedRow(), 8);
+                    tabMode.setValueAt(DoseUnit.getText(), tbJnsPerawatan.getSelectedRow(), 9);
                     emptTeks();
                 }
-            }                
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -870,77 +829,79 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){            
-                Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                param.put("parameter","%"+TCari.getText().trim()+"%");
-                Valid.MyReport("rptMapingVaksinSatuSehat.jasper","report","::[ Mapping Vaksin Satu Sehat Kemenkes ]::",param);            
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            Valid.MyReport("rptMapingVaksinSatuSehat.jasper", "report", "::[ Mapping Vaksin Satu Sehat Kemenkes ]::", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        runBackground(() ->tampil());
+        runBackground(() -> tampil());
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        runBackground(() ->tampil());
+        runBackground(() -> tampil());
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
-            runBackground(() ->tampil());
-        }else{
+            runBackground(() -> tampil());
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbJnsPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbJnsPerawatanMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -949,8 +910,8 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
 }//GEN-LAST:event_tbJnsPerawatanMouseClicked
 
     private void tbJnsPerawatanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1000,33 +961,107 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
     }//GEN-LAST:event_DoseUnitKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        runBackground(() ->tampil());
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        runBackground(() ->tampil());
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        runBackground(() ->tampil());
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
             });
         }
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnKfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKfaActionPerformed
+        DlgCariKfa kfa = new DlgCariKfa(null, false);
+
+        kfa.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (kfa.getTable().getSelectedRow() != -1) {
+                    VaksinCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 0).toString());
+                    VaksinDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 1).toString());
+                    VaksinSystem.setText("http://sys-ids.kemkes.go.id/kfa");
+                    RouteCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 6).toString());
+                    RouteDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 7).toString());
+                    RouteSystem.setText("http://www.whocc.no/atc");
+                    DoseCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 4).toString());
+                    DoseSystem.setText("http://unitsofmeasure.org/");
+                    DoseUnit.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(), 4).toString());
+                }
+                VaksinSystem.requestFocus();
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
+
+        kfa.getTable().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    kfa.dispose();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+        kfa.isCek();
+        kfa.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        kfa.setLocationRelativeTo(internalFrame1);
+        kfa.setVisible(true);
+    }//GEN-LAST:event_btnKfaActionPerformed
+
+    private void btnKfaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnKfaKeyPressed
+        Valid.pindah(evt, VaksinSystem, VaksinDisplay);
+    }//GEN-LAST:event_btnKfaKeyPressed
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             SatuSehatMapingVaksin dialog = new SatuSehatMapingVaksin(new javax.swing.JFrame(), true);
@@ -1067,6 +1102,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
     private widget.TextBox VaksinDisplay;
     private widget.TextBox VaksinSystem;
     private widget.Button btnBarang;
+    private widget.Button btnKfa;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
     private widget.Label jLabel11;
@@ -1087,46 +1123,46 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-           ps=koneksi.prepareStatement(
-                   "select satu_sehat_mapping_vaksin.kode_brng,databarang.nama_brng,satu_sehat_mapping_vaksin.vaksin_code,satu_sehat_mapping_vaksin.vaksin_system,"+
-                   "satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"+
-                   "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"+
-                   "satu_sehat_mapping_vaksin.dose_quantity_unit from satu_sehat_mapping_vaksin inner join databarang "+
-                   "on satu_sehat_mapping_vaksin.kode_brng=databarang.kode_brng "+
-                   (TCari.getText().equals("")?"":"where satu_sehat_mapping_vaksin.kode_brng like ? or databarang.nama_brng like ? or "+
-                   "satu_sehat_mapping_vaksin.vaksin_code like ? or satu_sehat_mapping_vaksin.vaksin_display like ? or satu_sehat_mapping_vaksin.route_display like ? ")+
-                   " order by satu_sehat_mapping_vaksin.vaksin_code");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select satu_sehat_mapping_vaksin.kode_brng,databarang.nama_brng,satu_sehat_mapping_vaksin.vaksin_code,satu_sehat_mapping_vaksin.vaksin_system,"
+                    + "satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"
+                    + "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"
+                    + "satu_sehat_mapping_vaksin.dose_quantity_unit from satu_sehat_mapping_vaksin inner join databarang "
+                    + "on satu_sehat_mapping_vaksin.kode_brng=databarang.kode_brng "
+                    + (TCari.getText().equals("") ? "" : "where satu_sehat_mapping_vaksin.kode_brng like ? or databarang.nama_brng like ? or "
+                    + "satu_sehat_mapping_vaksin.vaksin_code like ? or satu_sehat_mapping_vaksin.vaksin_display like ? or satu_sehat_mapping_vaksin.route_display like ? ")
+                    + " order by satu_sehat_mapping_vaksin.vaksin_code");
             try {
-                if(!TCari.getText().equals("")){
-                    ps.setString(1,"%"+TCari.getText()+"%");
-                    ps.setString(2,"%"+TCari.getText()+"%");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
+                if (!TCari.getText().equals("")) {
+                    ps.setString(1, "%" + TCari.getText() + "%");
+                    ps.setString(2, "%" + TCari.getText() + "%");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("vaksin_code"),rs.getString("vaksin_system"),rs.getString("kode_brng"),rs.getString("nama_brng"),rs.getString("vaksin_display"),
-                        rs.getString("route_code"),rs.getString("route_system"),rs.getString("route_display"),rs.getString("dose_quantity_code"),rs.getString("dose_quantity_system"),
+                        rs.getString("vaksin_code"), rs.getString("vaksin_system"), rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getString("vaksin_display"),
+                        rs.getString("route_code"), rs.getString("route_system"), rs.getString("route_display"), rs.getString("dose_quantity_code"), rs.getString("dose_quantity_system"),
                         rs.getString("dose_quantity_unit")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif Ketersediaan : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif Ketersediaan : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -1147,32 +1183,32 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
     }
 
     private void getData() {
-       if(tbJnsPerawatan.getSelectedRow()!= -1){
-           VaksinCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString());
-           VaksinSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
-           KodeBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString());
-           NamaBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
-           VaksinDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
-           RouteCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
-           RouteSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),6).toString());
-           RouteDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
-           DoseCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),8).toString());
-           DoseSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),9).toString());
-           DoseUnit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),10).toString());
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            VaksinCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            VaksinSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            KodeBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            NamaBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            VaksinDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            RouteCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            RouteSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            RouteDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            DoseCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            DoseSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            DoseUnit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getsatu_sehat_mapping_vaksin());
         BtnHapus.setEnabled(akses.getsatu_sehat_mapping_vaksin());
         BtnEdit.setEnabled(akses.getsatu_sehat_mapping_vaksin());
         BtnPrint.setEnabled(akses.getsatu_sehat_mapping_vaksin());
     }
-    
-    public JTable getTable(){
+
+    public JTable getTable() {
         return tbJnsPerawatan;
-    }  
-    
+    }
+
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
@@ -1186,11 +1222,17 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             ChkInput.setVisible(true);
         }
     }
-    
+
     private void runBackground(Runnable task) {
-        if (ceksukses) return;
-        if (executor.isShutdown() || executor.isTerminated()) return;
-        if (!isDisplayable()) return;
+        if (ceksukses) {
+            return;
+        }
+        if (executor.isShutdown() || executor.isTerminated()) {
+            return;
+        }
+        if (!isDisplayable()) {
+            return;
+        }
 
         ceksukses = true;
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -1212,7 +1254,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
             ceksukses = false;
         }
     }
-    
+
     @Override
     public void dispose() {
         executor.shutdownNow();
