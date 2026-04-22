@@ -1,15 +1,14 @@
 /*
-  Dilarang keras menggandakan/mengcopy/menyebarkan/membajak/mendecompile 
+  Dilarang keras menggandakan/mengcopy/menyebarkan/membajak/mendecompile
   Software ini dalam bentuk apapun tanpa seijin pembuat software
   (Khanza.Soft Media). Bagi yang sengaja membajak softaware ini ta
   npa ijin, kami sumpahi sial 1000 turunan, miskin sampai 500 turu
   nan. Selalu mendapat kecelakaan sampai 400 turunan. Anak pertama
   nya cacat tidak punya kaki sampai 300 turunan. Susah cari jodoh
-  sampai umur 50 tahun sampai 200 turunan. Ya Alloh maafkan kami 
+  sampai umur 50 tahun sampai 200 turunan. Ya Alloh maafkan kami
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package inventory;
 
 import bridging.ApiSatuSehat;
@@ -19,13 +18,17 @@ import fungsi.WarnaTable;
 import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
-import fungsi.akses;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -33,8 +36,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-
-
 
 public class DlgCariKfa extends javax.swing.JDialog {
 
@@ -45,28 +46,27 @@ public class DlgCariKfa extends javax.swing.JDialog {
     private PreparedStatement ps;
     private int i = 0;
     private ResultSet rs;
-    private String link="",json="";
+    private String link = "", json = "";
     private HttpHeaders headers;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
     private JsonNode root;
     private JsonNode nameNode;
-    private JsonNode response;
-    private ApiSatuSehat api=new ApiSatuSehat();
-    
-
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
+    private ApiSatuSehat api = new ApiSatuSehat();
 
     public DlgCariKfa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode = new DefaultTableModel(null,new Object[]{
-            "KFA Code","KFA Display","Form Code","Form Display","Numerator Code","Denomina Code","Route Code","Route Display","Registrar","Nama Dagang","HNA (Rp)","HET (Rp)"
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "KFA Code", "KFA Display", "Form Code", "Form Display", "Numerator Code", "Denomina Code", "Route Code", "Route Display", "Registrar", "Nama Dagang", "HNA (Rp)", "HET (Rp)"
         }) {
             Class[] types = new Class[]{
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             @Override
@@ -107,13 +107,13 @@ public class DlgCariKfa extends javax.swing.JDialog {
                 column.setPreferredWidth(110);
             }
         }
-        tbObat.setDefaultRenderer(Object.class, new WarnaTable());           
-
-        isForm();
+        tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         BtnMiningKFA = new widget.Button();
         java.net.URL iconMining = getClass().getResource("/picture/system-software-update.png");
-        if (iconMining != null) BtnMiningKFA.setIcon(new javax.swing.ImageIcon(iconMining));
+        if (iconMining != null) {
+            BtnMiningKFA.setIcon(new javax.swing.ImageIcon(iconMining));
+        }
         BtnMiningKFA.setText("Mining Farmasi");
         BtnMiningKFA.setToolTipText("Download semua data KFA Farmasi");
         BtnMiningKFA.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -126,11 +126,12 @@ public class DlgCariKfa extends javax.swing.JDialog {
                     miningKFA("farmasi");
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     BtnMiningKFA.setEnabled(true);
                     BtnMiningKFA.setText("Mining Farmasi");
-                    tampil();
+                    runBackground(() -> tampil());
                 }
             }.execute();
         });
@@ -138,7 +139,9 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
         BtnMiningAlkes = new widget.Button();
         java.net.URL iconAlkes = getClass().getResource("/picture/system-software-update.png");
-        if (iconAlkes != null) BtnMiningAlkes.setIcon(new javax.swing.ImageIcon(iconAlkes));
+        if (iconAlkes != null) {
+            BtnMiningAlkes.setIcon(new javax.swing.ImageIcon(iconAlkes));
+        }
         BtnMiningAlkes.setText("Mining Alkes");
         BtnMiningAlkes.setToolTipText("Download semua data KFA Alat Kesehatan");
         BtnMiningAlkes.setPreferredSize(new java.awt.Dimension(140, 30));
@@ -151,11 +154,12 @@ public class DlgCariKfa extends javax.swing.JDialog {
                     miningKFA("alkes");
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     BtnMiningAlkes.setEnabled(true);
                     BtnMiningAlkes.setText("Mining Alkes");
-                    tampil();
+                    runBackground(() -> tampil());
                 }
             }.execute();
         });
@@ -163,7 +167,9 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
         BtnCariApi = new widget.Button();
         java.net.URL iconCariApi = getClass().getResource("/picture/network-wireless.png");
-        if (iconCariApi != null) BtnCariApi.setIcon(new javax.swing.ImageIcon(iconCariApi));
+        if (iconCariApi != null) {
+            BtnCariApi.setIcon(new javax.swing.ImageIcon(iconCariApi));
+        }
         BtnCariApi.setText("Cari API");
         BtnCariApi.setToolTipText("Cari data KFA langsung dari API Satu Sehat");
         BtnCariApi.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -182,6 +188,7 @@ public class DlgCariKfa extends javax.swing.JDialog {
                     cariKfaApi(keyword);
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     BtnCariApi.setEnabled(true);
@@ -191,24 +198,26 @@ public class DlgCariKfa extends javax.swing.JDialog {
         });
         panelisi2.add(BtnCariApi);
 
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
+                    if (TCari.getText().length() > 2) {
+                        runBackground(() -> tampil());
                     }
                 }
             });
@@ -240,8 +249,6 @@ public class DlgCariKfa extends javax.swing.JDialog {
         BtnUpdateKFA = new widget.Button();
         scrollPane1 = new widget.ScrollPane();
         tbObat = new widget.Table();
-        PanelInput = new javax.swing.JPanel();
-        ChkInput = new widget.CekBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -350,7 +357,7 @@ public class DlgCariKfa extends javax.swing.JDialog {
         });
         panelisi2.add(BtnKeluar);
 
-        BtnUpdateKFA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/swap.png"))); // NOI18N
+        BtnUpdateKFA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/inventaris.png"))); // NOI18N
         BtnUpdateKFA.setMnemonic('K');
         BtnUpdateKFA.setText("Update KFA");
         BtnUpdateKFA.setToolTipText("Alt+K");
@@ -406,50 +413,22 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
         internalFrame1.add(scrollPane1, java.awt.BorderLayout.CENTER);
 
-        PanelInput.setName("PanelInput"); // NOI18N
-        PanelInput.setOpaque(false);
-        PanelInput.setPreferredSize(new java.awt.Dimension(660, 338));
-        PanelInput.setLayout(new java.awt.BorderLayout(1, 1));
-
-        ChkInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/143.png"))); // NOI18N
-        ChkInput.setMnemonic('I');
-        ChkInput.setText(".: Input Data");
-        ChkInput.setToolTipText("Alt+I");
-        ChkInput.setBorderPainted(true);
-        ChkInput.setBorderPaintedFlat(true);
-        ChkInput.setFocusable(false);
-        ChkInput.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ChkInput.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ChkInput.setName("ChkInput"); // NOI18N
-        ChkInput.setPreferredSize(new java.awt.Dimension(192, 20));
-        ChkInput.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/143.png"))); // NOI18N
-        ChkInput.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/145.png"))); // NOI18N
-        ChkInput.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/145.png"))); // NOI18N
-        ChkInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChkInputActionPerformed(evt);
-            }
-        });
-        PanelInput.add(ChkInput, java.awt.BorderLayout.PAGE_END);
-
-        internalFrame1.add(PanelInput, java.awt.BorderLayout.PAGE_START);
-
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-    tampil();
+        runBackground(() -> tampil());
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-    tampil();
+        runBackground(() -> tampil());
 
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-    tampil();
+        runBackground(() -> tampil());
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
@@ -466,92 +445,88 @@ public class DlgCariKfa extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-      tampil();
+        runBackground(() -> tampil());
     }//GEN-LAST:event_formWindowOpened
 
     private void tbObatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyReleased
-        
+
     }//GEN-LAST:event_tbObatKeyReleased
 
     private void TCari2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCari2KeyPressed
-       tampil();
+        runBackground(() -> tampil());
     }//GEN-LAST:event_TCari2KeyPressed
-
-    private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-        isForm();
-    }//GEN-LAST:event_ChkInputActionPerformed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
         dispose();
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-       dispose();
+        dispose();
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnUpdateKFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUpdateKFAActionPerformed
         // Ambil keyword dan registrar dari textbox
         String keyword = TCari.getText().trim();
         String registrar = TCari2.getText().trim();
-        
+
         // Validasi input
-        if(keyword.isEmpty()){
+        if (keyword.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(null, "Keyword tidak boleh kosong!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
             TCari.requestFocus();
             return;
         }
-        
+
         link = "https://api-satusehat.kemkes.go.id/kfa-v2/";
-        
+
         try {
             // Setup headers untuk API request
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
             requestEntity = new HttpEntity(headers);
-            
+
             int limit = 100;
             int totalSaved = 0;
             int totalFailed = 0;
-            
+
             System.out.println("=== Mulai pencarian KFA ===");
             System.out.println("Keyword: " + keyword);
             System.out.println("Registrar: " + (registrar.isEmpty() ? "Semua" : registrar));
-            
+
             // Loop untuk pagination (max 10 halaman untuk safety)
             for (int page = 1; page <= 10; page++) {
                 System.out.println("Mengambil halaman ke-" + page + "...");
-                
+
                 // Build URL dengan parameter search
                 String url = link + "products/all?page=" + page + "&size=" + limit + "&product_type=farmasi";
-                
+
                 // Tambahkan parameter keyword (search by name)
-                if(!keyword.isEmpty()){
+                if (!keyword.isEmpty()) {
                     url += "&name=" + java.net.URLEncoder.encode(keyword, "UTF-8");
                 }
-                
+
                 // Tambahkan parameter registrar jika diisi
-                if(!registrar.isEmpty()){
+                if (!registrar.isEmpty()) {
                     url += "&registrar=" + java.net.URLEncoder.encode(registrar, "UTF-8");
                 }
-                
+
                 System.out.println("URL: " + url);
-                
+
                 // Call API
                 json = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
                 root = mapper.readTree(json);
-                
+
                 // Parse response
                 JsonNode dataArray = root.path("items").path("data");
-                
+
                 // Jika tidak ada data, hentikan loop
-                if(dataArray.size() == 0){
+                if (dataArray.size() == 0) {
                     System.out.println("Tidak ada data lagi di halaman " + page);
                     break;
                 }
-                
+
                 System.out.println("Ditemukan " + dataArray.size() + " produk di halaman " + page);
-                
+
                 // Process each product
                 for (JsonNode data : dataArray) {
                     try {
@@ -590,9 +565,9 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
                         // Store data into MySQL table
                         if (Sequel.menyimpantf2("satu_sehat_kfa_master", "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-                            "Kfa Master",
-                            31, // 31 columns
-                            new String[]{name, kfaCode, active, state, image, updatedAt, produksiBuatan, nie, namaDagang, manufacturer, registrarData, generik, rxterm, dosePerUnit, fixPrice, hetPrice, farmalkesHscode, tayangLkpp, kodeLkpp, netWeight, netWeightUomName, volume, volumeUomName, dosageFormCode, dosageFormName, productTemplateKfaCode, productTemplateName, productTemplateState, productTemplateActive, productTemplateDisplayName, productTemplateUpdatedAt}
+                                "Kfa Master",
+                                31, // 31 columns
+                                new String[]{name, kfaCode, active, state, image, updatedAt, produksiBuatan, nie, namaDagang, manufacturer, registrarData, generik, rxterm, dosePerUnit, fixPrice, hetPrice, farmalkesHscode, tayangLkpp, kodeLkpp, netWeight, netWeightUomName, volume, volumeUomName, dosageFormCode, dosageFormName, productTemplateKfaCode, productTemplateName, productTemplateState, productTemplateActive, productTemplateDisplayName, productTemplateUpdatedAt}
                         ) == true) {
                             totalSaved++;
                             System.out.println("✓ Tersimpan: " + name + " (" + kfaCode + ")");
@@ -604,39 +579,39 @@ public class DlgCariKfa extends javax.swing.JDialog {
                         System.out.println("✗ Error menyimpan produk: " + e.getMessage());
                     }
                 }
-                
+
                 // Delay untuk menghindari rate limit
                 Thread.sleep(2000);
-                
+
                 // Jika data kurang dari limit, berarti sudah halaman terakhir
-                if(dataArray.size() < limit){
+                if (dataArray.size() < limit) {
                     System.out.println("Halaman terakhir tercapai");
                     break;
                 }
             }
-            
+
             // Tampilkan summary
             System.out.println("\n=== SELESAI ===");
             System.out.println("Total tersimpan: " + totalSaved);
             System.out.println("Total gagal/duplikat: " + totalFailed);
-            
-            javax.swing.JOptionPane.showMessageDialog(null, 
-                "Pencarian selesai!\n" +
-                "Total tersimpan: " + totalSaved + "\n" +
-                "Total gagal/duplikat: " + totalFailed,
-                "Informasi", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            
+
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Pencarian selesai!\n"
+                    + "Total tersimpan: " + totalSaved + "\n"
+                    + "Total gagal/duplikat: " + totalFailed,
+                    "Informasi",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
             // Refresh tampilan
-            tampil();
-            
+            runBackground(() -> tampil());
+
         } catch (Exception ea) {
             System.out.println("Error Bridging KFA: " + ea);
             ea.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(null, 
-                "Error: " + ea.getMessage(),
-                "Error", 
-                javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Error: " + ea.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnUpdateKFAActionPerformed
 
@@ -664,9 +639,7 @@ public class DlgCariKfa extends javax.swing.JDialog {
     private widget.Button BtnCari;
     private widget.Button BtnKeluar;
     private widget.Button BtnUpdateKFA;
-    private widget.CekBox ChkInput;
     private widget.Label LCount;
-    private javax.swing.JPanel PanelInput;
     private widget.TextBox TCari;
     private widget.TextBox TCari2;
     private widget.ComboBox cmbHlm;
@@ -706,21 +679,21 @@ public class DlgCariKfa extends javax.swing.JDialog {
             javax.swing.SwingUtilities.invokeLater(() -> {
                 Valid.tabelKosong(tabMode);
                 for (JsonNode data : dataArray) {
-                    String kfaCode      = data.path("kfa_code").asText();
-                    String name         = data.path("name").asText();
-                    String dfCode       = data.path("dosage_form").path("code").asText();
-                    String dfName       = data.path("dosage_form").path("name").asText();
-                    String ucumCode     = "";
-                    JsonNode paketObat  = data.path("paket_obat");
+                    String kfaCode = data.path("kfa_code").asText();
+                    String name = data.path("name").asText();
+                    String dfCode = data.path("dosage_form").path("code").asText();
+                    String dfName = data.path("dosage_form").path("name").asText();
+                    String ucumCode = "";
+                    JsonNode paketObat = data.path("paket_obat");
                     if (paketObat.isArray() && paketObat.size() > 0) {
                         ucumCode = paketObat.get(0).path("ucum_cs_code").asText();
                     }
-                    String ftCode       = data.path("farmalkes_type").path("code").asText();
-                    String ftName       = data.path("farmalkes_type").path("name").asText();
-                    String registrar    = data.path("registrar").asText();
-                    String namaDagang   = data.path("nama_dagang").asText();
-                    String fixPrice     = data.path("fix_price").asText();
-                    String hetPrice     = data.path("het_price").asText();
+                    String ftCode = data.path("farmalkes_type").path("code").asText();
+                    String ftName = data.path("farmalkes_type").path("name").asText();
+                    String registrar = data.path("registrar").asText();
+                    String namaDagang = data.path("nama_dagang").asText();
+                    String fixPrice = data.path("fix_price").asText();
+                    String hetPrice = data.path("het_price").asText();
 
                     tabMode.addRow(new Object[]{
                         kfaCode, name, dfCode, dfName,
@@ -731,16 +704,16 @@ public class DlgCariKfa extends javax.swing.JDialog {
                 LCount.setText(tabMode.getRowCount() + " (API)");
                 if (total > 200) {
                     javax.swing.JOptionPane.showMessageDialog(null,
-                        "Total ditemukan: " + total + " data.\n" +
-                        "Ditampilkan 200 teratas. Gunakan keyword lebih spesifik untuk hasil lebih tepat.",
-                        "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                            "Total ditemukan: " + total + " data.\n"
+                            + "Ditampilkan 200 teratas. Gunakan keyword lebih spesifik untuk hasil lebih tepat.",
+                            "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 }
             });
         } catch (Exception ea) {
             System.out.println("Error Cari KFA API: " + ea);
-            javax.swing.SwingUtilities.invokeLater(() ->
-                javax.swing.JOptionPane.showMessageDialog(null,
-                    "Error: " + ea.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE));
+            javax.swing.SwingUtilities.invokeLater(()
+                    -> javax.swing.JOptionPane.showMessageDialog(null,
+                            "Error: " + ea.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE));
         }
     }
 
@@ -754,55 +727,57 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
             // Pastikan kedua tabel ada (dengan kolom product_type)
             koneksi.createStatement().execute(
-                "CREATE TABLE IF NOT EXISTS satu_sehat_kfa_terbaru (" +
-                "kfa_code VARCHAR(50) NOT NULL PRIMARY KEY, product_type VARCHAR(20) DEFAULT 'farmasi', " +
-                "name TEXT, active VARCHAR(10), state VARCHAR(50), " +
-                "image VARCHAR(500), updated_at VARCHAR(50), produksi_buatan VARCHAR(100), nie VARCHAR(100), " +
-                "nama_dagang VARCHAR(255), manufacturer VARCHAR(255), registrar VARCHAR(255), generik VARCHAR(100), " +
-                "rxterm VARCHAR(255), dose_per_unit VARCHAR(50), fix_price VARCHAR(50), het_price VARCHAR(50), " +
-                "farmalkes_hscode VARCHAR(100), tayang_lkpp VARCHAR(10), kode_lkpp VARCHAR(100), " +
-                "net_weight VARCHAR(50), net_weight_uom_name VARCHAR(100), volume VARCHAR(50), volume_uom_name VARCHAR(100), " +
-                "fornas_is_fornas VARCHAR(10), product_template_kfa_code VARCHAR(50), product_template_name VARCHAR(255), " +
-                "product_template_state VARCHAR(50), product_template_active VARCHAR(10), product_template_bmhp VARCHAR(10), " +
-                "product_template_display_name VARCHAR(255), product_template_updated_at VARCHAR(50)" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+                    "CREATE TABLE IF NOT EXISTS satu_sehat_kfa_terbaru ("
+                    + "kfa_code VARCHAR(50) NOT NULL PRIMARY KEY, product_type VARCHAR(20) DEFAULT 'farmasi', "
+                    + "name TEXT, active VARCHAR(10), state VARCHAR(50), "
+                    + "image VARCHAR(500), updated_at VARCHAR(50), produksi_buatan VARCHAR(100), nie VARCHAR(100), "
+                    + "nama_dagang VARCHAR(255), manufacturer VARCHAR(255), registrar VARCHAR(255), generik VARCHAR(100), "
+                    + "rxterm VARCHAR(255), dose_per_unit VARCHAR(50), fix_price VARCHAR(50), het_price VARCHAR(50), "
+                    + "farmalkes_hscode VARCHAR(100), tayang_lkpp VARCHAR(10), kode_lkpp VARCHAR(100), "
+                    + "net_weight VARCHAR(50), net_weight_uom_name VARCHAR(100), volume VARCHAR(50), volume_uom_name VARCHAR(100), "
+                    + "fornas_is_fornas VARCHAR(10), product_template_kfa_code VARCHAR(50), product_template_name VARCHAR(255), "
+                    + "product_template_state VARCHAR(50), product_template_active VARCHAR(10), product_template_bmhp VARCHAR(10), "
+                    + "product_template_display_name VARCHAR(255), product_template_updated_at VARCHAR(50)"
+                    + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
             // Tambah kolom product_type jika belum ada (migrasi tabel lama)
-            try { koneksi.createStatement().execute(
-                "ALTER TABLE satu_sehat_kfa_terbaru ADD COLUMN product_type VARCHAR(20) DEFAULT 'farmasi' AFTER kfa_code");
-            } catch (Exception ignored) {}
+            try {
+                koneksi.createStatement().execute(
+                        "ALTER TABLE satu_sehat_kfa_terbaru ADD COLUMN product_type VARCHAR(20) DEFAULT 'farmasi' AFTER kfa_code");
+            } catch (Exception ignored) {
+            }
             koneksi.createStatement().execute(
-                "CREATE TABLE IF NOT EXISTS satu_sehat_kfa_terbaru_detail (" +
-                "kfa_code VARCHAR(50) NOT NULL PRIMARY KEY, " +
-                "farmalkes_type_code VARCHAR(50), farmalkes_type_name VARCHAR(255), farmalkes_type_group VARCHAR(100), " +
-                "dosage_form_code VARCHAR(50), dosage_form_name VARCHAR(255), uom_name VARCHAR(100), " +
-                "med_dev_jenis VARCHAR(255), med_dev_subkategori VARCHAR(255), med_dev_kategori VARCHAR(255), " +
-                "med_dev_kelas_risiko VARCHAR(100), klasifikasi_izin VARCHAR(100), " +
-                "active_ingredients_kfa_code VARCHAR(50), active_ingredients_zat_aktif VARCHAR(255), active_ingredients_kekuatan VARCHAR(100), " +
-                "replacement_product_kfa_code VARCHAR(50), replacement_product_name VARCHAR(255), replacement_product_reason VARCHAR(255), " +
-                "replacement_template_kfa_code VARCHAR(50), replacement_template_name VARCHAR(255), " +
-                "paket_obat_kfa_code VARCHAR(50), paket_obat_qty VARCHAR(50), paket_obat_uom_name VARCHAR(100), " +
-                "paket_obat_ucum_cs_code VARCHAR(50), paket_obat_ucum_name VARCHAR(100), " +
-                "CONSTRAINT fk_kfa_terbaru_detail FOREIGN KEY (kfa_code) REFERENCES satu_sehat_kfa_terbaru(kfa_code) ON DELETE CASCADE" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+                    "CREATE TABLE IF NOT EXISTS satu_sehat_kfa_terbaru_detail ("
+                    + "kfa_code VARCHAR(50) NOT NULL PRIMARY KEY, "
+                    + "farmalkes_type_code VARCHAR(50), farmalkes_type_name VARCHAR(255), farmalkes_type_group VARCHAR(100), "
+                    + "dosage_form_code VARCHAR(50), dosage_form_name VARCHAR(255), uom_name VARCHAR(100), "
+                    + "med_dev_jenis VARCHAR(255), med_dev_subkategori VARCHAR(255), med_dev_kategori VARCHAR(255), "
+                    + "med_dev_kelas_risiko VARCHAR(100), klasifikasi_izin VARCHAR(100), "
+                    + "active_ingredients_kfa_code VARCHAR(50), active_ingredients_zat_aktif VARCHAR(255), active_ingredients_kekuatan VARCHAR(100), "
+                    + "replacement_product_kfa_code VARCHAR(50), replacement_product_name VARCHAR(255), replacement_product_reason VARCHAR(255), "
+                    + "replacement_template_kfa_code VARCHAR(50), replacement_template_name VARCHAR(255), "
+                    + "paket_obat_kfa_code VARCHAR(50), paket_obat_qty VARCHAR(50), paket_obat_uom_name VARCHAR(100), "
+                    + "paket_obat_ucum_cs_code VARCHAR(50), paket_obat_ucum_name VARCHAR(100), "
+                    + "CONSTRAINT fk_kfa_terbaru_detail FOREIGN KEY (kfa_code) REFERENCES satu_sehat_kfa_terbaru(kfa_code) ON DELETE CASCADE"
+                    + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
             PreparedStatement psMaster = koneksi.prepareStatement(
-                "INSERT IGNORE INTO satu_sehat_kfa_terbaru " +
-                "(kfa_code,product_type,name,active,state,image,updated_at,produksi_buatan,nie,nama_dagang,manufacturer,registrar," +
-                "generik,rxterm,dose_per_unit,fix_price,het_price,farmalkes_hscode,tayang_lkpp,kode_lkpp," +
-                "net_weight,net_weight_uom_name,volume,volume_uom_name,fornas_is_fornas," +
-                "product_template_kfa_code,product_template_name,product_template_state," +
-                "product_template_active,product_template_bmhp,product_template_display_name,product_template_updated_at) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "INSERT IGNORE INTO satu_sehat_kfa_terbaru "
+                    + "(kfa_code,product_type,name,active,state,image,updated_at,produksi_buatan,nie,nama_dagang,manufacturer,registrar,"
+                    + "generik,rxterm,dose_per_unit,fix_price,het_price,farmalkes_hscode,tayang_lkpp,kode_lkpp,"
+                    + "net_weight,net_weight_uom_name,volume,volume_uom_name,fornas_is_fornas,"
+                    + "product_template_kfa_code,product_template_name,product_template_state,"
+                    + "product_template_active,product_template_bmhp,product_template_display_name,product_template_updated_at) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             PreparedStatement psDetail = koneksi.prepareStatement(
-                "INSERT IGNORE INTO satu_sehat_kfa_terbaru_detail " +
-                "(kfa_code,farmalkes_type_code,farmalkes_type_name,farmalkes_type_group," +
-                "dosage_form_code,dosage_form_name,uom_name," +
-                "med_dev_jenis,med_dev_subkategori,med_dev_kategori,med_dev_kelas_risiko,klasifikasi_izin," +
-                "active_ingredients_kfa_code,active_ingredients_zat_aktif,active_ingredients_kekuatan," +
-                "replacement_product_kfa_code,replacement_product_name,replacement_product_reason," +
-                "replacement_template_kfa_code,replacement_template_name," +
-                "paket_obat_kfa_code,paket_obat_qty,paket_obat_uom_name,paket_obat_ucum_cs_code,paket_obat_ucum_name) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    "INSERT IGNORE INTO satu_sehat_kfa_terbaru_detail "
+                    + "(kfa_code,farmalkes_type_code,farmalkes_type_name,farmalkes_type_group,"
+                    + "dosage_form_code,dosage_form_name,uom_name,"
+                    + "med_dev_jenis,med_dev_subkategori,med_dev_kategori,med_dev_kelas_risiko,klasifikasi_izin,"
+                    + "active_ingredients_kfa_code,active_ingredients_zat_aktif,active_ingredients_kekuatan,"
+                    + "replacement_product_kfa_code,replacement_product_name,replacement_product_reason,"
+                    + "replacement_template_kfa_code,replacement_template_name,"
+                    + "paket_obat_kfa_code,paket_obat_qty,paket_obat_uom_name,paket_obat_ucum_cs_code,paket_obat_ucum_name) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             int totalSaved = 0, totalFailed = 0;
             int limit = 100;
@@ -810,8 +785,8 @@ public class DlgCariKfa extends javax.swing.JDialog {
             for (int page = 1; page <= 300; page++) {
                 System.out.println("Mining KFA " + productType + " halaman ke-" + page);
                 json = api.getRest().exchange(
-                    link + "products/all?page=" + page + "&size=" + limit + "&product_type=" + productType,
-                    HttpMethod.GET, requestEntity, String.class).getBody();
+                        link + "products/all?page=" + page + "&size=" + limit + "&product_type=" + productType,
+                        HttpMethod.GET, requestEntity, String.class).getBody();
                 root = mapper.readTree(json);
                 JsonNode dataArray = root.path("items").path("data");
 
@@ -825,33 +800,33 @@ public class DlgCariKfa extends javax.swing.JDialog {
                         String kfaCode = d.path("kfa_code").asText();
                         // aktif ingredient pertama
                         JsonNode ai = d.path("active_ingredients");
-                        String aiKfa="", aiZat="", aiKuat="";
+                        String aiKfa = "", aiZat = "", aiKuat = "";
                         if (ai.isArray() && ai.size() > 0) {
-                            aiKfa  = ai.get(0).path("kfa_code").asText();
-                            aiZat  = ai.get(0).path("zat_aktif").asText();
+                            aiKfa = ai.get(0).path("kfa_code").asText();
+                            aiZat = ai.get(0).path("zat_aktif").asText();
                             aiKuat = ai.get(0).path("kekuatan_zat_aktif").asText();
                         }
                         // paket obat pertama
                         JsonNode po = d.path("paket_obat");
-                        String poKfa="", poQty="", poUom="", poUcumCode="", poUcumName="";
+                        String poKfa = "", poQty = "", poUom = "", poUcumCode = "", poUcumName = "";
                         if (po.isArray() && po.size() > 0) {
-                            poKfa      = po.get(0).path("kfa_code").asText();
-                            poQty      = po.get(0).path("qty").asText();
-                            poUom      = po.get(0).path("uom_name").asText();
+                            poKfa = po.get(0).path("kfa_code").asText();
+                            poQty = po.get(0).path("qty").asText();
+                            poUom = po.get(0).path("uom_name").asText();
                             poUcumCode = po.get(0).path("ucum_cs_code").asText();
                             poUcumName = po.get(0).path("ucum_name").asText();
                         }
 
                         // Insert master (param 1=kfa_code, 2=product_type, 3..32=data)
-                        psMaster.setString(1,  kfaCode);
-                        psMaster.setString(2,  productType);
-                        psMaster.setString(3,  d.path("name").asText());
-                        psMaster.setString(4,  d.path("active").asText());
-                        psMaster.setString(5,  d.path("state").asText());
-                        psMaster.setString(6,  d.path("image").asText());
-                        psMaster.setString(7,  d.path("updated_at").asText());
-                        psMaster.setString(8,  d.path("produksi_buatan").asText());
-                        psMaster.setString(9,  d.path("nie").asText());
+                        psMaster.setString(1, kfaCode);
+                        psMaster.setString(2, productType);
+                        psMaster.setString(3, d.path("name").asText());
+                        psMaster.setString(4, d.path("active").asText());
+                        psMaster.setString(5, d.path("state").asText());
+                        psMaster.setString(6, d.path("image").asText());
+                        psMaster.setString(7, d.path("updated_at").asText());
+                        psMaster.setString(8, d.path("produksi_buatan").asText());
+                        psMaster.setString(9, d.path("nie").asText());
                         psMaster.setString(10, d.path("nama_dagang").asText());
                         psMaster.setString(11, d.path("manufacturer").asText());
                         psMaster.setString(12, d.path("registrar").asText());
@@ -878,15 +853,15 @@ public class DlgCariKfa extends javax.swing.JDialog {
                         psMaster.executeUpdate();
 
                         // Insert detail
-                        psDetail.setString(1,  kfaCode);
-                        psDetail.setString(2,  d.path("farmalkes_type").path("code").asText());
-                        psDetail.setString(3,  d.path("farmalkes_type").path("name").asText());
-                        psDetail.setString(4,  d.path("farmalkes_type").path("group").asText());
-                        psDetail.setString(5,  d.path("dosage_form").path("code").asText());
-                        psDetail.setString(6,  d.path("dosage_form").path("name").asText());
-                        psDetail.setString(7,  d.path("uom").path("name").asText());
-                        psDetail.setString(8,  d.path("med_dev_jenis").asText());
-                        psDetail.setString(9,  d.path("med_dev_subkategori").asText());
+                        psDetail.setString(1, kfaCode);
+                        psDetail.setString(2, d.path("farmalkes_type").path("code").asText());
+                        psDetail.setString(3, d.path("farmalkes_type").path("name").asText());
+                        psDetail.setString(4, d.path("farmalkes_type").path("group").asText());
+                        psDetail.setString(5, d.path("dosage_form").path("code").asText());
+                        psDetail.setString(6, d.path("dosage_form").path("name").asText());
+                        psDetail.setString(7, d.path("uom").path("name").asText());
+                        psDetail.setString(8, d.path("med_dev_jenis").asText());
+                        psDetail.setString(9, d.path("med_dev_subkategori").asText());
                         psDetail.setString(10, d.path("med_dev_kategori").asText());
                         psDetail.setString(11, d.path("med_dev_kelas_risiko").asText());
                         psDetail.setString(12, d.path("klasifikasi_izin").asText());
@@ -925,10 +900,10 @@ public class DlgCariKfa extends javax.swing.JDialog {
 
             final int saved = totalSaved, failed = totalFailed;
             final String pt = productType;
-            javax.swing.SwingUtilities.invokeLater(() ->
-                javax.swing.JOptionPane.showMessageDialog(null,
-                    "Mining " + pt + " selesai!\nTersimpan : " + saved + "\nGagal/duplikat: " + failed,
-                    "Informasi", javax.swing.JOptionPane.INFORMATION_MESSAGE));
+            javax.swing.SwingUtilities.invokeLater(()
+                    -> javax.swing.JOptionPane.showMessageDialog(null,
+                            "Mining " + pt + " selesai!\nTersimpan : " + saved + "\nGagal/duplikat: " + failed,
+                            "Informasi", javax.swing.JOptionPane.INFORMATION_MESSAGE));
 
         } catch (Exception ea) {
             System.out.println("Notifikasi Bridging : " + ea);
@@ -941,26 +916,19 @@ public class DlgCariKfa extends javax.swing.JDialog {
         try {
             String limitStr = cmbHlm.getSelectedItem().toString();
             String limitClause = "Semua".equalsIgnoreCase(limitStr) ? "" : " LIMIT " + limitStr;
-            String baseSelect =
-                "select m.kfa_code, m.name, d.dosage_form_code, d.dosage_form_name, " +
-                "d.paket_obat_ucum_cs_code, '', d.farmalkes_type_code, d.farmalkes_type_name, " +
-                "m.registrar, m.nama_dagang, m.fix_price, m.het_price " +
-                "from satu_sehat_kfa_terbaru m " +
-                "left join satu_sehat_kfa_terbaru_detail d on m.kfa_code = d.kfa_code ";
-            if (TCari.getText().trim().equals("")) {
-                ps = koneksi.prepareStatement(
-                    baseSelect + "order by m.kfa_code, m.name asc" + limitClause);
-            } else {
-                ps = koneksi.prepareStatement(
-                    baseSelect +
-                    "where m.registrar like ? and m.name like ? " +
-                    "order by m.kfa_code, m.name asc" + limitClause);
-            }
+            String baseSelect
+                    = "select m.kfa_code, m.name, d.dosage_form_code, d.dosage_form_name, "
+                    + "d.paket_obat_ucum_cs_code, '', d.farmalkes_type_code, d.farmalkes_type_name, "
+                    + "m.registrar, m.nama_dagang, m.fix_price, m.het_price "
+                    + "from satu_sehat_kfa_terbaru m "
+                    + "left join satu_sehat_kfa_terbaru_detail d on m.kfa_code = d.kfa_code "
+                    + "where m.registrar like ? and m.name like ? "
+                    + "order by m.kfa_code, m.name asc" + limitClause;
+            ps = koneksi.prepareStatement(baseSelect);
+            ps.setString(1, "%" + TCari2.getText().trim() + "%");
+            ps.setString(2, "%" + TCari.getText().trim() + "%");
+
             try {
-                if (!TCari.getText().trim().equals("")) {
-                    ps.setString(1, "%" + TCari2.getText().trim() + "%");
-                    ps.setString(2, "%" + TCari.getText().trim() + "%");
-                }
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabMode.addRow(new Object[]{
@@ -973,42 +941,56 @@ public class DlgCariKfa extends javax.swing.JDialog {
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             } finally {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
             }
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
     }
 
-    
-
     public JTable getTable() {
         return tbObat;
     }
 
-    
+    private void runBackground(Runnable task) {
+        if (ceksukses) {
+            return;
+        }
+        if (executor.isShutdown() || executor.isTerminated()) {
+            return;
+        }
+        if (!isDisplayable()) {
+            return;
+        }
 
-    private void isForm() {
-        if (ChkInput.isSelected() == true) {
-            ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, 338));
-            ChkInput.setVisible(true);
-        } else if (ChkInput.isSelected() == false) {
-            ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
-            //FormInput.setVisible(false);
-            ChkInput.setVisible(true);
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            System.out.println("Notif : " + ex);
+            ceksukses = false;
         }
     }
 
-    
-            
     public void isCek() {
         TCari.requestFocus();
-        
     }
-    
-    
-
 }
