@@ -729,9 +729,8 @@ public final class SatuSehatKirimQuestionnaireRequest extends javax.swing.JDialo
                         root = mapper.readTree(json);
                         response = root.path("id");
                         if (!response.asText().equals("")) {
-                            Sequel.menyimpantf2("satu_sehat_questionnairereq_pengkajian_obat", "?,?,?", "No.Resep", 3, new String[]{
+                            Sequel.menyimpantf("satu_sehat_questionnairereq_pengkajian_obat", "?,?,?", "No.Resep", 3, new String[]{
                                 tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 3).toString(), response.asText()
-
                             }
                             );
                         }
@@ -961,78 +960,78 @@ public final class SatuSehatKirimQuestionnaireRequest extends javax.swing.JDialo
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-               //     if (cekflagging.GeneralConsentSatuSehat(rs.getString("no_rkm_medis")) == true) {
-                        if (rs.getString("id_questreq").equals("")) {
-                            tabMode.addRow(new Object[]{
-                                true,
-                                rs.getString("tanggal") + "T" + rs.getString("jam") + "+07:00",
-                                rs.getString("no_resep"),
-                                rs.getString("no_rawat"),
-                                rs.getString("no_rkm_medis"),
-                                rs.getString("nm_pasien"),
-                                rs.getString("no_ktp"),
-                                rs.getString("aptktp"),
-                                rs.getString("nama"),
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benardosis").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benardosis").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("efeksampingresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("id_encounter"),
-                                rs.getString("id_questreq")
+                    //     if (cekflagging.GeneralConsentSatuSehat(rs.getString("no_rkm_medis")) == true) {
+                    if (rs.getString("id_questreq").equals("")) {
+                        tabMode.addRow(new Object[]{
+                            true,
+                            rs.getString("tanggal") + "T" + rs.getString("jam") + "+07:00",
+                            rs.getString("no_resep"),
+                            rs.getString("no_rawat"),
+                            rs.getString("no_rkm_medis"),
+                            rs.getString("nm_pasien"),
+                            rs.getString("no_ktp"),
+                            rs.getString("aptktp"),
+                            rs.getString("nama"),
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benardosis").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benardosis").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("efeksampingresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("id_encounter"),
+                            rs.getString("id_questreq")
 
-                            });
-                        } else {
-                            tabMode.addRow(new Object[]{
-                                false,
-                                rs.getString("tanggal") + "T" + rs.getString("jam") + "+07:00",
-                                rs.getString("no_resep"),
-                                rs.getString("no_rawat"),
-                                rs.getString("no_rkm_medis"),
-                                rs.getString("nm_pasien"),
-                                rs.getString("no_ktp"),
-                                rs.getString("aptktp"),
-                                rs.getString("nama"),
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benardosis").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benardosis").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
-                                rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("efeksampingresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
-                                rs.getString("id_encounter"),
-                                rs.getString("id_questreq")
+                        });
+                    } else {
+                        tabMode.addRow(new Object[]{
+                            false,
+                            rs.getString("tanggal") + "T" + rs.getString("jam") + "+07:00",
+                            rs.getString("no_resep"),
+                            rs.getString("no_rawat"),
+                            rs.getString("no_rkm_medis"),
+                            rs.getString("nm_pasien"),
+                            rs.getString("no_ktp"),
+                            rs.getString("aptktp"),
+                            rs.getString("nama"),
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("reseptulisjelas").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("administrasilengkap").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benarnamaobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benardosis").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benardosis").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benarwakturesep").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "OV000052" : "OV000053",
+                            rs.getString("benardosisobat").equalsIgnoreCase("Ya") ? "Sesuai" : "Tidak Sesuai",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("efeksampingresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("interaksiresep").equalsIgnoreCase("Tidak") ? "false" : "true",
+                            rs.getString("id_encounter"),
+                            rs.getString("id_questreq")
 
-                            });
-                      //  }
+                        });
+                        //  }
 
                     }
                 }
