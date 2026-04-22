@@ -11,6 +11,7 @@ import fungsi.sekuel;
 import fungsi.validasi;
 import fungsi.akses;
 import inventory.DlgBarang;
+import inventory.DlgCariKfa;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -46,6 +47,8 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
     private int i=0;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
+    private DlgBarang barang=new DlgBarang(null,false);
+    private DlgCariKfa kfa=new DlgCariKfa(null,false);
 
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
@@ -106,8 +109,117 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
         DoseCode.setDocument(new batasInput((byte)15).getKata(DoseCode)); 
         DoseUnit.setDocument(new batasInput((byte)15).getKata(DoseUnit)); 
         DoseSystem.setDocument(new batasInput((byte)80).getKata(DoseSystem)); 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari)); 
+        TCari.setDocument(new batasInput((byte)100).getKata(TCari));                  
         
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        tampil();
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        tampil();
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        tampil();
+                    }
+                }
+            });
+        }  
+        
+        barang.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(barang.getTable().getSelectedRow()!= -1){                    
+                    KodeBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());
+                    NamaBarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),2).toString());
+                }
+                btnBarang.requestFocus();
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        }); 
+        
+        barang.getTable().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    barang.dispose();
+                }  
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+        
+        // Tombol Cari KFA
+        widget.Button btnKfa = new widget.Button();
+        btnKfa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png")));
+        btnKfa.setMnemonic('3');
+        btnKfa.setToolTipText("Alt+3 Cari KFA");
+        btnKfa.setName("btnKfa");
+        btnKfa.addActionListener(e -> {
+            kfa.isCek();
+            kfa.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            kfa.setLocationRelativeTo(internalFrame1);
+            kfa.setVisible(true);
+        });
+        FormInput.add(btnKfa);
+        btnKfa.setBounds(157, 10, 28, 23);
+
+        kfa.addWindowListener(new WindowListener() {
+            @Override public void windowOpened(WindowEvent e) {}
+            @Override public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(kfa.getTable().getSelectedRow()!= -1){
+                    VaksinCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),0).toString());
+                    VaksinDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),1).toString());
+                    VaksinSystem.setText("http://sys-ids.kemkes.go.id/kfa");
+                    RouteCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),6).toString());
+                    RouteDisplay.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),7).toString());
+                    RouteSystem.setText("http://www.whocc.no/atc");
+                    DoseCode.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),4).toString());
+                    DoseSystem.setText("http://unitsofmeasure.org/");
+                    DoseUnit.setText(kfa.getTable().getValueAt(kfa.getTable().getSelectedRow(),4).toString());
+                }
+                VaksinSystem.requestFocus();
+            }
+            @Override public void windowIconified(WindowEvent e) {}
+            @Override public void windowDeiconified(WindowEvent e) {}
+            @Override public void windowActivated(WindowEvent e) {}
+            @Override public void windowDeactivated(WindowEvent e) {}
+        });
+
+        kfa.getTable().addKeyListener(new KeyListener() {
+            @Override public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    kfa.dispose();
+                }
+            }
+            @Override public void keyReleased(KeyEvent e) {}
+        });
+
         ChkInput.setSelected(false);
         isForm();
     }
@@ -657,7 +769,7 @@ public final class SatuSehatMapingVaksin extends javax.swing.JDialog {
                 KodeBarang.getText(),VaksinCode.getText(),VaksinSystem.getText(),VaksinDisplay.getText(),RouteCode.getText(),
                 RouteSystem.getText(),RouteDisplay.getText(),DoseCode.getText(),DoseSystem.getText(),DoseUnit.getText()
             })==true){
-                tabMode.addRow(new Object[]{
+                tabMode.addRow(new String[]{
                     VaksinCode.getText(),VaksinSystem.getText(),KodeBarang.getText(),NamaBarang.getText(),VaksinDisplay.getText(),
                     RouteCode.getText(),RouteSystem.getText(),RouteDisplay.getText(),DoseCode.getText(),DoseSystem.getText(),
                     DoseUnit.getText()
