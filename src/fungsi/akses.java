@@ -1037,6 +1037,7 @@ public final class akses {
     public static boolean getsatu_sehat_mapping_departemen() {return hakAkses.get(EnumAkses.satu_sehat_mapping_departemen);}
     public static boolean getsatu_sehat_mapping_lokasi() {return hakAkses.get(EnumAkses.satu_sehat_mapping_lokasi);}
     public static boolean getsatu_sehat_kirim_encounter() {return hakAkses.get(EnumAkses.satu_sehat_kirim_encounter);}
+    public static boolean getsatu_sehat_kirim_episodeofcare() {return hakAkses.get(EnumAkses.satu_sehat_kirim_episodeofcare);}
     public static boolean getcatatan_cek_gds() {return hakAkses.get(EnumAkses.catatan_cek_gds);}
     public static boolean getsatu_sehat_kirim_condition() {return hakAkses.get(EnumAkses.satu_sehat_kirim_condition);}
     public static boolean getchecklist_pre_operasi() {return hakAkses.get(EnumAkses.checklist_pre_operasi);}
