@@ -1054,7 +1054,7 @@ public final class SatuSehatKirimQuestionnaireRequest extends javax.swing.JDialo
     }
 
     public void isCek() {
-        BtnKirim.setEnabled(akses.getsatu_sehat_kirim_encounter());
+        BtnKirim.setEnabled(akses.getsatu_sehat_kirim_questionnairerequest());
         ChkBelumTerkirim.setSelected(true);
     }
 
