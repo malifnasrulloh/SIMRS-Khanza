@@ -27530,7 +27530,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
                 jmlmenu++;
             }
             
-            if(akses.getsatu_sehat_kirim_encounter()==true){
+            if(akses.getsatu_sehat_kirim_questionnairerequest()==true){
                 Panelmenu.add(btnKirimQuestionnaireResponseSatuSehat);
                 jmlmenu++;
             }
@@ -33454,7 +33454,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             jmlmenu++;
         }
         
-        if(akses.getsatu_sehat_kirim_encounter()==true){
+        if(akses.getsatu_sehat_kirim_questionnairerequest()==true){
             Panelmenu.add(btnKirimQuestionnaireResponseSatuSehat);
             jmlmenu++;
         }
@@ -40674,7 +40674,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             }                
         }
         
-        if(akses.getsatu_sehat_kirim_encounter()==true){
+        if(akses.getsatu_sehat_kirim_questionnairerequest()==true){
             if(btnKirimQuestionnaireResponseSatuSehat.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
                 Panelmenu.add(btnKirimQuestionnaireResponseSatuSehat);
                 jmlmenu++;

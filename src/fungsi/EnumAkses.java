@@ -1205,6 +1205,7 @@ public enum EnumAkses {
     jawaban_konsultasi_perawat("jawaban_konsultasi_perawat", "[M]Jawaban Konsultasi Perawat"),
     //Tambahan kolom
     manajemen("manajemen", "[C]Manajemen"),
+    satu_sehat_kirim_questionnairerequest("satu_sehat_kirim_questionnairerequest", "[L]Kirim Questionnaire Response Satu Sehat"),
     satu_sehat_kirim_episodeofcare("satu_sehat_kirim_episodeofcare", "[L]Kirim Episode of Care Satu Sehat");
 
     private final String alias;
