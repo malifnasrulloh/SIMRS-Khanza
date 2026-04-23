@@ -245,46 +245,69 @@ public class SatuSehatCekNIK {
         }
     }
     
-    public String tampilIDPasien(String cari) {
-        idpasien="";
-        try{
-            headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-            requestEntity = new HttpEntity(headers);
-            System.out.println("URL : "+link+"/Patient?identifier=https://fhir.kemkes.go.id/id/nik|"+cari);
-            json=api.getRest().exchange(link+"/Patient?identifier=https://fhir.kemkes.go.id/id/nik|"+cari, HttpMethod.GET, requestEntity, String.class).getBody();
-            System.out.println("JSON : "+json);
-            root = mapper.readTree(json);
-            for(JsonNode list:root.path("entry")){
-                idpasien=list.path("resource").path("id").asText();
+public String tampilIDPasien(String cari) {
+        idpasien = "";
+
+        if (Sequel.cariInteger("select count(nikpasien) from satu_sehat_ihs_patient where nikpasien='" + cari + "'") > 0) {
+            idpasien = Sequel.cariIsi("select ihspasien from satu_sehat_ihs_patient where nikpasien='" + cari + "'");
+        } else {
+            try {
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                requestEntity = new HttpEntity(headers);
+                System.out.println("URL : " + link + "/Patient?identifier=https://fhir.kemkes.go.id/id/nik|" + cari);
+                json = api.getRest().exchange(link + "/Patient?identifier=https://fhir.kemkes.go.id/id/nik|" + cari, HttpMethod.GET, requestEntity, String.class).getBody();
+                System.out.println("JSON : " + json);
+                root = mapper.readTree(json);
+                for (JsonNode list : root.path("entry")) {
+                    idpasien = list.path("resource").path("id").asText();
+                    if (!idpasien.equals("")) {
+                        Sequel.menyimpan("satu_sehat_ihs_patient", "?,?", "IHS Pasien", 2, new String[]{
+                            cari, idpasien
+                        });
+                    }
+                }
+            } catch (Exception e) {
+                idpasien = "";
+                System.out.println("Notifikasi : " + e);
             }
-        }catch(Exception e){
-            idpasien="";
-            System.out.println("Notifikasi : "+e);
         }
+
         return idpasien;
     }
-    
+
     public String tampilIDParktisi(String cari) {
-        idpasien="";
-        try{
-            headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-            requestEntity = new HttpEntity(headers);
-            System.out.println("URL : "+link+"/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|"+cari);
-            json=api.getRest().exchange(link+"/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|"+cari, HttpMethod.GET, requestEntity, String.class).getBody();
-            System.out.println("JSON : "+json);
-            root = mapper.readTree(json);
-            response = root.path("entry");
-            for(JsonNode list:response){
-               idpasien=list.path("resource").path("id").asText();
+        idpasien = "";
+
+        if (Sequel.cariInteger("select count(nikpegawai) from satu_sehat_ihs_practitioner where nikpegawai='" + cari + "'") > 0) {
+            idpasien = Sequel.cariIsi("select ihspegawai from satu_sehat_ihs_practitioner where nikpegawai='" + cari + "'");
+        } else {
+            try {
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                requestEntity = new HttpEntity(headers);
+                System.out.println("URL : " + link + "/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|" + cari);
+                json = api.getRest().exchange(link + "/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|" + cari, HttpMethod.GET, requestEntity, String.class).getBody();
+                System.out.println("JSON : " + json);
+                root = mapper.readTree(json);
+                response = root.path("entry");
+                for (JsonNode list : response) {
+                    idpasien = list.path("resource").path("id").asText();
+                    if (!idpasien.equals("")) {
+                        Sequel.menyimpan("satu_sehat_ihs_practitioner", "?,?", "IHS Pasien", 2, new String[]{
+                            cari, idpasien
+                        });
+                    }
+                }
+            } catch (Exception e) {
+                idpasien = "";
+                System.out.println("Notifikasi : " + e);
             }
-        }catch(Exception e){
-            idpasien="";
-            System.out.println("Notifikasi : "+e);
         }
+
         return idpasien;
     }
+
 }
