@@ -8358,10 +8358,6 @@ public class frmUtama extends javax.swing.JFrame {
                 BtnMenu.setEnabled(false);
                 akses.setLogOut();
                 isTutup();
-                cacheigd.reset();
-                cacherawatjalan.reset();
-                cacherawatinap.reset();
-                cacheregistrasi.reset();
                 break;
             case "Log In":
                 isTutup();
@@ -8372,14 +8368,18 @@ public class frmUtama extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
-        if (edAdmin.getText().trim().equals("")) {
-            Valid.textKosong(edAdmin, "ID User");
-        } else if (edPwd.getText().trim().equals("")) {
-            Valid.textKosong(edPwd, "Password");
-        } else {
-            try {
-                akses.setData(edAdmin.getText(), edPwd.getText());
-                if (akses.getjml1() >= 1) {
+        if(edAdmin.getText().trim().equals("")){
+            Valid.textKosong(edAdmin,"ID User");
+        }else if(edPwd.getText().trim().equals("")){
+            Valid.textKosong(edPwd,"Password");
+        }else {
+            try {                               
+                cacheigd.reset();
+                cacherawatjalan.reset();
+                cacherawatinap.reset();
+                cacheregistrasi.reset();
+                akses.setData(edAdmin.getText(),edPwd.getText());        
+                if(akses.getjml1()>=1){    
                     BtnMenu.setEnabled(true);
                     BtnToolReg.setEnabled(true);
                     BtnToolKamnap.setEnabled(true);
