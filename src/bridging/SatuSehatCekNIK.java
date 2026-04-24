@@ -8,6 +8,7 @@ package bridging;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.koneksiDB;
+import fungsi.sekuel;
 import java.io.FileReader;
 import javax.swing.JOptionPane;
 import org.springframework.http.HttpEntity;
@@ -28,6 +29,7 @@ public class SatuSehatCekNIK {
     private HttpHeaders headers ;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
+    private final sekuel Sequel=new sekuel();
     private JsonNode root;
     private JsonNode response;
     private FileReader dataPropinsi,dataKabupaten,dataKecamatan,dataKelurahan;
