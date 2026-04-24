@@ -3,7 +3,6 @@
 [Tt]arget/
 
 *.class
-*.jasper
 .python-version
 
 # Big Files
