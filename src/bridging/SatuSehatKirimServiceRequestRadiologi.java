@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.Document;
@@ -58,7 +59,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private JsonNode root;
     private JsonNode response;
     private SatuSehatCekNIK cekViaSatuSehat=new SatuSehatCekNIK();  
-    private StringBuilder htmlContent;  
+    private StringBuilder htmlContent;    
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;  
     
@@ -76,7 +77,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 "P","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Kode Dokter","Nama Dokter Perujuk",
                 "No.KTP Dokter","ID Encounter","No.Permintaan","Tgl & Jam Permintaan","Diagnosa Klinis",
                 "Nama Pemeriksaan","Radiologi Code","Radiologi System","Radiologi Display","ID Service Request",
-                "Kode Pemeriksaan"
+                "Kode Pemeriksaan","ASCN","ID Imaging Study"
             }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = false;
@@ -90,7 +91,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class
+                 java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class
              };
              @Override
              public Class getColumnClass(int columnIndex) {
@@ -103,7 +104,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 18; i++) {
+        for (i = 0; i < 20; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(20);
@@ -142,6 +143,10 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }else if(i==17){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
+            }else if(i==18){
+                column.setPreferredWidth(150);
+            }else if(i==19){
+                column.setPreferredWidth(210);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
@@ -186,6 +191,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         ppPilihSemua = new javax.swing.JMenuItem();
+        ppPilihBelumTerkirim = new javax.swing.JMenuItem();
+        ppPilihBelumTerkirim1 = new javax.swing.JMenuItem();
         ppBersihkan = new javax.swing.JMenuItem();
         LoadHTML = new widget.editorpane();
         internalFrame1 = new widget.InternalFrame();
@@ -208,8 +215,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         jLabel16 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        BtnGetIDImagingStudiAuto = new widget.Button();
+        BtnGetIDImagingStudiManual = new widget.Button();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+        jPopupMenu1.setPreferredSize(new java.awt.Dimension(222, 116));
 
         ppPilihSemua.setBackground(new java.awt.Color(255, 255, 254));
         ppPilihSemua.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -226,6 +236,38 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }
         });
         jPopupMenu1.add(ppPilihSemua);
+
+        ppPilihBelumTerkirim.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilihBelumTerkirim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppPilihBelumTerkirim.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilihBelumTerkirim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilihBelumTerkirim.setText("Pilih Service Req Radiologi Belum Terkirim");
+        ppPilihBelumTerkirim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilihBelumTerkirim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilihBelumTerkirim.setName("ppPilihBelumTerkirim"); // NOI18N
+        ppPilihBelumTerkirim.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilihBelumTerkirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppPilihBelumTerkirimActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(ppPilihBelumTerkirim);
+
+        ppPilihBelumTerkirim1.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilihBelumTerkirim1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppPilihBelumTerkirim1.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilihBelumTerkirim1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilihBelumTerkirim1.setText("Pilih ID Imaging Study Belum Ada");
+        ppPilihBelumTerkirim1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilihBelumTerkirim1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilihBelumTerkirim1.setName("ppPilihBelumTerkirim1"); // NOI18N
+        ppPilihBelumTerkirim1.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilihBelumTerkirim1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppPilihBelumTerkirim1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(ppPilihBelumTerkirim1);
 
         ppBersihkan.setBackground(new java.awt.Color(255, 255, 254));
         ppBersihkan.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -378,7 +420,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -391,7 +433,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -428,6 +470,31 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }
         });
         panelGlass9.add(BtnCari);
+
+        BtnGetIDImagingStudiAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/36.png"))); // NOI18N
+        BtnGetIDImagingStudiAuto.setMnemonic('K');
+        BtnGetIDImagingStudiAuto.setText("Auto Get ID Imaging Study");
+        BtnGetIDImagingStudiAuto.setToolTipText("Alt+K");
+        BtnGetIDImagingStudiAuto.setName("BtnGetIDImagingStudiAuto"); // NOI18N
+        BtnGetIDImagingStudiAuto.setPreferredSize(new java.awt.Dimension(190, 30));
+        BtnGetIDImagingStudiAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnGetIDImagingStudiAutoActionPerformed(evt);
+            }
+        });
+        panelGlass9.add(BtnGetIDImagingStudiAuto);
+
+        BtnGetIDImagingStudiManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/36.png"))); // NOI18N
+        BtnGetIDImagingStudiManual.setText("Manual Get ID Imaging Study");
+        BtnGetIDImagingStudiManual.setToolTipText("");
+        BtnGetIDImagingStudiManual.setName("BtnGetIDImagingStudiManual"); // NOI18N
+        BtnGetIDImagingStudiManual.setPreferredSize(new java.awt.Dimension(210, 30));
+        BtnGetIDImagingStudiManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnGetIDImagingStudiManualActionPerformed(evt);
+            }
+        });
+        panelGlass9.add(BtnGetIDImagingStudiManual);
 
         jPanel3.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -785,6 +852,86 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         } 
     }//GEN-LAST:event_formWindowOpened
 
+    private void BtnGetIDImagingStudiAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGetIDImagingStudiAutoActionPerformed
+        for (int i = 0; i < tbObat.getRowCount(); i++) {
+            if (!Boolean.parseBoolean(tbObat.getValueAt(i, 0).toString())) continue;
+
+            String noorder = tbObat.getValueAt(i, 9).toString();        
+            String kdJenisPrw = tbObat.getValueAt(i, 17).toString();   
+            String idServicerequest = tbObat.getValueAt(i, 16).toString(); 
+
+            String acsn = noorder.replaceAll("PR","")+kdJenisPrw;
+            System.out.println("Auto ACSN untuk baris " + i + " : " + acsn);
+
+            String imagingId = getImagingStudyID(acsn);
+            if (imagingId != null && !imagingId.isEmpty()) {
+                tbObat.setValueAt(acsn, i, 18);
+                tbObat.setValueAt(imagingId, i, 19);
+                tbObat.setValueAt(false, i, 0); 
+
+                simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, acsn, imagingId);
+                System.out.println("Berhasil mendapatkan ID Imaging Study untuk noorder " + noorder + " : " + imagingId);
+            } else {
+                System.out.println("Gagal mendapatkan ID Imaging Study untuk ACSN " + acsn);
+            }
+        }
+    }//GEN-LAST:event_BtnGetIDImagingStudiAutoActionPerformed
+
+    private void BtnGetIDImagingStudiManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGetIDImagingStudiManualActionPerformed
+         for (int i = 0; i < tbObat.getRowCount(); i++) {
+            if(tbObat.getValueAt(i,0).toString().equals("true")){
+                if (!Boolean.parseBoolean(tbObat.getValueAt(i, 0).toString())) continue;
+
+                String noorder = tbObat.getValueAt(i, 9).toString();
+                String kdJenisPrw = tbObat.getValueAt(i, 17).toString();
+                String idServicerequest = tbObat.getValueAt(i, 16).toString();
+
+                String acsn = javax.swing.JOptionPane.showInputDialog(this, 
+                        "Masukkan ACSN untuk No.Order " + noorder + " :", 
+                        "Manual ACSN", javax.swing.JOptionPane.QUESTION_MESSAGE);
+                if (acsn == null || acsn.trim().isEmpty()) {
+                    System.out.println("Input ACSN dibatalkan untuk baris " + i);
+                    continue;
+                }
+                acsn = acsn.trim();
+
+                System.out.println("Manual ACSN untuk baris " + i + " : " + acsn);
+                String imagingId = getImagingStudyID(acsn);
+                if (imagingId != null && !imagingId.isEmpty()) {
+                    tbObat.setValueAt(acsn, i, 18);
+                    tbObat.setValueAt(imagingId, i, 19);
+                    tbObat.setValueAt(false, i, 0);
+                    simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, acsn, imagingId);
+                    System.out.println("Berhasil mendapatkan ID Imaging Study untuk noorder " + noorder + " : " + imagingId);
+                } else {
+                    System.out.println("Gagal mendapatkan ID Imaging Study untuk ACSN " + acsn);
+                }
+            }
+        }
+    }//GEN-LAST:event_BtnGetIDImagingStudiManualActionPerformed
+
+    private void ppPilihBelumTerkirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihBelumTerkirimActionPerformed
+        for(int i = 0; i < tbObat.getRowCount(); i++) {
+            tbObat.setValueAt(
+                (tbObat.getValueAt(i, 16) == null ||
+                    tbObat.getValueAt(i, 16).toString().trim().equals("") ||
+                    tbObat.getValueAt(i, 16).toString().equals("-")),
+                i, 0
+            );
+        }
+    }//GEN-LAST:event_ppPilihBelumTerkirimActionPerformed
+
+    private void ppPilihBelumTerkirim1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihBelumTerkirim1ActionPerformed
+         for(int i = 0; i < tbObat.getRowCount(); i++) {
+            tbObat.setValueAt(
+                (tbObat.getValueAt(i, 19) == null ||
+                    tbObat.getValueAt(i, 19).toString().trim().equals("") ||
+                    tbObat.getValueAt(i, 19).toString().equals("-")),
+                i, 0
+            );
+        }
+    }//GEN-LAST:event_ppPilihBelumTerkirim1ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -804,6 +951,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnAll;
     private widget.Button BtnCari;
+    private widget.Button BtnGetIDImagingStudiAuto;
+    private widget.Button BtnGetIDImagingStudiManual;
     private widget.Button BtnKeluar;
     private widget.Button BtnKirim;
     private widget.Button BtnPrint;
@@ -824,6 +973,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private javax.swing.JMenuItem ppBersihkan;
+    private javax.swing.JMenuItem ppPilihBelumTerkirim;
+    private javax.swing.JMenuItem ppPilihBelumTerkirim1;
     private javax.swing.JMenuItem ppPilihSemua;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
@@ -834,13 +985,16 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                    "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp as ktpdokter,"+
                    "satu_sehat_encounter.id_encounter,permintaan_radiologi.noorder,permintaan_radiologi.tgl_permintaan,permintaan_radiologi.jam_permintaan,permintaan_radiologi.diagnosa_klinis,"+
                    "jns_perawatan_radiologi.nm_perawatan,satu_sehat_mapping_radiologi.code,satu_sehat_mapping_radiologi.system,satu_sehat_mapping_radiologi.display,"+
-                   "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,permintaan_pemeriksaan_radiologi.kd_jenis_prw "+
+                   "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,permintaan_pemeriksaan_radiologi.kd_jenis_prw, "+
+                   "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn, ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "+
                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join pegawai on pegawai.nik=reg_periksa.kd_dokter "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join permintaan_radiologi on permintaan_radiologi.no_rawat=reg_periksa.no_rawat "+
+                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
+                   "inner join permintaan_radiologi on permintaan_radiologi.no_rawat=reg_periksa.no_rawat "+
                    "inner join permintaan_pemeriksaan_radiologi on permintaan_pemeriksaan_radiologi.noorder=permintaan_radiologi.noorder "+
                    "inner join jns_perawatan_radiologi on jns_perawatan_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "+
                    "inner join satu_sehat_mapping_radiologi on satu_sehat_mapping_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "+
                    "left join satu_sehat_servicerequest_radiologi on satu_sehat_servicerequest_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder "+
+                   "left join satu_sehat_imagingstudy_radiologi on satu_sehat_imagingstudy_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder "+
                    "and satu_sehat_servicerequest_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "+
                    "where reg_periksa.tgl_registrasi between ? and ? "+
                    (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
@@ -865,7 +1019,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         false,rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("no_ktp"),rs.getString("kd_dokter"),
                         rs.getString("nama"),rs.getString("ktpdokter"),rs.getString("id_encounter"),rs.getString("noorder"),rs.getString("tgl_permintaan")+" "+rs.getString("jam_permintaan"),
                         rs.getString("diagnosa_klinis"),rs.getString("nm_perawatan"),rs.getString("code"),rs.getString("system"),rs.getString("display"),rs.getString("id_servicerequest"),
-                        rs.getString("kd_jenis_prw")
+                        rs.getString("kd_jenis_prw"),rs.getString("acsn"),rs.getString("id_imaging")
                     });
                 }
             } catch (Exception e) {
@@ -892,6 +1046,71 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     
     public JTable getTable(){
         return tbObat;
+    }
+    
+    private String getImagingStudyID(String acsn) {
+        String idImaging = "";
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+            HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+            String url = link + "/ImagingStudy?identifier=http://sys-ids.kemkes.go.id/acsn/" + koneksiDB.IDSATUSEHAT() + "|" + acsn;
+            System.out.println("URL ImagingStudy : " + url);
+
+            String jsonResponse = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
+            System.out.println("JSON ImagingStudy : " + jsonResponse);
+
+            JsonNode root = mapper.readTree(jsonResponse);
+            for (JsonNode entry : root.path("entry")) {
+                idImaging = entry.path("resource").path("id").asText();
+                System.out.println("ImagingStudy ID untuk ACSN " + acsn + " : " + idImaging);
+            }
+        } catch (Exception e) {
+            idImaging = "";
+            System.out.println("Notifikasi getImagingStudyID : " + e);
+        }
+        return idImaging;
+    }
+    
+    private void simpanImagingStudy(String noorder, String kdJenisPrw, String idServiceRequest, String acsn, String idImaging) {
+        try {
+            String sqlCheck = "SELECT id_imaging FROM satu_sehat_imagingstudy_radiologi WHERE noorder = ? AND kd_jenis_prw = ?";
+            PreparedStatement psCheck = koneksi.prepareStatement(sqlCheck);
+            psCheck.setString(1, noorder);
+            psCheck.setString(2, kdJenisPrw);
+            ResultSet rsCheck = psCheck.executeQuery();
+            boolean exists = rsCheck.next();
+            rsCheck.close();
+            psCheck.close();
+
+            if (exists) {
+                String sqlUpdate = "UPDATE satu_sehat_imagingstudy_radiologi SET id_servicerequest = ?, acsn = ?, id_imaging = ? WHERE noorder = ? AND kd_jenis_prw = ?";
+                PreparedStatement psUpdate = koneksi.prepareStatement(sqlUpdate);
+                psUpdate.setString(1, idServiceRequest);
+                psUpdate.setString(2, acsn);
+                psUpdate.setString(3, idImaging);
+                psUpdate.setString(4, noorder);
+                psUpdate.setString(5, kdJenisPrw);
+                psUpdate.executeUpdate();
+                psUpdate.close();
+                System.out.println("Update record ImagingStudy untuk noorder " + noorder);
+            } else {
+                String sqlInsert = "INSERT INTO satu_sehat_imagingstudy_radiologi (noorder, kd_jenis_prw, id_servicerequest, acsn, id_imaging) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement psInsert = koneksi.prepareStatement(sqlInsert);
+                psInsert.setString(1, noorder);
+                psInsert.setString(2, kdJenisPrw);
+                psInsert.setString(3, idServiceRequest);
+                psInsert.setString(4, acsn);
+                psInsert.setString(5, idImaging);
+                psInsert.executeUpdate();
+                psInsert.close();
+                System.out.println("Insert record ImagingStudy untuk noorder " + noorder);
+            }
+        } catch (Exception e) {
+            System.out.println("Error simpan ImagingStudy: " + e);
+        }
     }
     
     private void runBackground(Runnable task) {
