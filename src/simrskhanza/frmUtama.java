@@ -495,6 +495,10 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -1242,7 +1246,7 @@ public class frmUtama extends javax.swing.JFrame {
         jMenu7.setOpaque(false);
         jMenu4.setOpaque(false);
 
-        lblTgl.setText(tanggal.getSelectedItem().toString());
+        lblTgl.setText(LocalDate.now(ZoneId.of("Asia/Jakarta")).format(DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.of("id", "ID")) ));
         try {
             prop.loadFromXML(new FileInputStream("setting/database.xml"));
         } catch (Exception e) {
@@ -1308,7 +1312,6 @@ public class frmUtama extends javax.swing.JFrame {
         ChkInput = new widget.CekBox();
         scrollPane2 = new widget.ScrollPane();
         Panelmenu = new widget.panelGlass();
-        tanggal = new widget.Tanggal();
         btnDataPenjualan = new widget.ButtonBig();
         btnInputPenjualan = new widget.ButtonBig();
         btnDataPenyerahanDarah = new widget.ButtonBig();
@@ -2062,13 +2065,6 @@ public class frmUtama extends javax.swing.JFrame {
         panelMenu.add(scrollPane2, java.awt.BorderLayout.CENTER);
 
         DlgHome.getContentPane().add(panelMenu, java.awt.BorderLayout.CENTER);
-
-        tanggal.setEditable(false);
-        tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11/03/2026" }));
-        tanggal.setDisplayFormat("dd/MM/yyyy");
-        tanggal.setName("tanggal"); // NOI18N
-        tanggal.setOpaque(false);
 
         btnDataPenjualan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/1485357971_desktop_computer.png"))); // NOI18N
         btnDataPenjualan.setText("Data Penjualan Obat & BHP");
@@ -24008,7 +24004,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.panelisi panelisi2;
     private widget.ScrollPane scrollPane1;
     private widget.ScrollPane scrollPane2;
-    private widget.Tanggal tanggal;
     // End of variables declaration//GEN-END:variables
     private widget.ButtonBig btnKategoriPerpustakaan, btnRuangPerpustakaan, btnJenisPerpustakaan, btnPengarangPerpustakaan, btnPenerbitPerpustakaan,
             btnKoleksiPerpustakaan, btnInventarisPerpustakaan, btnPengaturanPeminjamanPerpustakaan, btnDendaPerpustakaan, btnAnggotaPerpustakaan,
