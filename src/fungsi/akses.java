@@ -14,7 +14,7 @@ public final class akses {
     private static final Connection koneksi = koneksiDB.condb();
     private static PreparedStatement ps, ps2;
     private static ResultSet rs, rs2;
-    private static String kode = "", kdbangsal = "", alamatip = "", namars = "", alamatrs = "", kabupatenrs = "", propinsirs = "", kontakrs = "", emailrs = "", form = "", namauser = "", kode_ppk = "";
+    private static String kode = "", kdbangsal = "", alamatip = "", namars = "", alamatrs = "", kabupatenrs = "", propinsirs = "", kontakrs = "", emailrs = "", form = "", namauser = "", kode_ppk = "",kode_ppk_kemenkes="";
     private static final EnumMap<EnumAkses, Boolean> hakAkses = new EnumMap<>(EnumAkses.class);
     private static int jml1 = 0, jml2 = 0;
     private static boolean aktif = false, admin = false, user = false, vakum = false, aplikasi = false, e_eksekutif = false, status = false;
@@ -122,6 +122,7 @@ public final class akses {
     public static void setkontakrs(String kontakrs) {akses.kontakrs = kontakrs;}
     public static void setemailrs(String emailrs) {akses.emailrs = emailrs;}
     public static void setkodeppkbpjs(String kode_ppk) {akses.kode_ppk = kode_ppk;}
+    public static void setkodeppkkemenkes(String kode_ppk){akses.kode_ppk_kemenkes = kode_ppk;}
     public static String getnamars() {return akses.namars;}
     public static String getalamatrs() {return akses.alamatrs;}
     public static String getkabupatenrs() {return akses.kabupatenrs;}
@@ -129,6 +130,7 @@ public final class akses {
     public static String getkontakrs() {return akses.kontakrs;}
     public static String getemailrs() {return akses.emailrs;}
     public static String getkodeppkbpjs() {return akses.kode_ppk;}
+    public static String getkodeppkkemenkes(){return akses.kode_ppk_kemenkes;}
     public static boolean getAktif() {return akses.aktif;}
     public static void setAktif(boolean status) {akses.aktif = status;}
     public static boolean getmanajemen() {return hakAkses.get(EnumAkses.manajemen);}
@@ -1332,4 +1334,8 @@ public final class akses {
     public static boolean getsatu_sehat_kirim_allergy_intolerance() {return hakAkses.get(EnumAkses.satu_sehat_kirim_allergy_intolerance);}
     public static boolean getkonsultasi_perawat() {return hakAkses.get(EnumAkses.konsultasi_perawat);}
     public static boolean getjawaban_konsultasi_perawat(){return hakAkses.get(EnumAkses.jawaban_konsultasi_perawat);}
+    public static boolean getbridging_smart_klaim_bpjs(){return hakAkses.get(EnumAkses.bridging_smart_klaim_bpjs);}
+    public static boolean getmapping_prosedur_smart_klaim_bpjs(){return hakAkses.get(EnumAkses.mapping_prosedur_smart_klaim_bpjs);}
+    public static boolean getmapping_penyakit_smart_klaim_bpjs(){return hakAkses.get(EnumAkses.mapping_penyakit_smart_klaim_bpjs);}
+    public static boolean getpermintaan_binrohtal(){return hakAkses.get(EnumAkses.permintaan_binrohtal);}
 }
