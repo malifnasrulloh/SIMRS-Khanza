@@ -1203,6 +1203,10 @@ public enum EnumAkses {
     satu_sehat_kirim_allergy_intolerance("satu_sehat_kirim_allergy_intolerance", "[L]Kirim Allergy Intolerance Satu Sehat"),
     konsultasi_perawat("konsultasi_perawat", "[M]Konsultasi Perawat"),
     jawaban_konsultasi_perawat("jawaban_konsultasi_perawat", "[M]Jawaban Konsultasi Perawat"),
+    bridging_smart_klaim_bpjs("bridging_smart_klaim_bpjs", "[L]Kirim FHIR Smart Klaim BPJS"),
+    mapping_prosedur_smart_klaim_bpjs("mapping_prosedur_smart_klaim_bpjs", "[L]Mapping Prosedur Smart Klaim BPJS"),
+    mapping_penyakit_smart_klaim_bpjs("mapping_penyakit_smart_klaim_bpjs", "[L]Mapping Penyakit Smart Klaim BPJS"),
+    permintaan_binrohtal("permintaan_binrohtal", "[P]Persetujuan Bimbingan Rohani & Mental"),
     //Tambahan kolom
     manajemen("manajemen", "[C]Manajemen"),
     satu_sehat_kirim_questionnairerequest("satu_sehat_kirim_questionnairerequest", "[L]Kirim Questionnaire Response Satu Sehat"),
