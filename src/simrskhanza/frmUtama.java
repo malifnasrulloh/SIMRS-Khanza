@@ -186,6 +186,9 @@ import bridging.SisruteCekReferensiDiagnosa;
 import bridging.SisruteCekReferensiFaskes;
 import bridging.SisruteRujukanKeluar;
 import bridging.SisruteRujukanMasukan;
+import bridging.SmartKlaimBPJSKirimFHIR;
+import bridging.SmartKlaimBPJSMappingPenyakit;
+import bridging.SmartKlaimBPJSMappingProsedur;
 import dapur.DapurBarang;
 import dapur.DapurHibah;
 import dapur.DapurInputStok;
@@ -409,10 +412,6 @@ import inventory.DlgProyeksiBeriObat2;
 import inventory.DlgProyeksiJual;
 import inventory.DlgRekapObatPasien;
 import inventory.DlgRekapObatPoli;
-import bridging.SmartKlaimBPJSKirimFHIR;
-import bridging.SmartKlaimBPJSMappingPenyakit;
-import bridging.SmartKlaimBPJSMappingProsedur;
-import surat.SuratPermintaanBinrohtal;
 import inventory.DlgRekapPenerimaan;
 import inventory.DlgRekapPermintaan;
 import inventory.DlgResepObat;
@@ -3025,7 +3024,7 @@ private void BtnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     DlgHome.setLocationRelativeTo(PanelUtama);
     DlgHome.setVisible(true);
     if (menuawal == 0) {
-        isCombo();
+        populateMenuPanel();
         setLayout();
         menuawal = 1;
     } else {
@@ -17820,51 +17819,52 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         DlgHome.dispose();
         this.setCursor(Cursor.getDefaultCursor());
     }
-    
-        private void btnMappingProsedurSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void btnMappingProsedurSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SmartKlaimBPJSMappingProsedur form=new SmartKlaimBPJSMappingProsedur(this,false);
+        SmartKlaimBPJSMappingProsedur form = new SmartKlaimBPJSMappingProsedur(this, false);
         form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
         form.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
-    
+
     private void btnMappingPenyakitSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SmartKlaimBPJSMappingPenyakit form=new SmartKlaimBPJSMappingPenyakit(this,false);
+        SmartKlaimBPJSMappingPenyakit form = new SmartKlaimBPJSMappingPenyakit(this, false);
         form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
         form.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
-    
+
     private void btnKirimFHIRSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SmartKlaimBPJSKirimFHIR form=new SmartKlaimBPJSKirimFHIR(this,false);
+        SmartKlaimBPJSKirimFHIR form = new SmartKlaimBPJSKirimFHIR(this, false);
         form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
         form.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
-    
-    private void btnSuratPermintaanBinrohtalActionPerformed(java.awt.event.ActionEvent evt) {  
+
+    private void btnSuratPermintaanBinrohtalActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SuratPermintaanBinrohtal aplikasi=new SuratPermintaanBinrohtal(this,false);
+        SuratPermintaanBinrohtal aplikasi = new SuratPermintaanBinrohtal(this, false);
         aplikasi.isCek();
         aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         aplikasi.setLocationRelativeTo(PanelUtama);
         aplikasi.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
+
     /**
      * @param args the command line arguments
      */
@@ -18121,12 +18121,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSkriningCURB65, btnBPJSPotensiPRB, btnBPJSRiwayatPelayananObatApotek, btnSkriningGiziKehamilan, btnBPJSRekapPesertaPRBObatApotek, btnSuratSerahTerimaBarangAnggotaTubuh, btnPCRAICRAJenisAktivitasProyek,
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
-            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimQuestionnaireResponseSatuSehat, btnKirimEpisodeOfCareSatuSehat, btnKirimImagingStudySatuSehat, btnMappingProsedurSmartKlaimBPJS,btnMappingPenyakitSmartKlaimBPJS,btnKirimFHIRSmartKlaimBPJS,
+            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimQuestionnaireResponseSatuSehat, btnKirimEpisodeOfCareSatuSehat, btnKirimImagingStudySatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
             btnSuratPermintaanBinrohtal;
 
     public void isWall() {
         try {
-            ps=koneksi.prepareStatement("select setting.nama_instansi,setting.alamat_instansi,setting.kabupaten,setting.propinsi,setting.aktifkan,setting.wallpaper,setting.kontak,setting.email,setting.logo,setting.kode_ppk,setting.kode_ppkkemenkes from setting");
+            ps = koneksi.prepareStatement("select setting.nama_instansi,setting.alamat_instansi,setting.kabupaten,setting.propinsi,setting.aktifkan,setting.wallpaper,setting.kontak,setting.email,setting.logo,setting.kode_ppk,setting.kode_ppkkemenkes from setting");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
@@ -18186,17 +18186,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     public void isTampil() {
         Panelmenu.removeAll();
 
-        if (ChkInput.isSelected() == true) {
-            isCombo();
-        } else {
-            if (TCari.getText().equals("")) {
-                ADD_MENU_BY_NAME = false;
-            } else {
-                ADD_MENU_BY_NAME = true;
-            }
-            isCari();
+        ADD_MENU_BY_NAME = false;
+        if (!TCari.getText().equals("")) {
+            ADD_MENU_BY_NAME = true;
         }
 
+        populateMenuPanel();
         setLayout();
     }
 
@@ -18239,7 +18234,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         }
 
         for (widget.ButtonBig button : buttons) {
-            if (ADD_MENU_BY_NAME) {
+            if (!ChkInput.isSelected() && ADD_MENU_BY_NAME) {
                 if (button.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())) {
                     Panelmenu.add(button);
                     jmlmenu++;
@@ -18255,9 +18250,10 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         addMenu(true, buttons);
     }
 
-    private void isCombo() {
-        if (cmbMenu.getSelectedIndex() == 0) {
-            jmlmenu = 0;
+    private void populateMenuPanel() {
+        jmlmenu = 0;
+
+        if (cmbMenu.getSelectedIndex() == 0 || !ChkInput.isSelected()) {
             addMenu(akses.getinformasi_kamar(), btnAnalisaKamar);
 
             addMenu(akses.getjadwal_praktek(), BtnJadwal);
@@ -18321,8 +18317,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getdeposit_pasien(), btnDeposit);
 
             addMenu(akses.getperkiraan_biaya_ranap(), btnPerkiraanBiayaRanap);
-        } else if (cmbMenu.getSelectedIndex() == 1) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 1 || !ChkInput.isSelected()) {
             addMenu(akses.getbarcoderalan(), btnBarcodeRalan);
 
             addMenu(akses.getbarcoderanap(), btnBarcodeRanap);
@@ -18352,8 +18348,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getrekap_pelayanan_lab_kesehatan_lingkungan(), btnLabKeslingRekapPelayanan);
 
             addMenu(akses.getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan(), btnLabKeslingPembyaranPengujianSampel, btnLabKeslingRekapPembayaran);
-        } else if (cmbMenu.getSelectedIndex() == 2) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 2 || !ChkInput.isSelected()) {
             addMenu(akses.getpetugas(), btnPegawai);
 
             addMenu(akses.getdokter(), btnDokter);
@@ -18471,8 +18467,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getskp_penilaian(), btnSKPPenilaianPegawai);
 
             addMenu(akses.getskp_rekapitulasi_penilaian(), btnSKPRekapitulasiPenilaian);
-        } else if (cmbMenu.getSelectedIndex() == 3) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 3 || !ChkInput.isSelected()) {
             addMenu(akses.getasal_hibah(), btnAsalHibah);
 
             addMenu(akses.getindustrifarmasi(), btnIndustriFarmasi);
@@ -18622,8 +18618,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getnilai_penerimaan_vendor_farmasi_perbulan(), btnNilaiPenerimaanVendorFarmasiPerBulan);
 
             addMenu(akses.getobat_bhp_tidakbergerak(), btnObatBHPTidakBergerak);
-        } else if (cmbMenu.getSelectedIndex() == 4) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 4 || !ChkInput.isSelected()) {
             addMenu(akses.getasal_hibah(), btnAsalHibah);
 
             addMenu(akses.getsatuan_barang(), btnSatuan);
@@ -18689,8 +18685,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getverifikasi_penerimaan_logistik(), btnVerifikasiPenerimaanLogistik);
 
             addMenu(akses.getnilai_penerimaan_vendor_nonmedis_perbulan(), btnNilaiPenerimaanVendorNonMedisPerBulan);
-        } else if (cmbMenu.getSelectedIndex() == 5) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 5 || !ChkInput.isSelected()) {
             addMenu(akses.getasal_hibah(), btnAsalHibah);
 
             addMenu(akses.getsatuan_barang(), btnSatuan);
@@ -18744,8 +18740,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getverifikasi_penerimaan_dapur(), btnVerifikasiPenerimaanDapur);
 
             addMenu(akses.getnilai_penerimaan_vendor_dapur_perbulan(), btnNilaiPenerimaanVendorDapurPerBulan);
-        } else if (cmbMenu.getSelectedIndex() == 6) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 6 || !ChkInput.isSelected()) {
             addMenu(akses.getasal_hibah(), btnAsalHibah);
 
             addMenu(akses.getinventaris_jenis(), btnJenisInventaris);
@@ -18801,15 +18797,15 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getmutu_air_limbah(), btnMutuAirLimbah);
 
             addMenu(akses.getpest_control(), btnPestControl);
-        } else if (cmbMenu.getSelectedIndex() == 7) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 7 || !ChkInput.isSelected()) {
             addMenu(akses.getparkir_jenis(), btnJenisParkir);
 
             addMenu(akses.getparkir_barcode(), btnBarcodeParkir);
 
             addMenu(akses.getparkir_in(), btnParkirMasuk);
-        } else if (cmbMenu.getSelectedIndex() == 8) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 8 || !ChkInput.isSelected()) {
             addMenu(akses.getharian_tindakan_poli(), btnTagihanPoli);
 
             addMenu(akses.getharian_kamar(), btnHarianKamar);
@@ -18929,8 +18925,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpendapatan_per_akun(), btnPendapatanPerAkun);
 
             addMenu(akses.getpendapatan_per_akun_closing(), btnPendapatanPerAkunClosing);
-        } else if (cmbMenu.getSelectedIndex() == 9) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 9 || !ChkInput.isSelected()) {
             addMenu(akses.geticd9(), btnICD9);
 
             addMenu(akses.getpenyakit(), btnICD);
@@ -19120,8 +19116,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getdata_sasaran_usiaproduktif(), btnDataSasaranUsiaProduktif);
 
             addMenu(akses.getdata_sasaran_usialansia(), btnDataSasaranUsiaLansia);
-        } else if (cmbMenu.getSelectedIndex() == 10) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 10 || !ChkInput.isSelected()) {
             addMenu(akses.getkamar(), btnKamar);
 
             addMenu(akses.gettarif_ralan(), btnTindakanRalan);
@@ -19292,8 +19288,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.getkeuangan(), btnLabaRugi);
 
-        } else if (cmbMenu.getSelectedIndex() == 11) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 11 || !ChkInput.isSelected()) {
             addMenu(akses.getbpjs_cek_kartu(), btnCekBPJSKartu);
 
             addMenu(akses.getbpjs_cek_nik(), btnCekBPJSNik);
@@ -19649,8 +19645,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getreferensi_dokter_mobilejknfktp(), btnReferensiDokterMobileJKNFKTP);
 
             addMenu(akses.getduta_parkir_rekap_keluar(), btnRekapKeluarDutaParking);
-        } else if (cmbMenu.getSelectedIndex() == 12) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 12 || !ChkInput.isSelected()) {
             addMenu(akses.getperusahaan_pasien(), btnPerusahaan);
 
             addMenu(akses.getsuku_bangsa(), btnSuku);
@@ -20132,8 +20128,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getskrining_frailty_syndrome(), btnSkriningFrailtySyndrome);
 
             addMenu(akses.getlaporan_tindakan(), btnLaporanTindakan);
-        } else if (cmbMenu.getSelectedIndex() == 13) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 13 || !ChkInput.isSelected()) {
             addMenu(akses.getpengambilan_utd2(), btnPengambilanUTD2);
 
             addMenu(akses.getutd_medis_rusak(), btnUTDMedisRusak);
@@ -20155,8 +20151,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getutd_stok_darah(), btnUTDStokDarah);
 
             addMenu(akses.getutd_penyerahan_darah(), btnUTDPenyerahanDarah);
-        } else if (cmbMenu.getSelectedIndex() == 14) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 14 || !ChkInput.isSelected()) {
             addMenu(akses.getgrafik_kunjungan_poli(), btnGrafikKunjunganPoli);
 
             addMenu(akses.getgrafik_kunjungan_perdokter(), btnGrafikKunjunganPerDokter);
@@ -20382,8 +20378,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getgrafik_limbahb3cair_pertanggal(), btnGrafikLimbahB3MedisCairPerTanggal);
 
             addMenu(akses.getgrafik_limbahb3cair_perbulan(), btnGrafikLimbahB3MedisCairPerBulan);
-        } else if (cmbMenu.getSelectedIndex() == 15) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 15 || !ChkInput.isSelected()) {
             addMenu(akses.getsurat_indeks(), btnSuratIndeks);
 
             addMenu(akses.getsurat_map(), btnSuratMap);
@@ -20461,8 +20457,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getserah_terima_anggota_tubuh_barang(), btnSuratSerahTerimaBarangAnggotaTubuh);
 
             addMenu(akses.getpermintaan_binrohtal(), btnSuratPermintaanBinrohtal);
-        } else if (cmbMenu.getSelectedIndex() == 16) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 16 || !ChkInput.isSelected()) {
             addMenu(akses.getruang_perpustakaan(), btnRuangPerpustakaan);
 
             addMenu(akses.getkategori_perpustakaan(), btnKategoriPerpustakaan);
@@ -20490,8 +20486,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getebook_perpustakaan(), btnEbookPerpustakaan);
 
             addMenu(btnPenelitianPerpustakaan, btnCariEbook, btnCariInventarisPerpustakaan);
-        } else if (cmbMenu.getSelectedIndex() == 17) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 17 || !ChkInput.isSelected()) {
             addMenu(akses.getpcra_icra_jenis_aktivitas_proyek(), btnPCRAICRAJenisAktivitasProyek);
 
             addMenu(akses.getpcra_icra_lokasi_kelompok_risiko_area(), btnPCRAICRALokasiKelompokRisiko);
@@ -20511,8 +20507,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpcra_icra_persyaratan_harus_dipenuhi(), btnPCRAICRAPersyaratanHarusDipenuhi);
 
             addMenu(akses.getpcra_icra_pengkajian_risiko_prakonstruksi(), btnPCRAICRAPengkajianRisikoPraKonstruksi);
-        } else if (cmbMenu.getSelectedIndex() == 18) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 18 || !ChkInput.isSelected()) {
             addMenu(akses.getsatuan_barang(), btnSatuan);
 
             addMenu(akses.gettoko_suplier(), btnSuplierToko);
@@ -20562,8 +20558,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.gettoko_sirkulasi(), btnSirkulasiBarangToko);
 
             addMenu(akses.gettoko_sirkulasi2(), btnSirkulasiBarangToko2);
-        } else if (cmbMenu.getSelectedIndex() == 19) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 19 || !ChkInput.isSelected()) {
             addMenu(akses.getzis_pengeluaran_penerima_dankes(), btnZISPengeluaranPenerimaDankes);
 
             addMenu(akses.getzis_penghasilan_penerima_dankes(), btnZISPenghasilanPenerimaDankes);
@@ -20595,8 +20591,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getzis_kategori_asnaf_penerima_dankes(), btnZISKategoriAsnafPenerimaDankes);
 
             addMenu(akses.getzis_patologis_penerima_dankes(), btnZISPatologisPenerimaDankes);
-        } else if (cmbMenu.getSelectedIndex() == 20) {
-            jmlmenu = 0;
+        }
+        if (cmbMenu.getSelectedIndex() == 20 || !ChkInput.isSelected()) {
             addMenu(akses.getaplikasi(), btnSetupAplikasi);
 
             addMenu(akses.getadmin(), btnAdmin);
@@ -20655,2367 +20651,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.getruang_ok(), btnRuangOperasi);
         }
-    }
-
-    private void isCari() {
-        jmlmenu = 0;
-        addMenu(akses.getinformasi_kamar(), btnAnalisaKamar);
-
-        addMenu(akses.getjadwal_praktek(), BtnJadwal);
-
-        addMenu(akses.getregistrasi(), btnRegistrasi);
-
-        addMenu(akses.getbooking_periksa(), btnBookingPeriksa);
-
-        addMenu(akses.getbooking_registrasi(), btnBookingRegistrasi);
-
-        addMenu(akses.getbooking_mcu_perusahaan(), btnBookingMCUPerusahaan);
-
-        addMenu(akses.getigd(), btnIGD);
-
-        addMenu(akses.gettindakan_ralan(), btnRalan);
-
-        addMenu(akses.getpermintaan_ranap(), btnPermintaanRanap);
-
-        addMenu((akses.getkamar_inap()) || (akses.getbilling_ranap()) || (akses.gettindakan_ranap()), btnKamarInap);
-
-        addMenu(akses.getbooking_operasi(), btnJadwalOperasi);
-
-        addMenu((akses.getpermintaan_lab()) || (akses.getperiksa_lab()) || (akses.getpemeriksaan_lab_pa()) || (akses.getpemeriksaan_lab_mb()), btnPermintaanLab, btnPermintaanLabPA, btnPermintaanLabMB);
-
-        addMenu((akses.getpermintaan_radiologi()) || (akses.getperiksa_radiologi()), btnPermintaanRadiologi);
-
-        addMenu((akses.getlayanan_kedokteran_fisik_rehabilitasi()) || (akses.getlayanan_program_kfr()), btnPermintaanLayananProgramKFR);
-
-        addMenu(akses.getdpjp_ranap(), BtnDpjp);
-
-        addMenu(akses.gettindakan_ranap(), btnRanap);
-
-        addMenu(akses.getoperasi(), btnTagihanOperasi);
-
-        addMenu(akses.getrujukan_keluar(), btnRujukPasien);
-
-        addMenu(akses.getrujukan_masuk(), btnRujukMasuk);
-
-        addMenu(akses.getberi_obat(), btnBeriObat);
-
-        addMenu(akses.getresep_pulang(), btnResepPulang);
-
-        addMenu(akses.getresep_obat(), btnResepObat);
-
-        addMenu(akses.getdiet_pasien(), btnDiet);
-
-        addMenu(akses.getsekrining_rawat_jalan(), btnSkriningRawatJalan);
-
-        addMenu(akses.getdeteksi_corona(), btnDeteksiDiniCorona);
-
-        addMenu(akses.getperiksa_lab(), btnLaboratorium);
-
-        addMenu(akses.getpemeriksaan_lab_pa(), btnLaboratoriumPA);
-
-        addMenu(akses.getpemeriksaan_lab_mb(), btnLaboratoriumMB);
-
-        addMenu(akses.getperiksa_radiologi(), btnPeriksaRadiologi);
-
-        addMenu((akses.getkasir_ralan()) || (akses.getbilling_ralan()), btnKasir);
-
-        addMenu(akses.getdeposit_pasien(), btnDeposit);
-
-        addMenu(akses.getperkiraan_biaya_ranap(), btnPerkiraanBiayaRanap);
-
-        addMenu(akses.getpiutang_pasien(), btnLihatPiutang);
-
-        addMenu(akses.getbarcoderalan(), btnBarcodeRalan);
-
-        addMenu(akses.getbarcoderanap(), btnBarcodeRanap);
-
-        addMenu(akses.getpelanggan_lab_kesehatan_lingkungan(), btnLabKeslingPelanggan);
-
-        addMenu(akses.getmaster_sampel_bakumutu(), btnLabKeslingSampelBakuMutu);
-
-        addMenu(akses.getparameter_pengujian_lab_kesehatan_lingkungan(), btnLabKeslingParameterPengujian);
-
-        addMenu(akses.getnilai_normal_baku_mutu_lab_kesehatan_lingkungan(), btnLabKeslingNilaiNormalBakuMutu);
-
-        addMenu(akses.getpermintaan_pengujian_sampel_lab_kesehatan_lingkungan(), btnLabKeslingPermintaanPengujianSampel);
-
-        addMenu(akses.getpermintaan_pengujian_sampel_lab_kesehatan_lingkungan(), btnLabKeslingPengujianSampelTidakDapatDilayani);
-
-        addMenu((akses.getpermintaan_pengujian_sampel_lab_kesehatan_lingkungan()) || (akses.getpenugasan_pengujian_sampel_lab_kesehatan_lingkungan()), btnLabKeslingPengujianSampelDapatDilayani);
-
-        addMenu((akses.getpenugasan_pengujian_sampel_lab_kesehatan_lingkungan()) || (akses.gethasil_pengujian_sampel_lab_kesehatan_lingkungan()), btnLabKeslingPenugasanPengujianSampel);
-
-        addMenu((akses.gethasil_pengujian_sampel_lab_kesehatan_lingkungan()) || (akses.getverifikasi_pengujian_sampel_lab_kesehatan_lingkungan()), btnLabKeslingHasilPengujianSampel);
-
-        addMenu((akses.getverifikasi_pengujian_sampel_lab_kesehatan_lingkungan()) || (akses.getvalidasi_pengujian_sampel_lab_kesehatan_lingkungan()), btnLabKeslingVerifikasiPengujianSampel);
-
-        addMenu(akses.getvalidasi_pengujian_sampel_lab_kesehatan_lingkungan(), btnLabKeslingValidasiPengujianSampel);
-
-        addMenu(akses.getrekap_pelayanan_lab_kesehatan_lingkungan(), btnLabKeslingRekapPelayanan);
-
-        addMenu(akses.getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan(), btnLabKeslingPembyaranPengujianSampel, btnLabKeslingRekapPembayaran);
-
-        addMenu(akses.getpetugas(), btnPegawai);
-
-        addMenu(akses.getdokter(), btnDokter);
-
-        addMenu(akses.getbarcode(), btnBarcode);
-
-        addMenu(akses.getsidikjari(), btnSidikJari);
-
-        addMenu(akses.getjam_masuk(), btnJamPresensi);
-
-        addMenu(akses.getjadwal_pegawai(), btnJadwalPegawai, btnJadwalTambahan);
-
-        addMenu(akses.getpresensi_harian(), btnRekapHarian);
-
-        addMenu(akses.getpresensi_bulanan(), btnRekapBulanan);
-
-        addMenu(akses.gettemporary_presensi(), btnTemporaryPresensi);
-
-        addMenu(akses.getpengajuan_cuti(), btnPengajuanCuti);
-
-        addMenu(btnRekapPresensi, btnRekapPresensi2);
-
-        addMenu((akses.getpegawai_admin()) || (akses.getpegawai_user()), btnPenggajian);
-
-        addMenu(akses.getmaster_berkas_pegawai(), btnMasterBerkasPegawai);
-
-        addMenu(akses.getberkas_kepegawaian(), btnBerkasPegawai);
-
-        addMenu(akses.getriwayat_jabatan(), btnRiwayatJabatan);
-
-        addMenu(akses.getriwayat_pendidikan(), btnRiwayatPendidikan);
-
-        addMenu(akses.getriwayat_naik_gaji(), btnRiwayatNaikGaji);
-
-        addMenu(akses.getkegiatan_ilmiah(), btnKegiatanIlmiah);
-
-        addMenu(akses.getriwayat_penghargaan(), btnRiwayatPenghargaan);
-
-        addMenu(akses.getriwayat_surat_peringatan(), btnRiwayatSuratPeringatan);
-
-        addMenu(akses.getriwayat_penelitian(), btnRiwayatPenelitian);
-
-        addMenu(akses.getsms(), btnSMS);
-
-        addMenu(akses.getjenis_cidera_k3rs(), btnJenisCideraK3);
-
-        addMenu(akses.getpenyebab_k3rs(), btnPenyebabKecelakaanK3);
-
-        addMenu(akses.getjenis_luka_k3rs(), btnJenisLukaK3);
-
-        addMenu(akses.getlokasi_kejadian_k3rs(), btnLokasiKejadianK3);
-
-        addMenu(akses.getdampak_cidera_k3rs(), btnDampakCideraK3);
-
-        addMenu(akses.getjenis_pekerjaan_k3rs(), btnJenisPekerjaanK3);
-
-        addMenu(akses.getbagian_tubuh_k3rs(), btnBagianTubuhK3);
-
-        addMenu(akses.getperistiwa_k3rs(), btnPeristiwaK3);
-
-        addMenu(akses.getjenis_cidera_k3rstahun(), btnJenisCideraK3PerTahun);
-
-        addMenu(akses.getpenyebab_k3rstahun(), btnPenyebabKecelakaanK3PerTahun);
-
-        addMenu(akses.getjenis_luka_k3rstahun(), btnJenisLukaK3PerTahun);
-
-        addMenu(akses.getlokasi_kejadian_k3rstahun(), btnLokasiKejadianK3PerTahun);
-
-        addMenu(akses.getdampak_cidera_k3rstahun(), btnDampakCideraK3PerTahun);
-
-        addMenu(akses.getjenis_pekerjaan_k3rstahun(), btnJenisPekerjaanK3PerTahun);
-
-        addMenu(akses.getbagian_tubuh_k3rstahun(), btnBagianTubuhK3PerTahun);
-
-        addMenu(akses.getaudit_kepatuhan_apd(), btnAuditKepatuhanAPD);
-
-        addMenu(akses.getaudit_cuci_tangan_medis(), btnAuditCuciTanganMedis);
-
-        addMenu(akses.getruang_audit_kepatuhan(), btnRuangAuditKepatuhan);
-
-        addMenu(akses.getaudit_pembuangan_limbah(), btnAuditPembuanganLimbah);
-
-        addMenu(akses.getaudit_pembuangan_benda_tajam(), btnAuditPembuanganBendaTajam);
-
-        addMenu(akses.getaudit_penanganan_darah(), btnAuditPenangananDarah);
-
-        addMenu(akses.getaudit_pengelolaan_linen_kotor(), btnAuditPengelolaanLinenKotor);
-
-        addMenu(akses.getaudit_penempatan_pasien(), btnAuditPenempatanPasien);
-
-        addMenu(akses.getaudit_kamar_jenazah(), btnAuditKamarJenazah);
-
-        addMenu(akses.getaudit_bundle_iadp(), btnAuditBundleIADP);
-
-        addMenu(akses.getaudit_bundle_ido(), btnAuditBundleIDO);
-
-        addMenu(akses.getaudit_fasilitas_kebersihan_tangan(), btnAuditFasilitasKebersihanTangan);
-
-        addMenu(akses.getaudit_fasilitas_apd(), btnAuditFasilitasAPD);
-
-        addMenu(akses.getaudit_pembuangan_limbah_cair_infeksius(), btnAuditPembuanganLimbahCairInfeksius);
-
-        addMenu(akses.getaudit_sterilisasi_alat(), btnAuditSterilisasiAlat);
-
-        addMenu(akses.getaudit_bundle_isk(), btnAuditBundleISK);
-
-        addMenu(akses.getaudit_bundle_plabsi(), btnAuditBundlePLABSI);
-
-        addMenu(akses.getaudit_bundle_vap(), btnAuditBundleVAP);
-
-        addMenu(akses.getskp_kategori_penilaian(), btnSKPKategoriPenilaian);
-
-        addMenu(akses.getskp_kriteria_penilaian(), btnSKPKriteriaPenilaian);
-
-        addMenu(akses.getskp_penilaian(), btnSKPPenilaianPegawai);
-
-        addMenu(akses.getskp_rekapitulasi_penilaian(), btnSKPRekapitulasiPenilaian);
-
-        addMenu(akses.getindustrifarmasi(), btnIndustriFarmasi);
-
-        addMenu(akses.getsuplier(), btnSuplier);
-
-        addMenu(akses.getsatuan_barang(), btnSatuan);
-
-        addMenu(akses.getmetode_racik(), btnMetodeRacik);
-
-        addMenu(akses.getkonversi_satuan(), btnKonversi);
-
-        addMenu(akses.getjenis_barang(), btnJnsBarang);
-
-        addMenu(akses.getkategori_barang(), btnKategoriBarang);
-
-        addMenu(akses.getgolongan_barang(), btnGolonganBarang);
-
-        addMenu(akses.getobat(), btnObat);
-
-        addMenu(akses.getstok_opname_obat(), btnOpname);
-
-        addMenu(akses.getmutasi_barang(), btnMutasiBarang);
-
-        addMenu(akses.getpermintaan_stok_obat_pasien(), btnPermintaanStokObatPasien);
-
-        addMenu(akses.getpermintaan_resep_pulang(), btnPermintaanResepPulang);
-
-        addMenu(akses.getstok_obat_pasien(), btnStokObatPasien);
-
-        addMenu((akses.getpermintaan_medis()) || (akses.getmutasi_barang()) || (akses.getpengeluaran_stok_apotek()), btnPermintaanMedis);
-
-        addMenu(akses.getrekap_permintaan_medis(), btnRingkasanPermintaanMedis);
-
-        addMenu(akses.getpengajuan_barang_medis(), btnPengajuanBarangMedis);
-
-        addMenu(akses.getringkasan_pengajuan_obat(), btnRingkasanPengajuanMedis);
-
-        addMenu((akses.getsurat_pemesanan_medis()) || (akses.getpemesanan_obat()), btnSuratPemesananMedis);
-
-        addMenu(akses.getringkasan_pemesanan_obat(), btnRingkasanPemesananMedis);
-
-        addMenu(akses.getpengadaan_obat(), btnPembelian);
-
-        addMenu(akses.getringkasan_pengadaan_obat(), btnRingkasanPembelianMedis);
-
-        addMenu((akses.getpemesanan_obat()) || (akses.getbayar_pemesanan_obat()), btnPemesanan);
-
-        addMenu(akses.getringkasan_penerimaan_obat(), btnRingkasanPenerimaanMedis);
-
-        addMenu(akses.gethibah_obat_bhp(), btnHibahObatBHP);
-
-        addMenu(akses.getringkasan_hibah_obat(), btnRingkasanHibahMedis);
-
-        addMenu(akses.getpenjualan_obat(), btnPenjualan);
-
-        addMenu(akses.getringkasan_penjualan_obat(), btnRingkasanPenjualanMedis);
-
-        addMenu(akses.getringkasan_beri_obat(), btnRingkasanBeriObat);
-
-        addMenu(akses.getresep_dokter(), btnDaftarPermintaanResep);
-
-        addMenu(akses.getpiutang_obat(), btnPiutang);
-
-        addMenu(akses.getringkasan_piutang_obat(), btnRingkasanPiutangObat);
-
-        addMenu(akses.getpengeluaran_stok_apotek(), btnStokKeluarMedis);
-
-        addMenu(akses.getringkasan_stok_keluar_obat(), btnRingkasanStokKeluarObat);
-
-        addMenu(akses.getretur_ke_suplier(), btnReturBeli);
-
-        addMenu(akses.getringkasan_retur_suplier_obat(), btnRingkasanReturSuplierObat);
-
-        addMenu(akses.getretur_dari_pembeli(), btnReturJual);
-
-        addMenu(akses.getringkasan_retur_pembeli_obat(), btnRingkasanReturJualObat);
-
-        addMenu(akses.getretur_obat_ranap(), btnReturPasien);
-
-        addMenu(akses.getretur_piutang_pasien(), btnReturPiutang);
-
-        addMenu(akses.getpengambilan_utd(), btnPengambilanUTD);
-
-        addMenu(akses.getkeuntungan_penjualan(), btnKeuntungan);
-
-        addMenu(akses.getkeuntungan_beri_obat(), btnKeuntunganObatRanap);
-
-        addMenu(akses.getkeuntungan_beri_obat_nonpiutang(), btnKeuntunganObat2);
-
-        addMenu(akses.getsirkulasi_obat(), btnSirkulasi);
-
-        addMenu(akses.getsirkulasi_obat2(), btnSirkulasi2);
-
-        addMenu(akses.getsirkulasi_obat3(), btnSirkulasi3);
-
-        addMenu(akses.getsirkulasi_obat4(), btnSirkulasiObat4);
-
-        addMenu(akses.getsirkulasi_obat5(), btnSirkulasiObat5);
-
-        addMenu(akses.getsirkulasi_obat6(), btnSirkulasiObat6);
-
-        addMenu(akses.getpemberian_obat_pertanggal(), btnObatPerTanggal);
-
-        addMenu(akses.getpenjualan_obat_pertanggal(), btnPenjualanPerTanggal);
-
-        addMenu(akses.getriwayat_obat_alkes_bhp(), btnRiwayatBarangMedis);
-
-        addMenu(akses.getdarurat_stok(), btnDaruratStok);
-
-        addMenu(akses.getpengguna_obat_resep(), btnPenggunaObatResep);
-
-        addMenu(akses.getrekap_pemesanan(), btnRekapPenerimaanObat);
-
-        addMenu(akses.getdata_batch(), btnDataBatch);
-
-        addMenu(akses.getriwayat_data_batch(), btnRiwayatBatch);
-
-        addMenu(akses.getkegiatan_farmasi(), btnKegiatanFarmasi);
-
-        addMenu(akses.getppn_obat(), btnPPNObat);
-
-        addMenu(akses.getkadaluarsa_batch(), btnKadaluarsaBatch);
-
-        addMenu(akses.getsisa_stok(), btnSisaStok);
-
-        addMenu(akses.getobat_per_resep(), btnObatPerResep);
-
-        addMenu(akses.getobat10_terbanyak_poli(), btn10BesarObatPoli);
-
-        addMenu(akses.getrekap_obat_poli(), btnRekapObatPoli);
-
-        addMenu(akses.getrekap_obat_pasien(), btnRekapObatPasien);
-
-        addMenu(akses.getverifikasi_penerimaan_farmasi(), btnVerifikasiPenerimaanFarmasi);
-
-        addMenu(akses.getpenggunaan_bhp_ok(), btnPenggunaanBHPOK);
-
-        addMenu(akses.getresep_luar(), btnResepLuar);
-
-        addMenu(akses.getstok_akhir_farmasi_pertanggal(), btnStokAkhirFarmasiPerTanggal);
-
-        addMenu(akses.gettelaah_resep(), btnTelaahResep);
-
-        addMenu(akses.getringkasan_biaya_obat_pasien_pertanggal(), btnRingkasanBiayaObatPasienPerTanggal);
-
-        addMenu(akses.getnilai_penerimaan_vendor_farmasi_perbulan(), btnNilaiPenerimaanVendorFarmasiPerBulan);
-
-        addMenu(akses.getobat_bhp_tidakbergerak(), btnObatBHPTidakBergerak);
-
-        addMenu(akses.getsatuan_barang(), btnSatuan);
-
-        addMenu(akses.getipsrs_jenis_barang(), btnJenisIpsrs);
-
-        addMenu(akses.getipsrs_barang(), btnBarangIpsrs);
-
-        addMenu(akses.getsuplier_penunjang(), btnSuplierIPSRS);
-
-        addMenu(akses.getpermintaan_non_medis(), btnPermintaanNonMedis);
-
-        addMenu(akses.getrekap_permintaan_non_medis(), btnRekapPermintaanNonMedis);
-
-        addMenu(akses.getpengajuan_barang_nonmedis(), btnPengajuanBarangNonMedis);
-
-        addMenu(akses.getringkasan_pengajuan_nonmedis(), btnRingkasanPengajuanNonMedis);
-
-        addMenu(akses.getsurat_pemesanan_non_medis(), btnSuratPemesananNonMedis);
-
-        addMenu(akses.getringkasan_pemesanan_nonmedis(), btnRingkasanPemesananNonMedis);
-
-        addMenu(akses.getipsrs_pengadaan_barang(), btnPembelianIpsrs);
-
-        addMenu(akses.getringkasan_pengadaan_nonmedis(), btnRingkasanPengadaanNonMedis);
-
-        addMenu(akses.getpenerimaan_non_medis(), btnPenerimaanNonMedis);
-
-        addMenu(akses.getringkasan_penerimaan_nonmedis(), btnRingkasanPenerimaanNonMedis);
-
-        addMenu(akses.gethibah_non_medis(), btnHibahNonMedis);
-
-        addMenu(akses.getipsrs_stok_keluar(), btnPengeluaranIpsrs);
-
-        addMenu(akses.getringkasan_stokkeluar_nonmedis(), btnRingkasanStokKeluarNonMedis);
-
-        addMenu(akses.getipsrs_returbeli(), btnReturBarangNonMedis);
-
-        addMenu(akses.getringkasan_returbeli_nonmedis(), btnRingkasanReturSuplierNonMedis);
-
-        addMenu(akses.getipsrs_riwayat_barang(), btnRiwayatBarangNonMedis);
-
-        addMenu(akses.getipsrs_pengeluaran_harian(), btnRBiayaIpsrs);
-
-        addMenu(akses.getipsrs_rekap_pengadaan(), btnRHMasukIpsrs);
-
-        addMenu(akses.getipsrs_rekap_stok_keluar(), btnRHKeluarIpsrs);
-
-        addMenu(akses.getpengambilan_penunjang_utd(), btnPengambilanPenunjangUTD);
-
-        addMenu(akses.getipsrs_pengadaan_pertanggal(), btnPengadaanIPSRSPerTanggal);
-
-        addMenu(akses.getipsrs_stokkeluar_pertanggal(), btnStokKeluarIPSRSPerTanggal);
-
-        addMenu(akses.getrekap_pemesanan_non_medis(), btnRekapPenerimaanNonMedis);
-
-        addMenu(akses.getstok_opname_logistik(), btnOpnameIPSRS);
-
-        addMenu(akses.getsirkulasi_non_medis(), btnSirkulasiNonMedis);
-
-        addMenu(akses.getsirkulasi_non_medis2(), btnSirkulasiNonMedis2);
-
-        addMenu(akses.getverifikasi_penerimaan_logistik(), btnVerifikasiPenerimaanLogistik);
-
-        addMenu(akses.getnilai_penerimaan_vendor_nonmedis_perbulan(), btnNilaiPenerimaanVendorNonMedisPerBulan);
-
-        addMenu(akses.getdapur_barang(), btnBarangDapur);
-
-        addMenu(akses.getdapur_opname(), btnOpnameDapur);
-
-        addMenu(akses.getdapur_suplier(), btnSuplierDapur);
-
-        addMenu(akses.getpengajuan_barang_dapur(), btnPengajuanBarangDapur);
-
-        addMenu(akses.getringkasan_pengajuan_dapur(), btnRingkasanPengajuanDapur);
-
-        addMenu(akses.getsurat_pemesanan_dapur(), btnSuratPemesananDapur);
-
-        addMenu(akses.getringkasan_pemesanan_dapur(), btnRingkasanPemesananDapur);
-
-        addMenu(akses.getdapur_pembelian(), btnPembelianDapur);
-
-        addMenu(akses.getdapur_ringkasan_pembelian(), btnRingkasanPengadaanDapur);
-
-        addMenu(akses.getdapur_pemesanan(), btnPenerimaanBarangDapur);
-
-        addMenu(akses.getringkasan_penerimaan_dapur(), btnRingkasanPenerimaanDapur);
-
-        addMenu(akses.gethibah_dapur(), btnHibahDapur);
-
-        addMenu(akses.getdapur_stok_keluar(), btnPengeluaranDapur);
-
-        addMenu(akses.getringkasan_stokkeluar_dapur(), btnRingkasanStokKeluarDapur);
-
-        addMenu(akses.getdapur_returbeli(), btnReturBarangDapur);
-
-        addMenu(akses.getringkasan_returbeli_dapur(), btnRingkasanReturBeliDapur);
-
-        addMenu(akses.getdapur_riwayat_barang(), btnRiwayatBarangDapur);
-
-        addMenu(akses.getpermintaan_dapur(), btnPermintaanDapur);
-
-        addMenu(akses.getbiaya_pengadaan_dapur(), btnRBiayaDapur);
-
-        addMenu(akses.getrekap_pengadaan_dapur(), btnRekapPengadaanDapur);
-
-        addMenu(akses.getdapur_stokkeluar_pertanggal(), btnStokKeluarDapurPerTanggal);
-
-        addMenu(akses.getsirkulasi_dapur(), btnSirkulasiDapur);
-
-        addMenu(akses.getsirkulasi_dapur2(), btnSirkulasiDapur2);
-
-        addMenu(akses.getverifikasi_penerimaan_dapur(), btnVerifikasiPenerimaanDapur);
-
-        addMenu(akses.getnilai_penerimaan_vendor_dapur_perbulan(), btnNilaiPenerimaanVendorDapurPerBulan);
-
-        addMenu(akses.getasal_hibah(), btnAsalHibah);
-
-        addMenu(akses.getinventaris_jenis(), btnJenisInventaris);
-
-        addMenu(akses.getinventaris_kategori(), btnKategoriInventaris);
-
-        addMenu(akses.getinventaris_merk(), btnMerkInventaris);
-
-        addMenu(akses.getinventaris_ruang(), btnRuangInventaris);
-
-        addMenu(akses.getinventaris_produsen(), btnProdusenInventaris);
-
-        addMenu(akses.getinventaris_koleksi(), btnBarangInventaris);
-
-        addMenu(akses.getinventaris_inventaris(), btnInventaris);
-
-        addMenu(akses.getinventaris_sirkulasi(), btnSirkulasiInventaris);
-
-        addMenu(akses.getpermintaan_perbaikan_inventaris(), btnPermintaanPerbaikanInventaris);
-
-        addMenu(akses.getperbaikan_inventaris(), btnPerbaikanInventaris);
-
-        addMenu(akses.getpemeliharaan_inventaris(), btnPemeliharaanInventaris);
-
-        addMenu(akses.getpengajuan_asetinventaris(), btnPengajuanAsetInventaris);
-
-        addMenu(akses.getrekap_pengajuan_aset_departemen(), btnRekapPengajuanAsetDepartemen);
-
-        addMenu(akses.getsuplier_inventaris(), btnSuplierInventaris);
-
-        addMenu(akses.getpengadaan_aset_inventaris(), btnPengadaanAset);
-
-        addMenu(akses.getpenerimaan_aset_inventaris(), btnPenerimaanAset);
-
-        addMenu(akses.gethibah_aset_inventaris(), btnHibahAsetInventaris);
-
-        addMenu(akses.getpemeliharaan_gedung(), btnPemeliharaanGedung);
-
-        addMenu(akses.getbarang_cssd(), btnBarangCSSD);
-
-        addMenu(akses.getsirkulasi_cssd(), btnSirkulasiInventarisCSSD);
-
-        addMenu(akses.getpemakaian_air_pdam(), btnPemakaianAirPDAM);
-
-        addMenu(akses.getpemakaian_air_tanah(), btnPemakaianAirTanah);
-
-        addMenu(akses.getlimbah_b3_medis(), btnLimbahB3Medis);
-
-        addMenu(akses.getkesling_limbah_b3medis_cair(), btnLimbahB3MedisCair);
-
-        addMenu(akses.getlimbah_domestik(), btnLimbahDomestik);
-
-        addMenu(akses.getmutu_air_limbah(), btnMutuAirLimbah);
-
-        addMenu(akses.getpest_control(), btnPestControl);
-
-        addMenu(akses.getparkir_jenis(), btnJenisParkir);
-
-        addMenu(akses.getparkir_barcode(), btnBarcodeParkir);
-
-        addMenu(akses.getparkir_in(), btnParkirMasuk);
-
-        addMenu(akses.getharian_tindakan_poli(), btnTagihanPoli);
-
-        addMenu(akses.getharian_kamar(), btnHarianKamar);
-
-        addMenu(akses.getharian_tindakan_dokter(), btnTagihanDokter);
-
-        addMenu(akses.getobat_per_poli(), btnTagihanObatPoli);
-
-        addMenu(akses.getobat_per_kamar(), btnTagihanObatBangsal);
-
-        addMenu(akses.getobat_per_dokter_ralan(), btnObatPasienRalan);
-
-        addMenu(akses.getobat_per_dokter_ranap(), btnObatPasienRanap);
-
-        addMenu(akses.getobat_per_dokter_peresep(), btnObatPasienPeresep);
-
-        addMenu(akses.getobat_per_cara_bayar(), btnObatPerCaraBayar);
-
-        addMenu(akses.getdetail_tindakan(), btnDetailTindakan);
-
-        addMenu(akses.getjm_ranap_dokter(), btnJMDetailDokter);
-
-        addMenu(akses.getdetailjmdokter2(), btnJMDetailDokter2);
-
-        addMenu(akses.getharian_dokter(), btnRHDOkter);
-
-        addMenu(akses.getbulanan_dokter(), btnRBDokter);
-
-        addMenu(akses.getrekap_jm_dokter(), btnRekapJasaDokter);
-
-        addMenu(akses.getrekap_biaya_registrasi(), btnRekapBiayaRegistrasi);
-
-        addMenu(akses.getharian_paramedis(), btnRHParamedis);
-
-        addMenu(akses.getbulanan_paramedis(), btnRBParamedis);
-
-        addMenu(akses.getharian_js(), btnRHJasaSarana);
-
-        addMenu(akses.getbulanan_js(), btnRBJasaSarana);
-
-        addMenu(akses.getharian_kso(), btnRHKSO);
-
-        addMenu(akses.getbulanan_kso(), btnRBKSO);
-
-        addMenu(akses.getharian_menejemen(), btnRHMenejemen);
-
-        addMenu(akses.getbulanan_menejemen(), btnRBMenejemen);
-
-        addMenu(akses.getharian_paket_bhp(), btnRHPaketBHP);
-
-        addMenu(akses.getbulanan_paket_bhp(), btnRBPaketBHP);
-
-        addMenu(akses.getringkasan_tindakan(), btnRingkasanTindakanRalan);
-
-        addMenu(akses.getfee_visit_dokter(), btnfee_visit_dokter);
-
-        addMenu(akses.getfee_bacaan_ekg(), btnfee_bacaan_ekg);
-
-        addMenu(akses.getfee_rujukan_rontgen(), btnfee_rujukan_rontgen);
-
-        addMenu(akses.getfee_rujukan_ranap(), btnfee_rujukan_ranap);
-
-        addMenu(akses.getfee_ralan(), btnfee_ralan);
-
-        addMenu(akses.getdetail_tindakan_okvk(), btnDetailVKOK);
-
-        addMenu(akses.getjasa_tindakan_pasien(), btnJasaTindakanPasien);
-
-        addMenu(akses.getringkasan_jasa_tindakan_medis(), btnRingkasanJasaTindakanPasien);
-
-        addMenu(akses.getpembayaran_ralan(), btnRalanMasuk);
-
-        addMenu(akses.getpembayaran_ranap(), btnRanapMasuk);
-
-        addMenu(akses.getpiutang_ralan(), btnPiutangRalan);
-
-        addMenu(akses.getpiutang_ranap(), btnPiutangRanap);
-
-        addMenu(akses.getrekap_pembayaran_ralan(), btnTagihanRalanPerhari);
-
-        addMenu(akses.getrekap_pembayaran_ranap(), btnTagihanRanapPerhari);
-
-        addMenu(akses.getpembayaran_per_unit(), btnPembayaranPerUnit);
-
-        addMenu(akses.getrekap_pembayaran_per_unit(), btnRekapPembayaranPerUnit);
-
-        addMenu(akses.gettagihan_masuk(), btnTagihanMasuk);
-
-        addMenu(akses.gettambahan_biaya(), btnTambahanBiaya);
-
-        addMenu(akses.getpotongan_biaya(), btnPotonganBiaya);
-
-        addMenu(akses.getrekap_poli_anak(), btnRekapPoliAnak);
-
-        addMenu(akses.getdeposit_pasien(), btnDeposit);
-
-        addMenu(akses.getrekap_per_shift(), btnRekapPershift);
-
-        addMenu(akses.getpayment_point(), btnPaymentPoint);
-
-        addMenu(akses.getpayment_point2(), btnPaymentPoint2);
-
-        addMenu(akses.getpembayaran_akun_bayar(), btnPembayaranAkunBayar);
-
-        addMenu(akses.getpembayaran_akun_bayar2(), btnPembayaranAkunBayar2);
-
-        addMenu(akses.getpembayaran_akun_bayar3(), btnPembayaranAkunBayar3);
-
-        addMenu(akses.getpembayaran_akun_bayar4(), btnPembayaranAkunBayar4);
-
-        addMenu(akses.getpembayaran_akun_bayar5(), btnPembayaranAkunBayar5);
-
-        addMenu(akses.getpiutang_akun_piutang(), btnPiutangPerAkunPiutang);
-
-        addMenu(akses.getpendapatan_per_akun(), btnPendapatanPerAkun);
-
-        addMenu(akses.getpendapatan_per_akun_closing(), btnPendapatanPerAkunClosing);
-
-        addMenu(akses.geticd9(), btnICD9);
-
-        addMenu(akses.getpenyakit(), btnICD);
-
-        addMenu(akses.getpenyakit_pd3i(), btnPenyakitPD3I);
-
-        addMenu(akses.getsurveilans_pd3i(), btnSurveilansPD3I);
-
-        addMenu(akses.getsurveilans_ralan(), btnSurveilansRalan);
-
-        addMenu(akses.getsurveilans_ranap(), btnSurveilansRanap);
-
-        addMenu(akses.getpny_takmenular_ralan(), btnPnyTakMenularRalan);
-
-        addMenu(akses.getpny_takmenular_ranap(), btnPnyTakMenularRanap);
-
-        addMenu(akses.getpenyakit_menular_ralan(), btnPnyMenularRalan);
-
-        addMenu(akses.getpenyakit_menular_ranap(), btnPnyMenularRanap);
-
-        addMenu(akses.getobat_penyakit(), btnObatPenyakit);
-
-        addMenu(akses.getpenyakit_ralan(), btnFrekuensiRalan);
-
-        addMenu(akses.getpenyakit_ranap(), btnFrekuensiRanap);
-
-        addMenu(akses.getkunjungan_ralan(), btnKunjunganRalan);
-
-        addMenu(akses.getkunjungan_ranap(), btnKunjunganRanap);
-
-        addMenu(akses.getkedatangan_pasien(), btnKedatanganPasienPerJam);
-
-        addMenu(akses.getrekap_kunjungan(), btnRekapKunjungan);
-
-        addMenu(akses.getkunjungan_permintaan_lab(), btnKunjunganLabRalan);
-
-        addMenu(akses.getkunjungan_permintaan_lab2(), btnKunjunganLabRanap);
-
-        addMenu(akses.getkunjungan_permintaan_radiologi(), btnKunjunganRadRalan);
-
-        addMenu(akses.getkunjungan_permintaan_radiologi2(), btnKunjunganRadRanap);
-
-        addMenu(akses.getsensus_harian_poli(), btnSensusHarianPoli);
-
-        addMenu(akses.getsensus_harian_ralan(), btnSensusHarianRalan);
-
-        addMenu(akses.getrl1_3_ketersediaan_kamar(), btnRl13KetersediaanKamar);
-
-        addMenu(akses.getrl32(), btnRl32);
-
-        addMenu(akses.getrl33(), btnRl33);
-
-        addMenu(akses.getrl34(), btnRl34);
-
-        addMenu(akses.getrl36(), btnRl36);
-
-        addMenu(akses.getrl37(), btnRl37);
-
-        addMenu(akses.getrl38(), btnRl38);
-
-        addMenu(akses.getrl4a(), btnRl4a);
-
-        addMenu(akses.getrl4b(), btnRl4b);
-
-        addMenu(akses.getrl4asebab(), btnRl4asebab);
-
-        addMenu(akses.getrl4bsebab(), btnRl4bsebab);
-
-        addMenu(akses.getlama_pelayanan_ralan(), btnLamaPelayananRalan);
-
-        addMenu(akses.getlama_pelayanan_apotek(), btnLamaPelayananApotek);
-
-        addMenu(akses.getlama_pelayanan_radiologi(), btnLamaPelayananRadiologi);
-
-        addMenu(akses.getlama_pelayanan_lab(), btnLamaPelayananLab, btnLamaPelayananLabPA, btnLamaPelayananLabMB);
-
-        addMenu(akses.getlama_pelayanan_poli(), btnLamaPelayananPoli);
-
-        addMenu(akses.getlama_penyiapan_rm(), btnLamaPenyiapanRM);
-
-        addMenu(akses.getlama_pelayanan_pasien(), btnLamaPelayananPasien);
-
-        addMenu(akses.getlama_operasi(), btnLamaOperasi);
-
-        addMenu(akses.getlama_pelayanan_cssd(), btnLamaPelayananCSSD);
-
-        addMenu(akses.getdosis_radiologi(), btnDosisRadiologi);
-
-        addMenu(akses.getharian_HAIs(), btnHarianHAIs);
-
-        addMenu(akses.getharian_HAIs2(), btnHarianHAIs2);
-
-        addMenu(akses.getbulanan_HAIs(), btnBulananHAIs);
-
-        addMenu(akses.gethais_perbangsal(), btnHAIsBangsal);
-
-        addMenu(akses.gethitung_bor(), btnHitungBor);
-
-        addMenu(akses.gethitung_alos(), btnHitungAlos);
-
-        addMenu(akses.getpembatalan_periksa_dokter(), btnPembatalanPeriksaDokter);
-
-        addMenu(akses.getcek_entry_ralan(), btnCekEntryRalan);
-
-        addMenu(akses.getranap_per_ruang(), btnRanapPerRuang);
-
-        addMenu(akses.getpoli_asal_pasien_ranap(), btnPoliAsalPasienRanap);
-
-        addMenu(akses.getdokter_asal_pasien_ranap(), btnDokterAsalPasienRanap);
-
-        addMenu(akses.getpenyakit_ranap_cara_bayar(), btnPenyakitRanapCaraBayar);
-
-        addMenu(akses.getrekap_lab_pertahun(), btnRekapLabPerTahun);
-
-        addMenu(akses.getperujuk_lab_pertahun(), btnPerujukLabPerTahun);
-
-        addMenu(akses.getrekap_radiologi_pertahun(), btnRekapRadiologiPerTahun);
-
-        addMenu(akses.getperujuk_radiologi_pertahun(), btnPerujukRadiologiPerTahun);
-
-        addMenu(akses.getjumlah_porsi_diet(), btnJumlahPorsiDiet);
-
-        addMenu(akses.getjumlah_macam_diet(), btnJumlahMacamDiet);
-
-        addMenu(akses.getrekap_permintaan_diet(), btnRekapPermintaanDiet);
-
-        addMenu(akses.getsisa_diet_pasien(), btnSisaDietPasien);
-
-        addMenu(akses.getkemenkes_sitt(), btnDataSITT);
-
-        addMenu(akses.getrekap_mutasi_berkas(), btnRekapMutasiBerkas);
-
-        addMenu(akses.getskrining_ralan_pernapasan_pertahun(), btnSkriningRalanPernapasanPerTahun);
-
-        addMenu(akses.getkunjungan_bangsal_pertahun(), btnKunjunganBangsalTahun);
-
-        addMenu(akses.getkip_pasien_ranap(), btnKIPPasienRanap);
-
-        addMenu(akses.getkip_pasien_ralan(), btnKIPPasienRalan);
-
-        addMenu(akses.getdaftar_pasien_ranap(), btnDaftarPasienRanap);
-
-        if (tampilkantni.equals("Yes")) {
-            addMenu(akses.getanggota_militer_dirawat(), btnAnggotaMiliterDirawat);
-
-            addMenu(akses.getdaftar_pasien_ranaptni(), btnDaftarPasienRanapTNI);
-
-            addMenu(akses.getanggota_polri_dirawat(), btnAnggotaPolriDirawat);
-
-            addMenu(akses.getdaftar_pasien_ranap_polri(), btnDaftarPasienRanapPolri);
-
-            addMenu(akses.getlaporan_penyakit_polri(), btnLaporanPenyakitPolri);
-
-            addMenu(akses.getlaporan_penyakit_tni(), btnLaporanPenyakitTNI);
-
-            addMenu(akses.getjumlah_pengunjung_ralan_polri(), btnJumlahPengunjungRalanPolri);
-
-            addMenu(akses.getjumlah_pengunjung_ralan_tni(), btnJumlahPengunjungRalanTNI);
-        }
-
-        addMenu(akses.getregistrasi_poli_per_tanggal(), btnRegistrasiPoliPerTanggal);
-
-        addMenu(akses.getlaporan_tahunan_irj(), btnLaporanTahunanIRJ);
-
-        addMenu(akses.getlaporan_bulanan_irj(), btnLaporanBulananIRJ);
-
-        addMenu(akses.getlaporan_tahunan_igd(), btnLaporanTahunanIGD);
-
-        addMenu(akses.getbulanan_klasifikasi_pasien_ranap(), btnBulananKlasifikasiPasienRanap);
-
-        addMenu(akses.getharian_klasifikasi_pasien_ranap(), btnHarianKlasifikasiPasienRanap);
-
-        addMenu(akses.getklasifikasi_pasien_perbangsal(), btnKlasifikasiPasienPerRuang);
-
-        addMenu(akses.getdemografi_umur_kunjungan(), btnDemografiUmurKunjungan);
-
-        addMenu(akses.getstatus_data_rm(), btnStatusDataRM);
-
-        addMenu(akses.getkepatuhan_kelengkapan_keselamatan_bedah(), btnKepatuhanKelengkapanKeselamatanBedah);
-
-        addMenu(akses.getoperasi_per_bulan(), btnOperasiPerBulan);
-
-        addMenu(akses.getlaporan_tahunan_penolakan_anjuran_medis(), btnLaporanTahunanPenolakanAnjuranMedis);
-
-        addMenu(akses.getpemeriksaan_fisik_ralan_per_penyakit(), btnPemeriksaanFisikRalanPerPenyakit);
-
-        addMenu(akses.getdata_sasaran_usiaproduktif(), btnDataSasaranUsiaProduktif);
-
-        addMenu(akses.getdata_sasaran_usialansia(), btnDataSasaranUsiaLansia);
-
-        addMenu(akses.getkamar(), btnKamar);
-
-        addMenu(akses.gettarif_ralan(), btnTindakanRalan);
-
-        addMenu(akses.gettarif_ranap(), btnTindakanRanap);
-
-        addMenu(akses.gettarif_lab(), btnTarifLab);
-
-        addMenu(akses.gettarif_radiologi(), btnTarifRadiologi);
-
-        addMenu(akses.gettarif_operasi(), btnPaketOperasi);
-
-        addMenu(akses.gettarif_utd(), btnTarifUtd);
-
-        addMenu(akses.getset_tarif_online(), btnSetTarifOnline);
-
-        addMenu(akses.getcara_bayar(), btnCaraBayar);
-
-        addMenu(akses.getakun_rekening(), btnRekening);
-
-        addMenu(akses.getrekening_tahun(), btnRekeningTahun);
-
-        addMenu(akses.getsaldo_akun_perbulan(), btnSaldoAkunPerBulan);
-
-        addMenu(akses.getakun_bayar(), btnakun_bayar);
-
-        addMenu(akses.getakun_bayar_hutang(), btnAkunBayarHutang);
-
-        addMenu(akses.getakun_piutang(), btnAkunPiutang);
-
-        addMenu(akses.getakun_penagihan_piutang(), btnAkunPenagihanPiutang);
-
-        addMenu(akses.getakun_aset_inventaris(), btnAkunAsetInventaris);
-
-        addMenu(akses.getpengaturan_rekening(), btnPengaturanRekening);
-
-        addMenu(akses.getkategori_piutang_jasa_perusahaan(), btnKategoriPiutangJasaPerusahaan);
-
-        addMenu(akses.getpiutang_jasa_perusahaan(), btnPiutangJasaPerusahaan);
-
-        addMenu(akses.getpiutang_jasa_perusahaan_belum_lunas(), btnPiutangJasaPerusahaanBelumLunas);
-
-        addMenu(akses.getbayar_piutang_jasa_perusahaan(), btnBayarPiutangJasaPerusahaan);
-
-        addMenu(akses.getpengeluaran(), btnPengeluaran);
-
-        addMenu(akses.getkategori_pemasukan_lain(), btnKategoriPemasukanLian);
-
-        addMenu(akses.getpemasukan_lain(), btnPemasukanLain);
-
-        addMenu(akses.getkategori_pengeluaran_harian(), btnKategoriPengeluaranHarian);
-
-        addMenu(akses.getdeposit_pasien(), btnDeposit);
-
-        addMenu(akses.getpiutang_pasien(), btnLihatPiutang);
-
-        addMenu(akses.getrincian_piutang_pasien(), btnRincianPiutangPasien);
-
-        addMenu(akses.getpiutang_pasien2(), btnPiutangBelumLunas);
-
-        addMenu(akses.getpiutang_obat_belum_lunas(), btnPiutangObatBelumLunas);
-
-        addMenu(akses.getdetail_piutang_penjab(), btnPiutangPerCaraBayar);
-
-        addMenu(akses.getnilai_piutang_perjenis_bayar_per_bulan(), btnNilaiPiutangPerJenisBayarPerBulan);
-
-        addMenu(akses.getringkasan_piutang_jenis_bayar(), btnRingkasanPiutangPerJenisBayar);
-
-        addMenu(akses.getpenagihan_piutang_pasien(), btnPenagihanPiutangPasien);
-
-        addMenu(akses.getvalidasi_penagihan_piutang(), btnValidasiPenagihanPiutang);
-
-        addMenu(akses.getrvu_bpjs(), btnRVPPiutangBPJS);
-
-        addMenu(akses.getklaim_rawat_jalan(), btnKlaimRawatJalan);
-
-        addMenu(akses.getbayar_piutang(), btnBayarPiutang);
-
-        addMenu(akses.getomset_penerimaan(), btnOmsetPenerimaan);
-
-        addMenu(akses.getpengembalian_deposit_pasien(), btnPengembalianDepositPasien);
-
-        addMenu(akses.getpendapatan_per_carabayar(), btnPendapatanPerCaraBayar);
-
-        addMenu(akses.getpembayaran_bank_jateng(), btnPembayaranBankJateng);
-
-        addMenu(akses.getpembayaran_briva(), btnPembayaranBRIVA);
-
-        addMenu(akses.getpembayaran_bank_papua(), btnPembayaranBankPapua);
-
-        addMenu(akses.getpembayaran_bank_jabar(), btnPembayaranBankJabar);
-
-        addMenu(akses.getpembayaran_bank_mandiri(), btnPembayaranBankMandiri);
-
-        addMenu(akses.getpembayaran_pihak_ke3_bankmandiri(), btnPembayaranPihakKe3BankMandiri);
-
-        addMenu(akses.getringkasan_hutang_vendor_farmasi(), btnRingkasanHutangVendorFarmasi);
-
-        addMenu(akses.gethutang_obat(), btnHutangObat);
-
-        addMenu(akses.gettagihan_hutang_obat(), btnTagihanHutangObat);
-
-        addMenu(akses.getvalidasi_tagihan_hutang_obat(), btnValidasiTagihanObatBHP);
-
-        addMenu(akses.getbayar_pemesanan_obat(), btnbayar_pemesanan);
-
-        addMenu(akses.getringkasan_hutang_vendor_nonmedis(), btnRingkasanHutangVendorBarangNonMedis);
-
-        addMenu(akses.gethutang_barang_non_medis(), btnHutangNonMedis);
-
-        addMenu(akses.gettitip_faktur_non_medis(), btnTagihanHutangNonMedis);
-
-        addMenu(akses.getvalidasi_tagihan_non_medis(), btnValidasiTagihanNonMedis);
-
-        addMenu(akses.getbayar_pesan_non_medis(), btnBayarPesanNonMedis);
-
-        addMenu(akses.gethutang_aset_inventaris(), btnHutangAsetInventaris);
-
-        addMenu(akses.gettitip_faktur_aset(), btnTagihanHutangAset);
-
-        addMenu(akses.getvalidasi_tagihan_aset(), btnValidasiTagihanAset);
-
-        addMenu(akses.getbayar_pemesanan_iventaris(), btnBayarPemesananInventaris);
-
-        addMenu(akses.getringkasan_hutang_vendor_dapur(), btnRingkasanHutangVendorBarangDapur);
-
-        addMenu(akses.gethutang_dapur(), btnHutangDapur);
-
-        addMenu(akses.gettitip_faktur_dapur(), btnTagihanHutangDapur);
-
-        addMenu(akses.getvalidasi_tagihan_dapur(), btnValidasiTagihanDapur);
-
-        addMenu(akses.getbayar_pesan_dapur(), btnBayarPesanDapur);
-
-        addMenu(akses.getpeminjam_piutang(), btnPeminjamPiutang);
-
-        addMenu((akses.getpiutang_lainlain()) || (akses.getbayar_piutang_lain()), btnPiutangLainLain);
-
-        addMenu(akses.getpiutang_peminjaman_uang_belum_lunas(), btnPiutangPeminjamanUangBelumLunas);
-
-        addMenu(akses.getbayar_piutang_lain(), btnBayarPiutangLainLain);
-
-        addMenu(akses.getpemberi_hutang_lain(), btnPemberiHutangLain);
-
-        addMenu(akses.getbeban_hutang_lain(), btnBebanHutangLain);
-
-        addMenu(akses.getbayar_beban_hutang_lain(), btnBayarBebanHutangLain);
-
-        addMenu(akses.getbayar_jm_dokter(), btnBayarJMDokter);
-
-        addMenu(akses.getpengajuan_biaya(), btnPengajuanBiayaKuangan);
-
-        addMenu(akses.getpersetujuan_pengajuan_biaya(), btnPersetujuanPengajuanBiaya);
-
-        addMenu(akses.getvalidasi_persetujuan_pengajuan_biaya(), btnValidasiPersetujuanPengajuanBiaya);
-
-        addMenu(akses.getrekap_pengajuan_biaya(), btnRekapPengajuanBiaya);
-
-        addMenu(akses.getpengeluaran_pengeluaran(), btnPengeluaranPengeluaran);
-
-        addMenu(akses.getposting_jurnal(), btnPostingJurnal);
-
-        addMenu(akses.getjurnal_harian(), btnJurnalHarian);
-
-        addMenu(akses.getbuku_besar(), btnBubes);
-
-        addMenu(akses.getcashflow(), btnCashFlow);
-
-        addMenu(akses.getkeuangan(), btnLabaRugi);
-
-        addMenu(akses.getbpjs_cek_kartu(), btnCekBPJSKartu);
-
-        addMenu(akses.getbpjs_cek_nik(), btnCekBPJSNik);
-
-        addMenu(akses.getbpjs_cek_skdp(), btnCekBPJSSKDP);
-
-        addMenu(akses.getbpjs_cek_riwayat(), btnCekBPJSRiwayatRujukanPCare);
-
-        addMenu(akses.getbpjs_cek_riwayat_rujukanrs(), btnCekBPJSRiwayatRujukanRS);
-
-        addMenu(akses.getbpjs_cek_tanggal_rujukan(), btnCekBPJSTanggalRujukan);
-
-        addMenu(akses.getbpjs_cek_nomor_rujukan(), btnCekBPJSNomorRujukanPCare);
-
-        addMenu(akses.getbpjs_cek_nomor_rujukan_rs(), btnCekBPJSNomorRujukanRS);
-
-        addMenu(akses.getbpjs_cek_rujukan_kartu_pcare(), btnCekBPJSRujukanKartuPCare);
-
-        addMenu(akses.getbpjs_cek_rujukan_kartu_rs(), btnCekBPJSRujukanKartuRS);
-
-        addMenu(akses.getbpjs_histori_pelayanan(), btnBPJSHistoriPelayanan);
-
-        addMenu(akses.getbpjs_referensi_diagnosa(), btnCekBPJSDiagnosa);
-
-        addMenu(akses.getbpjs_referensi_poli(), btnCekBPJSPoli);
-
-        addMenu(akses.getmapping_poli_bpjs(), btnMapingPoliBPJS);
-
-        addMenu(akses.getbpjs_referensi_faskes(), btnCekBPJSFaskes);
-
-        addMenu(akses.getbpjs_cek_prosedur(), btnCekReferensiProsedurBPJS);
-
-        addMenu(akses.getbpjs_cek_kelas_rawat(), btnCekReferensiKelasRawatBPJS);
-
-        addMenu(akses.getbpjs_cek_dokter(), btnCekReferensiDokterBPJS);
-
-        addMenu(akses.getbpjs_cek_spesialistik(), btnCekReferensiSpesialistikBPJS);
-
-        addMenu(akses.getbpjs_cek_ruangrawat(), btnCekReferensiRuangRawatBPJS);
-
-        addMenu(akses.getbpjs_cek_carakeluar(), btnCekReferensiCaraKeluarBPJS);
-
-        addMenu(akses.getbpjs_cek_pasca_pulang(), btnCekReferensiPascaPulangBPJS);
-
-        addMenu(akses.getbpjs_cek_propinsi(), btnCekReferensiPropinsiBPJS);
-
-        addMenu(akses.getbpjs_cek_kabupaten(), btnCekReferensiKabupatenBPJS);
-
-        addMenu(akses.getbpjs_cek_kecamatan(), btnCekReferensiKecamatanBPJS);
-
-        addMenu(akses.getbpjs_cek_dokterdpjp(), btnCekReferensiDokterDPJPBPJS);
-
-        addMenu(akses.getbpjs_diagnosa_prb(), btnBPJSReferensiDiagnosaPRB);
-
-        addMenu(akses.getbpjs_obat_prb(), btnBPJSReferensiObatPRB);
-
-        addMenu(akses.getbpjs_program_prb(), btnBPJSProgramPRB);
-
-        addMenu(akses.getbpjs_potensi_prb(), btnBPJSPotensiPRB);
-
-        addMenu(akses.getbpjs_mapping_dokterdpjp(), btnMappingDokterDPJPVClaim);
-
-        addMenu(akses.getbpjs_sep(), btnBPJSSEP);
-
-        addMenu(akses.getbpjs_cek_sep(), btnCekSEP);
-
-        addMenu(akses.getbpjs_rujukan_keluar(), btnRujukanKeluarBPJS);
-
-        addMenu(akses.getbpjs_monitoring_klaim(), btnMonitoringKlaim);
-
-        addMenu(akses.getbpjs_surat_kontrol(), btnBPJSSuratKontrol);
-
-        addMenu(akses.getbpjs_surat_pri(), btnBPJSSuratPRI);
-
-        addMenu(akses.getbpjs_suplesi_jasaraharja(), btnBPJSSuplesiJasaRaharja);
-
-        addMenu(akses.getbpjs_data_induk_kecelakaan(), btnBPJSDataIndukKecelakaan);
-
-        addMenu(akses.getbpjs_sep_internal(), btnBPJSDataSEPInternal);
-
-        addMenu(akses.getbpjs_klaim_jasa_raharja(), btnBPJSKlaimJasaRaharja);
-
-        addMenu(akses.getbpjs_daftar_finger_print(), btnBPJSPasienFinger);
-
-        addMenu(akses.getbpjs_rujukan_khusus(), btnBPJSRujukanKhusus);
-
-        addMenu(akses.getbpjs_referensi_poli_hfis(), btnBPJSReferensiPoliHFIS);
-
-        addMenu(akses.getbpjs_referensi_dokter_hfis(), btnBPJSReferensiDokterHFIS);
-
-        addMenu(akses.getbpjs_referensi_jadwal_hfis(), btnBPJSReferensiJadwalHFIS);
-
-        addMenu(akses.getbpjs_task_id(), btnBPJSTaskIDMobileJKN);
-
-        addMenu(akses.getbpjs_antrean_pertanggal(), btnBPJSAntreanPerTanggalMobileJKN);
-
-        addMenu(akses.getbpjs_referensi_dpho_apotek(), btnBPJSReferensiDPHOApotek);
-
-        addMenu(akses.getbpjs_referensi_poli_apotek(), btnBPJSReferensiPoliApotek);
-
-        addMenu(akses.getbpjs_referensi_faskes_apotek(), btnBPJSReferensiFaskesApotek);
-
-        addMenu(akses.getbpjs_referensi_spesialistik_apotek(), btnBPJSReferensiSpesialistikApotek);
-
-        addMenu(akses.getbpjs_referensi_setting_apotek(), btnBPJSReferensiSettingPPKApotek);
-
-        addMenu(akses.getbpjs_referensi_obat_apotek(), btnBPJSReferensiObatApotek);
-
-        addMenu(akses.getbpjs_mapping_obat_apotek(), btnBPJSMapingObatApotek);
-
-        addMenu(akses.getbpjs_kunjungan_sep_apotek(), btnBPJSKunjunganSEPApotek);
-
-        addMenu(akses.getbpjs_monitoring_klaim_apotek(), btnBPJSMonitoringKlaimApotek);
-
-        addMenu(akses.getbpjs_daftar_pelayanan_obat_apotek(), btnBPJSDaftarPelayananObatApotek);
-
-        addMenu(akses.getbpjs_riwayat_pelayanan_obat(), btnBPJSRiwayatPelayananObatApotek);
-
-        addMenu(akses.getbpjs_rekap_peserta_prb_apotek(), btnBPJSRekapPesertaPRBObatApotek);
-
-        addMenu(akses.getbpjs_daftar_resep_apotek(), btnBPJSResepObatApotek);
-
-        addMenu(akses.getbpjs_obat_23hari_apotek(), btnObatApolApotekBPJS);
-
-        addMenu(akses.getdaftar_permintaan_resep_iterasi_bpjs(), btnPermintaanResepIterasiApotekBPJS);
-
-        addMenu(akses.getriwayat_perawatan_icare_bpjs(), btnRiwayatPerawatanICare);
-
-        addMenu(akses.getreklasifikasi_ralan(), btnReklasifikasiRalan);
-
-        addMenu(akses.getreklasifikasi_ranap(), btnReklasifikasiRanap);
-
-        addMenu(akses.getaplicare_referensi_kamar(), btnAplicareReferensiKamar);
-
-        addMenu(akses.getaplicare_ketersediaan_kamar(), btnAplicareKetersediaanKamar);
-
-        addMenu(akses.getinacbg_coder_nik(), btnInaCBGCoderNIK);
-
-        addMenu(akses.getinacbg_klaim_baru_otomatis(), btnInaCBGKlaimBaruOtomatis);
-
-        addMenu(akses.getinacbg_klaim_baru_manual(), btnInaCBGKlaimBaruManual);
-
-        addMenu(akses.getinacbg_klaim_baru_manual2(), btnInaCBGKlaimBaruManual2);
-
-        addMenu(akses.getinhealth_referensi_jenpel_ruang_rawat(), btnReferensiKamarInhealth);
-
-        addMenu(akses.getinhealth_referensi_poli(), btnCekInhealthPoli);
-
-        addMenu(akses.getinhealth_mapping_poli(), btnMappingPoliInhealth);
-
-        addMenu(akses.getinhealth_mapping_dokter(), btnMappingDokterInhealth);
-
-        addMenu(akses.getinhealth_mapping_tindakan_ralan(), btnMappingTindakanRalanInhealth);
-
-        addMenu(akses.getinhealth_mapping_tindakan_ranap(), btnMappingTindakanRanapInhealth);
-
-        addMenu(akses.getinhealth_mapping_tindakan_radiologi(), btnMappingTindakanRadiologiInhealth);
-
-        addMenu(akses.getinhealth_mapping_tindakan_laborat(), btnMappingTindakanLaboratInhealth);
-
-        addMenu(akses.getinhealth_mapping_tindakan_operasi(), btnMappingTindakanOperasiInhealth);
-
-        addMenu(akses.getinhealth_referensi_faskes(), btnCekInhealthFaskes);
-
-        addMenu(akses.getinhealth_cek_eligibilitas(), btnCekEligibilitasInhealth);
-
-        addMenu(akses.getinhealth_sjp(), btnInhealthSJP);
-
-        addMenu(akses.getinhealth_kirim_tagihan(), btnKirimTagihanInheath);
-
-        addMenu(akses.getpcare_cek_penyakit(), btnCekPCareDiagnosa);
-
-        addMenu(akses.getpcare_cek_kesadaran(), btnCekPCareKesadaran);
-
-        addMenu(akses.getpcare_cek_dokter(), btnPCareReferensiDokter);
-
-        addMenu(akses.getpcare_cek_poli(), btnPCareReferensiPoli);
-
-        addMenu(akses.getpcare_cek_provider(), btnPCareReferensiProvider);
-
-        addMenu(akses.getpcare_cek_statuspulang(), btnPCareReferensiStatusPulang);
-
-        addMenu(akses.getpcare_cek_spesialis(), btnPCareReferensiSpesialis);
-
-        addMenu(akses.getpcare_cek_subspesialis(), btnPCareReferensiSubspesialis);
-
-        addMenu(akses.getpcare_cek_sarana(), btnPCareReferensiSarana);
-
-        addMenu(akses.getpcare_cek_alergi(), btnPCareReferensiAlergi);
-
-        addMenu(akses.getpcare_cek_prognosa(), btnPCareReferensiPrognosa);
-
-        addMenu(akses.getpcare_cek_khusus(), btnPCareReferensiKhusus);
-
-        addMenu(akses.getpcare_cek_obat(), btnPCareReferensiObat);
-
-        addMenu(akses.getpcare_cek_tindakan(), btnPCareReferensiTindakan);
-
-        addMenu(akses.getpcare_alasan_tacc(), btnCekPCareTACC);
-
-        addMenu(akses.getpcare_cek_faskessubspesialis(), btnPCareFaskesSubspesialis);
-
-        addMenu(akses.getpcare_cek_faskesalihrawat(), btnPCareFaskesAlihRawat);
-
-        addMenu(akses.getpcare_cek_faskesthalasemia(), btnPCareFaskesThalasemia);
-
-        addMenu(akses.getpcare_mapping_obat(), btnPCareMapingObat);
-
-        addMenu(akses.getpcare_mapping_tindakan(), btnPCareMapingTindakan);
-
-        addMenu(akses.getpcare_mapping_tindakan_ranap(), btnPCareMapingTindakanRanap);
-
-        addMenu(akses.getpcare_mapping_dokter(), btnPCareMapingDokter);
-
-        addMenu(akses.getpcare_mapping_poli(), btnPCareMapingPoli);
-
-        addMenu(akses.getpcare_club_prolanis(), btnPCareClubProlanis);
-
-        addMenu((akses.getpcare_kegiatan_kelompok()) || (akses.getpcare_peserta_kegiatan_kelompok()), btnPCareKegiatanKelompok);
-
-        addMenu(akses.getpcare_peserta_kegiatan_kelompok(), btnPCarePesertaKegiatanKelompok);
-
-        addMenu(akses.getpcare_cek_kartu(), btnPCareCekKartu);
-
-        addMenu(akses.getbridging_pcare_daftar(), btnPCarePendaftaran);
-
-        addMenu(akses.getpcare_cek_rujukan(), btnCekPCareRujukan);
-
-        addMenu(akses.getpcare_pemberian_obat(), btnPCareBeriObat);
-
-        addMenu(akses.getpcare_pemberian_tindakan(), btnPCareBeriTindakan);
-
-        addMenu(akses.getsisrute_referensi_faskes(), btnCekSisruteFaskes);
-
-        addMenu(akses.getsisrute_referensi_alasanrujuk(), btnCekSisruteAlasanRujuk);
-
-        addMenu(akses.getsisrute_referensi_diagnosa(), btnCekSisruteDiagnosa);
-
-        addMenu(akses.getsisrute_rujukan_masuk(), btnRujukanMasukSisrute);
-
-        addMenu(akses.getsisrute_rujukan_keluar(), btnRujukanKeluarSisrute);
-
-        addMenu(akses.getsiranap_ketersediaan_kamar(), btnSiranapKetersediaanKamar);
-
-        addMenu(akses.getpasien_corona(), btnPasienCorona);
-
-        addMenu(akses.getdiagnosa_pasien_corona(), btnDiagnosaPasienCorona);
-
-        addMenu(akses.getperawatan_pasien_corona(), btnPerawatanPasienCorona);
-
-        addMenu(akses.getreferensi_mobilejkn_bpjs(), btnReferensiPendaftaranMobileJKN);
-
-        addMenu(akses.getbatal_pendaftaran_mobilejkn_bpjs(), btnBatalPendaftaranMobileJKN);
-
-        addMenu(akses.getakun_host_to_host_bank_jateng(), btnAkunRekeningHtHBankJateng);
-
-        addMenu(akses.getakun_host_to_host_bank_jabar(), btnAkunRekeningHtHBankJabar);
-
-        addMenu(akses.getintegrasi_briapi(), btnIntegrasiBRIApi);
-
-        addMenu(akses.getakun_host_to_host_bank_papua(), btnAkunRekeningHtHBankPapua);
-
-        addMenu(akses.getakun_host_to_host_bank_mandiri(), btnHostToHostBankMandiri);
-
-        addMenu(akses.getmetode_pembayaran_bankmandiri(), btnMandiriMetodePembayaran);
-
-        addMenu(akses.getbank_tujuan_transfer_bankmandiri(), btnMandiriBankTujuanTRansfer);
-
-        addMenu(akses.getkodetransaksi_tujuan_transfer_bankmandiri(), btnMandiriKodeTransaksiTujuanTRansfer);
-
-        addMenu(akses.getsatu_sehat_referensi_dokter(), btnReferensiDokterSatuSehat);
-
-        addMenu(akses.getsatu_sehat_referensi_pasien(), btnReferensiPasienSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_departemen(), btnMappingOrganisasiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_lokasi(), btnMappingLokasiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_vaksin(), btnMappingVaksinSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_encounter(), btnKirimEncounterSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_questionnairerequest(), btnKirimQuestionnaireResponseSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_episodeofcare(), btnKirimEpisodeOfCareSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_servicerequest_radiologi(), btnKirimImagingStudySatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_condition(), btnKirimConditionSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_observationttv(), btnKirimObservationTTVSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_procedure(), btnKirimProcedureSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_Immunization(), btnKirimVaksinSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_clinicalimpression(), btnKirimClinicalImpressionSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_diet(), btnKirimDietSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_obat(), btnMappingObatSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_medication(), btnKirimMedicationSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_medicationrequest(), btnKirimMedicationRequestSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_medicationdispense(), btnKirimMedicationDispenseSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_medicationstatement(), btnKirimMedicationStatementSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_questionresponse_telaah_farmasi(), btnKirimQRTelaahFarmasiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_allergy_intolerance(), btnKirimAllergiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_radiologi(), btnMappingRadiologiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_mapping_lab(), btnMappingLaboratSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_servicerequest_radiologi(), btnKirimServiceRequestRadiologiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_specimen_radiologi(), btnKirimSpecimenRadiologiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_observation_radiologi(), btnKirimObservationRadiologiSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_diagnosticreport_radiologi(), btnKirimDiagnosticReportSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_servicerequest_lab(), btnKirimServiceRequestLabPKSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_specimen_lab(), btnKirimSpecimenLabPKSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_observation_lab(), btnKirimObservationLabPKSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_diagnosticreport_lab(), btnKirimDiagnosticReportLabPKSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_servicerequest_labmb(), btnKirimServiceRequestLabMBSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_specimen_labmb(), btnKirimSpecimenLabMBSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_observation_labmb(), btnKirimObservationLabMBSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_diagnosticreport_labmb(), btnKirimDiagnosticReportLabMBSatuSehat);
-
-        addMenu(akses.getsatu_sehat_kirim_careplan(), btnKirimCarePlanSatuSehat);
-
-        addMenu(akses.getreferensi_poli_mobilejknfktp(), btnReferensiPoliMobileJKNFKTP);
-
-        addMenu(akses.getreferensi_dokter_mobilejknfktp(), btnReferensiDokterMobileJKNFKTP);
-
-        addMenu(akses.getduta_parkir_rekap_keluar(), btnRekapKeluarDutaParking);
-
-        addMenu(akses.getperusahaan_pasien(), btnPerusahaan);
-
-        addMenu(akses.getsuku_bangsa(), btnSuku);
-
-        addMenu(akses.getbahasa_pasien(), btnBahasa);
-
-        if (tampilkantni.equals("Yes")) {
-            addMenu(akses.getgolongan_tni(), btnGolonganTNI);
-
-            addMenu(akses.getsatuan_tni(), btnSatuanTNI);
-
-            addMenu(akses.getjabatan_tni(), btnJabatanTNI);
-
-            addMenu(akses.getpangkat_tni(), btnPangkatTNI);
-
-            addMenu(akses.getgolongan_polri(), btnGolonganPolri);
-
-            addMenu(akses.getsatuan_polri(), btnSatuanPolri);
-
-            addMenu(akses.getjabatan_polri(), btnJabatanPolri);
-
-            addMenu(akses.getpangkat_polri(), btnPangkatPolri);
-        }
-
-        addMenu(akses.getcacat_fisik(), btnCacatFisik);
-
-        addMenu(akses.getpasien(), btnPasien);
-
-        addMenu(akses.getkelahiran_bayi(), btnLahir);
-
-        addMenu(akses.getcatatan_pasien(), btnCatatanPasien);
-
-        addMenu(akses.getpasien_meninggal(), btnPasienMati);
-
-        addMenu(akses.getdiagnosa_pasien(), btnDiagnosa);
-
-        addMenu(akses.getinsiden_keselamatan(), btnInsidenKeselamatan);
-
-        addMenu(akses.getdata_HAIs(), btnDataHAIs);
-
-        addMenu(akses.getklasifikasi_pasien_ranap(), btnKlasifikasiPasienRanap);
-
-        addMenu(akses.getsoap_perawatan(), btnSOAPPerawatan);
-
-        if (tampilkantni.equals("Yes")) {
-            addMenu(akses.getsoap_ralan_polri(), btnSOAPRalanAnggotaPolri);
-
-            addMenu(akses.getsoap_ranap_polri(), btnSOAPRanapAnggotaPolri);
-
-            addMenu(akses.getsoap_ralan_tni(), btnSOAPRalanAnggotaTNI);
-
-            addMenu(akses.getsoap_ranap_tni(), btnSOAPRanapAnggotaTNI);
-        }
-
-        addMenu(akses.getriwayat_kamar_pasien(), btnRiwayatKamarPasien);
-
-        addMenu(akses.getinsiden_keselamatan_pasien(), btnInsidenKeselamatanPasien);
-
-        addMenu(akses.getpeminjaman_berkas(), btnSirkulasiBerkas);
-
-        addMenu(akses.getresume_pasien(), btnResume);
-
-        addMenu(akses.getretensi_rm(), btnRetensiRM);
-
-        addMenu(akses.getmutasi_berkas(), btnMutasiBerkas);
-
-        addMenu(akses.getberkas_digital_perawatan(), btnBerkasDigitalPerawatan);
-
-        addMenu(akses.getpengaduan_pasien(), btnPengaduan);
-
-        addMenu(akses.getmaster_triase_pemeriksaan(), btnMasterTriasePemeriksaan);
-
-        addMenu(akses.getmaster_triase_macamkasus(), btnMasterTriaseMacamKasus);
-
-        addMenu(akses.getmaster_triase_skala1(), btnMasterTriaseSkala1);
-
-        addMenu(akses.getmaster_triase_skala2(), btnMasterTriaseSkala2);
-
-        addMenu(akses.getmaster_triase_skala3(), btnMasterTriaseSkala3);
-
-        addMenu(akses.getmaster_triase_skala4(), btnMasterTriaseSkala4);
-
-        addMenu(akses.getmaster_triase_skala5(), btnMasterTriaseSkala5);
-
-        addMenu(akses.getdata_triase_igd(), btnDataTriaseIGD);
-
-        addMenu(akses.getdata_resume_pasien(), btnResumePasien, btnResumePasienRanap);
-
-        addMenu(akses.getskrining_gizi(), btnSkriningGiziLanjut);
-
-        addMenu(akses.getasuhan_gizi(), btnAsuhanGizi);
-
-        addMenu(akses.getmonitoring_asuhan_gizi(), btnMonitoringAsuhanGizi);
-
-        addMenu(akses.getcatatan_adime_gizi(), btnCatatanADIMEGizi);
-
-        addMenu(akses.getskrining_nutrisi_dewasa(), btnSkriningNutrisiDewasa);
-
-        addMenu(akses.getskrining_nutrisi_lansia(), btnSkriningNutrisiLansia);
-
-        addMenu(akses.getskrining_nutrisi_anak(), btnSkriningNutrisiAnak);
-
-        addMenu(akses.getskrining_gizi_kehamilan(), btnSkriningGiziKehamilan);
-
-        addMenu(akses.gettemplate_hasil_radiologi(), btnMasterTemplateHasilRadiologi);
-
-        addMenu(akses.gettemplate_laporan_operasi(), btnMasterTemplateLaporanOperasi);
-
-        addMenu(akses.gettemplate_pemeriksaan(), btnMasterTemplatePemeriksaanDokter);
-
-        addMenu(akses.gettemplate_pelaksanaan_informasi_edukasi(), btnMasterTemplateInformasiEdukasi);
-
-        addMenu(akses.getmaster_masalah_keperawatan(), btnMasterMasalahKeperawatan);
-
-        addMenu(akses.getmaster_rencana_keperawatan(), btnMasterRencanaKeperawatan);
-
-        addMenu(akses.getmaster_masalah_keperawatan_gigi(), btnMasterMasalahKeperawatanGigi);
-
-        addMenu(akses.getmaster_rencana_keperawatan_gigi(), btnMasterRencanaKeperawatanGigi);
-
-        addMenu(akses.getmaster_masalah_keperawatan_anak(), btnMasterMasalahKeperawatanAnak);
-
-        addMenu(akses.getmaster_rencana_keperawatan_anak(), btnMasterRencanaKeperawatanAnak);
-
-        addMenu(akses.getmaster_masalah_keperawatan_mata(), btnMasterMasalahKeperawatanMata);
-
-        addMenu(akses.getmaster_rencana_keperawatan_mata(), btnMasterRencanaKeperawatanMata);
-
-        addMenu(akses.getmaster_masalah_keperawatan_igd(), btnMasterMasalahKeperawatanIGD);
-
-        addMenu(akses.getmaster_rencana_keperawatan_igd(), btnMasterRencanaKeperawatanIGD);
-
-        addMenu(akses.getmaster_masalah_keperawatan_psikiatri(), btnMasterMasalahKeperawatanPsikiatri);
-
-        addMenu(akses.getmaster_rencana_keperawatan_psikiatri(), btnMasterRencanaKeperawatanPsikiatri);
-
-        addMenu(akses.getmaster_masalah_keperawatan_geriatri(), btnMasterMasalahKeperawatanGeriatri);
-
-        addMenu(akses.getmaster_rencana_keperawatan_geriatri(), btnMasterRencanaKeperawatanGeriatri);
-
-        addMenu(akses.getmaster_masalah_keperawatan_neonatus(), btnMasterMasalahKeperawatanNeonatus);
-
-        addMenu(akses.getmaster_rencana_keperawatan_neonatus(), btnMasterRencanaKeperawatanNeonatus);
-
-        addMenu(akses.getmaster_imunisasi(), btnMasterImunisasi);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ralan(), btnPenilaianAwalKeperawatanRalan);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ranap(), btnPenilaianAwalKeperawatanRanap);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_igd(), btnPenilaianAwalKeperawatanIGD);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_gigi(), btnPenilaianAwalKeperawatanGigi);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_kebidanan(), btnPenilaianAwalKeperawatanKebidanan);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ranapkebidanan(), btnPenilaianAwalKeperawatanKebidananRanap);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_anak(), btnPenilaianAwalRalanBayi);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ranap_bayi(), btnPenilaianAwalKeperawatanRanapBayiAnak);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_psikiatri(), btnPenilaianAwalKeperawatanRalanPsikiatri);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ralan_geriatri(), btnPenilaianAwalKeperawatanRalanGeriatri);
-
-        addMenu(akses.getpenilaian_awal_keperawatan_ranap_neonatus(), btnPenilaianAwalKeperawatanRanapNeonatus);
-
-        addMenu(akses.getpenilaian_awal_medis_igd(), btnPenilaianAwalMedisIGD);
-
-        addMenu(akses.getpenilaian_medis_ralan_gawat_darurat_psikiatri(), btnPenilaianAwalMedisRalanIGDPsikiatri);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan(), btnPenilaianAwalMedisRalan);
-
-        addMenu(akses.getpenilaian_awal_medis_ranap(), btnPenilaianAwalMedisRanap);
-
-        addMenu(akses.getpenilaian_awal_medis_ranap_neonatus(), btnPenilaianAwalMedisRanapNeonatus);
-
-        addMenu(akses.getpenilaian_bayi_baru_lahir(), btnPenilaianBayiBaruLahir);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_anak(), btnPenilaianAwalMedisRalanBayi);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_kebidanan(), btnPenilaianAwalMedisRalanKandungan);
-
-        addMenu(akses.getpenilaian_awal_medis_ranap_kebidanan(), btnPenilaianAwalMedisRanapKandungan);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_jantung(), btnPenilaianAwalMedisRalanJantung);
-
-        addMenu(akses.getpenilaian_awal_medis_ranap_jantung(), btnPenilaianAwalMedisRanapJantung);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_urologi(), btnPenilaianAwalMedisRalanUrologi);
-
-        addMenu(akses.gethasil_pemeriksaan_usg(), btnHasilPemeriksaanUSG);
-
-        addMenu(akses.gethasil_usg_urologi(), btnHasilUSGUrologi);
-
-        addMenu(akses.gethasil_usg_gynecologi(), btnHasilUSGGynecologi);
-
-        addMenu(akses.gethasil_usg_neonatus(), btnHasilUSGNeonatus);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_tht(), btnPenilaianAwalMedisRalanTHT);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_psikiatri(), btnPenilaianAwalMedisRalanPsikiatri);
-
-        addMenu(akses.getpenilaian_medis_ranap_psikiatrik(), btnPenilaianAwalMedisRanapPsikiatri);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_penyakit_dalam(), btnPenilaianAwalMedisRalanPenyakitDalam);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_mata(), btnPenilaianAwalMedisRalanMata);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_neurologi(), btnPenilaianAwalMedisRalanNeurologi);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_orthopedi(), btnPenilaianAwalMedisRalanOrthopedi);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_bedah(), btnPenilaianAwalMedisRalanBedah);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_bedah_mulut(), btnPenilaianAwalMedisRalanBedahMulut);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_geriatri(), btnPenilaianAwalMedisRalanGeriatri);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_kulit_kelamin(), btnPenilaianAwalMedisRalanKulitKelamin);
-
-        addMenu(akses.getpenilaian_awal_medis_ralan_paru(), btnPenilaianAwalMedisRalanParu);
-
-        addMenu(akses.getpenilaian_medis_ralan_rehab_medik(), btnPenilaianAwalMedisRalanRehabMedik);
-
-        addMenu(akses.getpenilaian_medis_ralan_hemodialisa(), btnPenilaianAwalMedisHemodialisa);
-
-        addMenu(akses.gethasil_pemeriksaan_ekg(), btnHasilPemeriksaanEKG);
-
-        addMenu(akses.gethasil_pemeriksaan_treadmill(), btnHasilPemeriksaanTreadmill);
-
-        addMenu(akses.gethasil_pemeriksaan_slit_lamp(), btnHasilPemeriksaanSlitLamp);
-
-        addMenu(akses.gethasil_pemeriksaan_oct(), btnHasilPemeriksaanOCT);
-
-        addMenu(akses.gethasil_pemeriksaan_echo(), btnHasilPemeriksaanECHO);
-
-        addMenu(akses.gethasil_pemeriksaan_echo_pediatrik(), btnHasilPemeriksaanECHOPediatrik);
-
-        addMenu(akses.gethasil_endoskopi_faring_laring(), btnHasilEndoskopiFaringLaring);
-
-        addMenu(akses.gethasil_endoskopi_hidung(), btnHasilEndoskopiHidung);
-
-        addMenu(akses.gethasil_endoskopi_telinga(), btnHasilEndoskopiTelinga);
-
-        addMenu(akses.getpenilaian_tambahan_pasien_geriatri(), btnPenilaianTambahanGeriatri);
-
-        addMenu(akses.getpenilaian_tambahan_bunuh_diri(), btnPenilaianTambahanBunuhDiri);
-
-        addMenu(akses.getpenilaian_tambahan_perilaku_kekerasan(), btnPenilaianTambahanPerilakuKekerasan);
-
-        addMenu(akses.getpenilaian_tambahan_beresiko_melarikan_diri(), btnPenilaianTambahanMelarikanDiri);
-
-        addMenu(akses.getpenilaian_pasien_terminal(), btnPenilaianPasienTerminal);
-
-        addMenu(akses.getpenilaian_korban_kekerasan(), btnPenilaianKorbanKekerasan);
-
-        addMenu(akses.getpenilaian_pasien_penyakit_menular(), btnPenilaianPasienPenyakitMenular);
-
-        addMenu(akses.getpenilaian_pasien_imunitas_rendah(), btnPenilaianPasienImunitasRendah);
-
-        addMenu(akses.getpenilaian_derajat_dehidrasi(), btnPenilaianDerajatDehidrasi);
-
-        addMenu(akses.getpenilaian_pasien_keracunan(), btnPenilaianPasienKeracunan);
-
-        addMenu(akses.getpenilaian_level_kecemasan_ranap_anak(), btnPenilaianLevelKecemasanRanapAnak);
-
-        addMenu(akses.getcatatan_observasi_igd(), btnCatatanObservasiIGD);
-
-        addMenu(akses.getcatatan_observasi_ranap(), btnCatatanObservasiRanap);
-
-        addMenu(akses.getcatatan_observasi_ranap_kebidanan(), btnCatatanObservasiRanapKebidanan);
-
-        addMenu(akses.getcatatan_observasi_ranap_postpartum(), btnCatatanObservasiRanapPostPartum);
-
-        addMenu(akses.getcatatan_observasi_bayi(), btnCatatanObservasiBayi);
-
-        addMenu(akses.getcatatan_observasi_chbp(), btnCatatanObservasiCHBP);
-
-        addMenu(akses.getcatatan_observasi_induksi_persalinan(), btnCatatanObservasiInduksiPersalinan);
-
-        addMenu(akses.getcatatan_observasi_restrain_nonfarma(), btnCatatanObservasiRestrainNonFramakologi);
-
-        addMenu(akses.getcatatan_observasi_ventilator(), btnCatatanObservasiVentilator);
-
-        addMenu(akses.getcatatan_observasi_hemodialisa(), btnCatatanObservasiHemodialisa);
-
-        addMenu(akses.getbalance_cairan(), btnCatatanKeseimbanganCairan);
-
-        addMenu(akses.getcatatan_cairan_hemodialisa(), btnCatatanCairanHemodialisa);
-
-        addMenu(akses.getfollow_up_dbd(), btnDataFollowUpDBD);
-
-        addMenu(akses.getcatatan_keperawatan_ralan(), btnCatatanKeperawatanRalan);
-
-        addMenu(akses.getcatatan_keperawatan_ranap(), btnCatatanKeperawatanRanap);
-
-        addMenu(akses.getcatatan_persalinan(), btnCatatanPersalinan);
-
-        addMenu(akses.getmonitoring_reaksi_tranfusi(), btnMonitoringReaksiTranfusi);
-
-        addMenu(akses.getpemantauan_pews_anak(), btnPemantauanPEWSAnak);
-
-        addMenu(akses.getpemantauan_pews_dewasa(), btnPemantauanPEWSDewasa);
-
-        addMenu(akses.getpemantauan_meows_obstetri(), btnPemantauanMEOWS);
-
-        addMenu(akses.getpemantauan_ews_neonatus(), btnPemantauanEWSNeonatus);
-
-        addMenu(akses.gethemodialisa(), btnHemodialisa);
-
-        addMenu(akses.getpenilaian_fisioterapi(), btnFisioterapi);
-
-        addMenu(akses.getpenilaian_terapi_wicara(), btnPenilaianTerapiWicara);
-
-        addMenu(akses.getpenatalaksanaan_terapi_okupasi(), btnPenatalaksanaanTerapiOkupasi);
-
-        addMenu(akses.getpenilaian_psikologi(), btnPenilaianPsikologi);
-
-        addMenu(akses.getpenilaian_psikologi_klinis(), btnPenilaianPsikologiKlinis);
-
-        addMenu(akses.getpenilaian_pre_induksi(), btnPenilaianPreInduksi);
-
-        addMenu(akses.getchecklist_pre_operasi(), btnChecklistPreOperasi);
-
-        addMenu(akses.getsignin_sebelum_anestesi(), btnSignInSebelumAnestesi);
-
-        addMenu(akses.gettimeout_sebelum_insisi(), btnTimeOutSebelumInsisi);
-
-        addMenu(akses.getsignout_sebelum_menutup_luka(), btnSignOutSebelumMenutupLuka);
-
-        addMenu(akses.getchecklist_post_operasi(), btnChecklistPostOperasi);
-
-        addMenu(akses.getpenilaian_pre_operasi(), btnPenilaianPreOperasi);
-
-        addMenu(akses.getpenilaian_pre_anestesi(), btnPenilaianPreAnastesi);
-
-        addMenu(akses.getchecklist_kesiapan_anestesi(), btnChecklistKesiapanAnestesi);
-
-        addMenu(akses.getcatatan_anestesi_sedasi(), btnCatatanAnastesiSedasi);
-
-        addMenu(akses.getskor_aldrette_pasca_anestesi(), btnSkorAldrettePascaAnestesi);
-
-        addMenu(akses.getskor_steward_pasca_anestesi(), btnSkorStewardPascaAnestesi);
-
-        addMenu(akses.getskor_bromage_pasca_anestesi(), btnSkorBromagePascaAnestesi);
-
-        addMenu(akses.getcatatan_pengkajian_paska_operasi(), btnCatatanPengkajianPaskaOperasi);
-
-        addMenu(akses.getchecklist_kriteria_masuk_hcu(), btnChecklistKriteriaMasukHCU);
-
-        addMenu(akses.getchecklist_kriteria_keluar_hcu(), btnChecklistKriteriaKeluarHCU);
-
-        addMenu(akses.getkriteria_masuk_nicu(), btnChecklistKriteriaMasukNICU);
-
-        addMenu(akses.getkriteria_keluar_nicu(), btnChecklistKriteriaKeluarNICU);
-
-        addMenu(akses.getkriteria_masuk_picu(), btnChecklistKriteriaMasukPICU);
-
-        addMenu(akses.getkriteria_keluar_picu(), btnChecklistKriteriaKeluarPICU);
-
-        addMenu(akses.getchecklist_kriteria_masuk_icu(), btnChecklistKriteriaMasukICU);
-
-        addMenu(akses.getchecklist_kriteria_keluar_icu(), btnChecklistKriteriaKeluarICU);
-
-        addMenu(akses.getperencanaan_pemulangan(), btnPerencanaanPemulangan);
-
-        addMenu(akses.getpenilaian_lanjutan_resiko_jatuh_dewasa(), btnPenilaianRisikoJatuhDewasa);
-
-        addMenu(akses.getpenilaian_lanjutan_resiko_jatuh_anak(), btnPenilaianRisikoJatuhAnak);
-
-        addMenu(akses.getpenilaian_lanjutan_resiko_jatuh_lansia(), btnPenilaianRisikoJatuhLansia);
-
-        addMenu(akses.getpenilaian_lanjutan_resiko_jatuh_geriatri(), btnPenilaianRisikoJatuhGeriatri);
-
-        addMenu(akses.getpenilaian_risiko_jatuh_neonatus(), btnPenilaianRisikoJatuhNeonatus);
-
-        addMenu(akses.getpenilaian_lanjutan_resiko_jatuh_psikiatri(), btnPenilaianRisikoJatuhPsikiatri);
-
-        addMenu(akses.getpenilaian_lanjutan_skrining_fungsional(), btnPenilaianLanjutanSkriningFungsional);
-
-        addMenu(akses.getpenilaian_ulang_nyeri(), btnPenilaianUlangNyeri);
-
-        addMenu(akses.getpenilaian_risiko_dekubitus(), btnPenilaianRisikoDekubitus);
-
-        addMenu(akses.getlayanan_kedokteran_fisik_rehabilitasi(), btnLayananKedokteranFisikRehabilitasi);
-
-        addMenu(akses.getlayanan_program_kfr(), btnLayananProgramKFR);
-
-        addMenu(akses.getuji_fungsi_kfr(), btnUjiFungsiKFR);
-
-        addMenu(akses.gethasil_tindakan_eswl(), btnDokumentasiTindakanESWL);
-
-        addMenu(akses.getmaster_kesimpulan_anjuran_mcu(), btnMasterKesimpulanAnjuranMCU);
-
-        addMenu(akses.getpenilaian_mcu(), btnPenilaianMCU);
-
-        addMenu(akses.getkonseling_farmasi(), btnKonselingFarmasi);
-
-        addMenu(akses.getpelayanan_informasi_obat(), btnPelayananInformasiObat);
-
-        addMenu(akses.getkonsultasi_medik(), btnKonsultasiMedik);
-
-        addMenu(akses.getkonsultasi_perawat(), btnKonsultasiPerawat);
-
-        addMenu(akses.gettransfer_pasien_antar_ruang(), btnTransferPasienAntarRuang);
-
-        addMenu(akses.getpengkajian_restrain(), btnPengkajianRestrain);
-
-        addMenu(akses.getcatatan_cek_gds(), btnCatatanCekGDS);
-
-        addMenu(akses.getrekonsiliasi_obat(), btnRekonsiliasiObat);
-
-        addMenu(akses.getchecklist_pemberian_fibrinolitik(), btnChecklistPemberianFibrinolitik);
-
-        addMenu(akses.getmpp_skrining(), btnSkriningManagerPelayananPasien, btnSkriningMPPFormA, btnSkriningMPPFormB);
-
-        addMenu(akses.getedukasi_pasien_keluarga_rj(), btnEdukasiPasienKeluargaRJ);
-
-        addMenu(akses.getpelaksanaan_informasi_edukasi(), btnPelaksanaanInformasiEdukasi);
-
-        addMenu(akses.getskrining_perilaku_merokok_sekolah_remaja(), btnSkriningMerokokUsiaSekolah);
-
-        addMenu(akses.getskrining_kekerasan_pada_perempuan(), btnSkriningKekerasanPadaPerempuan);
-
-        addMenu(akses.getskrining_obesitas(), btnSkriningObesitas);
-
-        addMenu(akses.getskrining_risiko_kanker_payudara(), btnSkriningRisikoKankerPayudara);
-
-        addMenu(akses.getskrining_risiko_kanker_paru(), btnSkriningRisikoKankerParu);
-
-        addMenu(akses.getskrining_risiko_kanker_serviks(), btnSkriningRisikoKankerServiks);
-
-        addMenu(akses.getskrining_kesehatan_gigi_mulut_remaja(), btnSkriningKesehatanGigiMulutRemaja);
-
-        addMenu(akses.getskrining_kesehatan_gigi_mulut_balita(), btnSkriningKesehatanGigiMulutBalita);
-
-        addMenu(akses.getskrining_kesehatan_gigi_mulut_lansia(), btnSkriningKesehatanGigiMulutLansia);
-
-        addMenu(akses.getskrining_kesehatan_gigi_mulut_dewasa(), btnSkriningKesehatanGigiMulutDewasa);
-
-        addMenu(akses.getskrining_anemia(), btnSkriningAnemia);
-
-        addMenu(akses.getskrining_hipertensi(), btnSkriningHipertensi);
-
-        addMenu(akses.getskrining_kesehatan_penglihatan(), btnSkriningKesehatanPenglihatan);
-
-        addMenu(akses.getskrining_indra_pendengaran(), btnSkriningIndraPendengaran);
-
-        addMenu(akses.getskrining_tbc(), btnSkriningTBC);
-
-        addMenu(akses.getskrining_puma(), btnSkriningPUMA);
-
-        addMenu(akses.getskrining_adiksi_nikotin(), btnSkriningAdiksiNikotin);
-
-        addMenu(akses.getskrining_thalassemia(), btnSkriningThalassemia);
-
-        addMenu(akses.getskrining_instrumen_sdq(), btnSkriningInstrumenSDQ);
-
-        addMenu(akses.getskrining_instrumen_srq(), btnSkriningInstrumenSRQ);
-
-        addMenu(akses.getskrining_instrumen_acrs(), btnSkriningInstrumenACRS);
-
-        addMenu(akses.getskrining_instrumen_mental_emosional(), btnSkriningInstrumenMentalEmosional);
-
-        addMenu(akses.getskrining_instrumen_amt(), btnSkriningInstrumenAMT);
-
-        addMenu(akses.getskrining_instrumen_esat(), btnSkriningInstrumenESAT);
-
-        addMenu(akses.getskrining_pneumonia_severity_index(), btnSkriningPneumoniaSeverityIndex);
-
-        addMenu(akses.getskrining_curb65(), btnSkriningCURB65);
-
-        addMenu(akses.getskrining_kanker_kolorektal(), btnSkriningKankerKolorektal);
-
-        addMenu(akses.getskrining_diabetes_melitus(), btnSkriningDiabetesMelitus);
-
-        addMenu(akses.getskrining_frailty_syndrome(), btnSkriningFrailtySyndrome);
-
-        addMenu(akses.getlaporan_tindakan(), btnLaporanTindakan);
-
-        addMenu(akses.getpengambilan_utd2(), btnPengambilanUTD2);
-
-        addMenu(akses.getutd_medis_rusak(), btnUTDMedisRusak);
-
-        addMenu(akses.getpengambilan_penunjang_utd2(), btnPengambilanPenunjangUTD2);
-
-        addMenu(akses.getutd_penunjang_rusak(), btnUTDPenunjangRusak);
-
-        addMenu(akses.getutd_komponen_darah(), btnUTDKomponenDarah);
-
-        addMenu(akses.getutd_pendonor(), btnPendonorDarah);
-
-        addMenu(akses.getutd_donor(), btnUTDDonorDarah);
-
-        addMenu(akses.getutd_cekal_darah(), btnUTDCekalDarah);
-
-        addMenu(akses.getutd_pemisahan_darah(), btnUTDPemisahanDarah);
-
-        addMenu(akses.getutd_stok_darah(), btnUTDStokDarah);
-
-        addMenu(akses.getutd_penyerahan_darah(), btnUTDPenyerahanDarah);
-
-        addMenu(akses.getgrafik_kunjungan_poli(), btnGrafikKunjunganPoli);
-
-        addMenu(akses.getgrafik_kunjungan_perdokter(), btnGrafikKunjunganPerDokter);
-
-        addMenu(akses.getgrafik_kunjungan_perpekerjaan(), btnGrafikKunjunganPerPekerjaan);
-
-        addMenu(akses.getgrafik_kunjungan_perpendidikan(), btnGrafikKunjunganPerPendidikan);
-
-        addMenu(akses.getgrafik_kunjungan_pertahun(), btnGrafikKunjunganPerTahun);
-
-        addMenu(akses.getgrafik_kunjungan_perbulan(), btnGrafikKunjunganPerBulan);
-
-        addMenu(akses.getgrafik_kunjungan_pertanggal(), btnGrafikKunjunganPerTanggal);
-
-        addMenu(akses.getgrafik_kunjungan_demografi(), btnGrafikDemografiRegistrasi);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftartahun(), btnGrafikStatusRegPerTahun);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftartahun2(), btnGrafikStatusRegPerTahun2);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftarbulan(), btnGrafikStatusRegPerBulan);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftarbulan2(), btnGrafikStatusRegPerBulan2);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftartanggal(), btnGrafikStatusRegPerTanggal);
-
-        addMenu(akses.getgrafik_kunjungan_statusdaftartanggal2(), btnGrafikStatusRegPerTanggal2);
-
-        addMenu(akses.getgrafik_kunjungan_statusbataltahun(), btnGrafikStatusRegBatalPerTahun);
-
-        addMenu(akses.getgrafik_kunjungan_statusbatalbulan(), btnGrafikStatusRegBatalPerBulan);
-
-        addMenu(akses.getgrafik_kunjungan_statusbataltanggal(), btnGrafikStatusRegBatalPerTanggal);
-
-        addMenu(akses.getgrafik_kunjungan_percarabayar(), btnGrafikKunjunganPerCarabayar);
-
-        addMenu(akses.getgrafik_kunjungan_ranaptahun(), btnGrafikKunjunganRanapPerTahun);
-
-        addMenu(akses.getgrafik_lab_ralantahun(), btnGrafikLabRalanPerTahun);
-
-        addMenu(akses.getgrafik_rad_ralantahun(), btnGrafikRadRalanPerTahun);
-
-        addMenu(akses.getgrafik_per_perujuk(), btnGrafikPerPerujuk);
-
-        addMenu(akses.getgrafik_lab_ralanbulan(), btnGrafikLabRalanPerBulan);
-
-        addMenu(akses.getgrafik_rad_ralanbulan(), btnGrafikRadRalanPerBulan);
-
-        addMenu(akses.getgrafik_lab_ralanhari(), btnGrafikLabRalanPerHari);
-
-        addMenu(akses.getgrafik_rad_ralanhari(), btnGrafikRadRalanPerHari);
-
-        addMenu(akses.getgrafik_ikp_pertahun(), btnGrafikKejadianIKPPerTahun);
-
-        addMenu(akses.getgrafik_ikp_perbulan(), btnGrafikKejadianIKPPerBulan);
-
-        addMenu(akses.getgrafik_ikp_pertanggal(), btnGrafikKejadianIKPPerTanggal);
-
-        addMenu(akses.getgrafik_ikp_jenis(), btnGrafikKejadianIKPPerJenis);
-
-        addMenu(akses.getgrafik_ikp_dampak(), btnGrafikKejadianIKPPerDampak);
-
-        addMenu(akses.getgrafik_kunjungan_per_agama(), btnGrafikKunjunganPerAgama);
-
-        addMenu(akses.getgrafik_kunjungan_per_umur(), btnGrafikKunjunganPerUmur);
-
-        addMenu(akses.getgrafik_kunjungan_suku(), btnGrafikKunjunganPerSuku);
-
-        addMenu(akses.getgrafik_kunjungan_bahasa(), btnGrafikKunjunganPerBahasa);
-
-        addMenu(akses.getgrafik_kunjungan_per_cacat(), btnGrafikKunjunganPerCacat);
-
-        addMenu(akses.getgrafik_tb_periodelaporan(), btnGrafikTBLaporanPeriode);
-
-        addMenu(akses.getgrafik_tb_rujukan(), btnGrafikTBRujukan);
-
-        addMenu(akses.getgrafik_tb_riwayat(), btnGrafikTBRiwayat);
-
-        addMenu(akses.getgrafik_tb_tipediagnosis(), btnGrafikTBTipeDiagnosis);
-
-        addMenu(akses.getgrafik_tb_statushiv(), btnGrafikTBSTatusHIV);
-
-        addMenu(akses.getgrafik_tb_skoringanak(), btnGrafikTBSkoringAnak);
-
-        addMenu(akses.getgrafik_tb_konfirmasiskoring5(), btnGrafikTBKonfirmasiSkoring5);
-
-        addMenu(akses.getgrafik_tb_konfirmasiskoring6(), btnGrafikTBKonfirmasiSkoring6);
-
-        addMenu(akses.getgrafik_tb_sumberobat(), btnGrafikTBSumberObat);
-
-        addMenu(akses.getgrafik_tb_hasilakhirpengobatan(), btnGrafikTBHasilAkhirPengobatan);
-
-        addMenu(akses.getgrafik_tb_hasilteshiv(), btnGrafikTBHasilTesHIV);
-
-        addMenu(akses.getgrafik_air_pdam_pertanggal(), btnGrafikPemakaianAirPDAMPerTanggal);
-
-        addMenu(akses.getgrafik_air_pdam_perbulan(), btnGrafikPemakaianAirPDAMPerBulan);
-
-        addMenu(akses.getgrafik_air_tanah_pertanggal(), btnGrafikPemakaianAirTanahPerTanggal);
-
-        addMenu(akses.getgrafik_air_tanah_perbulan(), btnGrafikPemakaianAirTanahPerBulan);
-
-        addMenu(akses.getgrafik_limbahb3_pertanggal(), btnGrafikLimbahB3MedisPerTanggal);
-
-        addMenu(akses.getgrafik_limbahb3_perbulan(), btnGrafikLimbahB3MedisPerBulan);
-
-        addMenu(akses.getgrafik_limbahdomestik_pertanggal(), btnGrafikLimbahDomestikPerTanggal);
-
-        addMenu(akses.getgrafik_limbahdomestik_perbulan(), btnGrafikLimbahDomestikPerBulan);
-
-        addMenu(akses.getgrafik_k3_pertahun(), btnGrafikK3PerTahun);
-
-        addMenu(akses.getgrafik_k3_perbulan(), btnGrafikK3PerBulan);
-
-        addMenu(akses.getgrafik_k3_pertanggal(), btnGrafikK3PerTanggal);
-
-        addMenu(akses.getgrafik_k3_perjeniscidera(), btnGrafikK3PerJenisCidera);
-
-        addMenu(akses.getgrafik_k3_perpenyebab(), btnGrafikK3PerPenyebab);
-
-        addMenu(akses.getgrafik_k3_perjenisluka(), btnGrafikK3PerJenisLuka);
-
-        addMenu(akses.getgrafik_k3_lokasikejadian(), btnGrafikK3PerLokasiKejadian);
-
-        addMenu(akses.getgrafik_k3_dampakcidera(), btnGrafikK3PerDampakCidera);
-
-        addMenu(akses.getgrafik_k3_perjenispekerjaan(), btnGrafikK3PerJenisPekerjaan);
-
-        addMenu(akses.getgrafik_k3_perbagiantubuh(), btnGrafikK3PerBagianTubuh);
-
-        addMenu(akses.getgrafik_kunjungan_ranapbulan(), btnGrafikKunjunganRanapBulan);
-
-        addMenu(akses.getgrafik_kunjungan_ranaptanggal(), btnGrafikKunjunganRanapTanggal);
-
-        addMenu(akses.getgrafik_kunjungan_ranap_peruang(), btnGrafikKunjunganRanapRuang);
-
-        addMenu(akses.getgrafik_jenjang_jabatanpegawai(), btnGrafikJenjangJabatanPegawai);
-
-        addMenu(akses.getgrafik_bidangpegawai(), btnGrafikBidangPegawai);
-
-        addMenu(akses.getgrafik_departemenpegawai(), btnGrafikDepartemenPegawai);
-
-        addMenu(akses.getgrafik_pendidikanpegawai(), btnGrafikPendidikanPegawai);
-
-        addMenu(akses.getgrafik_sttswppegawai(), btnGrafikStatusWPPegawai);
-
-        addMenu(akses.getgrafik_sttskerjapegawai(), btnGrafikStatusKerjaPegawai);
-
-        addMenu(akses.getgrafik_sttspulangranap(), btnGrafikStatusPulangRanap);
-
-        addMenu(akses.getitem_apotek_jenis(), btnGrafikItemApotekPerJenis);
-
-        addMenu(akses.getitem_apotek_kategori(), btnGrafikItemApotekPerKategori);
-
-        addMenu(akses.getitem_apotek_golongan(), btnGrafikItemApotekPerGolongan);
-
-        addMenu(akses.getitem_apotek_industrifarmasi(), btnGrafikItemApotekPerIndustriFarmasi);
-
-        addMenu(akses.getgrafik_pengajuan_aset_urgensi(), btnGrafikPengajuanAsetUrgensi);
-
-        addMenu(akses.getgrafik_pengajuan_aset_status(), btnGrafikPengajuanAsetStatus);
-
-        addMenu(akses.getgrafik_pengajuan_aset_departemen(), btnGrafikPengajuanAsetDepartemen);
-
-        addMenu(akses.getgrafik_kelompok_jabatanpegawai(), btnGrafikKelompokJabatanPegawai);
-
-        addMenu(akses.getgrafik_resiko_kerjapegawai(), btnGrafikRisikoKerjaPegawai);
-
-        addMenu(akses.getgrafik_emergency_indexpegawai(), btnGrafikEmergencyIndexPegawai);
-
-        addMenu(akses.getgrafik_inventaris_ruang(), btnGrafikInventarisRuang);
-
-        addMenu(akses.getgrafik_inventaris_jenis(), btnGrafikInventarisJenis);
-
-        addMenu(akses.getgrafik_HAIs_pasienbangsal(), btnGrafikHAIsPasienRuang);
-
-        addMenu(akses.getgrafik_HAIs_pasienbulan(), btnGrafikHAIsPasienBulan);
-
-        addMenu(akses.getgrafik_HAIs_laju_vap(), btnGrafikHAIsLajuVAP);
-
-        addMenu(akses.getgrafik_HAIs_laju_iad(), btnGrafikHAIsLajuIAD);
-
-        addMenu(akses.getgrafik_HAIs_laju_pleb(), btnGrafikHAIsLajuPleb);
-
-        addMenu(akses.getgrafik_HAIs_laju_isk(), btnGrafikHAIsLajuISK);
-
-        addMenu(akses.getgrafik_HAIs_laju_ilo(), btnGrafikHAIsLajuILO);
-
-        addMenu(akses.getgrafik_HAIs_laju_hap(), btnGrafikHAIsLajuHAP);
-
-        addMenu(akses.getpenerimaan_obat_perbulan(), btnGrafikPenerimaanObatPerBulan);
-
-        addMenu(akses.getgrafik_harian_hemodialisa(), btnGrafikHemodialisaPerTanggal);
-
-        addMenu(akses.getgrafik_bulanan_hemodialisa(), btnGrafikHemodialisaPerBulan);
-
-        addMenu(akses.getgrafik_tahunan_hemodialisa(), btnGrafikHemodialisaPerTahun);
-
-        addMenu(akses.getgrafik_bulanan_meninggal(), btnGrafikMeninggalPerBulan);
-
-        addMenu(akses.getgrafik_inventaris_kategori(), btnGrafikInventarisKategori);
-
-        addMenu(akses.getgrafik_inventaris_merk(), btnGrafikInventarisMerk);
-
-        addMenu(akses.getgrafik_inventaris_produsen(), btnGrafikInventarisProdusen);
-
-        addMenu(akses.getgrafik_porsidiet_pertanggal(), btnGrafikPorsiDietPerTanggal);
-
-        addMenu(akses.getgrafik_porsidiet_perbulan(), btnGrafikPorsiDietPerBulan);
-
-        addMenu(akses.getgrafik_porsidiet_pertahun(), btnGrafikPorsiDietPerTahun);
-
-        addMenu(akses.getgrafik_porsidiet_perbangsal(), btnGrafikPorsiDietPerRuang);
-
-        addMenu(akses.getgrafik_perbaikan_inventaris_pertanggal(), btnGrafikPerbaikanInventarisPerTanggal);
-
-        addMenu(akses.getgrafik_perbaikan_inventaris_perbulan(), btnGrafikPerbaikanInventarisPerBulan);
-
-        addMenu(akses.getgrafik_perbaikan_inventaris_pertahun(), btnGrafikPerbaikanInventarisPerTahun);
-
-        addMenu(akses.getgrafik_perbaikan_inventaris_perpelaksana_status(), btnGrafikPerbaikanInventarisPerPelaksanaStatus);
-
-        addMenu(akses.getgrafik_limbahb3cair_pertanggal(), btnGrafikLimbahB3MedisCairPerTanggal);
-
-        addMenu(akses.getgrafik_limbahb3cair_perbulan(), btnGrafikLimbahB3MedisCairPerBulan);
-
-        addMenu(akses.getsurat_indeks(), btnSuratIndeks);
-
-        addMenu(akses.getsurat_map(), btnSuratMap);
-
-        addMenu(akses.getsurat_almari(), btnSuratAlmari);
-
-        addMenu(akses.getsurat_rak(), btnSuratRak);
-
-        addMenu(akses.getsurat_ruang(), btnSuratRuang);
-
-        addMenu(akses.getsurat_klasifikasi(), btnSuratKlasifikasi);
-
-        addMenu(akses.getsurat_status(), btnSuratStatus);
-
-        addMenu(akses.getsurat_sifat(), btnSuratSifat);
-
-        addMenu(akses.getsurat_balas(), btnSuratBalas);
-
-        addMenu(akses.getsurat_masuk(), btnSuratMasuk);
-
-        addMenu(akses.getsurat_keluar(), btnSuratKeluar);
-
-        addMenu(akses.getsurat_sakit(), btnSuratSakit);
-
-        addMenu(akses.getsurat_sakit_pihak_2(), btnSuratSakitPihak2);
-
-        addMenu(akses.getsurat_hamil(), btnSuratHamil);
-
-        addMenu(akses.getsurat_cuti_hamil(), btnSuratCutiHamil);
-
-        addMenu(akses.getskdp_bpjs(), btnSKDPBPJS);
-
-        addMenu(akses.getsurat_bebas_narkoba(), btnSuratBebasNarkoba);
-
-        addMenu(akses.getsurat_keterangan_covid(), btnSuratKeteranganCovid);
-
-        addMenu(akses.getsurat_keterangan_rawat_inap(), btnSuratKeteranganRawatInap);
-
-        addMenu(akses.getsurat_keterangan_sehat(), btnSuratKeteranganSehat);
-
-        addMenu(akses.getsurat_bebas_tbc(), btnSuratBebasTBC);
-
-        addMenu(akses.getsurat_buta_warna(), btnSuratButaWarna);
-
-        addMenu(akses.getsurat_bebas_tato(), btnSuratBebasTato);
-
-        addMenu(akses.getsurat_keterangan_layak_terbang(), btnSuratKeteranganLayakTerbang);
-
-        addMenu(akses.getsurat_kewaspadaan_kesehatan(), btnSuratKewaspadaanKesehatan);
-
-        addMenu(akses.getpengumuman_epasien(), btnPengumumanEPasien);
-
-        addMenu(akses.gettemplate_persetujuan_penolakan_tindakan(), btnTemplatePersetujuanPenolakanTindakan);
-
-        addMenu(akses.getpersetujuan_penolakan_tindakan(), btnPersetujuanPenolakanTindakan);
-
-        addMenu(akses.getsurat_pulang_atas_permintaan_sendiri(), btnPersetujuanPulangAtasPermintanSendiri);
-
-        addMenu(akses.getsurat_pernyataan_pasien_umum(), btnPernyataanPasienUmum);
-
-        addMenu(akses.getsurat_persetujuan_umum(), btnPersetujuanUmum);
-
-        addMenu(akses.getsurat_persetujuan_rawat_inap(), btnPersetujuanRawatInap);
-
-        addMenu(akses.getpersetujuan_penundaan_pelayanan(), btnPersetujuanPenundaanPelayanan);
-
-        addMenu(akses.getmaster_menolak_anjuran_medis(), btnMasterMenolakAnjuranMedis);
-
-        addMenu(akses.getpenolakan_anjuran_medis(), btnPenolakanAnjuranMedis);
-
-        addMenu(akses.getsurat_persetujuan_pemeriksaan_hiv(), btnPersetujuanPemeriksaanHIV);
-
-        addMenu(akses.getsurat_pernyataan_memilih_dpjp(), btnSuratPernyataanMemilihDPJP);
-
-        addMenu(akses.getserah_terima_anggota_tubuh_barang(), btnSuratSerahTerimaBarangAnggotaTubuh);
-
-        addMenu(akses.getruang_perpustakaan(), btnRuangPerpustakaan);
-
-        addMenu(akses.getkategori_perpustakaan(), btnKategoriPerpustakaan);
-
-        addMenu(akses.getjenis_perpustakaan(), btnJenisPerpustakaan);
-
-        addMenu(akses.getpengarang_perpustakaan(), btnPengarangPerpustakaan);
-
-        addMenu(akses.getpenerbit_perpustakaan(), btnPenerbitPerpustakaan);
-
-        addMenu(akses.getkoleksi_perpustakaan(), btnKoleksiPerpustakaan);
-
-        addMenu(akses.getinventaris_perpustakaan(), btnInventarisPerpustakaan);
-
-        addMenu(akses.getset_peminjaman_perpustakaan(), btnPengaturanPeminjamanPerpustakaan);
-
-        addMenu(akses.getdenda_perpustakaan(), btnDendaPerpustakaan);
-
-        addMenu(akses.getanggota_perpustakaan(), btnAnggotaPerpustakaan);
-
-        addMenu(akses.getpeminjaman_perpustakaan(), btnPeminjamanPerpustakaan);
-
-        addMenu(akses.getbayar_denda_perpustakaan(), btnBayarDendaPerpustakaan);
-
-        addMenu(akses.getebook_perpustakaan(), btnEbookPerpustakaan);
-
-        addMenu(btnPenelitianPerpustakaan, btnCariEbook, btnCariInventarisPerpustakaan);
-
-        addMenu(akses.getpcra_icra_jenis_aktivitas_proyek(), btnPCRAICRAJenisAktivitasProyek);
-
-        addMenu(akses.getpcra_icra_lokasi_kelompok_risiko_area(), btnPCRAICRALokasiKelompokRisiko);
-
-        addMenu(akses.getpcra_icra_kelas_risiko_pencegahan(), btnPCRAICRAKelasRisikoPencegahan);
-
-        addMenu(akses.getpcra_icra_tindakan_pengendalian(), btnPCRAICRATindakanPengendalian);
-
-        addMenu(akses.getpcra_icra_identifkasi_risiko_infeksi(), btnPCRAICRAIdentifikasiRisikoInfeksi);
-
-        addMenu(akses.getpcra_icra_identifkasi_risiko_keselamatan(), btnPCRAICRAIdentifikasiRisikoKeselamatan);
-
-        addMenu(akses.getpcra_icra_identifkasi_risiko_kebakaran(), btnPCRAICRAIdentifikasiRisikoKebakaran);
-
-        addMenu(akses.getpcra_icra_identifkasi_risiko_utilitas(), btnPCRAICRAIdentifikasiRisikoUtilitas);
-
-        addMenu(akses.getpcra_icra_persyaratan_harus_dipenuhi(), btnPCRAICRAPersyaratanHarusDipenuhi);
-
-        addMenu(akses.getpcra_icra_pengkajian_risiko_prakonstruksi(), btnPCRAICRAPengkajianRisikoPraKonstruksi);
-
-        addMenu(akses.gettoko_suplier(), btnSuplierToko);
-
-        addMenu(akses.gettoko_jenis(), btnJenisToko);
-
-        addMenu(akses.gettoko_barang(), btnBarangToko);
-
-        addMenu(akses.getstok_opname_toko(), btnStokOpnameToko);
-
-        addMenu(akses.gettoko_riwayat_barang(), btnRiwayatBarangToko);
-
-        addMenu(akses.gettoko_pengajuan_barang(), btnPengajuanBarangToko);
-
-        addMenu(akses.gettoko_surat_pemesanan(), btnSuratPemesananToko);
-
-        addMenu(akses.gettoko_penerimaan_barang(), btnPenerimaanBarangToko);
-
-        addMenu(akses.gettoko_pengadaan_barang(), btnPengadaanBarangToko);
-
-        addMenu(akses.gettoko_member(), btnMemberToko);
-
-        addMenu(akses.gettoko_penjualan(), btnPenjualanToko);
-
-        addMenu(akses.gettoko_piutang(), btnPiutangToko);
-
-        addMenu(akses.gettoko_retur_beli(), btnReturKeSuplierToko);
-
-        addMenu(akses.gettoko_retur_jual(), btnReturJualToko);
-
-        addMenu(akses.gettoko_retur_piutang(), btnReturPiutangToko);
-
-        addMenu(akses.gettoko_hutang(), btnHutangToko);
-
-        addMenu(akses.gettoko_bayar_pemesanan(), btnBayarPesanToko);
-
-        addMenu(akses.gettoko_pendapatan_harian(), btnPendapatanHarianToko);
-
-        addMenu(akses.gettoko_penjualan_harian(), btnPenjualanHarianToko);
-
-        addMenu(akses.gettoko_piutang_harian(), btnPiutangHarianToko);
-
-        addMenu(akses.gettoko_keuntungan_barang(), btnKeuntunganBarangToko);
-
-        addMenu(akses.gettoko_bayar_piutang(), btnBayarPiutangToko);
-
-        addMenu(akses.gettoko_sirkulasi(), btnSirkulasiBarangToko);
-
-        addMenu(akses.gettoko_sirkulasi2(), btnSirkulasiBarangToko2);
-
-        addMenu(akses.getzis_pengeluaran_penerima_dankes(), btnZISPengeluaranPenerimaDankes);
-
-        addMenu(akses.getzis_penghasilan_penerima_dankes(), btnZISPenghasilanPenerimaDankes);
-
-        addMenu(akses.getzis_ukuran_rumah_penerima_dankes(), btnZISUkuranRumahPenerimaDankes);
-
-        addMenu(akses.getzis_dinding_rumah_penerima_dankes(), btnZISDindingRumahPenerimaDankes);
-
-        addMenu(akses.getzis_lantai_rumah_penerima_dankes(), btnZISLantaiRumahPenerimaDankes);
-
-        addMenu(akses.getzis_atap_rumah_penerima_dankes(), btnZISAtapRumahPenerimaDankes);
-
-        addMenu(akses.getzis_kepemilikan_rumah_penerima_dankes(), btnZISKepemilikanRumahPenerimaDankes);
-
-        addMenu(akses.getzis_kamar_mandi_penerima_dankes(), btnZISKamarMandiPenerimaDankes);
-
-        addMenu(akses.getzis_dapur_rumah_penerima_dankes(), btnZISDapurRumahPenerimaDankes);
-
-        addMenu(akses.getzis_kursi_rumah_penerima_dankes(), btnZISKursiRumahPenerimaDankes);
-
-        addMenu(akses.getzis_kategori_phbs_penerima_dankes(), btnZISKategoriPHBSPenerimaDankes);
-
-        addMenu(akses.getzis_elektronik_penerima_dankes(), btnZISElektronikPenerimaDankes);
-
-        addMenu(akses.getzis_ternak_penerima_dankes(), btnZISTernakPenerimaDankes);
-
-        addMenu(akses.getzis_jenis_simpanan_penerima_dankes(), btnZISJenisSimpananPenerimaDankes);
-
-        addMenu(akses.getzis_kategori_asnaf_penerima_dankes(), btnZISKategoriAsnafPenerimaDankes);
-
-        addMenu(akses.getzis_patologis_penerima_dankes(), btnZISPatologisPenerimaDankes);
-
-        addMenu(akses.getaplikasi(), btnSetupAplikasi);
-
-        addMenu(akses.getadmin(), btnAdmin);
-
-        addMenu(akses.getsetup_pjlab(), btnSetPenjab);
-
-        addMenu(akses.getsetup_otolokasi(), btnSetupOtoLokasi);
-
-        addMenu(akses.getsetup_jam_kamin(), btnSetupJamInap);
-
-        addMenu(akses.getset_harga_kamar(), btnSetHargaKamar);
-
-        addMenu(akses.getsetup_embalase(), btnSetupEmbalase);
-
-        addMenu(akses.getuser(), btnUser);
-
-        addMenu(akses.gete_eksekutif(), btnEEksekutif);
-
-        addMenu(akses.gettracer_login(), btnTracker);
-
-        addMenu(akses.getvakum(), btnVakum);
-
-        addMenu(akses.getdisplay(), btnDisplay);
-
-        addMenu(akses.getdisplay_apotek(), btnDisplayApotek);
-
-        addMenu(akses.getset_harga_obat(), btnSetupHarga);
-
-        addMenu(akses.getset_harga_obat_ralan(), btnSetObatRalan);
-
-        addMenu(akses.getset_harga_obat_ranap(), btnSetObatRanap);
-
-        addMenu(akses.getset_penggunaan_tarif(), btnSetupTarif);
-
-        addMenu(akses.getset_oto_ralan(), btnSetOtoRalan);
-
-        addMenu(akses.getbiaya_harian(), btnSetBiayaHarian);
-
-        addMenu(akses.getbiaya_masuk_sekali(), btnSetBiayaMasukSekali);
-
-        addMenu(akses.getset_no_rm(), btnSetupRM);
-
-        addMenu(akses.getset_nota(), btnSetupNota);
-
-        addMenu(akses.getclosing_kasir(), btnClosingKasir);
-
-        addMenu(akses.getketerlambatan_presensi(), btnKeterlambatanPresensi);
-
-        addMenu(akses.getset_input_parsial(), btnSetInputParsial);
-
-        addMenu(akses.getpassword_asuransi(), btnPasswordAsuransi);
-
-        addMenu(akses.gettoko_set_harga(), btnSetHargaToko);
-
-        addMenu(akses.getjam_diet_pasien(), btnJamDietPasien);
-
-        addMenu(akses.getruang_ok(), btnRuangOperasi);
     }
 
     private widget.ButtonBig createMenuButton(String iconPath, String text, String name, java.awt.Dimension preferedSize, java.awt.event.ActionListener actionListener) {
