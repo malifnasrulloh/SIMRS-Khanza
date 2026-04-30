@@ -164,7 +164,6 @@ import bridging.SatuSehatKirimObservationRadiologi;
 import bridging.SatuSehatKirimObservationTTV;
 import bridging.SatuSehatKirimProcedure;
 import bridging.SatuSehatKirimQRTelaahFarmasi;
-import bridging.SatuSehatKirimQuestionnaireRequest;
 import bridging.SatuSehatKirimServiceRequestLabMB;
 import bridging.SatuSehatKirimServiceRequestLabPK;
 import bridging.SatuSehatKirimServiceRequestRadiologi;
@@ -14220,18 +14219,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private void btnKirimQuestionnaireResponseSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        isTutup();
-        DlgHome.dispose();
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SatuSehatKirimQuestionnaireRequest aplikasi = new SatuSehatKirimQuestionnaireRequest(this, false);
-        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
-        aplikasi.setLocationRelativeTo(PanelUtama);
-        aplikasi.setVisible(true);
-        aplikasi.isCek();
-        this.setCursor(Cursor.getDefaultCursor());
-    }
-
     private void btnKirimEpisodeOfCareSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
@@ -18121,7 +18108,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSkriningCURB65, btnBPJSPotensiPRB, btnBPJSRiwayatPelayananObatApotek, btnSkriningGiziKehamilan, btnBPJSRekapPesertaPRBObatApotek, btnSuratSerahTerimaBarangAnggotaTubuh, btnPCRAICRAJenisAktivitasProyek,
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
-            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimQuestionnaireResponseSatuSehat, btnKirimEpisodeOfCareSatuSehat, btnKirimImagingStudySatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
+            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnKirimImagingStudySatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
             btnSuratPermintaanBinrohtal;
 
     public void isWall() {
@@ -19577,8 +19564,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsatu_sehat_mapping_vaksin(), btnMappingVaksinSatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_encounter(), btnKirimEncounterSatuSehat);
-
-            addMenu(akses.getsatu_sehat_kirim_questionnairerequest(), btnKirimQuestionnaireResponseSatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_episodeofcare(), btnKirimEpisodeOfCareSatuSehat);
 
@@ -22470,8 +22455,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnMappingLokasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Lokasi Satu Sehat", "btnMappingLokasiSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingLokasiSatuSehatActionPerformed);
 
         btnKirimEncounterSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Encounter Satu Sehat", "btnKirimEncounterSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEncounterSatuSehatActionPerformed);
-
-        btnKirimQuestionnaireResponseSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Questionnaire Response Satu Sehat", "btnKirimQuestionnaireResponseSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimQuestionnaireResponseSatuSehatActionPerformed);
 
         btnKirimEpisodeOfCareSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Episode of Care Satu Sehat", "btnKirimEpisodeOfCareSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEpisodeOfCareSatuSehatActionPerformed);
 

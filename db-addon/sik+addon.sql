@@ -23033,24 +23033,6 @@ CREATE TABLE `satu_sehat_procedure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `satu_sehat_questionnairereq_pengkajian_obat`
---
-
-DROP TABLE IF EXISTS `satu_sehat_questionnairereq_pengkajian_obat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `satu_sehat_questionnairereq_pengkajian_obat` (
-  `no_resep` varchar(14) NOT NULL,
-  `no_rawat` varchar(20) NOT NULL,
-  `id_questreq` varchar(100) DEFAULT NULL,
-  KEY `idx_no_rawat` (`no_rawat`),
-  KEY `idx_no_resep` (`no_resep`),
-  CONSTRAINT `fk_questionnaire_no_rawat` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_questionnaire_no_resep` FOREIGN KEY (`no_resep`) REFERENCES `telaah_farmasi` (`no_resep`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `satu_sehat_questionresponse_telaah_farmasi`
 --
 
@@ -32523,4 +32505,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-04-30  1:18:22
+-- Dump completed on 2026-04-30 19:19:07

@@ -20,23 +20,3 @@ CREATE TABLE satu_sehat_episode_of_care (
 ) ENGINE=InnoDB 
 DEFAULT CHARSET=latin1 
 COLLATE=latin1_swedish_ci;
-
-CREATE TABLE satu_sehat_questionnairereq_pengkajian_obat (
-    no_resep VARCHAR(14) NOT NULL,
-    no_rawat VARCHAR(20) NOT NULL,
-    id_questreq VARCHAR(100),
-
-    INDEX idx_no_rawat (no_rawat),
-    INDEX idx_no_resep (no_resep),
-
-    CONSTRAINT fk_questionnaire_no_rawat 
-        FOREIGN KEY (no_rawat) REFERENCES reg_periksa(no_rawat)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-
-    CONSTRAINT fk_questionnaire_no_resep 
-        FOREIGN KEY (no_resep) REFERENCES telaah_farmasi(no_resep)
-        ON DELETE CASCADE ON UPDATE CASCADE
-
-) ENGINE=InnoDB 
-DEFAULT CHARSET=latin1 
-COLLATE=latin1_swedish_ci;
