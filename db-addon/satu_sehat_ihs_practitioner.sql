@@ -21,6 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for satu_sehat_ihs_practitioner
 -- ----------------------------
 DROP TABLE IF EXISTS `satu_sehat_ihs_practitioner`;
+ALTER TABLE pegawai ADD KEY `no_ktp` (`no_ktp`);
 CREATE TABLE `satu_sehat_ihs_practitioner` (
   `nikpegawai` varchar(20) NOT NULL,
   `ihspegawai` varchar(100) DEFAULT NULL,
