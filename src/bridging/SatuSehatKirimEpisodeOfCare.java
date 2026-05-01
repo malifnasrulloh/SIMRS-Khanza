@@ -70,6 +70,11 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
+        cmbTipeEpisode.addItem("Semua");
+        for (EpisodeOfCareType t : EpisodeOfCareType.values()) {
+            cmbTipeEpisode.addItem(t.getLabel());
+        }
+        
         tabMode = new DefaultTableModel(null, new String[]{
             "P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien", "Stts Rawat", "Stts Lanjut",
             "Tanggal Pulang", "ID Encounter", "ICD 10", "Nama Penyakit", "ID Episode Of Care", "Status"
@@ -214,6 +219,8 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         DTPCari2 = new widget.Tanggal();
         jLabel12 = new widget.Label();
         cmbStatus = new widget.ComboBox();
+        jLabel13 = new widget.Label();
+        cmbTipeEpisode = new widget.ComboBox();
         jLabel16 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
@@ -261,7 +268,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         setUndecorated(true);
         setResizable(false);
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Pengiriman Data Episode Of Care / Episode Kehamilan Awal ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Pengiriman Data Episode Of Care ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
@@ -369,7 +376,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "18-01-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-05-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -382,7 +389,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "18-01-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-05-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -391,13 +398,22 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
 
         jLabel12.setText("Status Kirim :");
         jLabel12.setName("jLabel12"); // NOI18N
-        jLabel12.setPreferredSize(new java.awt.Dimension(120, 23));
+        jLabel12.setPreferredSize(new java.awt.Dimension(90, 23));
         panelGlass9.add(jLabel12);
 
         cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "Terkirim", "Belum Terkirim" }));
         cmbStatus.setName("cmbStatus"); // NOI18N
         cmbStatus.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass9.add(cmbStatus);
+
+        jLabel13.setText("Tipe Episode :");
+        jLabel13.setName("jLabel13"); // NOI18N
+        jLabel13.setPreferredSize(new java.awt.Dimension(90, 23));
+        panelGlass9.add(jLabel13);
+
+        cmbTipeEpisode.setName("cmbTipeEpisode"); // NOI18N
+        cmbTipeEpisode.setPreferredSize(new java.awt.Dimension(200, 23));
+        panelGlass9.add(cmbTipeEpisode);
 
         jLabel16.setText("Key Word :");
         jLabel16.setName("jLabel16"); // NOI18N
@@ -582,48 +598,23 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                     iddokter = cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i, 12).toString());
                     idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
                     try {
+                        // Auto-detect episode type from the ICD-10 diagnosis code
+                        EpisodeOfCareType episodeType = EpisodeOfCareType.fromIcdCode(tbObat.getValueAt(i, 10).toString());
+                        if (episodeType == null) {
+                            System.out.println("Notifikasi : Kode ICD " + tbObat.getValueAt(i, 10).toString() + " tidak cocok dengan tipe Episode of Care manapun, skip.");
+                            continue;
+                        }
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
                         headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
-                        json = "{\n"
-                                + "    \"resourceType\": \"EpisodeOfCare\",\n"
-                                + "    \"identifier\": [\n"
-                                + "        {\n"
-                                + "            \"system\": \"http://sys-ids.kemkes.go.id/episode-of-care/" + koneksiDB.IDSATUSEHAT() + "\",\n"
-                                + "            \"value\": \"" + tbObat.getValueAt(i, 2).toString() + "\"\n"
-                                + "        }\n"
-                                + "    ],\n"
-                                + "    \"status\": \"active\",\n"
-                                + "    \"statusHistory\": [\n"
-                                + "        {\n"
-                                + "            \"status\": \"active\",\n"
-                                + "            \"period\": {\n"
-                                + "                \"start\": \"" + tbObat.getValueAt(i, 8).toString() + "\"\n"
-                                + "            }\n"
-                                + "        }\n"
-                                + "    ],\n"
-                                + "    \"type\": [\n"
-                                + "        {\n"
-                                + "            \"coding\": [\n"
-                                + "                {\n"
-                                + "                    \"system\": \"http://terminology.kemkes.go.id/CodeSystem/episodeofcare-type\",\n"
-                                + "                    \"code\": \"ANC\",\n"
-                                + "                    \"display\": \"Antenatal Care\"\n"
-                                + "                }\n"
-                                + "            ]\n"
-                                + "        }\n"
-                                + "    ],\n"
-                                + "    \"patient\": {\n"
-                                + "        \"reference\": \"Patient/" + idpasien + "\",\n"
-                                + "        \"display\": \"" + tbObat.getValueAt(i, 4).toString() + "\"\n"
-                                + "    },\n"
-                                + "    \"managingOrganization\": {\n"
-                                + "        \"reference\": \"Organization/" + koneksiDB.IDSATUSEHAT() + "\"\n"
-                                + "    },\n"
-                                + "    \"period\": {\n"
-                                + "        \"start\": \"" + tbObat.getValueAt(i, 8).toString() + "\"\n"
-                                + "    }\n"
-                                + "}";
+                        json = EpisodeOfCareJsonBuilder.buildJson(
+                                episodeType,
+                                koneksiDB.IDSATUSEHAT(),
+                                tbObat.getValueAt(i, 2).toString(),
+                                idpasien,
+                                tbObat.getValueAt(i, 4).toString(),
+                                tbObat.getValueAt(i, 8).toString()
+                        );
                         System.out.println("URL : " + link + "/EpisodeOfCare");
                         System.out.println("Request JSON : " + json);
                         requestEntity = new HttpEntity(json, headers);
@@ -702,8 +693,10 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.ComboBox cmbStatus;
+    private widget.ComboBox cmbTipeEpisode;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel12;
+    private widget.Label jLabel13;
     private widget.Label jLabel15;
     private widget.Label jLabel16;
     private widget.Label jLabel17;
@@ -720,6 +713,40 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
+            // Determine ICD filter based on selected episode type
+            String selectedTipe = cmbTipeEpisode.getSelectedItem().toString();
+            boolean isSemua = selectedTipe.equals("Semua");
+            String icdWhereClause;
+            String[] icdFilterValues;
+
+            if (isSemua) {
+                icdWhereClause = EpisodeOfCareType.buildAllTypesWhereClause("diagnosa_pasien.kd_penyakit");
+                // Collect all filter values from all types
+                int totalFilters = EpisodeOfCareType.getAllTypesFilterCount();
+                icdFilterValues = new String[totalFilters];
+                int idx = 0;
+                for (EpisodeOfCareType t : EpisodeOfCareType.values()) {
+                    for (String f : t.getIcdFilters()) {
+                        icdFilterValues[idx++] = f;
+                    }
+                }
+            } else {
+                // Find selected type by matching label
+                EpisodeOfCareType selectedType = null;
+                for (EpisodeOfCareType t : EpisodeOfCareType.values()) {
+                    if (t.getLabel().equals(selectedTipe)) {
+                        selectedType = t;
+                        break;
+                    }
+                }
+                if (selectedType == null) {
+                    System.out.println("Notif : Tipe episode tidak ditemukan: " + selectedTipe);
+                    return;
+                }
+                icdWhereClause = selectedType.buildIcdWhereClause("diagnosa_pasien.kd_penyakit");
+                icdFilterValues = selectedType.getIcdFilters();
+            }
+
             String queryRalan = "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
                     + "reg_periksa.stts,reg_periksa.status_lanjut,concat(pemeriksaan_ralan.tgl_perawatan,'T',pemeriksaan_ralan.jam_rawat,'+07:00') as pulang,satu_sehat_encounter.id_encounter, "
                     + "diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,ifnull(satu_sehat_episode_of_care.id_episode_of_care,''),diagnosa_pasien.status "
@@ -728,7 +755,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                     + "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit left join satu_sehat_episode_of_care on satu_sehat_episode_of_care.no_rawat=diagnosa_pasien.no_rawat "
                     + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=diagnosa_pasien.status "
                     + "where pemeriksaan_ralan.tgl_perawatan between ? and ? "
-                    + "and diagnosa_pasien.kd_penyakit like '%O%' "
+                    + "and " + icdWhereClause + " "
                     + (TCari.getText().equals("") ? "" : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
                     + "pasien.nm_pasien like ? or pasien.no_ktp like ? or diagnosa_pasien.kd_penyakit like ? or penyakit.nm_penyakit like ? or "
                     + "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)");
@@ -741,7 +768,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                     + "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit left join satu_sehat_episode_of_care on satu_sehat_episode_of_care.no_rawat=diagnosa_pasien.no_rawat "
                     + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=diagnosa_pasien.status "
                     + "where kamar_inap.tgl_keluar between ? and ? "
-                    + "and diagnosa_pasien.kd_penyakit like '%O%' "
+                    + "and " + icdWhereClause + " "
                     + (TCari.getText().equals("") ? "" : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
                     + "pasien.nm_pasien like ? or pasien.no_ktp like ? or diagnosa_pasien.kd_penyakit like ? or penyakit.nm_penyakit like ? or "
                     + "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)");
@@ -757,77 +784,63 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                 queryRanap += " and satu_sehat_episode_of_care.id_episode_of_care IS NULL";
             }
 
-            // Prepare and execute the query for Ralan
-            ps = koneksi.prepareStatement(queryRalan);
-            try {
-                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                if (!TCari.getText().equals("")) {
-                    ps.setString(3, "%" + TCari.getText() + "%");
-                    ps.setString(4, "%" + TCari.getText() + "%");
-                    ps.setString(5, "%" + TCari.getText() + "%");
-                    ps.setString(6, "%" + TCari.getText() + "%");
-                    ps.setString(7, "%" + TCari.getText() + "%");
-                    ps.setString(8, "%" + TCari.getText() + "%");
-                    ps.setString(9, "%" + TCari.getText() + "%");
-                    ps.setString(10, "%" + TCari.getText() + "%");
-                }
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), rs.getString("status_lanjut"), rs.getString("pulang"), rs.getString("id_encounter"), rs.getString("kd_penyakit"),
-                        rs.getString("nm_penyakit"), rs.getString("id_episode_of_care")
-                    });
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : " + e);
-            } finally {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-            }
+            // Execute query for Ralan
+            executeQuery(queryRalan, icdFilterValues);
 
-            // Prepare and execute the query for Ranap
-            ps = koneksi.prepareStatement(queryRanap);
-            try {
-                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-                if (!TCari.getText().equals("")) {
-                    ps.setString(3, "%" + TCari.getText() + "%");
-                    ps.setString(4, "%" + TCari.getText() + "%");
-                    ps.setString(5, "%" + TCari.getText() + "%");
-                    ps.setString(6, "%" + TCari.getText() + "%");
-                    ps.setString(7, "%" + TCari.getText() + "%");
-                    ps.setString(8, "%" + TCari.getText() + "%");
-                    ps.setString(9, "%" + TCari.getText() + "%");
-                    ps.setString(10, "%" + TCari.getText() + "%");
-                }
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                            rs.getString("no_ktp"), rs.getString("stts"), rs.getString("status_lanjut"), rs.getString("pulang"), rs.getString("id_encounter"), rs.getString("kd_penyakit"),
-                            rs.getString("nm_penyakit"), rs.getString(13), rs.getString(14)
-                        });
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : " + e);
-            } finally {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-            }
+            // Execute query for Ranap
+            executeQuery(queryRanap, icdFilterValues);
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
         LCount.setText("" + tabMode.getRowCount());
+    }
+
+    /**
+     * Executes a parameterized Episode of Care query and adds results to the table.
+     * Extracted to avoid duplication between ralan and ranap queries.
+     *
+     * @param query           the SQL query with ? placeholders
+     * @param icdFilterValues the ICD-10 LIKE pattern values for the episode type filter
+     */
+    private void executeQuery(String query, String[] icdFilterValues) {
+        try {
+            ps = koneksi.prepareStatement(query);
+            int paramIdx = 1;
+            // Date range parameters
+            ps.setString(paramIdx++, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+            ps.setString(paramIdx++, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+            // ICD filter parameters
+            for (String filter : icdFilterValues) {
+                ps.setString(paramIdx++, filter);
+            }
+            // Search keyword parameters
+            if (!TCari.getText().equals("")) {
+                for (int k = 0; k < 8; k++) {
+                    ps.setString(paramIdx++, "%" + TCari.getText() + "%");
+                }
+            }
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tabMode.addRow(new Object[]{
+                    false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                    rs.getString("no_ktp"), rs.getString("stts"), rs.getString("status_lanjut"), rs.getString("pulang"), rs.getString("id_encounter"), rs.getString("kd_penyakit"),
+                    rs.getString("nm_penyakit"), rs.getString(13), rs.getString(14)
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Notif : " + e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e);
+            }
+        }
     }
 
     private void closeResources() {
