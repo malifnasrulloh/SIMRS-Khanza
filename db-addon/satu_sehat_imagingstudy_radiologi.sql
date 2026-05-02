@@ -26,6 +26,7 @@ CREATE TABLE `satu_sehat_imagingstudy_radiologi`  (
   `kd_jenis_prw` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_servicerequest` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_imaging` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `acsn` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`noorder`, `kd_jenis_prw`) USING BTREE,
   INDEX `kd_jenis_prw`(`kd_jenis_prw` ASC) USING BTREE,
   CONSTRAINT `satu_sehat_imagingstudy_radiologi_ibfk_1` FOREIGN KEY (`noorder`) REFERENCES `permintaan_radiologi` (`noorder`) ON DELETE CASCADE ON UPDATE CASCADE,
