@@ -26,7 +26,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class ApiSatuSehat {        
-    private String key,clientid,urlauth,token;
+    private static final long TOKEN_CACHE_MS = 60_000L;
+    private String key, clientid, urlauth, token;
+    private long tokenRetrievedAt;
     private long millis;
     private SSLContext sslContext;
     private SSLSocketFactory sslFactory;
@@ -49,14 +51,26 @@ public class ApiSatuSehat {
     }
 
     public String TokenSatuSehat(){
-        try {    
+        long now = System.currentTimeMillis();
+        if (token != null && (now - tokenRetrievedAt) < TOKEN_CACHE_MS) {
+            return token;
+        }
+
+        try {
             header = new HttpHeaders();
             header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            requestEntity = new HttpEntity("client_id="+clientid+"&client_secret="+key,header);
-            root = mapper.readTree(getRest().exchange(urlauth+"/accesstoken?grant_type=client_credentials", HttpMethod.POST, requestEntity, String.class).getBody());
-            token=root.path("access_token").asText();
+            requestEntity = new HttpEntity("client_id=" + clientid + "&client_secret=" + key, header);
+            root = mapper.readTree(getRest().exchange(urlauth + "/accesstoken?grant_type=client_credentials", HttpMethod.POST, requestEntity, String.class).getBody());
+            String refreshedToken = root.path("access_token").asText();
+            if (refreshedToken != null && !refreshedToken.isEmpty()) {
+                token = refreshedToken;
+                tokenRetrievedAt = now;
+            }
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
+            if (token != null && !token.isEmpty()) {
+                return token;
+            }
         }
         return token;
     }
