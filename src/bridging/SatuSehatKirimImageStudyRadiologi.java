@@ -872,7 +872,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     + "satu_sehat_mapping_radiologi.display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,"
                     + "permintaan_pemeriksaan_radiologi.kd_jenis_prw,"
-                    + "ifnull(satu_sehat_servicerequest_radiologi.ascn,'') as ascn,"
+                    + "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn,"
                     + "ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "
                     + "from reg_periksa "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -923,7 +923,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     rs.getString("display"),
                     rs.getString("id_servicerequest"),
                     rs.getString("kd_jenis_prw"),
-                    rs.getString("ascn"),
+                    rs.getString("acsn"),
                     rs.getString("id_imaging") // <<< TAMBAHAN BARU
                 });
             }
@@ -945,7 +945,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     + "satu_sehat_mapping_radiologi.display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,"
                     + "permintaan_pemeriksaan_radiologi.kd_jenis_prw,"
-                    + "ifnull(satu_sehat_servicerequest_radiologi.ascn,'') as ascn,"
+                    + "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn,"
                     + "ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "
                     + "from reg_periksa "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -986,7 +986,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     rs.getString("display"),
                     rs.getString("id_servicerequest"),
                     rs.getString("kd_jenis_prw"),
-                    rs.getString("ascn"),
+                    rs.getString("acsn"),
                     rs.getString("id_imaging") // <<< TAMBAHAN BARU
                 });
             }
