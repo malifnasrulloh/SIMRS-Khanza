@@ -5,6 +5,7 @@ package bridging;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.TableColumnAdjuster;
 import fungsi.WarnaTable;
 import fungsi.akses;
 import fungsi.batasInput;
@@ -73,7 +74,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
             "P", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien", "Kode Dokter", "Nama Dokter Perujuk",
             "No.KTP Dokter", "ID Encounter", "No.Permintaan", "Tgl & Jam Permintaan", "Diagnosa Klinis",
             "Nama Pemeriksaan", "Radiologi Code", "Radiologi System", "Radiologi Display", "ID Service Request",
-            "Kode Pemeriksaan", "ID Imaging"
+            "Kode Pemeriksaan", "ACSN", "ID Imaging"
         }) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -88,12 +89,17 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             @Override
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                switch (columnIndex) {
+                    case 0:
+                        return java.lang.Boolean.class;
+                    default:
+                        return java.lang.String.class;
+                }
             }
         };
         tbObat.setModel(tabMode);
@@ -102,49 +108,13 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 19; i++) {
-            TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if (i == 0) {
-                column.setPreferredWidth(20);
-            } else if (i == 1) {
-                column.setPreferredWidth(105);
-            } else if (i == 2) {
-                column.setPreferredWidth(70);
-            } else if (i == 3) {
-                column.setPreferredWidth(150);
-            } else if (i == 4) {
-                column.setPreferredWidth(110);
-            } else if (i == 5) {
-                column.setPreferredWidth(80);
-            } else if (i == 6) {
-                column.setPreferredWidth(150);
-            } else if (i == 7) {
-                column.setPreferredWidth(110);
-            } else if (i == 8) {
-                column.setPreferredWidth(210);
-            } else if (i == 9) {
-                column.setPreferredWidth(110);
-            } else if (i == 10) {
-                column.setPreferredWidth(120);
-            } else if (i == 11) {
-                column.setPreferredWidth(150);
-            } else if (i == 12) {
-                column.setPreferredWidth(150);
-            } else if (i == 13) {
-                column.setPreferredWidth(150);
-            } else if (i == 14) {
-                column.setPreferredWidth(150);
-            } else if (i == 15) {
-                column.setPreferredWidth(150);
-            } else if (i == 16) {
-                column.setPreferredWidth(210);
-            } else if (i == 17) {
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
-            } else if (i == 18) {
-                column.setPreferredWidth(110);
-            }
-        }
+        TableColumnAdjuster tca = new TableColumnAdjuster(tbObat);
+        tca.setColumnHeaderIncluded(true);
+        tca.setColumnDataIncluded(true);
+        tca.setDynamicAdjustment(true);
+        tca.setOnlyAdjustLarger(false);
+        tca.adjustColumns();
+
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
@@ -575,15 +545,15 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
         for (i = 0; i < tbObat.getRowCount(); i++) {
-            if (tbObat.getValueAt(i, 0).toString().equals("true")
-                    && !tbObat.getValueAt(i, 16).toString().equals("")
-                    && tbObat.getValueAt(i, 18).toString().equals("")) {
+            String noorder = tbObat.getValueAt(i, 9).toString();
+            String kdJenisPrw = tbObat.getValueAt(i, 18).toString();
+            String idServiceRequest = tbObat.getValueAt(i, 16).toString();
+
+            if (tbObat.getValueAt(i, 0).toString().equals("true") && !idServiceRequest.isBlank() && tbObat.getValueAt(i,19).toString().equals("")) {
 
                 try {
-
-                    String idServiceRequest = tbObat.getValueAt(i, 16).toString();
                     String idPasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 4).toString());
-                    String accessionNumber = tbObat.getValueAt(i, 9).toString();
+                    String accessionNumber = noorder.replaceAll("PR", "") + kdJenisPrw;
                     String orgId = koneksiDB.IDSATUSEHAT();
 
                     String baseOrthanc = koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC();
@@ -902,6 +872,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     + "satu_sehat_mapping_radiologi.display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,"
                     + "permintaan_pemeriksaan_radiologi.kd_jenis_prw,"
+                    + "ifnull(satu_sehat_servicerequest_radiologi.ascn,'') as ascn,"
                     + "ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "
                     + "from reg_periksa "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -952,6 +923,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     rs.getString("display"),
                     rs.getString("id_servicerequest"),
                     rs.getString("kd_jenis_prw"),
+                    rs.getString("ascn"),
                     rs.getString("id_imaging") // <<< TAMBAHAN BARU
                 });
             }
@@ -973,6 +945,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     + "satu_sehat_mapping_radiologi.display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,"
                     + "permintaan_pemeriksaan_radiologi.kd_jenis_prw,"
+                    + "ifnull(satu_sehat_servicerequest_radiologi.ascn,'') as ascn,"
                     + "ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "
                     + "from reg_periksa "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -1013,6 +986,7 @@ public final class SatuSehatKirimImageStudyRadiologi extends javax.swing.JDialog
                     rs.getString("display"),
                     rs.getString("id_servicerequest"),
                     rs.getString("kd_jenis_prw"),
+                    rs.getString("ascn"),
                     rs.getString("id_imaging") // <<< TAMBAHAN BARU
                 });
             }
