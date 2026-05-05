@@ -153,7 +153,6 @@ import bridging.SatuSehatKirimDiagnosticReportRadiologi;
 import bridging.SatuSehatKirimDiet;
 import bridging.SatuSehatKirimEncounter;
 import bridging.SatuSehatKirimEpisodeOfCare;
-import bridging.SatuSehatKirimImageStudyRadiologi;
 import bridging.SatuSehatKirimMedication;
 import bridging.SatuSehatKirimMedicationDispense;
 import bridging.SatuSehatKirimMedicationRequest;
@@ -14231,18 +14230,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private void btnKirimImagingStudySatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        isTutup();
-        DlgHome.dispose();
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        SatuSehatKirimImageStudyRadiologi aplikasi = new SatuSehatKirimImageStudyRadiologi(this, false);
-        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
-        aplikasi.setLocationRelativeTo(PanelUtama);
-        aplikasi.setVisible(true);
-        aplikasi.isCek();
-        this.setCursor(Cursor.getDefaultCursor());
-    }
-
     private void btnCatatanCekGDSActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         DlgHome.dispose();
@@ -18108,7 +18095,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSkriningCURB65, btnBPJSPotensiPRB, btnBPJSRiwayatPelayananObatApotek, btnSkriningGiziKehamilan, btnBPJSRekapPesertaPRBObatApotek, btnSuratSerahTerimaBarangAnggotaTubuh, btnPCRAICRAJenisAktivitasProyek,
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
-            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnKirimImagingStudySatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
+            btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
             btnSuratPermintaanBinrohtal;
 
     public void isWall() {
@@ -19566,8 +19553,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsatu_sehat_kirim_encounter(), btnKirimEncounterSatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_episodeofcare(), btnKirimEpisodeOfCareSatuSehat);
-
-            addMenu(akses.getsatu_sehat_kirim_servicerequest_radiologi(), btnKirimImagingStudySatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_condition(), btnKirimConditionSatuSehat);
 
@@ -22457,8 +22442,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnKirimEncounterSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Encounter Satu Sehat", "btnKirimEncounterSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEncounterSatuSehatActionPerformed);
 
         btnKirimEpisodeOfCareSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Episode of Care Satu Sehat", "btnKirimEpisodeOfCareSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEpisodeOfCareSatuSehatActionPerformed);
-
-        btnKirimImagingStudySatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Imaging Study Satu Sehat", "btnKirimImagingStudySatuSehat", new java.awt.Dimension(200, 90), this::btnKirimImagingStudySatuSehatActionPerformed);
 
         btnCatatanCekGDS = createMenuButton("/48x48/6427847_information_note_notebook_sheet_icon.png", "Catatan Cek GDS", "btnCatatanCekGDS", new java.awt.Dimension(200, 90), this::btnCatatanCekGDSActionPerformed);
 

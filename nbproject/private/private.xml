@@ -21,7 +21,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/simrskhanza/DlgAbout.java</file>
+            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/bridging/SatuSehatKirimEncounter.java</file>
+            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/bridging/SatuSehatKirimMedicationRequest.java</file>
+            <file>file:/home/malifnasrulloh/Downloads/SIMRS-Khanza-fork/src/simrskhanza/DlgPeriksaRadiologi.java</file>
         </group>
     </open-files>
 </project-private>

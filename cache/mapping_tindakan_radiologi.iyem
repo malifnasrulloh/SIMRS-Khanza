@@ -1,0 +1,67 @@
+{
+  "mapping" : [ {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh CT Scan Kepala",
+    "modality" : "CT"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh CT Scan Abdomen",
+    "modality" : "CT"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh USG Abdomen",
+    "modality" : "US"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh USG Obstetri",
+    "modality" : "US"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Rontgen Thorax",
+    "modality" : "CR"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Rontgen Extremitas",
+    "modality" : "CR"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Digital Radiography Thorax",
+    "modality" : "DX"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Digital Radiography Abdomen",
+    "modality" : "DX"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh MRI Kepala",
+    "modality" : "MR"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh MRI Lumbal",
+    "modality" : "MR"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Mammografi",
+    "modality" : "MG"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Panoramik Gigi",
+    "modality" : "OPG"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Fluoroskopi",
+    "modality" : "RF"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Angiografi",
+    "modality" : "XA"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh Nuclear Medicine",
+    "modality" : "NM"
+  }, {
+    "kd_jenis_prw" : "XXXXXX",
+    "nm_perawatan" : "Contoh PET Scan",
+    "modality" : "PT"
+  } ]
+}
