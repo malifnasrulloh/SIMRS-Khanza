@@ -1130,6 +1130,7 @@ import surat.SuratMap;
 import surat.SuratMasuk;
 import surat.SuratPenolakanAnjuranMedis;
 import surat.SuratPermintaanBinrohtal;
+import surat.SuratPermintaanPerlindunganDariKekerasan;
 import surat.SuratPernyataanMemilihDPJP;
 import surat.SuratPernyataanPasienUmum;
 import surat.SuratPersetujuanPemeriksaanHIV;
@@ -17851,7 +17852,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         aplikasi.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
-
     /**
      * @param args the command line arguments
      */
