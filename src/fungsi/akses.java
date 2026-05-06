@@ -1338,4 +1338,5 @@ public final class akses {
     public static boolean getmapping_prosedur_smart_klaim_bpjs(){return hakAkses.get(EnumAkses.mapping_prosedur_smart_klaim_bpjs);}
     public static boolean getmapping_penyakit_smart_klaim_bpjs(){return hakAkses.get(EnumAkses.mapping_penyakit_smart_klaim_bpjs);}
     public static boolean getpermintaan_binrohtal(){return hakAkses.get(EnumAkses.permintaan_binrohtal);}
+    public static boolean getsurat_permintaan_perlindungan_dari_kekerasan(){return hakAkses.get(EnumAkses.surat_permintaan_perlindungan_dari_kekerasan);}
 }
