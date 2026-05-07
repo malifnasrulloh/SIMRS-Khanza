@@ -74,7 +74,7 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         for (EpisodeOfCareType t : EpisodeOfCareType.values()) {
             cmbTipeEpisode.addItem(t.getLabel());
         }
-        
+
         tabMode = new DefaultTableModel(null, new String[]{
             "P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien", "Stts Rawat", "Stts Lanjut",
             "Tanggal Pulang", "ID Encounter", "ICD 10", "Nama Penyakit", "ID Episode Of Care", "Status"
@@ -595,15 +595,16 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
 //            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,5).toString().equals(""))&&(!tbObat.getValueAt(i,11).toString().equals(""))&&(!tbObat.getValueAt(i,13).toString().equals(""))&&tbObat.getValueAt(i,16).toString().equals("")){
             if (tbObat.getValueAt(i, 0).toString().equals("true")) {
                 try {
-                    iddokter = cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i, 12).toString());
                     idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
+
+                    // Auto-detect episode type from the ICD-10 diagnosis code
+                    EpisodeOfCareType episodeType = EpisodeOfCareType.fromIcdCode(tbObat.getValueAt(i, 10).toString());
+                    if (episodeType == null) {
+                        System.out.println("Notifikasi : Kode ICD " + tbObat.getValueAt(i, 10).toString() + " tidak cocok dengan tipe Episode of Care manapun, skip.");
+                        continue;
+                    }
+
                     try {
-                        // Auto-detect episode type from the ICD-10 diagnosis code
-                        EpisodeOfCareType episodeType = EpisodeOfCareType.fromIcdCode(tbObat.getValueAt(i, 10).toString());
-                        if (episodeType == null) {
-                            System.out.println("Notifikasi : Kode ICD " + tbObat.getValueAt(i, 10).toString() + " tidak cocok dengan tipe Episode of Care manapun, skip.");
-                            continue;
-                        }
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
                         headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
@@ -626,6 +627,28 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                             Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
                                 tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 13).toString(), response.asText()
                             });
+                        }
+                    } catch (org.springframework.web.client.HttpStatusCodeException e) {
+                        System.err.println("Error Status: " + e.getStatusCode());
+                        System.err.println("Error Body: " + e.getResponseBodyAsString());
+                        if (e.getResponseBodyAsString().toLowerCase().contains("found duplicated EpisodeOfCare".toLowerCase())) {
+                            //TODO: MASIH SALAH                    iddokter = cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i, 12).toString());
+                            System.err.println("Coba cari data yang sudah ada");
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                            System.out.println("URL : " + link + "/EpisodeOfCare?patient=" + idpasien + "&care-manager=" + iddokter + "&organization=" + koneksiDB.IDSATUSEHAT());
+                            requestEntity = new HttpEntity(headers);
+                            json = api.getRest().exchange(link + "/EpisodeOfCare?patient=" + idpasien + "&care-manager=" + iddokter + "&organization=" + koneksiDB.IDSATUSEHAT(), HttpMethod.GET, requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("entry").path(0).path("resource").path("id");
+                            if (!response.asText().equals("")) {
+                                Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
+                                    tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 13).toString(), response.asText()
+                                });
+                                System.err.println("Berhasil mendapatkan data yang sudah ada");
+                            }
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi Bridging : " + e);
@@ -796,11 +819,12 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
     }
 
     /**
-     * Executes a parameterized Episode of Care query and adds results to the table.
-     * Extracted to avoid duplication between ralan and ranap queries.
+     * Executes a parameterized Episode of Care query and adds results to the
+     * table. Extracted to avoid duplication between ralan and ranap queries.
      *
-     * @param query           the SQL query with ? placeholders
-     * @param icdFilterValues the ICD-10 LIKE pattern values for the episode type filter
+     * @param query the SQL query with ? placeholders
+     * @param icdFilterValues the ICD-10 LIKE pattern values for the episode
+     * type filter
      */
     private void executeQuery(String query, String[] icdFilterValues) {
         try {
