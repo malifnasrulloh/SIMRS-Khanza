@@ -1208,6 +1208,7 @@ public enum EnumAkses {
     mapping_penyakit_smart_klaim_bpjs("[L]Mapping Penyakit Smart Klaim BPJS"),
     permintaan_binrohtal("[P]Persetujuan Bimbingan Rohani & Mental"),
     surat_permintaan_perlindungan_dari_kekerasan("[P]Surat Permintaan Perlindungan Diri Dari Kekerasan"),
+    surat_permohonan_privasi("[P]Surat Permohonan Privasi"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_questionnairerequest("[L]Kirim Questionnaire Response Satu Sehat"),

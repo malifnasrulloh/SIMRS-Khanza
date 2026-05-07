@@ -909,7 +909,6 @@ import rekammedis.RMChecklistKriteriaMasukNICU;
 import rekammedis.RMChecklistKriteriaMasukPICU;
 import rekammedis.RMChecklistPemberianFibrinolitik;
 import rekammedis.RMChecklistPostOperasi;
-import surat.SuratPermintaanPerlindunganDariKekerasan;
 import rekammedis.RMChecklistPreOperasi;
 import rekammedis.RMDataAsuhanGizi;
 import rekammedis.RMDataCatatanCairanHemodialisa;
@@ -1131,6 +1130,7 @@ import surat.SuratMasuk;
 import surat.SuratPenolakanAnjuranMedis;
 import surat.SuratPermintaanBinrohtal;
 import surat.SuratPermintaanPerlindunganDariKekerasan;
+import surat.SuratPermohonanPrivasi;
 import surat.SuratPernyataanMemilihDPJP;
 import surat.SuratPernyataanPasienUmum;
 import surat.SuratPersetujuanPemeriksaanHIV;
@@ -17852,6 +17852,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         aplikasi.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
     }
+
+    private void btnSuratPermohonanPrivasiActionPerformed(java.awt.event.ActionEvent evt) {  
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SuratPermohonanPrivasi aplikasi=new SuratPermohonanPrivasi(this,false);
+        aplikasi.isCek();
+        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        aplikasi.setLocationRelativeTo(PanelUtama);
+        aplikasi.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -18109,7 +18122,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
             btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
-            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan;
+            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi;
 
     public void isWall() {
         try {
@@ -20442,6 +20455,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpermintaan_binrohtal(), btnSuratPermintaanBinrohtal);
 
             addMenu(akses.getsurat_permintaan_perlindungan_dari_kekerasan(), btnSuratPermintaanPerlindunganDariKekerasan);
+
+            addMenu(akses.getsurat_permohonan_privasi(), btnSuratPermohonanPrivasi);
         }
         if (cmbMenu.getSelectedIndex() == 16 || !ChkInput.isSelected()) {
             addMenu(akses.getruang_perpustakaan(), btnRuangPerpustakaan);
@@ -22995,6 +23010,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnSuratPermintaanBinrohtal = createMenuButton("/48x48/mental-health_18376031-2.png", "Persetujuan Bimbingan Rohani & Mental", "btnSuratPermintaanBinrohtal", new java.awt.Dimension(200, 90), this::btnSuratPermintaanBinrohtalActionPerformed);
 
         btnSuratPermintaanPerlindunganDariKekerasan = createMenuButton("/48x48/boxing_2043124.png", "Permintaan Perlindungan Diri Dari Kekerasan", "btnSuratPermintaanPerlindunganDariKekerasan", new java.awt.Dimension(200, 90), this::btnSuratPermintaanPerlindunganDariKekerasanActionPerformed);
+
+        btnSuratPermohonanPrivasi = createMenuButton("/48x48/compliant_4252354.png", "Surat Permohonan Privasi", "btnSuratPermohonanPrivasi", new java.awt.Dimension(200, 90), this::btnSuratPermohonanPrivasiActionPerformed);
 
         btnPCRAICRAJenisAktivitasProyek = createMenuButton("/48x48/construction_12539761.png", "Jenis Aktivitas Proyek PCRA", "btnPCRAICRAJenisAktivitasProyek", new java.awt.Dimension(200, 90), this::btnPCRAICRAJenisAktivitasProyekActionPerformed);
 
