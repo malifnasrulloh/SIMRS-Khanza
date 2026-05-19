@@ -420,6 +420,19 @@ CREATE TABLE `antripenundaanpelayanan` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `antriperlindungandarikekerasan`
+--
+
+DROP TABLE IF EXISTS `antriperlindungandarikekerasan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `antriperlindungandarikekerasan` (
+  `no_permintaan` varchar(20) DEFAULT NULL,
+  `no_rawat` varchar(17) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `antripermintaanbinrohtal`
 --
 
@@ -430,6 +443,32 @@ CREATE TABLE `antripermintaanbinrohtal` (
   `no_surat` varchar(20) DEFAULT NULL,
   `no_rawat` varchar(17) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `antripermintaanprivasi`
+--
+
+DROP TABLE IF EXISTS `antripermintaanprivasi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `antripermintaanprivasi` (
+  `no_surat` varchar(20) DEFAULT NULL,
+  `no_rawat` varchar(17) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `antripermintaansecondopinion`
+--
+
+DROP TABLE IF EXISTS `antripermintaansecondopinion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `antripermintaansecondopinion` (
+  `no_pernyataan` varchar(20) DEFAULT NULL,
+  `no_rawat` varchar(17) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1085,7 +1124,7 @@ CREATE TABLE `bahasa_pasien` (
   `nama_bahasa` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama_bahasa` (`nama_bahasa`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2963,6 +3002,36 @@ CREATE TABLE `bukti_persetujuan_transfer_pasien_antar_ruang` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `bukti_surat_permintaan_second_opinion`
+--
+
+DROP TABLE IF EXISTS `bukti_surat_permintaan_second_opinion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bukti_surat_permintaan_second_opinion` (
+  `no_pernyataan` varchar(20) NOT NULL,
+  `photo` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`no_pernyataan`),
+  CONSTRAINT `bukti_surat_permintaan_second_opinion_ibfk_1` FOREIGN KEY (`no_pernyataan`) REFERENCES `surat_permintaan_second_opinion` (`no_pernyataan`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `bukti_surat_permintaan_second_opinion_saksikeluarga`
+--
+
+DROP TABLE IF EXISTS `bukti_surat_permintaan_second_opinion_saksikeluarga`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bukti_surat_permintaan_second_opinion_saksikeluarga` (
+  `no_pernyataan` varchar(20) NOT NULL,
+  `photo` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`no_pernyataan`),
+  CONSTRAINT `bukti_surat_permintaan_second_opinion_saksikeluarga_ibfk_1` FOREIGN KEY (`no_pernyataan`) REFERENCES `surat_permintaan_second_opinion` (`no_pernyataan`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `bukti_surat_pernyataan_memilih_dpjp`
 --
 
@@ -3004,7 +3073,7 @@ CREATE TABLE `cacat_fisik` (
   `nama_cacat` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama_cacat` (`nama_cacat`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9225,7 +9294,7 @@ CREATE TABLE `kabupaten` (
   `nm_kab` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kab`),
   UNIQUE KEY `nm_kab` (`nm_kab`)
-) ENGINE=InnoDB AUTO_INCREMENT=542 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=544 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9440,7 +9509,7 @@ CREATE TABLE `kecamatan` (
   `nm_kec` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kec`),
   UNIQUE KEY `nm_kec` (`nm_kec`)
-) ENGINE=InnoDB AUTO_INCREMENT=810 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=812 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9470,7 +9539,7 @@ CREATE TABLE `kelurahan` (
   `nm_kel` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kel`),
   UNIQUE KEY `nm_kel` (`nm_kel`)
-) ENGINE=InnoDB AUTO_INCREMENT=1101010307 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1101010309 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10875,7 +10944,7 @@ CREATE TABLE `master_tindakan` (
   UNIQUE KEY `nama` (`nama`),
   KEY `jm` (`jm`),
   KEY `jns` (`jns`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11649,7 +11718,7 @@ CREATE TABLE `operasi` (
   `no_rawat` varchar(17) NOT NULL,
   `tgl_operasi` datetime NOT NULL,
   `jenis_anasthesi` varchar(8) NOT NULL,
-  `kategori` enum('-','Khusus','Besar','Sedang','Kecil','Elektive','Emergency') DEFAULT NULL,
+  `kategori` enum('-','Ringan','Ringan Cito','Ringan Khusus','Ringan Khusus Cito','Ringan Khusus Cito Ganda','Sedang Cito','Sedang Khusus','Sedang Khusus Cito','Sedang Khusus Cito Ganda','Besar Cito','Besar Khusus','Besar Khusus Cito','Besar Khusus Cito Ganda','Khusus','Besar','Sedang','Kecil','Elektive','Emergency') DEFAULT NULL,
   `operator1` varchar(20) NOT NULL,
   `operator2` varchar(20) NOT NULL,
   `operator3` varchar(20) NOT NULL,
@@ -20604,7 +20673,7 @@ CREATE TABLE `propinsi` (
   `nm_prop` varchar(30) NOT NULL,
   PRIMARY KEY (`kd_prop`),
   UNIQUE KEY `nm_prop` (`nm_prop`)
-) ENGINE=InnoDB AUTO_INCREMENT=629 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=631 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -22283,6 +22352,7 @@ CREATE TABLE `satu_sehat_imagingstudy_radiologi` (
   `kd_jenis_prw` varchar(15) NOT NULL,
   `id_servicerequest` varchar(40) DEFAULT NULL,
   `id_imaging` varchar(40) DEFAULT NULL,
+  `acsn` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`noorder`,`kd_jenis_prw`) USING BTREE,
   KEY `kd_jenis_prw` (`kd_jenis_prw`) USING BTREE,
   CONSTRAINT `satu_sehat_imagingstudy_radiologi_ibfk_1` FOREIGN KEY (`noorder`) REFERENCES `permintaan_radiologi` (`noorder`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -26793,7 +26863,7 @@ CREATE TABLE `suku_bangsa` (
   `nama_suku_bangsa` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama_suku_bangsa` (`nama_suku_bangsa`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -27423,6 +27493,122 @@ CREATE TABLE `surat_penolakan_anjuran_medis_pembuat_pernyataan` (
   `photo` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`no_surat`),
   CONSTRAINT `surat_penolakan_anjuran_medis_pembuat_pernyataan_ibfk_1` FOREIGN KEY (`no_surat`) REFERENCES `surat_penolakan_anjuran_medis` (`no_surat`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `surat_perlindungan_dari_kekerasan`
+--
+
+DROP TABLE IF EXISTS `surat_perlindungan_dari_kekerasan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_perlindungan_dari_kekerasan` (
+  `no_surat` varchar(20) NOT NULL,
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` date NOT NULL,
+  `nama_pj` varchar(50) NOT NULL,
+  `no_ktppj` varchar(20) NOT NULL,
+  `tempat_lahirpj` varchar(20) NOT NULL,
+  `lahirpj` date NOT NULL,
+  `jkpj` enum('L','P') NOT NULL,
+  `alamatpj` varchar(100) NOT NULL,
+  `hubungan` enum('Suami','Istri','Anak','Ayah','Ibu','Saudara','Keponakan') NOT NULL,
+  `no_telp` varchar(30) NOT NULL,
+  `nip` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_surat`),
+  KEY `no_rawat` (`no_rawat`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `surat_perlindungan_dari_kekerasan_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `surat_perlindungan_dari_kekerasan_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `petugas` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `surat_perlindungan_dari_kekerasan_pembuat_permintaan`
+--
+
+DROP TABLE IF EXISTS `surat_perlindungan_dari_kekerasan_pembuat_permintaan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_perlindungan_dari_kekerasan_pembuat_permintaan` (
+  `no_surat` varchar(20) NOT NULL,
+  `photo` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`no_surat`),
+  CONSTRAINT `surat_perlindungan_dari_kekerasan_pembuat_permintaan_ibfk_1` FOREIGN KEY (`no_surat`) REFERENCES `surat_perlindungan_dari_kekerasan` (`no_surat`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `surat_permintaan_second_opinion`
+--
+
+DROP TABLE IF EXISTS `surat_permintaan_second_opinion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_permintaan_second_opinion` (
+  `no_pernyataan` varchar(20) NOT NULL,
+  `no_rawat` varchar(17) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `kd_dokter` varchar(20) NOT NULL,
+  `nip` varchar(20) NOT NULL,
+  `pembuat_pernyataan` varchar(50) NOT NULL,
+  `alamat_pembuat_pernyataan` varchar(100) NOT NULL,
+  `tgl_lahir_pembuat_pernyataan` date NOT NULL,
+  `jk_pembuat_pernyataan` enum('L','P') NOT NULL,
+  `hubungan_pembuat_pernyataan` enum('Diri Sendiri','Istri','Suami','Kerabat','Orang Tua','Anak','Saudara Kandung','Teman','Lain-lain') NOT NULL,
+  `saksi_keluarga` varchar(50) NOT NULL,
+  PRIMARY KEY (`no_pernyataan`),
+  KEY `no_rawat` (`no_rawat`),
+  KEY `nip` (`nip`),
+  KEY `kd_dokter` (`kd_dokter`),
+  CONSTRAINT `surat_permintaan_second_opinion_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `surat_permintaan_second_opinion_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `petugas` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `surat_permintaan_second_opinion_ibfk_3` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `surat_permohonan_privasi`
+--
+
+DROP TABLE IF EXISTS `surat_permohonan_privasi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_permohonan_privasi` (
+  `no_surat` varchar(20) NOT NULL,
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` date NOT NULL,
+  `kategori_privasi` enum('Identitas Diri','Informasi Medis','Batasan Pengunjung','Ruangan','Akses Media','Administrasi','Khusus','Lainnya') NOT NULL,
+  `alasan` varchar(200) DEFAULT NULL,
+  `nama_pj` varchar(50) NOT NULL,
+  `umur_pj` varchar(7) NOT NULL,
+  `no_ktppj` varchar(20) NOT NULL,
+  `jkpj` enum('L','P') NOT NULL,
+  `bertindak_atas` enum('Suami','Istri','Anak','Ayah','Saudara','Keponakan','Cucu','Kakek','Nenek','Kakak','Adik','Diri Sendiri','Ibu') NOT NULL,
+  `no_telp` varchar(30) NOT NULL,
+  `alamatpj` varchar(70) NOT NULL,
+  `nip` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_surat`),
+  KEY `no_rawat` (`no_rawat`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `surat_permohonan_privasi_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `surat_permohonan_privasi_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `petugas` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `surat_permohonan_privasi_pembuat_permohonan`
+--
+
+DROP TABLE IF EXISTS `surat_permohonan_privasi_pembuat_permohonan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_permohonan_privasi_pembuat_permohonan` (
+  `no_surat` varchar(20) NOT NULL,
+  `photo` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`no_surat`),
+  CONSTRAINT `surat_permohonan_privasi_pembuat_permohonan_ibfk_1` FOREIGN KEY (`no_surat`) REFERENCES `surat_permohonan_privasi` (`no_surat`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -28991,7 +29177,7 @@ CREATE TABLE `temporary_booking_registrasi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -29191,7 +29377,7 @@ CREATE TABLE `temporary_lama_pelayanan_radiologi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=1041 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1068 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -29241,7 +29427,7 @@ CREATE TABLE `temporary_payment` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -31812,6 +31998,9 @@ CREATE TABLE `user` (
   `mapping_prosedur_smart_klaim_bpjs` enum('true','false') DEFAULT NULL,
   `mapping_penyakit_smart_klaim_bpjs` enum('true','false') DEFAULT NULL,
   `permintaan_binrohtal` enum('true','false') DEFAULT NULL,
+  `surat_permintaan_perlindungan_dari_kekerasan` enum('true','false') DEFAULT NULL,
+  `surat_permohonan_privasi` enum('true','false') DEFAULT NULL,
+  `surat_permintaan_second_opinion` enum('true','false') DEFAULT NULL,
   `manajemen` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_questionnairerequest` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
@@ -32505,4 +32694,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-04-30 19:19:07
+-- Dump completed on 2026-05-19 15:36:17

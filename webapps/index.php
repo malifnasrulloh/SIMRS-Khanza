@@ -42,7 +42,7 @@
            if ($sesilogin==USERHYBRIDWEB.PASHYBRIDWEB){
                 echo "
                     <div id=\"navcontainer\">
-                        <div style='width: 100%; height: 100%; overflow: auto;'> 
+                        <div style='width: 100%; height: 120%; overflow: auto;'> 
                             <table width='100%' align='center' height='100%'>
                                 <tr width='100%' align='center'>
                                     <td width='25%' align='center'>
@@ -165,6 +165,20 @@
                                       <a target=_blank href=perlindungankekerasan/login.php?iyem=".encrypt_decrypt("{\"usere\":\"".USERHYBRIDWEB."\",\"passwordte\":\"".PASHYBRIDWEB."\"}","e").">                                                 
                                          <img src='images/boxing_2043124.png'/><br>
                                          Permintaan Perlindungan Dari Kekerasan                                        
+                                      </a>
+                                    </td>
+                                    <td width='25%' align='center'>
+                                      <a target=_blank href=permohonanprivasi/login.php?iyem=".encrypt_decrypt("{\"usere\":\"".USERHYBRIDWEB."\",\"passwordte\":\"".PASHYBRIDWEB."\"}","e").">                                                 
+                                         <img src='images/compliant_4252354.png'/><br>
+                                         Permohonan Privasi Pasien                                        
+                                      </a>
+                                    </td>
+                                </tr>
+                                <tr width='100%' align='center'>
+                                    <td width='25%' align='center'>
+                                      <a target=_blank href=secondopinion/login.php?iyem=".encrypt_decrypt("{\"usere\":\"".USERHYBRIDWEB."\",\"passwordte\":\"".PASHYBRIDWEB."\"}","e").">                                                 
+                                         <img src='images/conversation_3601377.png'/><br>
+                                         Permintaan Second Opinion                                       
                                       </a>
                                     </td>
                                     <td width='25%' align='center'>
