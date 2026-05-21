@@ -3,6 +3,7 @@
  */
 package bridging;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.TableColumnAdjuster;
@@ -22,6 +23,12 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -99,7 +106,16 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private static final int COL_ID_IMAGING = 20;
     private static final int COL_MODALITY = 21;
     private static final int COL_STATUS_ORTHANC = 22;
-    private static final int TOTAL_COLUMNS = 23;
+    private static final int COL_LOKASI_FILE_IMAGE = 23; // hidden column
+    private static final int COL_TGL_LAHIR = 24; // hidden column
+    private static final int COL_JK = 25; // hidden column
+    private static final int COL_NM_POLI = 26; // hidden column
+    private static final int COL_NM_DOKTER_PERUJUK = 27; // hidden column
+    /** yyyy-MM-dd from permintaan_radiologi.tgl_permintaan (for DICOM scheduling). */
+    private static final int COL_TGL_PERMINTAAN = 28;
+    /** HH:mm:ss or empty when jam is 00:00:00 / unknown. */
+    private static final int COL_JAM_PERMINTAAN = 29;
+    private static final int TOTAL_COLUMNS = 30;
 
     // -------------------------------------------------------------------------
     // Fields
@@ -146,8 +162,10 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             "ID Encounter", "No.Permintaan", "Tgl & Jam Permintaan",
             "Diagnosa Klinis", "Nama Pemeriksaan",
             "Radiologi Code", "Radiologi System", "Radiologi Display",
-            "ID Service Request", "Kode Pemeriksaan", "Lokasi Study",
-            "ASCN", "ID Imaging Study", "Modality", "Status Orthanc"
+            "ID Service Request", "Kode Pemeriksaan", "Lokasi Image",
+            "ASCN", "ID Imaging Study", "Modality", "Status Orthanc", "Lokasi File Image",
+            "Tgl Lahir", "JK", "Nm Poli", "Nm Dokter Perujuk",
+            "Tgl Permintaan", "Jam Permintaan"
         }) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -155,14 +173,12 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }
 
             final Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             @Override
@@ -1034,6 +1050,223 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 "Update ACSN & Kirim DICOM", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void BtnKirimOrthancActionPerformed(java.awt.event.ActionEvent evt) {
+        List<Integer> rows = new ArrayList<>();
+        for (int r = 0; r < tbObat.getRowCount(); r++) {
+            if (!isRowCheckboxSelected(r)) {
+                continue;
+            }
+            Object lokObj = tbObat.getValueAt(r, COL_LOKASI_IMAGE);
+            String lok = lokObj == null ? "" : lokObj.toString().trim();
+            if (!lok.equalsIgnoreCase("webapps")) {
+                continue;
+            }
+            rows.add(r);
+        }
+        if (rows.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Centang satu atau lebih baris dengan Lokasi Image = webapps.",
+                    "Kirim ke Orthanc", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (executor.isShutdown() || executor.isTerminated()) {
+            return;
+        }
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        executor.submit(() -> {
+            int[] sukgag = new int[]{0, 0};
+            try {
+                for (Integer rowIdx : rows) {
+                    final int i = rowIdx.intValue();
+
+                    SwingUtilities.invokeLater(() -> tbObat.setValueAt("Mengunduh...", i, COL_STATUS_ORTHANC));
+
+                    String noRawat = valueAtString(i, COL_NO_RAWAT);
+                    String noorder = tbObat.getValueAt(i, COL_NOORDER).toString();
+                    String kdJenis = tbObat.getValueAt(i, COL_KD_JENIS_PRW).toString();
+
+                    List<String> listLokasi = new ArrayList<>();
+                    try {
+                        PreparedStatement psImg = koneksi.prepareStatement(
+                                "select gambar_radiologi.lokasi_gambar from periksa_radiologi " +
+                                "inner join gambar_radiologi on gambar_radiologi.no_rawat=periksa_radiologi.no_rawat " +
+                                "and gambar_radiologi.tgl_periksa=periksa_radiologi.tgl_periksa " +
+                                "and gambar_radiologi.jam=periksa_radiologi.jam " +
+                                "where periksa_radiologi.no_rawat=? and periksa_radiologi.kd_jenis_prw=?");
+                        try {
+                            psImg.setString(1, noRawat);
+                            psImg.setString(2, kdJenis);
+                            ResultSet rsImg = psImg.executeQuery();
+                            while (rsImg.next()) {
+                                String lf = rsImg.getString("lokasi_gambar");
+                                if (lf != null && !lf.trim().isEmpty()) {
+                                    listLokasi.add(lf.trim());
+                                }
+                            }
+                        } finally {
+                            if (psImg != null) psImg.close();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Error fetch gambar: " + ex);
+                    }
+
+                    if (listLokasi.isEmpty()) {
+                        Object fnObj = tbObat.getValueAt(i, COL_LOKASI_FILE_IMAGE);
+                        String lf = fnObj == null ? "" : fnObj.toString().trim();
+                        if (!lf.isEmpty()) {
+                            listLokasi.add(lf);
+                        }
+                    }
+
+                    if (listLokasi.isEmpty()) {
+                        SwingUtilities.invokeLater(() -> tbObat.setValueAt("File image tidak ada", i, COL_STATUS_ORTHANC));
+                        sukgag[1]++;
+                        continue;
+                    }
+
+                    String acsn = buildAcsn(noorder, kdJenis);
+                    String patientId = tbObat.getValueAt(i, COL_NO_RM).toString();
+                    String procedureDesc = valueAtString(i, COL_NM_PERAWATAN);
+                    String clinicalDiag = valueAtString(i, COL_DIAGNOSA);
+
+                    Object modObj = tbObat.getValueAt(i, COL_MODALITY);
+                    String modality = modObj == null ? "-" : modObj.toString().trim();
+                    if (modality.isEmpty() || "-".equals(modality)) {
+                        modality = "OT";
+                    }
+
+                    Object tglP = tbObat.getValueAt(i, COL_TGL_PERMINTAAN);
+                    Object jamP = tbObat.getValueAt(i, COL_JAM_PERMINTAAN);
+                    String tglPermStr = tglP == null ? "" : tglP.toString();
+                    String jamNorm = normalizeJamPermintaan(jamP == null ? "" : jamP.toString());
+                    String scheduledDate = dicomStudyDateFromYmd(tglPermStr);
+                    String scheduledTime = toDicomTimeFromSqlTime(jamNorm);
+
+                    String physicianName = valueAtString(i, COL_NM_DOKTER_PERUJUK);
+                    String stationName = valueAtString(i, COL_NM_POLI);
+                    String aeTitle = sanitizeAeTitle(modality);
+
+                    Map<String, Object> sqItem = new LinkedHashMap<>();
+                    sqItem.put("Modality", modality);
+                    sqItem.put("ScheduledStationAETitle", aeTitle);
+                    putDicomIfNonempty(sqItem, "ScheduledProcedureStepStartDate", scheduledDate);
+                    sqItem.put("ScheduledProcedureStepStartTime", scheduledTime);
+                    putDicomIfNonempty(sqItem, "ScheduledPerformingPhysicianName", physicianName);
+                    sqItem.put("ScheduledProcedureStepDescription", procedureDesc);
+                    sqItem.put("ScheduledProcedureStepID", noorder);
+                    putDicomIfNonempty(sqItem, "ScheduledStationName", stationName);
+                    putDicomIfNonempty(sqItem, "CommentsOnTheScheduledProcedureStep", clinicalDiag);
+
+                    String orthancModifyJson;
+                    try {
+                        orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc,
+                                noorder, scheduledDate, scheduledTime,
+                                physicianName, stationName, aeTitle,
+                                sanitizeDicomPersonName(valueAtString(i, COL_NAMA_PASIEN)),
+                                valueAtString(i, COL_TGL_LAHIR), valueAtString(i, COL_JK),
+                                Collections.singletonList(sqItem));
+                    } catch (JsonProcessingException ex) {
+                        System.out.println("buildOrthancModifyPayloadJson : " + ex);
+                        SwingUtilities.invokeLater(() -> tbObat.setValueAt("Gagal bikin payload", i, COL_STATUS_ORTHANC));
+                        sukgag[1]++;
+                        continue;
+                    }
+
+                    String pn = sanitizeDicomPersonName(valueAtString(i, COL_NAMA_PASIEN));
+                    List<String> keys = new ArrayList<>();
+                    keys.add("Modality=" + modality);
+                    keys.add("PatientID=" + patientId.replace("=", ""));
+                    if (!scheduledDate.isEmpty()) {
+                        keys.add("StudyDate=" + scheduledDate);
+                    }
+                    if (!pn.isEmpty() && !pn.contains("=")) {
+                        keys.add("PatientName=" + pn);
+                    }
+                    if (!acsn.isEmpty() && !acsn.contains("=")) {
+                        keys.add("AccessionNumber=" + acsn);
+                    }
+
+                    Map<String, Object> paramMap = new LinkedHashMap<>();
+                    paramMap.put("output_sop_class", "sec-capture");
+                    paramMap.put("keys", keys);
+                    String parametersJson;
+                    try {
+                        parametersJson = mapper.writeValueAsString(paramMap);
+                    } catch (JsonProcessingException ex) {
+                        parametersJson = "{\"output_sop_class\":\"sec-capture\",\"keys\":[\"Modality=" + modality + "\"]}";
+                    }
+
+                    int rowSuccess = 0;
+                    int rowFail = 0;
+                    String lastErr = "";
+                    
+                    for (int imgIdx = 0; imgIdx < listLokasi.size(); imgIdx++) {
+                        String lokasiFile = listLokasi.get(imgIdx);
+                        final String statusTxt = "Mengunduh " + (imgIdx + 1) + "/" + listLokasi.size() + "...";
+                        SwingUtilities.invokeLater(() -> tbObat.setValueAt(statusTxt, i, COL_STATUS_ORTHANC));
+
+                        String url = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB()
+                                + "/" + koneksiDB.HYBRIDWEB() + "/radiologi/" + lokasiFile;
+                        byte[] fileData = orthanc.AmbilGambarWebapps(url, true);
+                        if (fileData == null || fileData.length == 0) {
+                            rowFail++;
+                            lastErr = "Gagal unduh gambar";
+                            continue;
+                        }
+
+                        final String uploadTxt = "Mengirim " + (imgIdx + 1) + "/" + listLokasi.size() + "...";
+                        SwingUtilities.invokeLater(() -> tbObat.setValueAt(uploadTxt, i, COL_STATUS_ORTHANC));
+                        
+                        JsonNode result = orthanc.KirimKeDicomConverter(fileData, lokasiFile, parametersJson, orthancModifyJson);
+                        if (result != null && "success".equalsIgnoreCase(result.path("status").asText().trim())) {
+                            rowSuccess++;
+                        } else {
+                            rowFail++;
+                            lastErr = summarizeDicomConverterApiError(result);
+                        }
+                    }
+
+                    if (rowSuccess > 0 && rowFail == 0) {
+                        final String acsnF = acsn;
+                        final String finalTxt = "Sukses konversi & Orthanc (" + rowSuccess + " img)";
+                        SwingUtilities.invokeLater(() -> {
+                            tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
+                            tbObat.setValueAt(acsnF, i, COL_ACSN);
+                            tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                            tbObat.setValueAt(false, i, COL_PILIH);
+                        });
+                        sukgag[0]++;
+                    } else if (rowSuccess > 0 && rowFail > 0) {
+                        final String acsnF = acsn;
+                        final String finalTxt = "Parsial: " + rowSuccess + " ok, " + rowFail + " gagal (" + lastErr + ")";
+                        SwingUtilities.invokeLater(() -> {
+                            tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
+                            tbObat.setValueAt(acsnF, i, COL_ACSN);
+                        });
+                        sukgag[0]++;
+                    } else {
+                        final String errOut = "Gagal: " + lastErr;
+                        SwingUtilities.invokeLater(() -> tbObat.setValueAt(errOut, i, COL_STATUS_ORTHANC));
+                        sukgag[1]++;
+                    }
+                }
+            } finally {
+                final int ok = sukgag[0];
+                final int fail = sukgag[1];
+                SwingUtilities.invokeLater(() -> {
+                    if (isDisplayable()) {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                    if (ok > 0 || fail > 0) {
+                        JOptionPane.showMessageDialog(SatuSehatKirimServiceRequestRadiologi.this,
+                                "Konversi & kirim webapps → Orthanc selesai.\nBerhasil: " + ok + "   Gagal: " + fail,
+                                "Kirim ke Orthanc", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                });
+            }
+        });
+    }
+
     // =========================================================================
     // Popup menu
     // =========================================================================
@@ -1182,6 +1415,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         BtnKirim.setEnabled(allowed);
         BtnUpdate.setEnabled(allowed);
         BtnPrint.setEnabled(allowed);
+        BtnKirimOrthanc.setEnabled(allowed);
         BtnUpdateACSNOrthanc.setEnabled(allowed);
         BtnKirimDICOMRouter.setEnabled(allowed);
         BtnUpdateDanKirim.setEnabled(allowed);
@@ -1202,6 +1436,181 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         return noorder.replaceAll("PR", "") + kdJenisPrw;
     }
 
+    private boolean isRowCheckboxSelected(int row) {
+        Object v = tbObat.getValueAt(row, COL_PILIH);
+        return Boolean.TRUE.equals(v) || "true".equalsIgnoreCase(String.valueOf(v));
+    }
+
+    private String valueAtString(int row, int col) {
+        Object o = tbObat.getValueAt(row, col);
+        return o == null ? "" : o.toString();
+    }
+
+    private String summarizeDicomConverterApiError(JsonNode result) {
+        if (result == null) {
+            return "Tanpa jawaban dari server";
+        }
+        String msg = result.path("error").asText().trim();
+        String code = result.path("code").asText().trim();
+        String details = result.path("details").asText().trim();
+        StringBuilder sb = new StringBuilder();
+        if (!code.isEmpty()) {
+            sb.append(code);
+        }
+        if (!msg.isEmpty()) {
+            if (sb.length() > 0) {
+                sb.append(" — ");
+            }
+            sb.append(msg);
+        }
+        if (!details.isEmpty()) {
+            if (sb.length() > 0) {
+                sb.append(' ');
+            }
+            sb.append('(').append(details).append(')');
+        }
+        return sb.length() > 0 ? sb.toString() : result.toString();
+    }
+
+    private static String normalizeJamPermintaan(String jamSql) {
+        if (jamSql == null) {
+            return "";
+        }
+        String j = jamSql.trim();
+        if (j.isEmpty() || "00:00:00".equals(j)) {
+            return "";
+        }
+        return j;
+    }
+
+    private static String dicomStudyDateFromYmd(String tglHyphen) {
+        if (tglHyphen == null || tglHyphen.length() < 10) {
+            return "";
+        }
+        return tglHyphen.substring(0, 10).replace("-", "");
+    }
+
+    private static String toDicomTimeFromSqlTime(String hhmmSs) {
+        if (hhmmSs == null || hhmmSs.isEmpty()) {
+            return "000000";
+        }
+        String[] p = hhmmSs.trim().split(":");
+        int h = 0;
+        int m = 0;
+        int s = 0;
+        try {
+            if (p.length >= 1) {
+                h = Integer.parseInt(p[0]);
+            }
+            if (p.length >= 2) {
+                m = Integer.parseInt(p[1]);
+            }
+            if (p.length >= 3) {
+                s = Integer.parseInt(p[2]);
+            }
+        } catch (NumberFormatException ex) {
+            return "000000";
+        }
+        return String.format("%02d%02d%02d", h, m, s);
+    }
+
+    /** Basic cleanup for PN; avoids control chars. */
+    private static String sanitizeDicomPersonName(String nm) {
+        if (nm == null) {
+            return "";
+        }
+        return nm.replace('\r', ' ').replace('\n', ' ').trim();
+    }
+
+    private static String sanitizeAeTitle(String modalityBasis) {
+        String m = modalityBasis == null ? "OT" : modalityBasis.trim().toUpperCase();
+        if (m.isEmpty() || "-".equals(m)) {
+            m = "OT";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < m.length(); i++) {
+            char c = m.charAt(i);
+            if (Character.isLetterOrDigit(c) || c == '_') {
+                sb.append(c);
+            }
+        }
+        if (sb.length() == 0) {
+            sb.append("OT");
+        }
+        String out = sb + "_STATION";
+        return out.length() <= 16 ? out : out.substring(0, 16);
+    }
+
+    private String buildOrthancModifyPayloadJson(
+            String acsn,
+            String patientId,
+            String modality,
+            String procedureDesc,
+            String noorder,
+            String scheduledDate,
+            String scheduledTime,
+            String physicianName,
+            String stationName,
+            String aeTitle,
+            String patientName,
+            String patientBirthDate,
+            String patientSex,
+            List<Map<String, Object>> scheduledProcedureStepSequence
+    ) throws JsonProcessingException {
+        Map<String, Object> replace = new LinkedHashMap<>();
+        putDicomIfNonempty(replace, "AccessionNumber", acsn);
+        putDicomIfNonempty(replace, "PatientName", patientName);
+        putDicomIfNonempty(replace, "PatientID", patientId);
+        putDicomIfNonempty(replace, "PatientBirthDate", patientBirthDate);
+        putDicomIfNonempty(replace, "PatientSex", patientSex);
+        putDicomIfNonempty(replace, "RequestedProcedureDescription", procedureDesc);
+        putDicomIfNonempty(replace, "RequestedProcedureID", noorder);
+        putDicomIfNonempty(replace, "ReasonForRequestedProcedure", acsn);
+        putDicomIfNonempty(replace, "Modality", modality);
+        putDicomIfNonempty(replace, "ScheduledStationAETitle", aeTitle);
+        putDicomIfNonempty(replace, "ScheduledProcedureStepStartDate", scheduledDate);
+        if (scheduledTime != null && !scheduledTime.trim().isEmpty()) {
+            replace.put("ScheduledProcedureStepStartTime", scheduledTime);
+        }
+        putDicomIfNonempty(replace, "ScheduledPerformingPhysicianName", physicianName);
+        putDicomIfNonempty(replace, "ScheduledProcedureStepDescription", procedureDesc);
+        putDicomIfNonempty(replace, "ScheduledProcedureStepID", noorder);
+        putDicomIfNonempty(replace, "ScheduledStationName", stationName);
+        replace.put("ScheduledProcedureStepSequence", scheduledProcedureStepSequence);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("Replace", replace);
+        body.put("Remove", Collections.emptyList());
+        body.put("Keep", Collections.emptyList());
+        body.put("KeepSource", Boolean.FALSE);
+        body.put("KeepLabels", Boolean.TRUE);
+        body.put("Force", Boolean.TRUE);
+        return mapper.writeValueAsString(body);
+    }
+
+    private static void putDicomIfNonempty(Map<String, Object> dest, String tag, String value) {
+        if (value != null && !value.trim().isEmpty()) {
+            dest.put(tag, value.trim());
+        }
+    }
+
+    private boolean orthancStudyExistsCached(String noRM, String studyDateYYYYMMDD, String modality,
+            Map<String, Boolean> cache) {
+        if (modality == null || modality.isEmpty() || "-".equals(modality)) {
+            return false;
+        }
+        String key = noRM + "|" + studyDateYYYYMMDD + "|" + modality;
+        Boolean hit = cache.get(key);
+        if (hit != null) {
+            return hit;
+        }
+        JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, studyDateYYYYMMDD,
+                studyDateYYYYMMDD, modality);
+        boolean ok = studies != null && studies.isArray() && studies.size() > 0;
+        cache.put(key, ok);
+        return ok;
+    }
+
     /**
      * Resolves the Orthanc internal study ID for a given table row. Uses a
      * strict modality-filtered search (PatientID + date + ModalitiesInStudy) to
@@ -1215,7 +1624,10 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private String resolveOrthancStudyId(int row) {
         String noRM = tbObat.getValueAt(row, COL_NO_RM).toString().trim();
         String kdJenisPrw = tbObat.getValueAt(row, COL_KD_JENIS_PRW).toString().trim();
-        String tglPermintaan = tbObat.getValueAt(row, COL_TGL_JAM).toString().trim();
+        String tglPermintaan = valueAtString(row, COL_TGL_PERMINTAAN);
+        if (tglPermintaan.length() < 10) {
+            tglPermintaan = tbObat.getValueAt(row, COL_TGL_JAM).toString().trim();
+        }
 
         // Resolve DICOM modality from the procedure code mapping
         String modality = modalityMapper.getModality(kdJenisPrw);
@@ -1229,7 +1641,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             System.out.println("Orthanc Skip : Tanggal permintaan tidak valid untuk baris " + row);
             return "";
         }
-        String tanggal = tglPermintaan.substring(0, 10).replaceAll("-", "");
+        String tanggal = dicomStudyDateFromYmd(tglPermintaan);
 
         // Query Orthanc with modality filter
         JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, tanggal, tanggal, modality);
@@ -1395,39 +1807,46 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     }
 
     /**
-     * Loads data into the table from the database. The "Modality" column (20)
-     * is resolved from the local mapping file. "Status Orthanc" column (21) is
-     * initialised to empty — it is populated at runtime by the Orthanc workflow
-     * buttons.
+     * Loads data into the table from the database.
+     * Lokasi Image prefers a live Orthanc match (PatientID + study date + modality);
+     * id_imaging (Satu Sehat) does not imply physical storage in Orthanc.
+     * Webapps file path comes from {@code gambar_radiologi} joined on hasil
+     * (tgl_hasil / jam_hasil).
      */
     private void tampil() {
         Valid.tabelKosong(tabMode);
+        Map<String, Boolean> orthancHitCache = new HashMap<>(128);
         try {
-            koneksi.prepareStatement("select gambar_radiologi.lokasi_gambar from gambar_radiologi where gambar_radiologi.no_rawat=? and gambar_radiologi.tgl_periksa=? and gambar_radiologi.jam=? ");
             ps = koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp as ktpdokter,"
+                    "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,pasien.tgl_lahir,pasien.jk,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp as ktpdokter,"
                     + "satu_sehat_encounter.id_encounter,permintaan_radiologi.noorder,permintaan_radiologi.tgl_permintaan,permintaan_radiologi.jam_permintaan,permintaan_radiologi.diagnosa_klinis,"
                     + "jns_perawatan_radiologi.nm_perawatan,satu_sehat_mapping_radiologi.code,satu_sehat_mapping_radiologi.system,satu_sehat_mapping_radiologi.display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,permintaan_pemeriksaan_radiologi.kd_jenis_prw, "
-                    + "ifnull(gambar_radiologi.lokasi_gambar, '') as lokasi_gambar"
-                    + "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn, ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging "
-                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "ifnull(gambar_radiologi.lokasi_gambar, '') as lokasi_gambar, "
+                    + "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn, ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging, "
+                    + "ifnull(poliklinik.nm_poli,'') as nm_poli, ifnull(dokter.nm_dokter,'') as nm_dokter_perujuk "
+                    + "from permintaan_radiologi "
+                    + "inner join reg_periksa on permintaan_radiologi.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "inner join pegawai on pegawai.nik=reg_periksa.kd_dokter "
                     + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "
-                    + "inner join permintaan_radiologi on permintaan_radiologi.no_rawat=reg_periksa.no_rawat "
                     + "inner join permintaan_pemeriksaan_radiologi on permintaan_pemeriksaan_radiologi.noorder=permintaan_radiologi.noorder "
                     + "inner join jns_perawatan_radiologi on jns_perawatan_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
                     + "inner join satu_sehat_mapping_radiologi on satu_sehat_mapping_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                    + "left join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
+                    + "left join dokter on permintaan_radiologi.dokter_perujuk=dokter.kd_dokter "
                     + "left join satu_sehat_servicerequest_radiologi on satu_sehat_servicerequest_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder "
-                    + "left join gambar_radiologi on gambar_radiologi.no_rawat = reg_periksa.no_rawat"
+                    + "left join periksa_radiologi on periksa_radiologi.no_rawat=permintaan_radiologi.no_rawat and periksa_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
+                    + "left join gambar_radiologi on gambar_radiologi.no_rawat=periksa_radiologi.no_rawat and gambar_radiologi.tgl_periksa=periksa_radiologi.tgl_periksa and gambar_radiologi.jam=periksa_radiologi.jam "
                     + "left join satu_sehat_imagingstudy_radiologi on satu_sehat_imagingstudy_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder "
-                    + "and satu_sehat_servicerequest_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
-                    + "where reg_periksa.tgl_registrasi between ? and ? "
+                    + "and satu_sehat_imagingstudy_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
+                    + "where permintaan_radiologi.tgl_permintaan between ? and ? "
                     + (TCari.getText().equals("") ? ""
-                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    : "and (permintaan_radiologi.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
                     + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.nama like ? or "
                     + "jns_perawatan_radiologi.nm_perawatan like ? or "
-                    + "satu_sehat_mapping_radiologi.code like ? or permintaan_radiologi.noorder like ?)"));
+                    + "satu_sehat_mapping_radiologi.code like ? or permintaan_radiologi.noorder like ?) "
+                    + "group by permintaan_pemeriksaan_radiologi.noorder, permintaan_pemeriksaan_radiologi.kd_jenis_prw"));
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
@@ -1439,12 +1858,35 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     String kdJenisPrw = rs.getString("kd_jenis_prw");
-                    String modality = modalityMapper.getModality(kdJenisPrw);
+                    String mappedModality = modalityMapper.getModality(kdJenisPrw);
+                    String modalityCol = mappedModality != null && !mappedModality.isEmpty() ? mappedModality : "-";
+
+                    String lokasiGambar = rs.getString("lokasi_gambar");
+                    if (lokasiGambar == null) {
+                        lokasiGambar = "";
+                    }
+                    lokasiGambar = lokasiGambar.trim();
+
+                    String tglPermRaw = rs.getString("tgl_permintaan");
+                    String jamPerm = normalizeJamPermintaan(rs.getString("jam_permintaan"));
+                    String tglJamDisplay = (tglPermRaw == null ? "" : tglPermRaw)
+                            + (jamPerm.isEmpty() ? "" : (" " + jamPerm));
+
+                    String noRm = rs.getString("no_rkm_medis");
+                    String tanggalDic = dicomStudyDateFromYmd(tglPermRaw == null ? "" : tglPermRaw);
+
+                    String lokasiDisplay = "-";
+                    if (mappedModality != null && !mappedModality.isEmpty()
+                            && orthancStudyExistsCached(noRm, tanggalDic, mappedModality, orthancHitCache)) {
+                        lokasiDisplay = "orthanc";
+                    } else if (!lokasiGambar.isEmpty()) {
+                        lokasiDisplay = "webapps";
+                    }
 
                     tabMode.addRow(new Object[]{
                         false,
                         rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis"),
+                        noRm,
                         rs.getString("nm_pasien"),
                         rs.getString("no_ktp"),
                         rs.getString("kd_dokter"),
@@ -1452,7 +1894,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         rs.getString("ktpdokter"),
                         rs.getString("id_encounter"),
                         rs.getString("noorder"),
-                        rs.getString("tgl_permintaan") + " " + rs.getString("jam_permintaan"),
+                        tglJamDisplay,
                         rs.getString("diagnosa_klinis"),
                         rs.getString("nm_perawatan"),
                         rs.getString("code"),
@@ -1460,10 +1902,18 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         rs.getString("display"),
                         rs.getString("id_servicerequest"),
                         kdJenisPrw,
+                        lokasiDisplay,
                         rs.getString("acsn"),
                         rs.getString("id_imaging"),
-                        modality != null ? modality : "-", // col 20: Modality
-                        "" // col 21: Status Orthanc (runtime)
+                        modalityCol,
+                        "",
+                        lokasiGambar,
+                        rs.getString("tgl_lahir").replaceAll("-", ""),
+                        rs.getString("jk").equals("L") ? "M" : "F",
+                        rs.getString("nm_poli"),
+                        rs.getString("nm_dokter_perujuk"),
+                        tglPermRaw == null ? "" : tglPermRaw,
+                        jamPerm
                     });
                 }
             } catch (Exception e) {

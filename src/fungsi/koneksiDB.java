@@ -1387,6 +1387,32 @@ public class koneksiDB {
         return var;
     }
     
+    public static String URLDICOMCONVERTER(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("URLDICOMCONVERTER");
+            if (var == null || var.isEmpty()) {
+                var = "http://localhost"; // fallback
+            }
+        }catch(Exception e){
+            var="http://localhost"; 
+        }
+        return var;
+    }
+    
+    public static String PORTDICOMCONVERTER(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=EnkripsiAES.decrypt(prop.getProperty("PORTDICOMCONVERTER"));
+            if (var == null || var.isEmpty()) {
+                var = "8080"; // fallback
+            }
+        }catch(Exception e){
+            var="8080"; 
+        }
+        return var;
+    }
+    
     public static String ADDANTRIANAPIMOBILEJKN(){
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);

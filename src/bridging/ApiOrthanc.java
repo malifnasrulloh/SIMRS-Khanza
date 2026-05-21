@@ -24,6 +24,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -345,6 +350,111 @@ public class ApiOrthanc {
                     "Gagal mengambil Gambar DCM dari Orthanc, silahkan hubungi administrator ..!!");
         }
         return root;
+    }
+
+    public byte[] AmbilGambarWebapps(String url) {
+        return AmbilGambarWebapps(url, false);
+    }
+
+    /**
+     * Downloads an image from the hybrid webapps URL (radiologi folder).
+     *
+     * @param url    full HTTP URL to the image file
+     * @param silent when {@code true}, no {@link JOptionPane} on failure (batch use)
+     */
+    public byte[] AmbilGambarWebapps(String url, boolean silent) {
+        System.out.println("Mengambil Gambar : " + url);
+        try {
+            headers = new HttpHeaders();
+            headers.add("Accept", "image/*,*/*");
+            headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            ResponseEntity<byte[]> response = getRest().exchange(
+                    url,
+                    HttpMethod.GET, entity, byte[].class);
+            System.out.println("Pengambilan gambar dari Webapps berhasil.");
+            return response.getBody();
+        } catch (Exception e) {
+            System.out.println("Webapps Ambil Gambar error : " + e);
+            if (!silent) {
+                JOptionPane.showMessageDialog(null,
+                        "Gagal mengambil Gambar dari Webapps, silahkan hubungi administrator ..!!");
+            }
+        }
+        return null;
+    }
+    
+    // =========================================================================
+    // Dicom Converter Integration
+    // =========================================================================
+    
+    private String dicomConverterSendToOrthancUrl() {
+        String base = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
+        if (base.isEmpty()) {
+            base = "http://localhost";
+        }
+        while (base.endsWith("/")) {
+            base = base.substring(0, base.length() - 1);
+        }
+        if (base.matches("(?i)^https?://[^/:]+:\\d+(/.*)?$")) {
+            return base + "/api/v1/send-to-orthanc";
+        }
+        String port = koneksiDB.PORTDICOMCONVERTER() == null ? "8080" : koneksiDB.PORTDICOMCONVERTER().trim();
+        return base + ":" + port + "/api/v1/send-to-orthanc";
+    }
+
+    /**
+     * Converts a downloaded image and sends it to Orthanc via dicom-converter-api.
+     *
+     * @param fileData           The byte array of the image file
+     * @param filename           The name of the file (e.g. "image.jpg")
+     * @param parametersJson     JSON parameters for the converter (e.g. SOP class, Modality)
+     * @param orthancModifyJson JSON payload for Orthanc tags modification
+     * @return JsonNode of the API response (success or structured error body)
+     */
+    public JsonNode KirimKeDicomConverter(byte[] fileData, String filename, String parametersJson, String orthancModifyJson) {
+        System.out.println("Kirim file ke dicom-converter-api : " + filename);
+        try {
+            String url = dicomConverterSendToOrthancUrl();
+            System.out.println("URL Converter : " + url);
+
+            HttpHeaders multipartHeaders = new HttpHeaders();
+            multipartHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+            ByteArrayResource fileResource = new ByteArrayResource(fileData) {
+                @Override
+                public String getFilename() {
+                    return filename;
+                }
+            };
+
+            body.add("file", fileResource);
+            body.add("filetype", "img");
+            body.add("parameters", parametersJson);
+            body.add("orthanc_modify", orthancModifyJson);
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntityMultipart = new HttpEntity<>(body, multipartHeaders);
+
+            String responseStr = getRest().exchange(url, HttpMethod.POST, requestEntityMultipart, String.class).getBody();
+            System.out.println("Result dicom-converter-api : " + responseStr);
+            return mapper.readTree(responseStr);
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            String b = ex.getResponseBodyAsString();
+            System.out.println("KirimKeDicomConverter HTTP " + ex.getStatusCode() + " : " + b);
+            try {
+                if (b != null && !b.isEmpty()) {
+                    return mapper.readTree(b);
+                }
+            } catch (Exception parseEx) {
+                System.out.println("KirimKeDicomConverter parse error body : " + parseEx);
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("Notifikasi KirimKeDicomConverter : " + e);
+            return null;
+        }
     }
 
     // =========================================================================
