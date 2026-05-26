@@ -2,10 +2,9 @@
  * RadiologyModalityMapper.java
  *
  * Utility class to load and cache the mapping from kd_jenis_prw (radiology
- * procedure code) to DICOM modality type (CT, US, CR, MR, etc.).
+ * procedure code) to DICOM modality type (CT, US, CR, MR, etc.) and AE Titles.
  *
- * The mapping data is read once from ./cache/mapping_tindakan_radiologi.iyem,
- * following the same iyem-file pattern used by alergisatusehat.iyem.
+ * The mapping data is read once from ./cache/mapping_tindakan_radiologi.iyem.
  */
 package bridging;
 
@@ -15,11 +14,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Provides a cached, singleton lookup from radiology procedure code
- * (kd_jenis_prw) to DICOM modality identifier (CT, US, CR, DX, MR, MG, etc.).
+ * (kd_jenis_prw) to DICOM modality identifier (CT, US, CR, DX, MR, MG, etc.)
+ * and Scheduled Station AE Title.
  *
  * The mapping file is read exactly once per JVM lifetime. Use {@link #reload()}
  * to force a re-read after the file has been edited externally.
@@ -27,17 +28,15 @@ import java.util.Map;
  * Expected JSON format inside mapping_tindakan_radiologi.iyem:
  * <pre>
  * {
+ *   "default_aet": {
+ *     "CR": "CR_STATION",
+ *     "US": "USG_STATION"
+ *   },
  *   "mapping": [
  *     { "kd_jenis_prw": "RD001", "nm_perawatan": "CT Scan Kepala", "modality": "CT" },
- *     { "kd_jenis_prw": "RD002", "nm_perawatan": "USG Abdomen",    "modality": "US" }
+ *     { "kd_jenis_prw": "RD002", "nm_perawatan": "USG Abdomen",    "modality": "US", "aet": "USG_STATION_ALT" }
  *   ]
  * }
- * </pre>
- *
- * Usage:
- * <pre>
- *   RadiologyModalityMapper mapper = RadiologyModalityMapper.getInstance();
- *   String modality = mapper.getModality("RD001");  // returns "CT" or null
  * </pre>
  *
  * @author malifnasruloh
@@ -51,6 +50,8 @@ public class RadiologyModalityMapper {
 
     // Unmodifiable after construction / reload to prevent accidental mutation.
     private Map<String, String> modalityMap = new HashMap<>();
+    private Map<String, String> procedureAetMap = new HashMap<>();
+    private Map<String, String> defaultAetMap = new HashMap<>();
     private boolean loaded = false;
 
     // Private constructor enforces singleton pattern.
@@ -87,6 +88,34 @@ public class RadiologyModalityMapper {
             return null;
         }
         return modalityMap.get(kdJenisPrw.trim());
+    }
+
+    /**
+     * Resolves the AE Title for a given procedure code and modality using
+     * a 3-tier lookup strategy:
+     * 1. Check for procedure-specific AET
+     * 2. Check for modality-specific default AET
+     * 3. Fallback to global fallback AET
+     *
+     * @param kdJenisPrw the procedure code
+     * @param modality the modality code
+     * @param defaultFallback the global fallback AE Title
+     * @return the resolved AE Title
+     */
+    public String getAeTitle(String kdJenisPrw, String modality, String defaultFallback) {
+        if (kdJenisPrw != null) {
+            String customAet = procedureAetMap.get(kdJenisPrw.trim());
+            if (customAet != null && !customAet.trim().isEmpty()) {
+                return customAet.trim();
+            }
+        }
+        if (modality != null) {
+            String defaultAet = defaultAetMap.get(modality.trim().toUpperCase());
+            if (defaultAet != null && !defaultAet.trim().isEmpty()) {
+                return defaultAet.trim();
+            }
+        }
+        return defaultFallback;
     }
 
     /**
@@ -138,6 +167,8 @@ public class RadiologyModalityMapper {
      */
     public synchronized void reload() {
         modalityMap.clear();
+        procedureAetMap.clear();
+        defaultAetMap.clear();
         loaded = false;
         loadMapping();
     }
@@ -167,30 +198,54 @@ public class RadiologyModalityMapper {
             reader = new FileReader(file);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(reader);
-            JsonNode mappingArray = root.path("mapping");
 
+            // Parse default_aet map
+            JsonNode defaultAetNode = root.path("default_aet");
+            Map<String, String> tempDefaultAet = new HashMap<>();
+            if (defaultAetNode.isObject()) {
+                Iterator<Map.Entry<String, JsonNode>> fields = defaultAetNode.fields();
+                while (fields.hasNext()) {
+                    Map.Entry<String, JsonNode> field = fields.next();
+                    String modalityKey = field.getKey().trim().toUpperCase();
+                    String aetValue = field.getValue().asText().trim();
+                    if (!modalityKey.isEmpty() && !aetValue.isEmpty()) {
+                        tempDefaultAet.put(modalityKey, aetValue);
+                    }
+                }
+            }
+            defaultAetMap = tempDefaultAet;
+
+            // Parse mapping array
+            JsonNode mappingArray = root.path("mapping");
             if (!mappingArray.isArray()) {
                 System.out.println("RadiologyModalityMapper : Format file tidak valid — field 'mapping' bukan array");
                 loaded = true;
                 return;
             }
 
-            Map<String, String> temp = new HashMap<>();
+            Map<String, String> tempModality = new HashMap<>();
+            Map<String, String> tempProcedureAet = new HashMap<>();
             for (JsonNode entry : mappingArray) {
                 String kd = entry.path("kd_jenis_prw").asText().trim();
                 String modality = entry.path("modality").asText().trim().toUpperCase();
+                String aet = entry.path("aet").asText().trim();
 
                 // Skip blank entries and design-time placeholder rows
                 if (kd.isEmpty() || modality.isEmpty() || "XXXXXX".equals(kd)) {
                     continue;
                 }
-                temp.put(kd, modality);
+                tempModality.put(kd, modality);
+                if (!aet.isEmpty()) {
+                    tempProcedureAet.put(kd, aet);
+                }
             }
 
-            modalityMap = temp;
+            modalityMap = tempModality;
+            procedureAetMap = tempProcedureAet;
             loaded = true;
             System.out.println("RadiologyModalityMapper : Berhasil memuat " + modalityMap.size()
-                    + " mapping modality radiologi dari " + MAPPING_FILE);
+                    + " mapping modality, " + procedureAetMap.size() + " custom AET, dan "
+                    + defaultAetMap.size() + " default AET dari " + MAPPING_FILE);
 
         } catch (Exception e) {
             System.out.println("RadiologyModalityMapper : Gagal membaca file mapping: " + e);

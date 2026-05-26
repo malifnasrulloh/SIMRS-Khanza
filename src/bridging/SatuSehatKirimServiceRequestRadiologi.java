@@ -1030,7 +1030,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
                 String physicianName = valueAtString(row, COL_NM_DOKTER_PERUJUK);
                 String stationName = valueAtString(row, COL_NM_POLI);
-                String aeTitle = sanitizeAeTitle(modality);
+                String aeTitle = modalityMapper.getAeTitle(kdJenisPrw, modality, koneksiDB.AETITLE_DICOMROUTER());
 
                 Map<String, Object> sqItem = new LinkedHashMap<>();
                 sqItem.put("Modality", modality);
@@ -1045,7 +1045,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
                 String orthancModifyJson;
                 try {
-                    orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc,
+                    orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc, clinicalDiag,
                             noorder, scheduledDate, scheduledTime,
                             physicianName, stationName, aeTitle,
                             sanitizeDicomPersonName(valueAtString(row, COL_NAMA_PASIEN)),
@@ -1212,7 +1212,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
                     String physicianName = valueAtString(i, COL_NM_DOKTER_PERUJUK);
                     String stationName = valueAtString(i, COL_NM_POLI);
-                    String aeTitle = sanitizeAeTitle(modality);
+                    String aeTitle = modalityMapper.getAeTitle(kdJenis, modality, koneksiDB.AETITLE_DICOMROUTER());
 
                     Map<String, Object> sqItem = new LinkedHashMap<>();
                     sqItem.put("Modality", modality);
@@ -1227,7 +1227,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
                     String orthancModifyJson;
                     try {
-                        orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc,
+                        orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc, clinicalDiag,
                                 noorder, scheduledDate, scheduledTime,
                                 physicianName, stationName, aeTitle,
                                 sanitizeDicomPersonName(valueAtString(i, COL_NAMA_PASIEN)),
@@ -1503,7 +1503,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
      * noorder="PR240001", kdJenisPrw="CT01" → "240001CT01"
      */
     private String buildAcsn(String noorder, String kdJenisPrw) {
-        return noorder.replaceAll("PR", "") + kdJenisPrw;
+        String base = noorder.replace("PR", "") + kdJenisPrw;
+        return base.replaceAll("[^a-zA-Z0-9_\\-]", "_");
     }
 
     private boolean isRowCheckboxSelected(int row) {
@@ -1618,6 +1619,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             String patientId,
             String modality,
             String procedureDesc,
+            String clinicalDiag,
             String noorder,
             String scheduledDate,
             String scheduledTime,
@@ -1655,11 +1657,15 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         putDicomIfNonempty(replace, "PatientSex", patientSex);
         putDicomIfNonempty(replace, "RequestedProcedureDescription", procedureDesc);
         putDicomIfNonempty(replace, "RequestedProcedureID", noorder);
-        putDicomIfNonempty(replace, "ReasonForTheRequestedProcedure", acsn);
+        putDicomIfNonempty(replace, "ReasonForTheRequestedProcedure", clinicalDiag);
         putDicomIfNonempty(replace, "ReferringPhysicianName", sanitizeDicomPersonName(physicianName));
         putDicomIfNonempty(replace, "RequestingPhysician", sanitizeDicomPersonName(physicianName));
+        putDicomIfNonempty(replace, "StudyDate", scheduledDate);
         putDicomIfNonempty(replace, "StudyTime", scheduledTime);
-        String instName = Sequel.cariIsi("select setting.nama_instansi from setting");
+        String instName = Sequel.cariIsi("select setting.nama_instansi from setting limit 1");
+        if (instName == null || instName.trim().isEmpty()) {
+            instName = "SIMRS KHANZA";
+        }
         putDicomIfNonempty(replace, "InstitutionName", instName);
         putDicomIfNonempty(replace, "Modality", modality);
         putDicomIfNonempty(replace, "ScheduledStationAETitle", aeTitle);
