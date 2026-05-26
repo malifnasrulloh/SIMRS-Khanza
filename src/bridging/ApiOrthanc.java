@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -55,12 +55,6 @@ import org.springframework.web.client.RestTemplate;
  */
 public class ApiOrthanc {
 
-    /**
-     * AE title of the DICOM router as configured in Orthanc's modalities list.
-     * Update this constant (or externalise via koneksiDB) if the name changes.
-     */
-    private static final String DICOM_ROUTER_AE_TITLE = "DICOMROUTER";
-
     private HttpHeaders headers;
     private JsonNode root;
     private HttpEntity requestEntity;
@@ -72,6 +66,7 @@ public class ApiOrthanc {
     private String auth, authEncrypt, requestJson;
     private byte[] encodedBytes;
     private int i = 1;
+    private RestTemplate restTemplate;
 
     public ApiOrthanc() {
         try {
@@ -81,6 +76,11 @@ public class ApiOrthanc {
         } catch (Exception ex) {
             System.out.println("ApiOrthanc constructor error : " + ex);
         }
+    }
+
+    private String getDicomRouterAeTitle() {
+        String ae = koneksiDB.AETITLE_DICOMROUTER();
+        return ae == null || ae.trim().isEmpty() ? "DCMROUTER" : ae.trim();
     }
 
     /**
@@ -359,8 +359,9 @@ public class ApiOrthanc {
     /**
      * Downloads an image from the hybrid webapps URL (radiologi folder).
      *
-     * @param url    full HTTP URL to the image file
-     * @param silent when {@code true}, no {@link JOptionPane} on failure (batch use)
+     * @param url full HTTP URL to the image file
+     * @param silent when {@code true}, no {@link JOptionPane} on failure (batch
+     * use)
      */
     public byte[] AmbilGambarWebapps(String url, boolean silent) {
         System.out.println("Mengambil Gambar : " + url);
@@ -383,11 +384,10 @@ public class ApiOrthanc {
         }
         return null;
     }
-    
+
     // =========================================================================
     // Dicom Converter Integration
     // =========================================================================
-    
     private String dicomConverterSendToOrthancUrl() {
         String base = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
         if (base.isEmpty()) {
@@ -404,11 +404,13 @@ public class ApiOrthanc {
     }
 
     /**
-     * Converts a downloaded image and sends it to Orthanc via dicom-converter-api.
+     * Converts a downloaded image and sends it to Orthanc via
+     * dicom-converter-api.
      *
-     * @param fileData           The byte array of the image file
-     * @param filename           The name of the file (e.g. "image.jpg")
-     * @param parametersJson     JSON parameters for the converter (e.g. SOP class, Modality)
+     * @param fileData The byte array of the image file
+     * @param filename The name of the file (e.g. "image.jpg")
+     * @param parametersJson JSON parameters for the converter (e.g. SOP class,
+     * Modality)
      * @param orthancModifyJson JSON payload for Orthanc tags modification
      * @return JsonNode of the API response (success or structured error body)
      */
@@ -516,6 +518,38 @@ public class ApiOrthanc {
         }
     }
 
+    /**
+     * Modifies study tags in Orthanc using a complete JSON payload.
+     *
+     * @param studyId Orthanc internal study ID to modify
+     * @param modifyJson JSON string specifying tags to replace/remove
+     * @param silent if {@code true}, suppresses the error dialog on failure
+     * @return {@code true} on success, {@code false} on any error
+     */
+    public boolean UbahTagsStudy(String studyId, String modifyJson, boolean silent) {
+        System.out.println("UbahTagsStudy : Study=" + studyId);
+        try {
+            headers = new HttpHeaders();
+            headers.add("Authorization", "Basic " + authEncrypt);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            System.out.println("Request JSON UbahTagsStudy : " + modifyJson);
+            requestEntity = new HttpEntity(modifyJson, headers);
+            String response = getRest().exchange(
+                    orthancUrl("/studies/" + studyId + "/modify"),
+                    HttpMethod.POST, requestEntity, String.class
+            ).getBody();
+            System.out.println("Response UbahTagsStudy : " + response);
+            return true;
+        } catch (Exception e) {
+            System.out.println("ApiOrthanc UbahTagsStudy error : " + e);
+            if (!silent) {
+                JOptionPane.showMessageDialog(null,
+                        "Gagal mengubah tags di Orthanc..!!");
+            }
+            return false;
+        }
+    }
+
     // =========================================================================
     // Send to DICOM router
     // =========================================================================
@@ -531,7 +565,7 @@ public class ApiOrthanc {
 
     /**
      * Sends a study from Orthanc to the DICOM router modality defined by
-     * {@link #DICOM_ROUTER_AE_TITLE}.
+     * koneksiDB.AETITLE_DICOMROUTER().
      *
      * @param studyId Orthanc internal study ID to send
      * @param silent if {@code true}, suppresses success/failure dialogs (use in
@@ -539,15 +573,16 @@ public class ApiOrthanc {
      * @return {@code true} on success, {@code false} on any error
      */
     public boolean kirimKeModality(String studyId, boolean silent) {
+        String routerAe = getDicomRouterAeTitle();
         System.out.println("kirimKeModality : Study=" + studyId
-                + " → Router=" + DICOM_ROUTER_AE_TITLE);
+                + " → Router=" + routerAe);
         try {
             headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
             requestJson = "[\"" + studyId + "\"]";
             requestEntity = new HttpEntity(requestJson, headers);
-            String url = orthancUrl("/modalities/" + DICOM_ROUTER_AE_TITLE + "/store");
+            String url = orthancUrl("/modalities/" + routerAe + "/store");
             System.out.println("URL kirimKeModality : " + url);
             System.out.println("Request JSON kirimKeModality : " + requestJson);
             String response = getRest().exchange(url, HttpMethod.POST, requestEntity, String.class).getBody();
@@ -560,7 +595,7 @@ public class ApiOrthanc {
             System.out.println("ApiOrthanc kirimKeModality error : " + e);
             if (!silent) {
                 JOptionPane.showMessageDialog(null,
-                        "Gagal kirim ke Modality. Pastikan DICOM Router (" + DICOM_ROUTER_AE_TITLE
+                        "Gagal kirim ke Modality. Pastikan DICOM Router (" + routerAe
                         + ") sedang aktif dan dapat dijangkau dari Orthanc..!!");
             }
             return false;
@@ -589,28 +624,31 @@ public class ApiOrthanc {
      * use this pattern for public-facing services.
      */
     public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
-        sslContext = SSLContext.getInstance("SSL");
-        TrustManager[] trustManagers = {
-            new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
+        if (this.restTemplate == null) {
+            sslContext = SSLContext.getInstance("SSL");
+            TrustManager[] trustManagers = {
+                new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
 
-                @Override
-                public void checkServerTrusted(X509Certificate[] c, String a) throws CertificateException {
-                }
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] c, String a) throws CertificateException {
+                    }
 
-                @Override
-                public void checkClientTrusted(X509Certificate[] c, String a) throws CertificateException {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] c, String a) throws CertificateException {
+                    }
                 }
-            }
-        };
-        sslContext.init(null, trustManagers, new SecureRandom());
-        sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        scheme = new Scheme("https", 443, sslFactory);
-        factory = new HttpComponentsClientHttpRequestFactory();
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
-        return new RestTemplate(factory);
+            };
+            sslContext.init(null, trustManagers, new SecureRandom());
+            sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            scheme = new Scheme("https", 443, sslFactory);
+            factory = new HttpComponentsClientHttpRequestFactory();
+            factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
+            this.restTemplate = new RestTemplate(factory);
+        }
+        return this.restTemplate;
     }
 }

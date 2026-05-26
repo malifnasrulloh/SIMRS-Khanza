@@ -176,6 +176,9 @@
     <entry key="PORTORTHANC">4xOkFa6gxM9Bc/dkpEtJ+A==</entry>
     <entry key="USERORTHANC">V9bi0P2HgAq8Nn8lUyS6/A==</entry>
     <entry key="PASSORTHANC">V9bi0P2HgAq8Nn8lUyS6/A==</entry>
+    <entry key="URLDICOMCONVERTER">http://localhost</entry>
+    <entry key="PORTDICOMCONVERTER">4xOkFa6gxM9Bc/dkpEtJ+A==</entry>
+    <entry key="AETITLE_DICOMROUTER">DCMROUTER</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANPIHAKKETIGA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANPAJAK">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANVIRTUALACCOUNT">l4nh5eVYrLAER/I2A4b3Tw==</entry>
