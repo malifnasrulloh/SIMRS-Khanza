@@ -1631,22 +1631,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             String patientSex,
             List<Map<String, Object>> scheduledProcedureStepSequence
     ) throws JsonProcessingException {
-        // Generate a deterministic StudyInstanceUID based on Patient ID and Accession Number
-        String cleanPatientId = patientId.replaceAll("[^0-9]", "");
-        if (cleanPatientId.isEmpty()) {
-            cleanPatientId = "0";
-        }
-        String cleanAcsn = acsn.replaceAll("[^0-9]", "");
-        if (cleanAcsn.isEmpty()) {
-            cleanAcsn = "0";
-        }
-        String studyUid = "1.3.6.1.4.1.53234.1." + cleanPatientId + "." + cleanAcsn;
-        if (studyUid.length() > 64) {
-            studyUid = studyUid.substring(0, 64);
-        }
-        if (studyUid.endsWith(".")) {
-            studyUid = studyUid.substring(0, studyUid.length() - 1);
-        }
+        // Generate a production-grade, globally unique, deterministic ISO 2.25 OID based on Patient ID and Accession Number
+        String source = "PATIENT:" + (patientId != null ? patientId.trim() : "") + "|ACCESSION:" + (acsn != null ? acsn.trim() : "");
+        java.util.UUID uuid = java.util.UUID.nameUUIDFromBytes(source.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        java.nio.ByteBuffer bb = java.nio.ByteBuffer.wrap(new byte[16]);
+        bb.putLong(uuid.getMostSignificantBits());
+        bb.putLong(uuid.getLeastSignificantBits());
+        java.math.BigInteger bigInt = new java.math.BigInteger(1, bb.array());
+        String studyUid = "2.25." + bigInt.toString();
 
         Map<String, Object> replace = new LinkedHashMap<>();
         putDicomIfNonempty(replace, "StudyInstanceUID", studyUid);
