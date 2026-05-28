@@ -60,9 +60,7 @@ public class ApiOrthanc {
     private HttpEntity requestEntity;
     private final ObjectMapper mapper = new ObjectMapper();
     private SSLContext sslContext;
-    private SSLSocketFactory sslFactory;
-    private Scheme scheme;
-    private HttpComponentsClientHttpRequestFactory factory;
+    private org.springframework.http.client.SimpleClientHttpRequestFactory factory;
     private String auth, authEncrypt, requestJson;
     private byte[] encodedBytes;
     private int i = 1;
@@ -643,20 +641,20 @@ public class ApiOrthanc {
                 }
             };
             sslContext.init(null, trustManagers, new SecureRandom());
-            sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            scheme = new Scheme("https", 443, sslFactory);
-            org.apache.http.conn.ssl.SSLConnectionSocketFactory sslConnectionFactory = new org.apache.http.conn.ssl.SSLConnectionSocketFactory(
-                sslContext,
-                org.apache.http.conn.ssl.SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            org.apache.http.client.config.RequestConfig requestConfig = org.apache.http.client.config.RequestConfig.custom()
-                .setConnectTimeout(5000)
-                .setSocketTimeout(15000)
-                .build();
-            org.apache.http.impl.client.CloseableHttpClient httpClient = org.apache.http.impl.client.HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .setSSLSocketFactory(sslConnectionFactory)
-                .build();
-            factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+            
+            factory = new org.springframework.http.client.SimpleClientHttpRequestFactory() {
+                @Override
+                protected void prepareConnection(java.net.HttpURLConnection connection, String httpMethod) throws java.io.IOException {
+                    super.prepareConnection(connection, httpMethod);
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(15000);
+                    if (connection instanceof javax.net.ssl.HttpsURLConnection) {
+                        ((javax.net.ssl.HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+                        ((javax.net.ssl.HttpsURLConnection) connection).setHostnameVerifier((hostname, session) -> true);
+                    }
+                }
+            };
+            
             this.restTemplate = new RestTemplate(factory);
         }
         return this.restTemplate;
