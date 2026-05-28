@@ -645,8 +645,18 @@ public class ApiOrthanc {
             sslContext.init(null, trustManagers, new SecureRandom());
             sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
             scheme = new Scheme("https", 443, sslFactory);
-            factory = new HttpComponentsClientHttpRequestFactory();
-            factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
+            org.apache.http.conn.ssl.SSLConnectionSocketFactory sslConnectionFactory = new org.apache.http.conn.ssl.SSLConnectionSocketFactory(
+                sslContext,
+                org.apache.http.conn.ssl.SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            org.apache.http.client.config.RequestConfig requestConfig = org.apache.http.client.config.RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setSocketTimeout(15000)
+                .build();
+            org.apache.http.impl.client.CloseableHttpClient httpClient = org.apache.http.impl.client.HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setSSLSocketFactory(sslConnectionFactory)
+                .build();
+            factory = new HttpComponentsClientHttpRequestFactory(httpClient);
             this.restTemplate = new RestTemplate(factory);
         }
         return this.restTemplate;
