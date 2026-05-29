@@ -16,28 +16,20 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * HTTP client wrapper for the Orthanc DICOM server REST API.
  *
  * <p>
- * Provides primitive operations only — each method does exactly one HTTP call.
- * Workflow orchestration (e.g. update ACSN then send) belongs in the calling UI
- * class, not here.
+ * Provides primitive operations only — each method does exactly one HTTP
+ * call. Workflow orchestration (e.g. update ACSN then send) belongs in the
+ * calling UI class, not here.
  *
  * <p>
  * <b>Silent flag convention:</b> Methods that normally show a
@@ -414,46 +406,109 @@ public class ApiOrthanc {
      */
     public JsonNode KirimKeDicomConverter(byte[] fileData, String filename, String parametersJson, String orthancModifyJson) {
         System.out.println("Kirim file ke dicom-converter-api : " + filename);
+        java.net.HttpURLConnection connection = null;
         try {
-            String url = dicomConverterSendToOrthancUrl();
-            System.out.println("URL Converter : " + url);
+            String urlStr = dicomConverterSendToOrthancUrl();
+            System.out.println("URL Converter : " + urlStr);
 
-            HttpHeaders multipartHeaders = new HttpHeaders();
-            multipartHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-            ByteArrayResource fileResource = new ByteArrayResource(fileData) {
-                @Override
-                public String getFilename() {
-                    return filename;
-                }
-            };
-
-            body.add("file", fileResource);
-            body.add("filetype", "img");
-            body.add("parameters", parametersJson);
-            body.add("orthanc_modify", orthancModifyJson);
-
-            HttpEntity<MultiValueMap<String, Object>> requestEntityMultipart = new HttpEntity<>(body, multipartHeaders);
-
-            String responseStr = getRest().exchange(url, HttpMethod.POST, requestEntityMultipart, String.class).getBody();
-            System.out.println("Result dicom-converter-api : " + responseStr);
-            return mapper.readTree(responseStr);
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
-            String b = ex.getResponseBodyAsString();
-            System.out.println("KirimKeDicomConverter HTTP " + ex.getStatusCode() + " : " + b);
-            try {
-                if (b != null && !b.isEmpty()) {
-                    return mapper.readTree(b);
-                }
-            } catch (Exception parseEx) {
-                System.out.println("KirimKeDicomConverter parse error body : " + parseEx);
+            String cleanFilename = filename;
+            if (filename.contains("/")) {
+                cleanFilename = filename.substring(filename.lastIndexOf("/") + 1);
+            } else if (filename.contains("\\")) {
+                cleanFilename = filename.substring(filename.lastIndexOf("\\") + 1);
             }
-            return null;
+
+            java.net.URL url = new java.net.URL(urlStr);
+            // 1. Bypass any system/JVM proxy natively by using Proxy.NO_PROXY!
+            connection = (java.net.HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(30000);
+
+            String boundary = "Boundary" + System.currentTimeMillis();
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            connection.setRequestProperty("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+
+            java.io.OutputStream outputStream = connection.getOutputStream();
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.OutputStreamWriter(outputStream, "UTF-8"), true);
+
+            String LINE_FEED = "\r\n";
+
+            // Add file field
+            writer.append("--").append(boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(cleanFilename).append("\"").append(LINE_FEED);
+            writer.append("Content-Type: application/octet-stream").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.flush();
+
+            outputStream.write(fileData);
+            outputStream.flush();
+            writer.append(LINE_FEED);
+            writer.flush();
+
+            // Add filetype field
+            writer.append("--").append(boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"filetype\"").append(LINE_FEED);
+            writer.append("Content-Type: text/plain; charset=UTF-8").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.append("img").append(LINE_FEED);
+            writer.flush();
+
+            // Add parameters field
+            writer.append("--").append(boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"parameters\"").append(LINE_FEED);
+            writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.append(parametersJson).append(LINE_FEED);
+            writer.flush();
+
+            // Add orthanc_modify field
+            writer.append("--").append(boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"orthanc_modify\"").append(LINE_FEED);
+            writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.append(orthancModifyJson).append(LINE_FEED);
+            writer.flush();
+
+            // End of multipart
+            writer.append("--").append(boundary).append("--").append(LINE_FEED);
+            writer.flush();
+            writer.close();
+            outputStream.close();
+
+            int statusCode = connection.getResponseCode();
+            java.io.InputStream inputStream;
+            if (statusCode >= 200 && statusCode < 300) {
+                inputStream = connection.getInputStream();
+            } else {
+                inputStream = connection.getErrorStream();
+            }
+
+            if (inputStream == null) {
+                System.out.println("KirimKeDicomConverter HTTP " + statusCode + " : empty stream");
+                return null;
+            }
+
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream, "UTF-8"));
+            StringBuilder responseSB = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseSB.append(line);
+            }
+            reader.close();
+            inputStream.close();
+
+            String responseStr = responseSB.toString();
+            System.out.println("Result dicom-converter-api (HTTP " + statusCode + ") : " + responseStr);
+            return mapper.readTree(responseStr);
         } catch (Exception e) {
             System.out.println("Notifikasi KirimKeDicomConverter : " + e);
             return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -641,22 +696,20 @@ public class ApiOrthanc {
                 }
             };
             sslContext.init(null, trustManagers, new SecureRandom());
-            
-            org.apache.http.conn.ssl.SSLConnectionSocketFactory sslConnectionFactory = new org.apache.http.conn.ssl.SSLConnectionSocketFactory(
-                sslContext,
-                org.apache.http.conn.ssl.SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            org.apache.http.client.config.RequestConfig requestConfig = org.apache.http.client.config.RequestConfig.custom()
-                .setConnectTimeout(5000)
-                .setConnectionRequestTimeout(5000)
-                .setSocketTimeout(30000)
-                .build();
-            org.apache.http.impl.client.CloseableHttpClient httpClient = org.apache.http.impl.client.HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .setSSLSocketFactory(sslConnectionFactory)
-                .setMaxConnTotal(100)
-                .setMaxConnPerRoute(50)
-                .build();
-            org.springframework.http.client.HttpComponentsClientHttpRequestFactory factory = new org.springframework.http.client.HttpComponentsClientHttpRequestFactory(httpClient);
+
+            org.springframework.http.client.SimpleClientHttpRequestFactory factory = new org.springframework.http.client.SimpleClientHttpRequestFactory() {
+                @Override
+                protected void prepareConnection(java.net.HttpURLConnection connection, String httpMethod) throws java.io.IOException {
+                    super.prepareConnection(connection, httpMethod);
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(15000);
+                    if (connection instanceof javax.net.ssl.HttpsURLConnection) {
+                        ((javax.net.ssl.HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+                        ((javax.net.ssl.HttpsURLConnection) connection).setHostnameVerifier((hostname, session) -> true);
+                    }
+                }
+            };
+
             this.restTemplate = new RestTemplate(factory);
         }
         return this.restTemplate;
