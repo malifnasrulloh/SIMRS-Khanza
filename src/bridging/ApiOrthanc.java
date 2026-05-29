@@ -642,19 +642,21 @@ public class ApiOrthanc {
             };
             sslContext.init(null, trustManagers, new SecureRandom());
             
-            factory = new org.springframework.http.client.SimpleClientHttpRequestFactory() {
-                @Override
-                protected void prepareConnection(java.net.HttpURLConnection connection, String httpMethod) throws java.io.IOException {
-                    super.prepareConnection(connection, httpMethod);
-                    connection.setConnectTimeout(5000);
-                    connection.setReadTimeout(15000);
-                    if (connection instanceof javax.net.ssl.HttpsURLConnection) {
-                        ((javax.net.ssl.HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-                        ((javax.net.ssl.HttpsURLConnection) connection).setHostnameVerifier((hostname, session) -> true);
-                    }
-                }
-            };
-            
+            org.apache.http.conn.ssl.SSLConnectionSocketFactory sslConnectionFactory = new org.apache.http.conn.ssl.SSLConnectionSocketFactory(
+                sslContext,
+                org.apache.http.conn.ssl.SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            org.apache.http.client.config.RequestConfig requestConfig = org.apache.http.client.config.RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setConnectionRequestTimeout(5000)
+                .setSocketTimeout(30000)
+                .build();
+            org.apache.http.impl.client.CloseableHttpClient httpClient = org.apache.http.impl.client.HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setSSLSocketFactory(sslConnectionFactory)
+                .setMaxConnTotal(100)
+                .setMaxConnPerRoute(50)
+                .build();
+            org.springframework.http.client.HttpComponentsClientHttpRequestFactory factory = new org.springframework.http.client.HttpComponentsClientHttpRequestFactory(httpClient);
             this.restTemplate = new RestTemplate(factory);
         }
         return this.restTemplate;
