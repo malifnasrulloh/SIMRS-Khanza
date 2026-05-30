@@ -322,6 +322,65 @@
         return $result;
     }
     
+    function getOrthancSettings() {
+        // Load editable override file
+        $override = __DIR__ . '/orthanc.php';
+        if (file_exists($override)) {
+            require_once($override);
+        }
+
+        // Defaults (fallback values when nothing is configured)
+        $settings = array(
+            'url'  => 'http://localhost',
+            'port' => '8042',
+            'user' => 'admin',
+            'pass' => 'orthanc123'
+        );
+
+        // Override with database.xml if the file exists
+        $xml_path = "../setting/database.xml";
+        if (file_exists($xml_path)) {
+            $xml = simplexml_load_file($xml_path);
+            if ($xml !== false) {
+                foreach ($xml->entry as $entry) {
+                    $key = (string)$entry['key'];
+                    $val = (string)$entry;
+                    if ($key == 'URLORTHANC')  { $settings['url']  = trim($val); }
+                    else if ($key == 'PORTORTHANC') { $settings['port'] = decrypt_raw_aes($val); }
+                    else if ($key == 'USERORTHANC') { $settings['user'] = decrypt_raw_aes($val); }
+                    else if ($key == 'PASSORTHANC') { $settings['pass'] = decrypt_raw_aes($val); }
+                }
+            }
+        }
+
+        // orthanc.php constants take highest priority (explicit override by IT admin)
+        if (defined('ORTHANC_URL')  && ORTHANC_URL  !== null) { $settings['url']  = ORTHANC_URL; }
+        if (defined('ORTHANC_PORT') && ORTHANC_PORT !== null) { $settings['port'] = ORTHANC_PORT; }
+        if (defined('ORTHANC_USER') && ORTHANC_USER !== null) { $settings['user'] = ORTHANC_USER; }
+        if (defined('ORTHANC_PASS') && ORTHANC_PASS !== null) { $settings['pass'] = ORTHANC_PASS; }
+
+        return $settings;
+    }
+
+    function getWebappsUrl() {
+        // Load editable override file
+        $override = __DIR__ . '/webapps.php';
+        if (file_exists($override)) {
+            require_once($override);
+        }
+
+        if (defined('WEBAPPS_URL') && WEBAPPS_URL !== null) {
+            return rtrim(WEBAPPS_URL, '/');
+        }
+
+        // Fallback: dynamic host detection based on the user's incoming request
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : host();
+        return $protocol . "://" . $host . '/webapps';
+    }
+
+
+
     function TO_DAYS($date) {
 	if (is_numeric($date)) {
             $res = 719528 + (int) ($date / 86400);

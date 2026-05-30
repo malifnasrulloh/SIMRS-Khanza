@@ -1,48 +1,68 @@
 <?php
-    if(strpos($_SERVER['REQUEST_URI'],"pages")){
-        exit(header("Location:../index.php"));
-    }
+    if(strpos($_SERVER['REQUEST_URI'],"pages")){ exit(header("Location:../index.php")); }
+    $range = isset($_GET['range']) && is_numeric($_GET['range']) ? (int)$_GET['range'] : 30;
+    $kd_dokter = validTeks4(encrypt_decrypt($_SESSION["ses_dokter"],"d"),20);
 ?>
-<div class="block-header">
-    <h2><center>DATA PEMERIKSAAN RADIOLOGI</center></h2>
-</div>
+<div class="block-header"><h2><center>DATA PEMERIKSAAN RADIOLOGI</center></h2></div>
+
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-xs-12">
+        <div class="card" style="padding:12px 20px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <b style="color:#555;">Tampilkan:</b>
+            <?php foreach([7=>'7 Hari', 30=>'30 Hari', 90=>'90 Hari', 365=>'1 Tahun'] as $n=>$label): ?>
+            <a href="?act=HasilRadiologi&range=<?=$n?>" class="btn btn-sm waves-effect <?=($range==$n)?'btn-primary':'btn-default'?>"><?=$label?></a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-xs-12">
         <div class="card">
             <div class="body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <thead>
                             <tr>
-                                <th width="15%"><center>Tanggal</center></th>
-                                <th width="15%"><center>No.Rawat</center></th>
-                                <th width="12%"><center>No.RM</center></th>
-                                <th width="24%"><center>Nama Pasien</center></th>
-                                <th width="24%"><center>Dokter Perujuk</center></th>
-                                <th width="10%"><center>Detail</center></th>
+                                <th>Tanggal</th><th>No.Rawat</th><th>No.RM</th><th>Nama Pasien</th>
+                                <th>Dokter Perujuk</th><th>Jenis Pemeriksaan</th><th><center>Status</center></th><th><center>Aksi</center></th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                            $queryradiologi = bukaquery(
-                                "SELECT date_format(periksa_radiologi.tgl_periksa,'%d/%m/%Y') as tanggalperiksa, periksa_radiologi.jam, ".
-                                "periksa_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,dokter.nm_dokter,periksa_radiologi.tgl_periksa ".
-                                "FROM periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat ".
-                                "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis ".
-                                "inner join dokter as dokter on periksa_radiologi.dokter_perujuk=dokter.kd_dokter ".
-                                "WHERE NOT EXISTS (SELECT 1 FROM hasil_radiologi WHERE hasil_radiologi.no_rawat=periksa_radiologi.no_rawat ".
-                                "AND hasil_radiologi.tgl_periksa=periksa_radiologi.tgl_periksa AND hasil_radiologi.jam=periksa_radiologi.jam) ".
-                                "AND periksa_radiologi.kd_dokter='".validTeks4(encrypt_decrypt($_SESSION["ses_dokter"],"d"),20)."'"
-                            );
-                            while($rsradiologi = mysqli_fetch_array($queryradiologi)){
+                            $q = bukaquery("
+                                SELECT
+                                    DATE_FORMAT(pr.tgl_periksa,'%d/%m/%Y') as tgl_fmt,
+                                    pr.jam, pr.no_rawat, pr.tgl_periksa,
+                                    rp.no_rkm_medis, p.nm_pasien,
+                                    d.nm_dokter as nm_perujuk,
+                                    j.nm_perawatan,
+                                    CASE WHEN hr.no_rawat IS NOT NULL THEN 1 ELSE 0 END as sudah_dibaca
+                                FROM periksa_radiologi pr
+                                INNER JOIN reg_periksa rp ON pr.no_rawat=rp.no_rawat
+                                INNER JOIN pasien p ON rp.no_rkm_medis=p.no_rkm_medis
+                                LEFT JOIN dokter d ON pr.dokter_perujuk=d.kd_dokter
+                                INNER JOIN jns_perawatan_radiologi j ON pr.kd_jenis_prw=j.kd_jenis_prw
+                                LEFT JOIN hasil_radiologi hr ON pr.no_rawat=hr.no_rawat AND pr.tgl_periksa=hr.tgl_periksa AND pr.jam=hr.jam
+                                WHERE (pr.kd_dokter='$kd_dokter' OR pr.dokter_perujuk='$kd_dokter' OR rp.kd_dokter='$kd_dokter')
+                                  AND pr.tgl_periksa >= DATE_SUB(CURRENT_DATE(), INTERVAL $range DAY)
+                                ORDER BY pr.tgl_periksa DESC, pr.jam DESC
+                            ");
+                            while($r = mysqli_fetch_array($q)) {
+                                $badge = $r['sudah_dibaca'] ? '<span class="badge bg-teal">&#10003; Sudah Dibaca</span>' : '<span class="badge bg-orange">Belum Dibaca</span>';
+                                $btnClass = $r['sudah_dibaca'] ? 'btn-default' : 'btn-warning';
+                                $btnLabel = $r['sudah_dibaca'] ? 'Lihat Bacaan' : 'Lihat & Isi';
+                                $iyem = encrypt_decrypt('{"norawat":"'.$r['no_rawat'].'","tglperiksa":"'.$r['tgl_periksa'].'","jam":"'.$r['jam'].'"}','e');
                                 echo "<tr>
-                                        <td align='center' valign='middle'>".$rsradiologi["tanggalperiksa"]." ".$rsradiologi["jam"]."</td>
-                                        <td align='center' valign='middle'>".$rsradiologi["no_rawat"]."</td>
-                                        <td align='center' valign='middle'>".$rsradiologi["no_rkm_medis"]."</td>
-                                        <td align='center' valign='middle'>".$rsradiologi["nm_pasien"]."</td>
-                                        <td align='center' valign='middle'>".$rsradiologi["nm_dokter"]."</td>
-                                        <td align='center' valign='middle'><a href='index.php?act=BacaanRadiologi&iyem=".encrypt_decrypt("{\"norawat\":\"".$rsradiologi["no_rawat"]."\",\"tglperiksa\":\"".$rsradiologi["tgl_periksa"]."\",\"jam\":\"".$rsradiologi["jam"]."\"}","e")."' class='btn btn-warning waves-effect'>Lihat & Isi</a></td>
-                                      </tr>";
+                                    <td>{$r['tgl_fmt']} {$r['jam']}</td>
+                                    <td>{$r['no_rawat']}</td>
+                                    <td>{$r['no_rkm_medis']}</td>
+                                    <td><b>{$r['nm_pasien']}</b></td>
+                                    <td>{$r['nm_perujuk']}</td>
+                                    <td>{$r['nm_perawatan']}</td>
+                                    <td align='center'>$badge</td>
+                                    <td align='center'><a href='index.php?act=BacaanRadiologi&iyem=$iyem' class='btn btn-sm $btnClass waves-effect'>$btnLabel</a></td>
+                                </tr>";
                             }
                         ?>
                         </tbody>

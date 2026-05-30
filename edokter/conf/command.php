@@ -34,7 +34,7 @@
         if (!cekSessiAdmin()) {
             $form = array (
                 'HomeUser','Pasien','KonsultasiDokter','KonsultasiPerawat','BalasKonsultasiDokter','BalasKonsultasiPerawat',
-                'HasilRadiologi','BacaanRadiologi','HarianDokter'            
+                'HasilRadiologi','BacaanRadiologi','HarianDokter','HasilLaborat'
             );
             foreach ($form as $page) {
                 if ($aksi==$page) {
@@ -59,6 +59,7 @@
             case "HasilRadiologi"           : include_once("pages/listhasilradiologi.php"); break;
             case "BacaanRadiologi"          : include_once("pages/listbacaanradiologi.php"); break;
             case "HarianDokter"             : include_once("pages/listhariandokter.php"); break;
+            case "HasilLaborat"             : include_once("pages/listhasillaboarator.php"); break;
             default                         : include_once("pages/listhome.php");
         }   
     }

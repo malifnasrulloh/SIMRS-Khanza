@@ -79,13 +79,39 @@
                             <span>Daftar Pasien</span>
                         </a>
                     </li>
-                    <li <?=$halaman=="HarianDokter"?"class='active'":""?>>
+                    <li <?=$halaman=="HarianDokter"?"class='active'":"";?>>
                         <a href="index.php?act=HarianDokter">
                             <i class="material-icons">attach_money</i>
                             <span>Harian Dokter</span>
                         </a>
                     </li>
-                    <div id="datakonsul"></div>
+                    <li <?=$halaman=="HasilRadiologi"?"class='active'":"";?>>
+                        <a href="index.php?act=HasilRadiologi">
+                            <i class="material-icons">settings_overscan</i>
+                            <span>Hasil Radiologi</span>
+                        </a>
+                    </li>
+                    <li <?=$halaman=="HasilLaborat"?"class='active'":"";?>>
+                        <a href="index.php?act=HasilLaborat">
+                            <i class="material-icons">biotech</i>
+                            <span>Hasil Laborat</span>
+                        </a>
+                    </li>
+                    <li <?=$halaman=="KonsultasiDokter"?"class='active'":"";?>>
+                        <a href="index.php?act=KonsultasiDokter">
+                            <i class="material-icons">medical_services</i>
+                            <span>Konsultasi Dokter</span>
+                            <span id="badgeDokter" class="label label-danger pull-right" style="display:none; margin-top:2px; border-radius:10px; font-weight:bold; padding:3px 8px;"></span>
+                        </a>
+                    </li>
+                    <li <?=$halaman=="KonsultasiPerawat"?"class='active'":"";?>>
+                        <a href="index.php?act=KonsultasiPerawat">
+                            <i class="material-icons">book</i>
+                            <span>Konsultasi Perawat</span>
+                            <span id="badgePerawat" class="label label-danger pull-right" style="display:none; margin-top:2px; border-radius:10px; font-weight:bold; padding:3px 8px;"></span>
+                        </a>
+                    </li>
+
                 </ul>
             </div>
             <!-- #Menu -->
@@ -134,19 +160,47 @@
     <script src="js/demo.js"></script>
     <script src="conf/validator.js" type="text/javascript"></script>
     <script type="text/javascript"> 
-        function loadKonsul(){
-            fetch('pages/listdatakonsul.php')
-                .then(function(response){ return response.text(); })
-                .then(function(html){ 
-                    document.getElementById('datakonsul').innerHTML = html; 
-                });
+        var alertAudio = new Audio('pages/bell.wav');
+        
+        function pollConsultations(){
+            fetch('pages/ajax_konsul_count.php')
+                .then(function(r){ return r.json(); })
+                .then(function(data){ 
+                    // Update Dokter Badge
+                    var badgeDokter = document.getElementById('badgeDokter');
+                    if (badgeDokter) {
+                        if (data.dokter > 0) {
+                            badgeDokter.innerText = data.dokter;
+                            badgeDokter.style.display = 'inline-block';
+                        } else {
+                            badgeDokter.style.display = 'none';
+                        }
+                    }
+                    
+                    // Update Perawat Badge
+                    var badgePerawat = document.getElementById('badgePerawat');
+                    if (badgePerawat) {
+                        if (data.perawat > 0) {
+                            badgePerawat.innerText = data.perawat;
+                            badgePerawat.style.display = 'inline-block';
+                        } else {
+                            badgePerawat.style.display = 'none';
+                        }
+                    }
+                    
+                    // Play alert sound if counts increased
+                    if (data.play) {
+                        alertAudio.play().catch(function(e){ console.log('Audio playback blocked/failed:', e); });
+                    }
+                }).catch(function(err){ console.log('Poll failed:', err); });
         }
 
         window.onload = function(){
-            loadKonsul();
-            setInterval(loadKonsul, 600000);
+            pollConsultations();
+            setInterval(pollConsultations, 15000); // lightweight poll every 15 seconds
         }
     </script>
+
 </body>
 </html>
 
