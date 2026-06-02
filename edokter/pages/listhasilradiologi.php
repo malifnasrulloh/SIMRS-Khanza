@@ -21,11 +21,14 @@
         <div class="card">
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" style="width:100%;">
                         <thead>
                             <tr>
-                                <th>Tanggal</th><th>No.Rawat</th><th>No.RM</th><th>Nama Pasien</th>
-                                <th>Dokter Perujuk</th><th>Jenis Pemeriksaan</th><th><center>Status</center></th><th><center>Aksi</center></th>
+                                <th style="width:140px;">Tanggal</th>
+                                <th>Data Pasien</th>
+                                <th>Pemeriksaan / Perujuk</th>
+                                <th style="width:110px;"><center>Status</center></th>
+                                <th style="width:110px;"><center>Aksi</center></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,19 +52,28 @@
                                 ORDER BY pr.tgl_periksa DESC, pr.jam DESC
                             ");
                             while($r = mysqli_fetch_array($q)) {
-                                $badge = $r['sudah_dibaca'] ? '<span class="badge bg-teal">&#10003; Sudah Dibaca</span>' : '<span class="badge bg-orange">Belum Dibaca</span>';
+                                $badge = $r['sudah_dibaca'] ? '<span class="badge bg-teal" style="padding:4px 8px;">&#10003; Sudah Dibaca</span>' : '<span class="badge bg-orange" style="padding:4px 8px;">Belum Dibaca</span>';
                                 $btnClass = $r['sudah_dibaca'] ? 'btn-default' : 'btn-warning';
                                 $btnLabel = $r['sudah_dibaca'] ? 'Lihat Bacaan' : 'Lihat & Isi';
                                 $iyem = encrypt_decrypt('{"norawat":"'.$r['no_rawat'].'","tglperiksa":"'.$r['tgl_periksa'].'","jam":"'.$r['jam'].'"}','e');
                                 echo "<tr>
-                                    <td>{$r['tgl_fmt']} {$r['jam']}</td>
-                                    <td>{$r['no_rawat']}</td>
-                                    <td>{$r['no_rkm_medis']}</td>
-                                    <td><b>{$r['nm_pasien']}</b></td>
-                                    <td>{$r['nm_perujuk']}</td>
-                                    <td>{$r['nm_perawatan']}</td>
-                                    <td align='center'>$badge</td>
-                                    <td align='center'><a href='index.php?act=BacaanRadiologi&iyem=$iyem' class='btn btn-sm $btnClass waves-effect'>$btnLabel</a></td>
+                                    <td style='vertical-align:middle; font-size:13px; color:#555;'>{$r['tgl_fmt']} <small style='color:#777;'>{$r['jam']}</small></td>
+                                    <td style='vertical-align:middle;'>
+                                        <div style='font-weight:700; color:#ff9800; font-size:14px; margin-bottom:4px;'>{$r['nm_pasien']}</div>
+                                        <div style='font-size:11px; color:#666; display:flex; flex-wrap:wrap; gap:8px;'>
+                                            <span>RM: <b style='color:#333;'>{$r['no_rkm_medis']}</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>Reg: <b style='color:#333;'>{$r['no_rawat']}</b></span>
+                                        </div>
+                                    </td>
+                                    <td style='vertical-align:middle; font-size:13px;'>
+                                        <div style='font-weight:600; color:#333;'>{$r['nm_perawatan']}</div>
+                                        <div style='font-size:11px; color:#777; margin-top:2px;'>Perujuk: dr. ".(htmlspecialchars($r['nm_perujuk'])?:'-')."</div>
+                                    </td>
+                                    <td align='center' style='vertical-align:middle;'>$badge</td>
+                                    <td align='center' style='vertical-align:middle;'>
+                                        <a href='index.php?act=BacaanRadiologi&iyem=$iyem' class='btn btn-xs $btnClass waves-effect' style='padding:4px 8px; font-weight:600; border-radius:4px;'>$btnLabel</a>
+                                    </td>
                                 </tr>";
                             }
                         ?>

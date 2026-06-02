@@ -21,11 +21,14 @@
         <div class="card">
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblLaborat">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblLaborat" style="width:100%;">
                         <thead>
                             <tr>
-                                <th>Tanggal</th><th>No.Rawat</th><th>No.RM</th><th>Nama Pasien</th>
-                                <th>Jenis Pemeriksaan</th><th><center>Kategori</center></th><th><center>Aksi</center></th>
+                                <th style="width:140px;">Tanggal</th>
+                                <th>Data Pasien</th>
+                                <th>Jenis Pemeriksaan</th>
+                                <th style="width:80px;"><center>Kategori</center></th>
+                                <th style="width:120px;"><center>Aksi</center></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,16 +54,21 @@
                                 $nama     = htmlspecialchars($r['nm_pasien']);
                                 $katBadge = ($r['kategori']=='PA')?'bg-orange':(($r['kategori']=='MB')?'bg-purple':'bg-blue');
                                 echo "<tr>
-                                    <td>{$r['tgl_fmt']} {$r['jam']}</td>
-                                    <td>$norawat</td>
-                                    <td>$norm</td>
-                                    <td><b>$nama</b></td>
-                                    <td>{$r['nm_perawatan']}</td>
-                                    <td align='center'><span class='badge $katBadge'>{$r['kategori']}</span></td>
-                                    <td align='center'>
-                                        <button class='btn btn-sm btn-teal waves-effect'
+                                    <td style='vertical-align:middle; font-size:13px; color:#555;'>{$r['tgl_fmt']} <small style='color:#777;'>{$r['jam']}</small></td>
+                                    <td style='vertical-align:middle;'>
+                                        <div style='font-weight:700; color:#009688; font-size:14px; margin-bottom:4px;'>$nama</div>
+                                        <div style='font-size:11px; color:#666; display:flex; flex-wrap:wrap; gap:8px;'>
+                                            <span>RM: <b style='color:#333;'>$norm</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>Reg: <b style='color:#333;'>$norawat</b></span>
+                                        </div>
+                                    </td>
+                                    <td style='vertical-align:middle; font-size:13px;'>{$r['nm_perawatan']}</td>
+                                    <td align='center' style='vertical-align:middle;'><span class='badge $katBadge' style='padding:4px 8px; font-size:11px; font-weight:600;'>{$r['kategori']}</span></td>
+                                    <td align='center' style='vertical-align:middle;'>
+                                        <button class='btn btn-xs btn-teal waves-effect' style='padding:4px 8px; font-weight:600; border-radius:4px;'
                                             onclick='openLabDetail(\"$norawat\",\"$kdjenis\",\"$tgl\",\"$jam\",\"$nama\")'>
-                                            <i class='material-icons' style='font-size:16px;vertical-align:middle;'>biotech</i> Lihat Hasil
+                                            <i class='material-icons' style='font-size:14px;vertical-align:middle; margin-right:4px;'>biotech</i>Lihat Hasil
                                         </button>
                                     </td>
                                 </tr>";

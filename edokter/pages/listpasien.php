@@ -14,7 +14,8 @@
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                     <label style="margin:0; font-weight:600; color:#555; white-space:nowrap;">Tanggal:</label>
                     <input type="date" name="tgl" id="tglFilter" class="form-control" style="width:160px;"
-                           value="<?php echo isset($_GET['tgl']) ? htmlspecialchars($_GET['tgl']) : date('Y-m-d'); ?>">
+                           value="<?php echo isset($_GET['tgl']) ? htmlspecialchars($_GET['tgl']) : date('Y-m-d'); ?>"
+                           onchange="this.form.submit()">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-xs btn-default waves-effect" onclick="setTgl('<?=date('Y-m-d')?>','today')">Hari Ini</button>
                         <button type="button" class="btn btn-xs btn-default waves-effect" onclick="setTgl('<?=date('Y-m-d',strtotime('-1 day'))?>','yesterday')">Kemarin</button>
@@ -36,12 +37,13 @@
         <div class="card">
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblPasien">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblPasien" style="width:100%;">
                         <thead>
                             <tr>
-                                <th>No.Poli</th><th>No.Rawat</th><th>No.RM</th><th>Nama Pasien</th>
-                                <th>JK</th><th>Umur</th><th>Tipe</th><th>Status</th>
-                                <th width="260px"><center>Aksi</center></th>
+                                <th style="width:70px;"><center>No.Poli</center></th>
+                                <th>Data Pasien</th>
+                                <th style="width:80px;"><center>Tipe</center></th>
+                                <th style="width:260px;"><center>Aksi</center></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,24 +73,34 @@
                                 $sttsVal = htmlspecialchars($r['stts']);
                                 echo "
                                 <tr>
-                                    <td>{$r['no_reg']}</td>
-                                    <td><b>$norawat</b></td>
-                                    <td>$norm</td>
-                                    <td>$nama</td>
-                                    <td align='center'>{$r['jk']}</td>
-                                    <td>{$r['umur']}</td>
-                                    <td><span class='badge $badge'>$tipe</span></td>
-                                    <td>$sttsVal</td>
-                                    <td align='center' style='white-space:nowrap;'>
-                                        <button class='btn btn-xs btn-info waves-effect' onclick='openEMR(\"$norm\",\"$nama\")' title='Lihat Riwayat EMR' style='padding:4px 8px; font-weight:600; border-radius:4px; margin-right:4px;'>
-                                            <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>notes</i>Riwayat EMR
-                                        </button>
-                                        <button class='btn btn-xs btn-warning waves-effect' onclick='openRadiologi(\"$norm\",\"$nama\")' title='Lihat Radiologi' style='padding:4px 8px; font-weight:600; border-radius:4px; margin-right:4px;'>
-                                            <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>settings_overscan</i>Radiologi
-                                        </button>
-                                        <button class='btn btn-xs btn-success waves-effect' onclick='openLaborat(\"$norawat\",\"$norm\",\"$nama\")' title='Lihat Laborat' style='padding:4px 8px; font-weight:600; border-radius:4px;'>
-                                            <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>biotech</i>Laborat
-                                        </button>
+                                    <td align='center' style='vertical-align:middle; font-weight:bold; font-size:14px; color:#555;'>{$r['no_reg']}</td>
+                                    <td style='vertical-align:middle;'>
+                                        <div style='font-weight:700; color:#1f87e6; font-size:14px; margin-bottom:4px;'>$nama</div>
+                                        <div style='font-size:11px; color:#666; display:flex; flex-wrap:wrap; gap:8px; line-height:1.4;'>
+                                            <span>RM: <b style='color:#333;'>$norm</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>Reg: <b style='color:#333;'>$norawat</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>JK: <b style='color:#333;'>{$r['jk']}</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>Umur: <b style='color:#333;'>{$r['umur']}</b></span>
+                                            <span style='color:#ccc;'>|</span>
+                                            <span>Status: <span class='label label-info' style='font-size:9px; padding:1px 4px; border-radius:3px; font-weight:600;'>$sttsVal</span></span>
+                                        </div>
+                                    </td>
+                                    <td align='center' style='vertical-align:middle;'><span class='badge $badge' style='padding:4px 8px; font-size:11px;'>$tipe</span></td>
+                                    <td align='center' style='vertical-align:middle;'>
+                                        <div style='display:flex; gap:6px; flex-wrap:wrap; justify-content:center;'>
+                                            <button class='btn btn-xs btn-info waves-effect' onclick='openEMR(\"$norm\",\"$nama\")' title='Lihat Riwayat EMR' style='padding:4px 8px; font-weight:600; border-radius:4px;'>
+                                                <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>notes</i>Riwayat EMR
+                                            </button>
+                                            <button class='btn btn-xs btn-warning waves-effect' onclick='openRadiologi(\"$norm\",\"$nama\")' title='Lihat Radiologi' style='padding:4px 8px; font-weight:600; border-radius:4px;'>
+                                                <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>settings_overscan</i>Radiologi
+                                            </button>
+                                            <button class='btn btn-xs btn-success waves-effect' onclick='openLaborat(\"$norawat\",\"$norm\",\"$nama\")' title='Lihat Laborat' style='padding:4px 8px; font-weight:600; border-radius:4px;'>
+                                                <i class='material-icons' style='font-size:14px; vertical-align:middle; margin-right:4px;'>biotech</i>Laborat
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>";
                             }
@@ -154,6 +166,52 @@
 .soap-card { border-radius:8px; border:1px solid #e0e0e0; margin-bottom:12px; overflow:hidden; }
 .soap-card .soap-head { background:#f9f9f9; padding:10px 14px; border-bottom:1px solid #eee; font-size:12px; color:#666; }
 .soap-card .soap-body { padding:12px 14px; font-size:13px; line-height:1.7; }
+
+.emr-visit-header {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #455a64;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #cfd8dc;
+    padding-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media (min-width: 992px) {
+    .emr-flex-row {
+        display: flex !important;
+        align-items: stretch;
+    }
+    .emr-flex-col-left {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #eee;
+        padding-right: 15px !important;
+    }
+    .emr-flex-col-right {
+        display: flex;
+        flex-direction: column;
+        padding-left: 15px !important;
+    }
+}
+@media (max-width: 991px) {
+    .emr-flex-row {
+        display: block !important;
+    }
+    .emr-flex-col-left {
+        margin-bottom: 15px;
+        padding-right: 15px !important;
+        border-right: none !important;
+    }
+    .emr-flex-col-right {
+        padding-left: 15px !important;
+    }
+}
 </style>
 
 <script>
@@ -175,7 +233,7 @@ function openEMR(norm, nama) {
             html += '<div class="alert alert-info">Belum ada riwayat medis historis (SOAP / Resep) untuk pasien ini.</div>';
         } else {
             // Header titles for columns
-            html += '<div class="row" style="margin-bottom:10px; border-bottom:1px solid #ddd; padding-bottom:10px;">';
+            html += '<div class="row hidden-xs hidden-sm" style="margin-bottom:10px; border-bottom:1px solid #ddd; padding-bottom:10px;">';
             html += '<div class="col-xs-6"><h5 style="font-weight:700; border-left:4px solid #607d8b; padding-left:10px; color:#333; margin:0;">Catatan Klinis (SOAP/SBAR)</h5></div>';
             html += '<div class="col-xs-6" style="padding-left:25px;"><h5 style="font-weight:700; border-left:4px solid #4caf50; padding-left:10px; color:#333; margin:0;">Riwayat Resep Obat</h5></div>';
             html += '</div>';
@@ -185,15 +243,15 @@ function openEMR(norm, nama) {
                 var r = visit.resep;
                 
                 // Render Visit Meta Header
-                html += '<div style="margin-top:20px; margin-bottom:8px; font-size:12px; color:#455a64; font-weight:700; display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cfd8dc; padding-bottom:4px;">';
+                html += '<div class="emr-visit-header">';
                 html += '<span><i class="material-icons" style="font-size:15px; vertical-align:middle; margin-right:4px;">local_hospital</i> Kunjungan: <b>' + visit.no_rawat + '</b> <span class="badge bg-blue-grey" style="font-size:10px; margin-left:6px; padding:2px 6px;">' + visit.status_lanjut + '</span></span>';
                 html += '<span style="color:#78909c;"><i class="material-icons" style="font-size:15px; vertical-align:middle;">event</i> ' + visit.tgl_registrasi + ' ' + visit.jam_reg + ' &nbsp;|&nbsp; dr. ' + (visit.nm_dokter || '-') + '</span>';
                 html += '</div>';
 
-                html += '<div class="row" style="display:flex; flex-wrap:wrap; margin-bottom:10px; align-items:stretch;">';
+                html += '<div class="row emr-flex-row" style="margin-bottom:10px;">';
                 
                 // SOAP Column (Left)
-                html += '<div class="col-xs-12 col-md-6" style="display:flex; flex-direction:column; border-right:1px solid #eee; padding-right:15px;">';
+                html += '<div class="col-xs-12 col-md-6 emr-flex-col-left">';
                 if (s) {
                     var badge = s.tipe=='Ranap'?'bg-red':'bg-teal';
                     html += '<div class="soap-card" style="display:flex; flex-direction:column; flex:1; margin:0; border:1px solid #e0e0e0; border-radius:6px; overflow:hidden;">' +
@@ -218,7 +276,7 @@ function openEMR(norm, nama) {
                 html += '</div>';
 
                 // Resep Column (Right)
-                html += '<div class="col-xs-12 col-md-6" style="display:flex; flex-direction:column; padding-left:15px;">';
+                html += '<div class="col-xs-12 col-md-6 emr-flex-col-right">';
                 if (r) {
                     html += '<div class="soap-card" style="display:flex; flex-direction:column; flex:1; margin:0; border:1px solid #e0e0e0; border-radius:6px; overflow:hidden;">' +
                         '<div class="soap-head" style="background:#f9f9f9; padding:8px 12px; border-bottom:1px solid #eee; font-size:11px; color:#666;">' +
