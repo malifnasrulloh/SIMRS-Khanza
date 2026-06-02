@@ -27,9 +27,9 @@ import org.springframework.web.client.RestTemplate;
  * HTTP client wrapper for the Orthanc DICOM server REST API.
  *
  * <p>
- * Provides primitive operations only — each method does exactly one HTTP
- * call. Workflow orchestration (e.g. update ACSN then send) belongs in the
- * calling UI class, not here.
+ * Provides primitive operations only — each method does exactly one HTTP call.
+ * Workflow orchestration (e.g. update ACSN then send) belongs in the calling UI
+ * class, not here.
  *
  * <p>
  * <b>Silent flag convention:</b> Methods that normally show a
@@ -272,6 +272,34 @@ public class ApiOrthanc {
             System.out.println("ApiOrthanc AmbilJpg error : " + e);
             JOptionPane.showMessageDialog(null,
                     "Gagal mengambil Gambar JPG dari Orthanc, silahkan hubungi administrator ..!!");
+        }
+        return root;
+    }
+
+    public JsonNode AmbilJpg2(String Series) {
+        System.out.println("Percobaan Mengambil Gambar JPG : " + Series + ", Series : " + Series);
+        try {
+            headers = new HttpHeaders();
+            System.out.println("Auth : " + authEncrypt);
+            headers.add("Authorization", "Basic " + authEncrypt);
+            requestEntity = new HttpEntity(headers);
+            System.out.println("URL : " + koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/series/" + Series);
+            requestJson = getRest().exchange(koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/series/" + Series, HttpMethod.GET, requestEntity, String.class).getBody();
+            System.out.println("Result JSON : " + requestJson);
+            root = mapper.readTree(requestJson);
+            for (JsonNode list : root.path("Instances")) {
+                headers = new HttpHeaders();
+                headers.add("Authorization", "Basic " + authEncrypt);
+                headers.add("Accept", "image/jpeg");
+                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+                ResponseEntity<byte[]> response = getRest().exchange(koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/instances/" + list.asText() + "/preview", HttpMethod.GET, entity, byte[].class);
+                Files.write(Paths.get("./gambarradiologi/" + Series + ".jpg"), response.getBody());
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+            JOptionPane.showMessageDialog(null, "Gagal mengambil Gambar JPG dari Orthanc, silahkan hubungi administrator ..!!");
         }
         return root;
     }

@@ -1341,4 +1341,6 @@ public final class akses {
     public static boolean getsurat_permintaan_perlindungan_dari_kekerasan(){return hakAkses.get(EnumAkses.surat_permintaan_perlindungan_dari_kekerasan);}
     public static boolean getsurat_permohonan_privasi(){return hakAkses.get(EnumAkses.surat_permohonan_privasi);}
     public static boolean getsurat_permintaan_second_opinion(){return hakAkses.get(EnumAkses.surat_permintaan_second_opinion);}
+    public static boolean getsurat_keterangan_berobat(){return hakAkses.get(EnumAkses.surat_keterangan_berobat);}
+    public static boolean getsurat_penolakan_resusitasi(){return hakAkses.get(EnumAkses.surat_penolakan_resusitasi);}
 }

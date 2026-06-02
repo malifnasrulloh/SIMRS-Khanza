@@ -1118,6 +1118,7 @@ import surat.SuratCutiHamil;
 import surat.SuratIndeks;
 import surat.SuratKeluar;
 import surat.SuratKeteranganBebasTBC;
+import surat.SuratKeteranganBerobat;
 import surat.SuratKeteranganCovid;
 import surat.SuratKeteranganLayakTerbang;
 import surat.SuratKeteranganRawatInap;
@@ -1128,6 +1129,7 @@ import surat.SuratKontrol;
 import surat.SuratMap;
 import surat.SuratMasuk;
 import surat.SuratPenolakanAnjuranMedis;
+import surat.SuratPenolakanResusitasi;
 import surat.SuratPermintaanBinrohtal;
 import surat.SuratPermintaanPerlindunganDariKekerasan;
 import surat.SuratPermintaanSecondOpinion;
@@ -17878,6 +17880,30 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
 
+    private void btnSuratKeteranganBerobatActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SuratKeteranganBerobat aplikasi = new SuratKeteranganBerobat(this, false);
+        aplikasi.isCek();
+        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        aplikasi.setLocationRelativeTo(PanelUtama);
+        aplikasi.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+
+    private void btnSuratPenolakanResusitasiActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SuratPenolakanResusitasi aplikasi = new SuratPenolakanResusitasi(this, false);
+        aplikasi.isCek();
+        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        aplikasi.setLocationRelativeTo(PanelUtama);
+        aplikasi.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -18135,7 +18161,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
             btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
-            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion;
+            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi;
 
     public void isWall() {
         try {
@@ -20437,6 +20463,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.getsurat_keterangan_layak_terbang(), btnSuratKeteranganLayakTerbang);
 
+            addMenu(akses.getsurat_keterangan_berobat(), btnSuratKeteranganBerobat);
+
             addMenu(akses.getsurat_kewaspadaan_kesehatan(), btnSuratKewaspadaanKesehatan);
 
             addMenu(akses.getpengumuman_epasien(), btnPengumumanEPasien);
@@ -20472,6 +20500,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsurat_permohonan_privasi(), btnSuratPermohonanPrivasi);
 
             addMenu(akses.getsurat_permintaan_second_opinion(), btnSuratPermintaanSecondOpinion);
+
+            addMenu(akses.getsurat_penolakan_resusitasi(), btnSuratPenolakanResusitasi);
         }
         if (cmbMenu.getSelectedIndex() == 16 || !ChkInput.isSelected()) {
             addMenu(akses.getruang_perpustakaan(), btnRuangPerpustakaan);
@@ -23034,6 +23064,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
         btnSuratPermintaanSecondOpinion = createMenuButton("/48x48/conversation_3601377.png", "Surat Permintaan Second Opinion", "btnSuratPermintaanSecondOpinion", new java.awt.Dimension(200, 90), this::btnSuratPermintaanSecondOpinionActionPerformed);
 
+        btnSuratPenolakanResusitasi = createMenuButton("/48x48/services_6007742.png", "Surat Penolakan Resusitasi", "btnSuratPenolakanResusitasi", new java.awt.Dimension(200, 90), this::btnSuratPenolakanResusitasiActionPerformed);
+
         btnPCRAICRAJenisAktivitasProyek = createMenuButton("/48x48/construction_12539761.png", "Jenis Aktivitas Proyek PCRA", "btnPCRAICRAJenisAktivitasProyek", new java.awt.Dimension(200, 90), this::btnPCRAICRAJenisAktivitasProyekActionPerformed);
 
         btnPCRAICRALokasiKelompokRisiko = createMenuButton("/48x48/construction_16675584.png", "Lokasi & Kelompok Risiko Area PCRA", "btnPCRAICRALokasiKelompokRisiko", new java.awt.Dimension(200, 90), this::btnPCRAICRALokasiKelompokRisikoActionPerformed);
@@ -23071,5 +23103,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnKirimAllergiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Allergy Intolerance Satu Sehat", "btnKirimAllergiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimAllergiSatuSehatActionPerformed);
 
         btnKonsultasiPerawat = createMenuButton("/48x48/discuss_12922995.png", "Konsultasi Perawat", "btnKonsultasiPerawat", new java.awt.Dimension(200, 90), this::btnKonsultasiPerawatActionPerformed);
+
+        btnSuratKeteranganBerobat = createMenuButton("/48x48/register_11421976.png", "Surat Keterangan Berobat", "btnSuratKeteranganBerobat", new java.awt.Dimension(200, 90), this::btnSuratKeteranganBerobatActionPerformed);
     }
 }

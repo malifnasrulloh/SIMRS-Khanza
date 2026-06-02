@@ -282,6 +282,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkOrganization">
                       <Properties>
@@ -294,6 +297,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkPractioner">
                       <Properties>
@@ -306,6 +312,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkEncounter">
                       <Properties>
@@ -318,6 +327,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkMedicationRequest">
                       <Properties>
@@ -330,6 +342,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkCondition">
                       <Properties>
@@ -342,6 +357,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkProcedure">
                       <Properties>
@@ -354,6 +372,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkDevice">
                       <Properties>
@@ -366,6 +387,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkDiagnosticReport">
                       <Properties>
@@ -378,6 +402,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="widget.CekBox" name="chkComposition">
                       <Properties>
@@ -390,6 +417,9 @@
                           <Dimension value="[125, 22]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

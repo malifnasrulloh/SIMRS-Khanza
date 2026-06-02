@@ -7,7 +7,6 @@
         $norawat    = validTeks3($iyem["norawat"],17);
         $tglperiksa = validTeks3($iyem["tglperiksa"],10);
         $jam        = validTeks4($iyem["jam"],8);
-
         $querydetail = bukaquery(
             "SELECT date_format(periksa_radiologi.tgl_periksa,'%d-%m-%Y') as tanggalperiksa, periksa_radiologi.jam, ".
             "periksa_radiologi.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, ".

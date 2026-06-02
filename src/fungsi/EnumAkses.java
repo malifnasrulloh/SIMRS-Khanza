@@ -1210,6 +1210,8 @@ public enum EnumAkses {
     surat_permintaan_perlindungan_dari_kekerasan("[P]Surat Permintaan Perlindungan Diri Dari Kekerasan"),
     surat_permohonan_privasi("[P]Surat Permohonan Privasi"),
     surat_permintaan_second_opinion("[P]Surat Permintaan Second Opinion"),
+    surat_keterangan_berobat("[P]Surat Keterangan Berobat"),
+    surat_penolakan_resusitasi("[P]Surat Penolakan Resusitasi"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_questionnairerequest("[L]Kirim Questionnaire Response Satu Sehat"),
