@@ -40,7 +40,6 @@
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblPasien" style="width:100%;">
                         <thead>
                             <tr>
-                                <th style="width:70px;"><center>No.Poli</center></th>
                                 <th>Data Pasien</th>
                                 <th style="width:80px;"><center>Tipe</center></th>
                                 <th style="width:260px;"><center>Aksi</center></th>
@@ -73,19 +72,26 @@
                                 $sttsVal = htmlspecialchars($r['stts']);
                                 echo "
                                 <tr>
-                                    <td align='center' style='vertical-align:middle; font-weight:bold; font-size:14px; color:#555;'>{$r['no_reg']}</td>
                                     <td style='vertical-align:middle;'>
-                                        <div style='font-weight:700; color:#1f87e6; font-size:14px; margin-bottom:4px;'>$nama</div>
-                                        <div style='font-size:11px; color:#666; display:flex; flex-wrap:wrap; gap:8px; line-height:1.4;'>
-                                            <span>RM: <b style='color:#333;'>$norm</b></span>
-                                            <span style='color:#ccc;'>|</span>
-                                            <span>Reg: <b style='color:#333;'>$norawat</b></span>
-                                            <span style='color:#ccc;'>|</span>
-                                            <span>JK: <b style='color:#333;'>{$r['jk']}</b></span>
-                                            <span style='color:#ccc;'>|</span>
-                                            <span>Umur: <b style='color:#333;'>{$r['umur']}</b></span>
-                                            <span style='color:#ccc;'>|</span>
-                                            <span>Status: <span class='label label-info' style='font-size:9px; padding:1px 4px; border-radius:3px; font-weight:600;'>$sttsVal</span></span>
+                                        <div style='display:flex; align-items:center; gap:12px;'>
+                                            <!-- Modern Circular Queue Badge -->
+                                            <div style='background:#e0f2f1; color:#00796b; font-weight:800; font-size:13px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:2px solid #b2dfdb;' title='No. Urut Antrean Poli'>
+                                                {$r['no_reg']}
+                                            </div>
+                                            <div style='flex-grow:1;'>
+                                                <div style='font-weight:700; color:#1f87e6; font-size:14px; margin-bottom:4px;'>$nama</div>
+                                                <div style='font-size:11px; color:#666; display:flex; flex-wrap:wrap; gap:8px; line-height:1.4;'>
+                                                    <span>RM: <b style='color:#333;'>$norm</b></span>
+                                                    <span style='color:#ccc;'>|</span>
+                                                    <span>Reg: <b style='color:#333;'>$norawat</b></span>
+                                                    <span style='color:#ccc;'>|</span>
+                                                    <span>JK: <b style='color:#333;'>{$r['jk']}</b></span>
+                                                    <span style='color:#ccc;'>|</span>
+                                                    <span>Umur: <b style='color:#333;'>{$r['umur']}</b></span>
+                                                    <span style='color:#ccc;'>|</span>
+                                                    <span>Status: <span class='label label-info' style='font-size:9px; padding:1px 4px; border-radius:3px; font-weight:600;'>$sttsVal</span></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td align='center' style='vertical-align:middle;'><span class='badge $badge' style='padding:4px 8px; font-size:11px;'>$tipe</span></td>
