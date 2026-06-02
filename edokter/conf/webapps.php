@@ -7,4 +7,4 @@
  * ==========================================================
  */
 
-define('WEBAPPS_URL', null); // e.g. 'http://192.168.1.100/webapps' or null for automatic
+define('WEBAPPS_URL', '../webapps'); // e.g. '../webapps' (relative path for local network/mixed-content bypass) or 'http://192.168.1.100/webapps' or null for auto-detect

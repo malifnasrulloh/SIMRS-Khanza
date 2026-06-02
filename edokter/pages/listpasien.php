@@ -334,8 +334,8 @@ function toggleRadDetail(header) {
         tgl_periksa:  header.dataset.tgl,
         jam:          header.dataset.jam
     }, function(d){
-        body.innerHTML = d;
-    }, 'html').fail(function(){ body.innerHTML='<div class="alert alert-danger" style="margin:10px;">Gagal memuat citra/bacaan radiologi.</div>'; });
+        $(body).html(d);
+    }, 'html').fail(function(){ $(body).html('<div class="alert alert-danger" style="margin:10px;">Gagal memuat citra/bacaan radiologi.</div>'); });
 }
 
 // -------- LABORAT MODAL --------
