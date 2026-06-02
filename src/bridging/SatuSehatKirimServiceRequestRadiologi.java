@@ -205,6 +205,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
+        ppPilihLokasiWebapps = new javax.swing.JMenuItem();
         ppPilihLokasiWebapps.setBackground(new java.awt.Color(255, 255, 254));
         ppPilihLokasiWebapps.setFont(new java.awt.Font("Tahoma", 0, 11));
         ppPilihLokasiWebapps.setForeground(new java.awt.Color(50, 50, 50));
@@ -221,6 +222,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         });
         jPopupMenu1.add(ppPilihLokasiWebapps);
 
+        ppPilihACSNBelumTerkirim = new javax.swing.JMenuItem();
         ppPilihACSNBelumTerkirim.setBackground(new java.awt.Color(255, 255, 254));
         ppPilihACSNBelumTerkirim.setFont(new java.awt.Font("Tahoma", 0, 11));
         ppPilihACSNBelumTerkirim.setForeground(new java.awt.Color(50, 50, 50));
