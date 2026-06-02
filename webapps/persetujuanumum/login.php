@@ -5,11 +5,12 @@
     $cari    = trim(isset($_GET['iyem']))?trim($_GET['iyem']):NULL;
     $cari    = json_decode(encrypt_decrypt($cari,"d"),true);
     $url     = "index.php?act=Home";
+    $no_surat_param = isset($_GET['no_surat']) ? '&no_surat='.urlencode(trim($_GET['no_surat'])) : '';
     if (isset($cari["usere"])) {
         if(($cari["usere"]==USERHYBRIDWEB)&&($cari["passwordte"]==PASHYBRIDWEB)){
             session_start();
             $_SESSION['ses_admin_persetujuanumum']="admin";
-            $url = "index.php?act=Kamera";
+            $url = "index.php?act=Kamera".$no_surat_param;
         }
     }
     header("Location:".$url);

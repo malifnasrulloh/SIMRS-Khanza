@@ -27809,6 +27809,23 @@ CREATE TABLE `surat_persetujuan_umum_pembuat_pernyataan` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `surat_persetujuan_umum_penerima`
+--
+
+DROP TABLE IF EXISTS `surat_persetujuan_umum_penerima`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `surat_persetujuan_umum_penerima` (
+  `no_surat` varchar(20) NOT NULL,
+  `no_urut` tinyint(4) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `hubungan` varchar(30) NOT NULL,
+  PRIMARY KEY (`no_surat`,`no_urut`),
+  CONSTRAINT `surat_persetujuan_umum_penerima_ibfk_1` FOREIGN KEY (`no_surat`) REFERENCES `surat_persetujuan_umum` (`no_surat`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `surat_pulang_atas_permintaan_sendiri`
 --
 
@@ -32694,4 +32711,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-19 15:36:17
+-- Dump completed on 2026-06-02  8:28:08

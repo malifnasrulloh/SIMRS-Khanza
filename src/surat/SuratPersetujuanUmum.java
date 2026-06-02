@@ -11,6 +11,7 @@ import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
 import fungsi.akses;
+import AESsecurity.EnkripsiAES;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -63,7 +64,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         
         tabMode=new DefaultTableModel(null,new Object[]{
             "No.Persetujuan","No.Rawat","No.R.M.","Nama Pasien","Umur","J.K.","Tgl.Lahir","Tanggal","Pengobatan Kepada","Nilai Kepercayaan",
-            "Nama Penanggung Jawab","Umur P.J.","Nomor KTP P.J.","J.K. P.J.","Nomor Telp/HP","Bertindak Untuk","NIP","Nama Petugas"
+            "Nama Penanggung Jawab","Umur P.J.","Nomor KTP P.J.","J.K. P.J.","Nomor Telp/HP","Bertindak Untuk","NIP","Nama Petugas",
+            "Penerima 1 (Nama)","Hubungan 1","Penerima 2 (Nama)","Hubungan 2","Penerima 3 (Nama)","Hubungan 3"
         }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -73,7 +75,7 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 18; i++) {
+        for (i = 0; i < 24; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(105);
@@ -111,6 +113,18 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 column.setPreferredWidth(90);
             }else if(i==17){
                 column.setPreferredWidth(150);
+            }else if(i==18){
+                column.setPreferredWidth(120);
+            }else if(i==19){
+                column.setPreferredWidth(90);
+            }else if(i==20){
+                column.setPreferredWidth(120);
+            }else if(i==21){
+                column.setPreferredWidth(90);
+            }else if(i==22){
+                column.setPreferredWidth(120);
+            }else if(i==23){
+                column.setPreferredWidth(90);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
@@ -839,7 +853,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 tabMode.addRow(new Object[]{
                     NoSurat.getText(),TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),LahirPasien.getText(),
                     Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",NamaPJ.getText(),UmurPJ.getText(),NoKTP.getText(),JKPJ.getSelectedItem().toString().substring(0,1),
-                    NoTelp.getText(),BertindakAtas.getSelectedItem().toString(),KdPetugas.getText(),NmPetugas.getText()
+                    NoTelp.getText(),BertindakAtas.getSelectedItem().toString(),KdPetugas.getText(),NmPetugas.getText(),
+                    "-","-","-","-","-","-"
                 });
                 LCount.setText(""+tabMode.getRowCount());
                 emptTeks();
@@ -963,6 +978,12 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     "reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,surat_persetujuan_umum.tanggal,surat_persetujuan_umum.pengobatan_kepada,"+
                     "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,"+
                     "surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_nama_1,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_hubungan_1,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_nama_2,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_hubungan_2,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_nama_3,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_hubungan_3,"+
                     "petugas.nama from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on surat_persetujuan_umum.nip=petugas.nip where "+
@@ -973,6 +994,12 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     "reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,surat_persetujuan_umum.tanggal,surat_persetujuan_umum.pengobatan_kepada,"+
                     "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,"+
                     "surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_nama_1,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_hubungan_1,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_nama_2,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_hubungan_2,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_nama_3,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_hubungan_3,"+
                     "petugas.nama from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on surat_persetujuan_umum.nip=petugas.nip where "+
@@ -1156,9 +1183,16 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             TCari.requestFocus();
         }else{
             if(tbObat.getSelectedRow()>-1){
+                String noSurat = tbObat.getValueAt(tbObat.getSelectedRow(),0).toString();
+                String noRawat = tbObat.getValueAt(tbObat.getSelectedRow(),1).toString();
                 Sequel.queryu("delete from antripersetujuanumum");
-                Sequel.queryu("insert into antripersetujuanumum values('"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"','"+tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()+"')");
-                Sequel.queryu("delete from surat_persetujuan_umum_pembuat_pernyataan where no_surat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'");
+                Sequel.queryu("insert into antripersetujuanumum values('"+noSurat+"','"+noRawat+"')");
+                Sequel.queryu("delete from surat_persetujuan_umum_pembuat_pernyataan where no_surat='"+noSurat+"'");
+                String iyem_auth = EnkripsiAES.encrypt_decrypt(
+                    "{\"usere\":\""+koneksiDB.USERHYBRIDWEB()+"\",\"passwordte\":\""+koneksiDB.PASHYBRIDWEB()+"\"}",
+                    "e"
+                ).trim();
+                Valid.panggilUrl("persetujuanumum/login.php?iyem="+iyem_auth+"&no_surat="+noSurat);
             }else{
                 JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
             }
@@ -1195,7 +1229,14 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),17).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),16).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()));
                 Valid.MyReportqry("rptSuratPersetujuanUmum.jasper","report","::[ Surat Persetujuan Umum ]::",
                     "select surat_persetujuan_umum.no_surat,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,surat_persetujuan_umum.tanggal,surat_persetujuan_umum.pengobatan_kepada,pasien.tmp_lahir,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) as alamat,"+
-		    "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,petugas.nama,penjab.png_jawab from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
+		    "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,petugas.nama,penjab.png_jawab,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_nama_1,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_hubungan_1,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_nama_2,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_hubungan_2,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_nama_3,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_hubungan_3 "+
+                    "from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
 		    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on surat_persetujuan_umum.nip=petugas.nip inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join propinsi on pasien.kd_prop=propinsi.kd_prop inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
                     "where surat_persetujuan_umum.no_surat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'",param);
             }
@@ -1320,6 +1361,12 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     "reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,surat_persetujuan_umum.tanggal,surat_persetujuan_umum.pengobatan_kepada,"+
                     "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,"+
                     "surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_nama_1,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_hubungan_1,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_nama_2,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_hubungan_2,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_nama_3,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_hubungan_3,"+
                     "petugas.nama from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on surat_persetujuan_umum.nip=petugas.nip where "+
@@ -1330,6 +1377,12 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     "reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,surat_persetujuan_umum.tanggal,surat_persetujuan_umum.pengobatan_kepada,"+
                     "surat_persetujuan_umum.nilai_kepercayaan,surat_persetujuan_umum.nama_pj,surat_persetujuan_umum.umur_pj,surat_persetujuan_umum.no_ktppj,"+
                     "surat_persetujuan_umum.jkpj,surat_persetujuan_umum.bertindak_atas,surat_persetujuan_umum.no_telp,surat_persetujuan_umum.nip,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_nama_1,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=1) as penerima_hubungan_1,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_nama_2,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=2) as penerima_hubungan_2,"+
+                    "(select nama from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_nama_3,"+
+                    "(select hubungan from surat_persetujuan_umum_penerima where no_surat=surat_persetujuan_umum.no_surat and no_urut=3) as penerima_hubungan_3,"+
                     "petugas.nama from surat_persetujuan_umum inner join reg_periksa on surat_persetujuan_umum.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on surat_persetujuan_umum.nip=petugas.nip where "+
@@ -1363,7 +1416,10 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                         rs.getString("umurdaftar")+" "+rs.getString("sttsumur"),rs.getString("jk"),rs.getDate("tgl_lahir"),
                         rs.getString("tanggal"),rs.getString("pengobatan_kepada"),rs.getString("nilai_kepercayaan"),rs.getString("nama_pj"),
                         rs.getString("umur_pj"),rs.getString("no_ktppj"),rs.getString("jkpj"),rs.getString("no_telp"),rs.getString("bertindak_atas"),
-                        rs.getString("nip"),rs.getString("nama") 
+                        rs.getString("nip"),rs.getString("nama"),
+                        rs.getString("penerima_nama_1"),rs.getString("penerima_hubungan_1"),
+                        rs.getString("penerima_nama_2"),rs.getString("penerima_hubungan_2"),
+                        rs.getString("penerima_nama_3"),rs.getString("penerima_hubungan_3")
                     });
                 }
             } catch (Exception e) {

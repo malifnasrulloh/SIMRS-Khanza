@@ -1,8 +1,14 @@
 <?php
     require_once('../../conf/conf.php');
-    $nosurat           = validTeks4($_POST["nosurat"],20);
-    $pengobatan_kepada = validTeks4($_POST["pengobatan_kepada"],20);
-    $nilai_kepercayaan = validTeks4($_POST["nilai_kepercayaan"],50);
+    $nosurat             = validTeks4($_POST["nosurat"],20);
+    $pengobatan_kepada   = validTeks4($_POST["pengobatan_kepada"],20);
+    $nilai_kepercayaan   = validTeks4($_POST["nilai_kepercayaan"],50);
+    $penerima_nama_1     = validTeks4($_POST["penerima_nama_1"],50);
+    $penerima_hubungan_1 = validTeks4($_POST["penerima_hubungan_1"],30);
+    $penerima_nama_2     = validTeks4($_POST["penerima_nama_2"],50);
+    $penerima_hubungan_2 = validTeks4($_POST["penerima_hubungan_2"],30);
+    $penerima_nama_3     = validTeks4($_POST["penerima_nama_3"],50);
+    $penerima_hubungan_3 = validTeks4($_POST["penerima_hubungan_3"],30);
 
     if(file_exists(host()."/webapps/persetujuanumum/pages/upload/".$nosurat.".jpeg")){
         @unlink(host()."/webapps/persetujuanumum/pages/upload/".$nosurat.".jpeg");
@@ -23,6 +29,18 @@
     try {
         Tambah3("surat_persetujuan_umum_pembuat_pernyataan","'".$nosurat."','pages/upload/$fileName'");
         Ubah2("surat_persetujuan_umum","pengobatan_kepada='$pengobatan_kepada',nilai_kepercayaan='$nilai_kepercayaan' where no_surat='$nosurat'");
+        
+        Hapus2("surat_persetujuan_umum_penerima", "no_surat='$nosurat'");
+        if ($penerima_nama_1 != '-' && $penerima_nama_1 != '') {
+            Tambah3("surat_persetujuan_umum_penerima", "'$nosurat', 1, '$penerima_nama_1', '$penerima_hubungan_1'");
+        }
+        if ($penerima_nama_2 != '-' && $penerima_nama_2 != '') {
+            Tambah3("surat_persetujuan_umum_penerima", "'$nosurat', 2, '$penerima_nama_2', '$penerima_hubungan_2'");
+        }
+        if ($penerima_nama_3 != '-' && $penerima_nama_3 != '') {
+            Tambah3("surat_persetujuan_umum_penerima", "'$nosurat', 3, '$penerima_nama_3', '$penerima_hubungan_3'");
+        }
+        
         echo $htmlHead."<body><center>Proses Pengambilan Persetujuan Umum Pasien/Keluarga Pasien Sudah Selesai ..!! <br><a href='".$urlKembali."' class='btn btn-secondary'>Kembali</a></center></body>";
     } catch (mysqli_sql_exception $e) {
         if($e->getCode() == 1062){
