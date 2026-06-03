@@ -706,6 +706,110 @@ public class ApiOrthanc {
             ).getBody();
             System.out.println("Response UbahTagsStudy : " + response);
             return true;
+        } catch (org.springframework.web.client.HttpClientErrorException ex) {
+            System.out.println("ApiOrthanc UbahTagsStudy HTTP error : " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString());
+            if (ex.getStatusCode().value() == 400) {
+                String errorBody = ex.getResponseBodyAsString();
+                if (errorBody.contains("Trying to change patient tags in a study") || errorBody.contains("All the 'Replace' tags should match")) {
+                    System.out.println("Demographic mismatch detected. Attempting self-recovery by updating patient demographics in Orthanc...");
+                    try {
+                        JsonNode rootNode = mapper.readTree(modifyJson);
+                        JsonNode replaceNode = rootNode.path("Replace");
+                        String patientId = replaceNode.path("PatientID").asText();
+                        String patientName = replaceNode.path("PatientName").asText();
+                        String patientBirthDate = replaceNode.path("PatientBirthDate").asText();
+                        String patientSex = replaceNode.path("PatientSex").asText();
+                        String studyDate = replaceNode.path("StudyDate").asText();
+                        String modality = replaceNode.path("Modality").asText();
+
+                        if (patientId != null && !patientId.trim().isEmpty()) {
+                            headers = new HttpHeaders();
+                            headers.add("Authorization", "Basic " + authEncrypt);
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            String queryJson = "{"
+                                    + "\"Level\": \"Patient\","
+                                    + "\"Expand\": true,"
+                                    + "\"Query\": {"
+                                    + "\"PatientID\": \"" + patientId.trim() + "\""
+                                    + "}"
+                                    + "}";
+                            requestEntity = new HttpEntity(queryJson, headers);
+                            String patientResp = getRest().exchange(
+                                    orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
+                            ).getBody();
+                            JsonNode patients = mapper.readTree(patientResp);
+                            if (patients.isArray() && patients.size() > 0) {
+                                String patientInternalId = patients.get(0).path("ID").asText();
+                                System.out.println("Self-recovery: Found patient internal ID in Orthanc: " + patientInternalId);
+
+                                // Step 2: Trigger patient-level modify to update demographics to match SIMRS
+                                headers = new HttpHeaders();
+                                headers.add("Authorization", "Basic " + authEncrypt);
+                                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                                java.util.Map<String, Object> patReplace = new java.util.HashMap<>();
+                                if (patientName != null && !patientName.isEmpty()) patReplace.put("PatientName", patientName);
+                                if (patientBirthDate != null && !patientBirthDate.isEmpty()) patReplace.put("PatientBirthDate", patientBirthDate);
+                                if (patientSex != null && !patientSex.isEmpty()) patReplace.put("PatientSex", patientSex);
+
+                                java.util.Map<String, Object> patBody = new java.util.HashMap<>();
+                                patBody.put("Replace", patReplace);
+                                patBody.put("KeepSource", false);
+                                patBody.put("Force", true);
+
+                                String patModifyJson = mapper.writeValueAsString(patBody);
+                                System.out.println("Self-recovery: Request JSON Patient Modify : " + patModifyJson);
+                                requestEntity = new HttpEntity(patModifyJson, headers);
+
+                                String patResponse = getRest().exchange(
+                                        orthancUrl("/patients/" + patientInternalId + "/modify"),
+                                        HttpMethod.POST, requestEntity, String.class
+                                ).getBody();
+                                System.out.println("Self-recovery: Patient modify completed successfully. Response: " + patResponse);
+
+                                // Step 3: Wait a short moment for indexing and recreation
+                                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+
+                                // Step 4: Re-resolve the study ID using PatientID, StudyDate, and Modality
+                                String newStudyId = "";
+                                if (studyDate != null && !studyDate.isEmpty() && modality != null && !modality.isEmpty()) {
+                                    JsonNode studies = this.AmbilSeriesDenganModality(patientId, studyDate, studyDate, modality);
+                                    if (studies != null && studies.isArray() && studies.size() > 0) {
+                                        newStudyId = studies.get(0).path("ID").asText();
+                                    }
+                                }
+
+                                if (!newStudyId.isEmpty()) {
+                                    System.out.println("Self-recovery: Found new Study ID after patient update: " + newStudyId);
+
+                                    // Step 5: Retry the study-level modify using the new Study ID
+                                    headers = new HttpHeaders();
+                                    headers.add("Authorization", "Basic " + authEncrypt);
+                                    headers.setContentType(MediaType.APPLICATION_JSON);
+                                    requestEntity = new HttpEntity(modifyJson, headers);
+                                    String retryResponse = getRest().exchange(
+                                            orthancUrl("/studies/" + newStudyId + "/modify"),
+                                            HttpMethod.POST, requestEntity, String.class
+                                    ).getBody();
+                                    System.out.println("Self-recovery: Study modify retry Response : " + retryResponse);
+                                    return true;
+                                } else {
+                                    System.out.println("Self-recovery failed: Could not resolve new Study ID after patient update.");
+                                }
+                            } else {
+                                System.out.println("Self-recovery failed: PatientID=" + patientId + " not found in Orthanc.");
+                            }
+                        }
+                    } catch (Exception ex2) {
+                        System.out.println("Self-recovery failed with exception: " + ex2);
+                    }
+                }
+            }
+            if (!silent) {
+                JOptionPane.showMessageDialog(null,
+                        "Gagal mengubah tags di Orthanc..!!");
+            }
+            return false;
         } catch (Exception e) {
             System.out.println("ApiOrthanc UbahTagsStudy error : " + e);
             if (!silent) {
