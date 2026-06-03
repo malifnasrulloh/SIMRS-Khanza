@@ -827,61 +827,112 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     // =========================================================================
 
     private void BtnGetIDImagingStudiAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGetIDImagingStudiAutoActionPerformed
-        for (int i = 0; i < tbObat.getRowCount(); i++) {
-            if (!Boolean.parseBoolean(tbObat.getValueAt(i, COL_PILIH).toString())) {
-                continue;
-            }
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        runBackground(() -> {
+            int sukses = 0, gagal = 0;
+            for (int i = 0; i < tbObat.getRowCount(); i++) {
+                final int row = i;
+                if (!Boolean.parseBoolean(tbObat.getValueAt(row, COL_PILIH).toString())) {
+                    continue;
+                }
 
-            String noorder = tbObat.getValueAt(i, COL_NOORDER).toString();
-            String kdJenisPrw = tbObat.getValueAt(i, COL_KD_JENIS_PRW).toString();
-            String idServicerequest = tbObat.getValueAt(i, COL_ID_SR).toString();
-            String acsn = buildAcsn(noorder, kdJenisPrw);
+                String noorder = tbObat.getValueAt(row, COL_NOORDER).toString();
+                String kdJenisPrw = tbObat.getValueAt(row, COL_KD_JENIS_PRW).toString();
+                String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
+                String acsn = buildAcsn(noorder, kdJenisPrw);
 
-            System.out.println("Auto ACSN baris " + i + " : " + acsn);
-            String imagingId = getImagingStudyID(acsn);
-            if (imagingId != null && !imagingId.isEmpty()) {
-                tbObat.setValueAt(acsn, i, COL_ACSN);
-                tbObat.setValueAt(imagingId, i, COL_ID_IMAGING);
-                tbObat.setValueAt(false, i, COL_PILIH);
-                simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, acsn, imagingId);
-                System.out.println("ImagingStudy ID untuk noorder " + noorder + " : " + imagingId);
-            } else {
-                System.out.println("Gagal mendapatkan ImagingStudy ID untuk ACSN " + acsn);
+                System.out.println("Auto ACSN baris " + row + " : " + acsn);
+                SwingUtilities.invokeLater(() -> tbObat.setValueAt("Checking...", row, COL_STATUS_ORTHANC));
+                
+                String imagingId = getImagingStudyID(acsn);
+                if (imagingId != null && !imagingId.isEmpty()) {
+                    final String finalImgId = imagingId;
+                    SwingUtilities.invokeLater(() -> {
+                        tbObat.setValueAt(acsn, row, COL_ACSN);
+                        tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
+                        tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
+                        tbObat.setValueAt(false, row, COL_PILIH);
+                    });
+                    simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, acsn, imagingId);
+                    sukses++;
+                    System.out.println("ImagingStudy ID untuk noorder " + noorder + " : " + imagingId);
+                } else {
+                    SwingUtilities.invokeLater(() -> tbObat.setValueAt("ID Tidak Ditemukan", row, COL_STATUS_ORTHANC));
+                    gagal++;
+                    System.out.println("Gagal mendapatkan ImagingStudy ID untuk ACSN " + acsn);
+                }
             }
-        }
+            final int finalSukses = sukses;
+            final int finalGagal = gagal;
+            SwingUtilities.invokeLater(() -> {
+                this.setCursor(Cursor.getDefaultCursor());
+                JOptionPane.showMessageDialog(this,
+                        "Cek ID Imaging Study selesai.\nBerhasil: " + finalSukses + "   Gagal/Belum Ada: " + finalGagal,
+                        "Cek ID Imaging Study", JOptionPane.INFORMATION_MESSAGE);
+            });
+        });
     }//GEN-LAST:event_BtnGetIDImagingStudiAutoActionPerformed
 
     private void BtnGetIDImagingStudiManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGetIDImagingStudiManualActionPerformed
-        for (int i = 0; i < tbObat.getRowCount(); i++) {
-            if (!tbObat.getValueAt(i, COL_PILIH).toString().equals("true")) {
-                continue;
-            }
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        runBackground(() -> {
+            int sukses = 0, gagal = 0;
+            for (int i = 0; i < tbObat.getRowCount(); i++) {
+                final int row = i;
+                if (!tbObat.getValueAt(row, COL_PILIH).toString().equals("true")) {
+                    continue;
+                }
 
-            String noorder = tbObat.getValueAt(i, COL_NOORDER).toString();
-            String kdJenisPrw = tbObat.getValueAt(i, COL_KD_JENIS_PRW).toString();
-            String idServicerequest = tbObat.getValueAt(i, COL_ID_SR).toString();
+                String noorder = tbObat.getValueAt(row, COL_NOORDER).toString();
+                String kdJenisPrw = tbObat.getValueAt(row, COL_KD_JENIS_PRW).toString();
+                String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
 
-            String acsn = JOptionPane.showInputDialog(this,
-                    "Masukkan ACSN untuk No.Order " + noorder + " :",
-                    "Manual ACSN", JOptionPane.QUESTION_MESSAGE);
-            if (acsn == null || acsn.trim().isEmpty()) {
-                System.out.println("Input ACSN dibatalkan untuk baris " + i);
-                continue;
-            }
-            acsn = acsn.trim();
-            System.out.println("Manual ACSN baris " + i + " : " + acsn);
+                final String[] inputAcsn = new String[1];
+                try {
+                    SwingUtilities.invokeAndWait(() -> {
+                        inputAcsn[0] = JOptionPane.showInputDialog(this,
+                                "Masukkan ACSN untuk No.Order " + noorder + " :",
+                                "Manual ACSN", JOptionPane.QUESTION_MESSAGE);
+                    });
+                } catch (Exception ignored) {}
 
-            String imagingId = getImagingStudyID(acsn);
-            if (imagingId != null && !imagingId.isEmpty()) {
-                tbObat.setValueAt(acsn, i, COL_ACSN);
-                tbObat.setValueAt(imagingId, i, COL_ID_IMAGING);
-                tbObat.setValueAt(false, i, COL_PILIH);
-                simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, acsn, imagingId);
-                System.out.println("Berhasil ImagingStudy ID untuk noorder " + noorder + " : " + imagingId);
-            } else {
-                System.out.println("Gagal mendapatkan ImagingStudy ID untuk ACSN " + acsn);
+                String acsn = inputAcsn[0];
+                if (acsn == null || acsn.trim().isEmpty()) {
+                    System.out.println("Input ACSN dibatalkan untuk baris " + row);
+                    continue;
+                }
+                acsn = acsn.trim();
+                System.out.println("Manual ACSN baris " + row + " : " + acsn);
+
+                final String finalAcsn = acsn;
+                SwingUtilities.invokeLater(() -> tbObat.setValueAt("Checking...", row, COL_STATUS_ORTHANC));
+                String imagingId = getImagingStudyID(finalAcsn);
+                if (imagingId != null && !imagingId.isEmpty()) {
+                    final String finalImgId = imagingId;
+                    SwingUtilities.invokeLater(() -> {
+                        tbObat.setValueAt(finalAcsn, row, COL_ACSN);
+                        tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
+                        tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
+                        tbObat.setValueAt(false, row, COL_PILIH);
+                    });
+                    simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, finalAcsn, imagingId);
+                    sukses++;
+                    System.out.println("Berhasil ImagingStudy ID untuk noorder " + noorder + " : " + imagingId);
+                } else {
+                    SwingUtilities.invokeLater(() -> tbObat.setValueAt("ID Tidak Ditemukan", row, COL_STATUS_ORTHANC));
+                    gagal++;
+                    System.out.println("Gagal mendapatkan ImagingStudy ID untuk ACSN " + finalAcsn);
+                }
             }
-        }
+            final int finalSukses = sukses;
+            final int finalGagal = gagal;
+            SwingUtilities.invokeLater(() -> {
+                this.setCursor(Cursor.getDefaultCursor());
+                JOptionPane.showMessageDialog(this,
+                        "Cek ID Imaging Study selesai.\nBerhasil: " + finalSukses + "   Gagal/Belum Ada: " + finalGagal,
+                        "Cek ID Imaging Study Manual", JOptionPane.INFORMATION_MESSAGE);
+            });
+        });
     }//GEN-LAST:event_BtnGetIDImagingStudiManualActionPerformed
 
     // =========================================================================
@@ -998,12 +1049,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     if (sentToRouter) {
                         String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
                         String finalAcsn = acsn;
-                        String imagingId = getImagingStudyID(finalAcsn);
+                        String imagingId = getImagingStudyID(finalAcsn, 5);
+
                         if (imagingId != null && !imagingId.isEmpty()) {
                             simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, finalAcsn, imagingId);
+                            final String finalImgId = imagingId;
                             SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(finalAcsn, row, COL_ACSN);
-                                tbObat.setValueAt(imagingId, row, COL_ID_IMAGING);
+                                tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
                                 tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
                                 tbObat.setValueAt(false, row, COL_PILIH);
                             });
@@ -1153,12 +1206,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     if (sentToRouter) {
                         String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
                         String finalAcsn = acsn;
-                        String imagingId = getImagingStudyID(finalAcsn);
+                        String imagingId = getImagingStudyID(finalAcsn, 5);
+
                         if (imagingId != null && !imagingId.isEmpty()) {
                             simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, finalAcsn, imagingId);
+                            final String finalImgId = imagingId;
                             SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(finalAcsn, row, COL_ACSN);
-                                tbObat.setValueAt(imagingId, row, COL_ID_IMAGING);
+                                tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
                                 tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
                                 tbObat.setValueAt(false, row, COL_PILIH);
                             });
@@ -1834,6 +1889,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }
         } catch (Exception e) {
             System.out.println("getImagingStudyID error : " + e);
+        }
+        return "";
+    }
+
+    private String getImagingStudyID(String acsn, int maxRetries) {
+        String imagingId = "";
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+            imagingId = getImagingStudyID(acsn);
+            if (imagingId != null && !imagingId.isEmpty()) {
+                return imagingId;
+            }
+            if (attempt < maxRetries) {
+                int sleepSec = 1 + (attempt * 2); // 3s, 5s, 7s, 9s...
+                System.out.println("Satu Sehat : Waiting " + sleepSec + " seconds before query attempt " + attempt + "/" + maxRetries + " for ACSN=" + acsn);
+                try { Thread.sleep(sleepSec * 1000); } catch (InterruptedException ignored) {}
+            }
         }
         return "";
     }
