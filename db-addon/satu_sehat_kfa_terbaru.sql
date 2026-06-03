@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `satu_sehat_kfa_terbaru` (
   `kfa_code` varchar(50) NOT NULL,
+  `product_type` VARCHAR(20) DEFAULT 'farmasi',
   `name` text DEFAULT NULL,
   `active` varchar(10) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,

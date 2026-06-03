@@ -22434,6 +22434,7 @@ DROP TABLE IF EXISTS `satu_sehat_kfa_terbaru`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `satu_sehat_kfa_terbaru` (
   `kfa_code` varchar(50) NOT NULL,
+  `product_type` varchar(20) DEFAULT 'farmasi',
   `name` text DEFAULT NULL,
   `active` varchar(10) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
@@ -32802,4 +32803,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-06-02 14:48:29
+-- Dump completed on 2026-06-03 16:52:14
