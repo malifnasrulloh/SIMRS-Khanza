@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -51,7 +52,8 @@ public class DlgUpdateUser extends javax.swing.JDialog {
     private int i = 0, jml = 0;
     private boolean[] akses, pilih;
     private String[] menu;
-    private static final EnumMap<EnumAkses, Boolean> hakAkses = new EnumMap<>(EnumAkses.class);
+    private final EnumMap<EnumAkses, Boolean> hakAkses = new EnumMap<>(EnumAkses.class);
+    private List<String> userTableColumns = Sequel.getColumns("user");
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
@@ -601,31 +603,45 @@ public class DlgUpdateUser extends javax.swing.JDialog {
             String rowAksesValue = "";
 
             for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
-                rowAksesValue += colName.getDBTableColumn() + ",";
+                if (userTableColumns.contains(colName.getDBTableColumn())) {
+                    rowAksesValue += colName.getDBTableColumn() + ",";
+                }
             }
-            rowAksesValue = rowAksesValue.substring(0, rowAksesValue.length() - 1); //hapus koma terakhir
+            if (rowAksesValue.endsWith(",")) {
+                rowAksesValue = rowAksesValue.substring(0, rowAksesValue.length() - 1); //hapus koma terakhir
+            }
 
-            ps = koneksi.prepareStatement(
-                    "select " + rowAksesValue + " from user where id_user=AES_ENCRYPT(?,'nur')");
-            try {
-                ps.setString(1, user);
-                rs = ps.executeQuery();
-                rs.next();
+            if (!rowAksesValue.equals("")) {
+                ps = koneksi.prepareStatement(
+                        "select " + rowAksesValue + " from user where id_user=AES_ENCRYPT(?,'nur')");
+                try {
+                    ps.setString(1, user);
+                    rs = ps.executeQuery();
 
-                for (EnumAkses col : EnumAkses.getNonUserColumns()) {
-                    hakAkses.put(col, rs.getBoolean(col.getDBTableColumn()));
-                }
+                    // Initialize hakAkses to false for all permissions
+                    for (EnumAkses col : EnumAkses.getNonUserColumns()) {
+                        hakAkses.put(col, false);
+                    }
 
-                setTampil();
-                LCount.setText("" + tabMode.getRowCount());
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
+                    if (rs.next()) {
+                        for (EnumAkses col : EnumAkses.getNonUserColumns()) {
+                            if (userTableColumns.contains(col.getDBTableColumn())) {
+                                hakAkses.put(col, rs.getBoolean(col.getDBTableColumn()));
+                            }
+                        }
+                    }
+
+                    setTampil();
+                    LCount.setText("" + tabMode.getRowCount());
+                } catch (Exception e) {
+                    System.out.println(e);
+                } finally {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (ps != null) {
+                        ps.close();
+                    }
                 }
             }
 
@@ -638,8 +654,10 @@ public class DlgUpdateUser extends javax.swing.JDialog {
         String tCariValue = TCari.getText().toLowerCase();
         ArrayList<Object[]> tableRow = new ArrayList<>();
         for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
-            if (colName.getAlias().toLowerCase().contains(tCariValue)) {
-                tableRow.add(new Object[]{false, colName.getAlias(), hakAkses.get(colName)});
+            if (userTableColumns.contains(colName.getDBTableColumn())) {
+                if (colName.getAlias().toLowerCase().contains(tCariValue)) {
+                    tableRow.add(new Object[]{false, colName.getAlias(), hakAkses.get(colName)});
+                }
             }
         }
         tableRow.sort(Comparator.comparing(innerList -> (String) innerList[1]));
@@ -664,7 +682,9 @@ public class DlgUpdateUser extends javax.swing.JDialog {
 
             for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
                 if (colName.getAlias().equalsIgnoreCase(aksesName)) {
-                    Sequel.mengedit("user", "id_user=AES_ENCRYPT('" + selectedUser + "','nur')", colName.getDBTableColumn() + "='" + aksesValue + "'");
+                    if (userTableColumns.contains(colName.getDBTableColumn())) {
+                        Sequel.mengedit("user", "id_user=AES_ENCRYPT('" + selectedUser + "','nur')", colName.getDBTableColumn() + "='" + aksesValue + "'");
+                    }
                     break;
                 }
             }

@@ -1026,9 +1026,9 @@ public class koneksiDB {
     public static String AKTIFKANTRACKSQL() {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
-            var = EnkripsiAES.decrypt(prop.getProperty("AKTIFKANTRACKSQL"));
+            var = "yes";
         } catch (Exception e) {
-            var = "";
+            var = "yes";
         }
         return var;
     }

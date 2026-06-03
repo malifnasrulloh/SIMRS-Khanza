@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.EnumMap;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,11 @@ public final class akses {
     private static ResultSet rs, rs2;
     private static String kode = "", kdbangsal = "", alamatip = "", namars = "", alamatrs = "", kabupatenrs = "", propinsirs = "", kontakrs = "", emailrs = "", form = "", namauser = "", kode_ppk = "",kode_ppk_kemenkes="";
     private static final EnumMap<EnumAkses, Boolean> hakAkses = new EnumMap<>(EnumAkses.class);
+    static {
+        for (EnumAkses col : EnumAkses.values()) {
+            hakAkses.put(col, false);
+        }
+    }
     private static int jml1 = 0, jml2 = 0;
     private static boolean aktif = false, admin = false, user = false, vakum = false, aplikasi = false, e_eksekutif = false, status = false;
 
@@ -57,8 +63,13 @@ public final class akses {
                     akses.vakum = false;
                     akses.aplikasi = false;
 
+                    List<String> userTableColumns = new sekuel().getColumns("user");
                     for (EnumAkses col : EnumAkses.getNonUserColumns()) {
-                        hakAkses.put(col, rs2.getBoolean(col.getDBTableColumn()));
+                        if (userTableColumns.contains(col.getDBTableColumn())) {
+                            hakAkses.put(col, rs2.getBoolean(col.getDBTableColumn()));
+                        } else {
+                            hakAkses.put(col, false);
+                        }
                     }
                 } else if ((rs.getRow() == 0) && (rs2.getRow() == 0)) {
                     setLogOut();

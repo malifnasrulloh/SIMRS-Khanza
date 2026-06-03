@@ -55,7 +55,19 @@ public class DlgUser extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;
     private String user = "", jabatan = "", copyhakakses = "", userdicopy = "";
-    List<String> columnNames = Arrays.stream(EnumAkses.values()).map(EnumAkses::getAlias).collect(Collectors.toList());
+    private List<String> userTableColumns = Sequel.getColumns("user");
+    private List<EnumAkses> nonUserColumns = EnumAkses.getNonUserColumns().stream()
+            .filter(e -> userTableColumns.contains(e.getDBTableColumn()))
+            .collect(Collectors.toList());
+    private List<String> columnNames = new ArrayList<String>() {
+        {
+            add("ID User");
+            add("Nama User");
+            add("Jabatan");
+            add("Password");
+            addAll(nonUserColumns.stream().map(EnumAkses::getAlias).collect(Collectors.toList()));
+        }
+    };
     private int i = 0;
     private boolean ceksukses = false;
     private DlgCariDokter dlgdokter;
@@ -71,14 +83,12 @@ public class DlgUser extends javax.swing.JDialog {
     public DlgUser(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        columnNames.add(1, "Password");
-        columnNames.add(1, "Nama User");
 
         tabMode = new DefaultTableModel(null, columnNames.toArray()) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = true;
-                if ((colIndex == 0) || (colIndex == 1) || (colIndex == 2)) {
+                if ((colIndex == 0) || (colIndex == 1) || (colIndex == 2) || (colIndex == 3)) {
                     a = false;
                 }
                 return a;
@@ -514,14 +524,16 @@ public class DlgUser extends javax.swing.JDialog {
             Valid.textKosong(TPass, "Password");
         } else {
             String sqlAksesValue = "";
+            String columnList = "id_user,password";
             List<Object> rowAksesValue = new ArrayList<>();
 
-            for (int i = 0; i < EnumAkses.getNonUserColumns().size(); i++) {
+            for (EnumAkses colName : nonUserColumns) {
+                columnList += "," + colName.getDBTableColumn();
                 sqlAksesValue += ",'false'";
                 rowAksesValue.add(false);
             }
 
-            if (Sequel.menyimpantf("user", "AES_ENCRYPT('" + TKd.getText() + "','nur'),AES_ENCRYPT('" + TPass.getText() + "','windi')" + sqlAksesValue, "User") == true) {
+            if (Sequel.menyimpantf("user(" + columnList + ")", "AES_ENCRYPT('" + TKd.getText() + "','nur'),AES_ENCRYPT('" + TPass.getText() + "','windi')" + sqlAksesValue, "User") == true) {
                 rowAksesValue.addAll(0, Arrays.asList(TKd.getText(), TNmUser.getText(), Jabatan.getText(), TPass.getText()));
                 tabMode.addRow(rowAksesValue.toArray());
                 emptTeks();
@@ -573,8 +585,9 @@ public class DlgUser extends javax.swing.JDialog {
             if (i != -1) {
                 String sqlAksesValue = "";
 
-                for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
-                    sqlAksesValue += ", " + colName.getDBTableColumn() + "='" + tbUser.getValueAt(i, colName.ordinal() + 2).toString() + "'"; // +2 karena pada table (GUI) terdapat 2 kolom tambahan didepan
+                for (int k = 0; k < nonUserColumns.size(); k++) {
+                    EnumAkses colName = nonUserColumns.get(k);
+                    sqlAksesValue += ", " + colName.getDBTableColumn() + "='" + tbUser.getValueAt(i, k + 4).toString() + "'";
                 }
 
                 if (Sequel.mengedittf("user", "id_user=AES_ENCRYPT('" + tbUser.getValueAt(i, 0).toString() + "','nur')",
@@ -884,12 +897,14 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                 if (i != -1) {
                                     String sqlAksesValue = "";
 
-                                    for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
+                                    for (EnumAkses colName : nonUserColumns) {
                                         sqlAksesValue += "destination." + colName.getDBTableColumn() + "=source." + colName.getDBTableColumn() + ",";
                                     }
-                                    Sequel.copyColumnValue("user", "source.id_user=AES_ENCRYPT('" + userdicopy + "','nur')", "destination.id_user=AES_ENCRYPT('" + tbUser.getValueAt(i, 0).toString() + "','nur')",
-                                            sqlAksesValue.substring(0, sqlAksesValue.length() - 1)
-                                    );
+                                    if (!sqlAksesValue.isEmpty()) {
+                                        Sequel.copyColumnValue("user", "source.id_user=AES_ENCRYPT('" + userdicopy + "','nur')", "destination.id_user=AES_ENCRYPT('" + tbUser.getValueAt(i, 0).toString() + "','nur')",
+                                                sqlAksesValue.substring(0, sqlAksesValue.length() - 1)
+                                        );
+                                    }
                                 }
                                 userdicopy = "";
                                 copyhakakses = "";
@@ -993,9 +1008,8 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     protected Void doInBackground() throws Exception {
                         String sqlAksesValue = "";
 
-                        for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
+                        for (EnumAkses colName : nonUserColumns) {
                             sqlAksesValue += ", " + colName.getDBTableColumn();
-
                         }
 
                         ps = koneksi.prepareStatement("select AES_DECRYPT(id_user,'nur'),AES_DECRYPT(password,'windi')" + sqlAksesValue + " from user order by AES_DECRYPT(id_user,'nur')");
@@ -1019,7 +1033,7 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                         List<Object> rowAksesValue = new ArrayList<>();
                                         rowAksesValue.addAll(Arrays.asList(rs.getString(1), user, jabatan, rs.getString(2)));
 
-                                        for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
+                                        for (EnumAkses colName : nonUserColumns) {
                                             rowAksesValue.add(rs.getBoolean(colName.getDBTableColumn()));
                                         }
                                         publish(rowAksesValue.toArray());
@@ -1030,7 +1044,7 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     List<Object> rowAksesValue = new ArrayList<>();
                                     rowAksesValue.addAll(Arrays.asList(rs.getString(1), "Turn Out", "Jabatan", rs.getString(2)));
 
-                                    for (EnumAkses colName : EnumAkses.getNonUserColumns()) {
+                                    for (EnumAkses colName : nonUserColumns) {
                                         rowAksesValue.add(rs.getBoolean(colName.getDBTableColumn()));
                                     }
 
