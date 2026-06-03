@@ -69,6 +69,31 @@ public final class SatuSehatKirimSpecimenRadiologi extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        ppPilihBelumTerkirim = new javax.swing.JMenuItem();
+        ppPilihBelumTerkirim.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilihBelumTerkirim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppPilihBelumTerkirim.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilihBelumTerkirim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilihBelumTerkirim.setText("Pilih Belum Terkirim");
+        ppPilihBelumTerkirim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilihBelumTerkirim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilihBelumTerkirim.setName("ppPilihBelumTerkirim"); // NOI18N
+        ppPilihBelumTerkirim.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilihBelumTerkirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                for(int i = 0; i < tbObat.getRowCount(); i++) {
+                    Object idValue = tbObat.getValueAt(i, 13);
+                    tbObat.setValueAt(
+                        (idValue == null || 
+                         idValue.toString().trim().equals("") || 
+                         idValue.toString().equals("-")), 
+                        i, 0
+                    );
+                }
+            }
+        });
+        jPopupMenu1.add(ppPilihBelumTerkirim);
+
         this.setLocation(10,2);
         setSize(628,674);
 
@@ -902,4 +927,5 @@ public final class SatuSehatKirimSpecimenRadiologi extends javax.swing.JDialog {
         executor.shutdownNow();
         super.dispose();
     }
+    private javax.swing.JMenuItem ppPilihBelumTerkirim;
 }
