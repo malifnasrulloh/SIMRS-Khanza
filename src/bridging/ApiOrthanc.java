@@ -406,7 +406,7 @@ public class ApiOrthanc {
     // =========================================================================
     // Dicom Converter Integration
     // =========================================================================
-    private String dicomConverterSendToOrthancUrl() {
+    private String dicomConverterUrl(String endpoint) {
         String base = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
         if (base.isEmpty()) {
             base = "http://localhost";
@@ -415,10 +415,95 @@ public class ApiOrthanc {
             base = base.substring(0, base.length() - 1);
         }
         if (base.matches("(?i)^https?://[^/:]+:\\d+(/.*)?$")) {
-            return base + "/api/v1/send-to-orthanc";
+            return base + endpoint;
         }
         String port = koneksiDB.PORTDICOMCONVERTER() == null ? "8080" : koneksiDB.PORTDICOMCONVERTER().trim();
-        return base + ":" + port + "/api/v1/send-to-orthanc";
+        return base + ":" + port + endpoint;
+    }
+
+    private String dicomConverterSendToOrthancUrl() {
+        return dicomConverterUrl("/api/v1/send-to-orthanc");
+    }
+
+    private String dicomConverterSendToOrthancFromUrlsUrl() {
+        return dicomConverterUrl("/api/v1/send-to-orthanc-from-urls");
+    }
+
+    /**
+     * Converts a list of remote attachment URLs and sends them to Orthanc via
+     * dicom-converter-api in a single JSON POST request.
+     *
+     * @param urls The list of URLs to download
+     * @param parametersJson JSON parameters for the converter (e.g. SOP class, Modality)
+     * @param orthancModifyJson JSON payload for Orthanc tags modification
+     * @return JsonNode of the API response
+     */
+    public JsonNode KirimKeDicomConverterFromURLs(java.util.List<String> urls, String parametersJson, String orthancModifyJson) {
+        System.out.println("Kirim list URL ke dicom-converter-api, count: " + urls.size());
+        java.net.HttpURLConnection connection = null;
+        try {
+            String urlStr = dicomConverterSendToOrthancFromUrlsUrl();
+            System.out.println("URL Converter (From URLs) : " + urlStr);
+
+            java.net.URL url = new java.net.URL(urlStr);
+            connection = (java.net.HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(60000);
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setRequestProperty("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+
+            java.util.Map<String, Object> reqMap = new java.util.HashMap<>();
+            reqMap.put("filetype", "img");
+            reqMap.put("urls", urls);
+            if (parametersJson != null && !parametersJson.trim().isEmpty()) {
+                reqMap.put("parameters", mapper.readTree(parametersJson));
+            }
+            if (orthancModifyJson != null && !orthancModifyJson.trim().isEmpty()) {
+                reqMap.put("orthanc_modify", mapper.readTree(orthancModifyJson));
+            }
+
+            String requestBody = mapper.writeValueAsString(reqMap);
+
+            java.io.OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(requestBody.getBytes("UTF-8"));
+            outputStream.flush();
+            outputStream.close();
+
+            int statusCode = connection.getResponseCode();
+            java.io.InputStream inputStream;
+            if (statusCode >= 200 && statusCode < 300) {
+                inputStream = connection.getInputStream();
+            } else {
+                inputStream = connection.getErrorStream();
+            }
+
+            if (inputStream == null) {
+                System.out.println("KirimKeDicomConverterFromURLs HTTP " + statusCode + " : empty stream");
+                return null;
+            }
+
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream, "UTF-8"));
+            StringBuilder responseSB = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseSB.append(line);
+            }
+            reader.close();
+            inputStream.close();
+
+            String responseStr = responseSB.toString();
+            System.out.println("Result dicom-converter-api from URLs (HTTP " + statusCode + ") : " + responseStr);
+            return mapper.readTree(responseStr);
+        } catch (Exception e) {
+            System.out.println("Notifikasi KirimKeDicomConverterFromURLs : " + e);
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
     }
 
     /**

@@ -1361,39 +1361,19 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             parametersJson = "{\"output_sop_class\":\"sec-capture\",\"keys\":[\"Modality=" + modality + "\"]}";
         }
 
-        int rowSuccess = 0;
-        int rowFail = 0;
-        String lastErr = "";
-
-        for (int imgIdx = 0; imgIdx < listLokasi.size(); imgIdx++) {
-            String lokasiFile = listLokasi.get(imgIdx);
-            final String statusTxt = "Mengunduh " + (imgIdx + 1) + "/" + listLokasi.size() + "...";
-            SwingUtilities.invokeLater(() -> tbObat.setValueAt(statusTxt, i, COL_STATUS_ORTHANC));
-
+        List<String> listUrls = new ArrayList<>();
+        for (String lokasiFile : listLokasi) {
             String url = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB()
                     + "/" + koneksiDB.HYBRIDWEB() + "/radiologi/" + lokasiFile;
-            byte[] fileData = orthanc.AmbilGambarWebapps(url, true);
-            if (fileData == null || fileData.length == 0) {
-                rowFail++;
-                lastErr = "Gagal unduh gambar";
-                continue;
-            }
-
-            final String uploadTxt = "Mengirim " + (imgIdx + 1) + "/" + listLokasi.size() + "...";
-            SwingUtilities.invokeLater(() -> tbObat.setValueAt(uploadTxt, i, COL_STATUS_ORTHANC));
-
-            JsonNode result = orthanc.KirimKeDicomConverter(fileData, lokasiFile, parametersJson, orthancModifyJson);
-            if (result != null && "success".equalsIgnoreCase(result.path("status").asText().trim())) {
-                rowSuccess++;
-            } else {
-                rowFail++;
-                lastErr = summarizeDicomConverterApiError(result);
-            }
+            listUrls.add(url);
         }
 
-        if (rowSuccess > 0 && rowFail == 0) {
+        SwingUtilities.invokeLater(() -> tbObat.setValueAt("Mengirim ke API...", i, COL_STATUS_ORTHANC));
+        JsonNode result = orthanc.KirimKeDicomConverterFromURLs(listUrls, parametersJson, orthancModifyJson);
+
+        if (result != null && "success".equalsIgnoreCase(result.path("status").asText().trim())) {
             final String acsnF = acsn;
-            final String finalTxt = "Sukses konversi & Orthanc (" + rowSuccess + " img)";
+            final String finalTxt = "Sukses konversi & Orthanc (" + listUrls.size() + " img)";
             SwingUtilities.invokeLater(() -> {
                 tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
                 tbObat.setValueAt(acsnF, i, COL_ACSN);
@@ -1401,15 +1381,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 tbObat.setValueAt(false, i, COL_PILIH);
             });
             return true;
-        } else if (rowSuccess > 0 && rowFail > 0) {
-            final String acsnF = acsn;
-            final String finalTxt = "Parsial: " + rowSuccess + " ok, " + rowFail + " gagal (" + lastErr + ")";
-            SwingUtilities.invokeLater(() -> {
-                tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
-                tbObat.setValueAt(acsnF, i, COL_ACSN);
-            });
-            return true;
         } else {
+            String lastErr = summarizeDicomConverterApiError(result);
             final String errOut = "Gagal: " + lastErr;
             SwingUtilities.invokeLater(() -> tbObat.setValueAt(errOut, i, COL_STATUS_ORTHANC));
             return false;
