@@ -764,6 +764,25 @@ public class ApiOrthanc {
      */
     public boolean UbahTagsStudy(String studyId, String modifyJson, boolean silent) {
         System.out.println("UbahTagsStudy : Study=" + studyId);
+        
+        String converterBase = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
+        if (!converterBase.isEmpty()) {
+            System.out.println("Gateway Mode: routing UbahTagsStudy through Go Converter API...");
+            try {
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                requestEntity = new HttpEntity(modifyJson, headers);
+                String response = getRest().exchange(
+                        dicomConverterUrl("/api/v1/studies/" + studyId + "/modify"),
+                        HttpMethod.POST, requestEntity, String.class
+                ).getBody();
+                System.out.println("Gateway UbahTagsStudy Success Response : " + response);
+                return true;
+            } catch (Exception ex) {
+                System.out.println("Gateway Mode UbahTagsStudy error (falling back to direct connection): " + ex);
+            }
+        }
+
         try {
             headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
