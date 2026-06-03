@@ -24,6 +24,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.HttpRequest;
+import java.util.Collections;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class ApiSatuSehat {        
     private static final long TOKEN_CACHE_MS = 60_000L;
@@ -103,7 +110,32 @@ public class ApiSatuSehat {
         scheme=new Scheme("https",443,sslFactory);
         factory=new HttpComponentsClientHttpRequestFactory();
         factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
-        return new RestTemplate(factory);
+        
+        RestTemplate restTemplate = new RestTemplate(factory);
+        ClientHttpRequestInterceptor interceptor = new ClientHttpRequestInterceptor() {
+            @Override
+            public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws java.io.IOException {
+                try {
+                    String bodyStr = new String(body, "UTF-8");
+                    Pattern pattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}:\\d{2})(?!\\+00:00|\\+0000|Z)(?:\\+07:00|\\+0700)?");
+                    Matcher matcher = pattern.matcher(bodyStr);
+                    StringBuffer sb = new StringBuffer();
+                    while (matcher.find()) {
+                        String matchedDateTime = matcher.group(1);
+                        String utcDateTime = convertLocalToUtc(matchedDateTime);
+                        matcher.appendReplacement(sb, Matcher.quoteReplacement(utcDateTime));
+                    }
+                    matcher.appendTail(sb);
+                    body = sb.toString().getBytes("UTF-8");
+                } catch (Exception e) {
+                    System.out.println("ApiSatuSehat Interceptor Error: " + e);
+                }
+                return execution.execute(request, body);
+            }
+        };
+        restTemplate.setInterceptors(new ClientHttpRequestInterceptor[] { interceptor });
+        
+        return restTemplate;
     }
 
     public String convertLocalToUtc(String localDateTime) {
