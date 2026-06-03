@@ -495,7 +495,12 @@ public class ApiOrthanc {
 
             String responseStr = responseSB.toString();
             System.out.println("Result dicom-converter-api from URLs (HTTP " + statusCode + ") : " + responseStr);
-            return mapper.readTree(responseStr);
+            JsonNode initialResponse = mapper.readTree(responseStr);
+            String jobId = initialResponse.path("job_id").asText();
+            if (jobId != null && !jobId.isEmpty()) {
+                return PollJobStatus(jobId);
+            }
+            return initialResponse;
         } catch (Exception e) {
             System.out.println("Notifikasi KirimKeDicomConverterFromURLs : " + e);
             return null;
@@ -614,13 +619,78 @@ public class ApiOrthanc {
 
             String responseStr = responseSB.toString();
             System.out.println("Result dicom-converter-api (HTTP " + statusCode + ") : " + responseStr);
-            return mapper.readTree(responseStr);
+            JsonNode initialResponse = mapper.readTree(responseStr);
+            String jobId = initialResponse.path("job_id").asText();
+            if (jobId != null && !jobId.isEmpty()) {
+                return PollJobStatus(jobId);
+            }
+            return initialResponse;
         } catch (Exception e) {
             System.out.println("Notifikasi KirimKeDicomConverter : " + e);
             return null;
         } finally {
             if (connection != null) {
                 connection.disconnect();
+            }
+        }
+    }
+
+    /**
+     * Polls the Go API until the async job completes or fails.
+     * This ensures synchronization with the Go background worker pool.
+     *
+     * @param jobId the UUID of the background task in Go
+     * @return the final result node from Go, or an error node on failure/timeout
+     */
+    private JsonNode PollJobStatus(String jobId) {
+        System.out.println("Polling status untuk Job ID: " + jobId);
+        try {
+            String urlStr = dicomConverterUrl("/api/v1/jobs/" + jobId);
+
+            // Loop until terminal state (COMPLETED or FAILED)
+            int maxAttempts = 150; // 150 attempts * 2 seconds = 5 minutes max
+            for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+                // Wait 2 seconds between polls
+                try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
+
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+                requestEntity = new HttpEntity(headers);
+
+                ResponseEntity<String> response = getRest().exchange(urlStr, HttpMethod.GET, requestEntity, String.class);
+                JsonNode jobData = mapper.readTree(response.getBody());
+
+                String status = jobData.path("status").asText();
+                System.out.println("Job " + jobId + " (attempt " + attempt + ") status: " + status);
+
+                if ("COMPLETED".equals(status)) {
+                    // Success! Extract the result payload (contains upload and modify data)
+                    JsonNode resultNode = jobData.path("result");
+                    // Inject success status for UI compatibility
+                    if (resultNode.isObject()) {
+                        ((com.fasterxml.jackson.databind.node.ObjectNode) resultNode).put("status", "success");
+                    }
+                    return resultNode;
+                } else if ("FAILED".equals(status)) {
+                    // Job failed in the Go worker
+                    String errorMsg = jobData.path("error").asText();
+                    String errJson = String.format("{\"status\":\"error\", \"error\":\"%s\", \"code\":\"JOB_FAILED\"}",
+                            errorMsg.replace("\"", "\\\""));
+                    return mapper.readTree(errJson);
+                }
+                // If "PENDING" or "PROCESSING", keep looping
+            }
+
+            return mapper.readTree("{\"status\":\"error\", \"error\":\"Job timed out after 5 minutes\", \"code\":\"TIMEOUT\"}");
+
+        } catch (Exception e) {
+            System.out.println("ApiOrthanc PollJobStatus error : " + e);
+            try {
+                return mapper.readTree(String.format("{\"status\":\"error\", \"error\":\"%s\"}",
+                        e.getMessage().replace("\"", "\\\"")));
+            } catch (Exception ignored) {
+                return null;
             }
         }
     }
