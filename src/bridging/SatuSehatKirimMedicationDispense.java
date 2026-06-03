@@ -717,8 +717,8 @@ public final class SatuSehatKirimMedicationDispense extends javax.swing.JDialog 
                                         "\"code\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
                                         "\"value\": "+tbObat.getValueAt(i,22).toString()+
                                     "}," +
-                                    "\"whenPrepared\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"Z\"," +
-                                    "\"whenHandedOver\": \""+tbObat.getValueAt(i,29).toString().replaceAll(" ","T")+"Z\","+
+                                    "\"whenPrepared\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
+                                    "\"whenHandedOver\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,29).toString())+"\","+
                                     "\"dosageInstruction\": [" +
                                         "{" +
                                             "\"sequence\": 1," +
@@ -871,8 +871,8 @@ public final class SatuSehatKirimMedicationDispense extends javax.swing.JDialog 
                                         "\"code\": \""+tbObat.getValueAt(i,19).toString()+"\"" +
                                         "\"value\": "+tbObat.getValueAt(i,22).toString()+"," +
                                     "}," +
-                                    "\"whenPrepared\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"Z\"," +
-                                    "\"whenHandedOver\": \""+tbObat.getValueAt(i,29).toString().replaceAll(" ","T")+"Z\","+
+                                    "\"whenPrepared\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
+                                    "\"whenHandedOver\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,29).toString())+"\","+
                                     "\"dosageInstruction\": [" +
                                         "{" +
                                             "\"sequence\": 1," +

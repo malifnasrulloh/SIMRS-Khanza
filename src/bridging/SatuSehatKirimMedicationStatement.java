@@ -703,7 +703,7 @@ public final class SatuSehatKirimMedicationStatement extends javax.swing.JDialog
                                                 "]" +
                                             "}" +
                                         "]," +
-                                        "\"dateAsserted\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"+07:00\"," +
+                                        "\"dateAsserted\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
                                         "\"informationSource\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
                                             "\"display\": \""+tbObat.getValueAt(i,4).toString()+"\"" +
@@ -794,7 +794,7 @@ public final class SatuSehatKirimMedicationStatement extends javax.swing.JDialog
                                                 "]" +
                                             "}" +
                                         "]," +
-                                        "\"dateAsserted\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"+07:00\"," +
+                                        "\"dateAsserted\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
                                         "\"informationSource\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
                                             "\"display\": \""+tbObat.getValueAt(i,4).toString()+"\"" +
@@ -928,7 +928,7 @@ public final class SatuSehatKirimMedicationStatement extends javax.swing.JDialog
                                                 "]" +
                                             "}" +
                                         "]," +
-                                        "\"dateAsserted\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"+07:00\"," +
+                                        "\"dateAsserted\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
                                         "\"informationSource\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
                                             "\"display\": \""+tbObat.getValueAt(i,4).toString()+"\"" +
@@ -1011,7 +1011,7 @@ public final class SatuSehatKirimMedicationStatement extends javax.swing.JDialog
                                                 "]" +
                                             "}" +
                                         "]," +
-                                        "\"dateAsserted\": \""+tbObat.getValueAt(i,21).toString().replaceAll(" ","T")+"+07:00\"," +
+                                        "\"dateAsserted\": \""+api.convertLocalToUtc(tbObat.getValueAt(i,21).toString())+"\"," +
                                         "\"informationSource\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
                                             "\"display\": \""+tbObat.getValueAt(i,4).toString()+"\"" +

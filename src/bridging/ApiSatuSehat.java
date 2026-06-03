@@ -106,4 +106,29 @@ public class ApiSatuSehat {
         return new RestTemplate(factory);
     }
 
+    public String convertLocalToUtc(String localDateTime) {
+        try {
+            if (localDateTime == null) return "";
+            localDateTime = localDateTime.trim();
+            if (localDateTime.contains(".")) {
+                localDateTime = localDateTime.split("\\.")[0];
+            }
+            if (localDateTime.length() == 16) {
+                localDateTime += ":00";
+            }
+            if (localDateTime.length() == 10) {
+                localDateTime += " 00:00:00";
+            }
+            java.text.SimpleDateFormat sdfInput = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdfInput.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Jakarta"));
+            java.util.Date date = sdfInput.parse(localDateTime.replace("T", " "));
+            java.text.SimpleDateFormat sdfOutput = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+            sdfOutput.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            return sdfOutput.format(date);
+        } catch (Exception e) {
+            return localDateTime.replaceAll(" ", "T") + "+00:00";
+        }
+    }
+
 }
+
