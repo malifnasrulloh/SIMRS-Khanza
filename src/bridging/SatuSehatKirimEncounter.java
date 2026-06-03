@@ -691,8 +691,8 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
                                         "\"status\": \"arrived\"," +
                                         "\"class\": {" +
                                             "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                            "\"code\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"AMB":"IMP")+"\"," +
-                                            "\"display\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
+                                            "\"code\": \""+getClassCode(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"," +
+                                            "\"display\": \""+getClassDisplay(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"" +
                                         "}," +
                                         "\"subject\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
@@ -784,8 +784,8 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
                                         "\"status\": \"arrived\"," +
                                         "\"class\": {" +
                                             "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                            "\"code\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"AMB":"IMP")+"\"," +
-                                            "\"display\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
+                                            "\"code\": \""+getClassCode(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"," +
+                                            "\"display\": \""+getClassDisplay(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"" +
                                         "}," +
                                         "\"subject\": {" +
                                             "\"reference\": \"Patient/"+idpasien+"\"," +
@@ -900,8 +900,8 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
                                     "\"status\": \"arrived\"," +
                                 "\"class\": {" +
                                     "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                    "\"code\": \""+(tbObat.getValueAt(i,11).toString().equals("Ralan")?"AMB":"IMP")+"\"," +
-                                    "\"display\": \""+(tbObat.getValueAt(i,11).toString().equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
+                                    "\"code\": \""+getClassCode(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"," +
+                                    "\"display\": \""+getClassDisplay(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"" +
                                 "}," +
                                 "\"subject\": {" +
                                     "\"reference\": \"Patient/"+idpasien+"\"," +
@@ -1038,8 +1038,8 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
                                     "\"status\": \"in-progress\"," +
                                     "\"class\": {" +
                                         "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                        "\"code\": \""+(tbObat.getValueAt(i,11).toString().equals("Ralan")?"AMB":"IMP")+"\"," +
-                                        "\"display\": \""+(tbObat.getValueAt(i,11).toString().equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
+                                        "\"code\": \""+getClassCode(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"," +
+                                        "\"display\": \""+getClassDisplay(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"" +
                                     "}," +
                                     "\"subject\": {" +
                                         "\"reference\": \"Patient/"+idpasien+"\"," +
@@ -1182,10 +1182,10 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
                                     "]," +
                                     "\"status\": \"finished\"," +
                                     "\"class\": {" +
-                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                        "\"code\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"AMB":"IMP")+"\"," +
-                                        "\"display\": \""+(tbObat.getValueAt(i,13).toString().equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
-                                    "}," +
+                                         "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
+                                         "\"code\": \""+getClassCode(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"," +
+                                         "\"display\": \""+getClassDisplay(tbObat.getValueAt(i,9).toString(),tbObat.getValueAt(i,13).toString())+"\"" +
+                                     "}," +
                                     "\"subject\": {" +
                                         "\"reference\": \"Patient/"+idpasien+"\"," +
                                         "\"display\": \""+tbObat.getValueAt(i,4).toString()+"\"" +
@@ -1380,6 +1380,20 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         return tbObat;
     }
     
+    private String getClassCode(String kdPoli, String statusLanjut) {
+        if (kdPoli != null && kdPoli.equals("IGDK")) {
+            return "EMER";
+        }
+        return statusLanjut != null && statusLanjut.equals("Ralan") ? "AMB" : "IMP";
+    }
+
+    private String getClassDisplay(String kdPoli, String statusLanjut) {
+        if (kdPoli != null && kdPoli.equals("IGDK")) {
+            return "emergency";
+        }
+        return statusLanjut != null && statusLanjut.equals("Ralan") ? "ambulatory" : "inpatient encounter";
+    }
+
     private void runBackground(Runnable task) {
         if (ceksukses) return;
         if (executor.isShutdown() || executor.isTerminated()) return;
