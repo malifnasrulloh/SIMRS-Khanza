@@ -32,6 +32,7 @@ import laporan.DlgDiagnosaPenyakit;
 import laporan.DlgFrekuensiPenyakitRalan;
 import keuangan.DlgBilingRalan;
 import fungsi.WarnaTable;
+import fungsi.WarnaTableKasirRalan;
 import fungsi.batasInput;
 import grafikanalisa.grafikperiksaperagama;
 import grafikanalisa.grafikperiksaperbulan;
@@ -457,7 +458,15 @@ public final class DlgReg extends javax.swing.JDialog {
                 column.setPreferredWidth(70);
             }
         }
-        tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
+        try {
+            if(koneksiDB.AKTIFKANWARNARALAN().equals("yes")){
+                tbPetugas.setDefaultRenderer(Object.class, new WarnaTableKasirRalan(19, 23));
+            } else {
+                tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
+            }
+        } catch (Exception e) {
+            tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
+        }
 
         tabMode2=new DefaultTableModel(null,new Object[]{
             "P","No.Rawat","Tanggal","Jam","Kode Dokter","Dokter Rujukan","Nomer RM",
@@ -535,7 +544,15 @@ public final class DlgReg extends javax.swing.JDialog {
                 column.setMaxWidth(0);
             }
         }
-        tbPetugas2.setDefaultRenderer(Object.class, new WarnaTable());
+        try {
+            if(koneksiDB.AKTIFKANWARNARALAN().equals("yes")){
+                tbPetugas2.setDefaultRenderer(Object.class, new WarnaTableKasirRalan(17, -1));
+            } else {
+                tbPetugas2.setDefaultRenderer(Object.class, new WarnaTable());
+            }
+        } catch (Exception e) {
+            tbPetugas2.setDefaultRenderer(Object.class, new WarnaTable());
+        }
         
         TNoReg.setDocument(new batasInput((byte)8).getKata(TNoReg));
         TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
