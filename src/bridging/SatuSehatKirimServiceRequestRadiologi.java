@@ -1408,6 +1408,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (!acsn.isEmpty() && !acsn.contains("=")) {
             keys.add("AccessionNumber=" + acsn);
         }
+        String dob = valueAtString(i, COL_TGL_LAHIR);
+        String sex = valueAtString(i, COL_JK);
+        if (!dob.isEmpty() && !dob.contains("=")) {
+            keys.add("PatientBirthDate=" + dob);
+        }
+        if (!sex.isEmpty() && !sex.contains("=")) {
+            keys.add("PatientSex=" + sex);
+        }
 
         Map<String, Object> paramMap = new LinkedHashMap<>();
         paramMap.put("output_sop_class", "sec-capture");
