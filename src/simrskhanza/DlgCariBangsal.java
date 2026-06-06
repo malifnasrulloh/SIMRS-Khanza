@@ -318,7 +318,7 @@ public final class DlgCariBangsal extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/bangsal.iyem")<30){
+            if(Valid.minutesOld("./cache/bangsal.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());
@@ -472,7 +472,7 @@ public final class DlgCariBangsal extends javax.swing.JDialog {
     
     public String tampil3(String kode) {
         try {
-            if(Valid.daysOld("./cache/bangsal.iyem")>7){
+            if(Valid.minutesOld("./cache/bangsal.iyem") > 5){
                 runBackground(() ->tampil());
             }
         } catch (Exception e) {

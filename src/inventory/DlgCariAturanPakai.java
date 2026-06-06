@@ -74,9 +74,22 @@ public final class DlgCariAturanPakai extends javax.swing.JDialog {
             if(i==0){
                 column.setPreferredWidth(500);
             }
-        }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil2();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
+        }
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
     }    
 
@@ -314,7 +327,7 @@ public final class DlgCariAturanPakai extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/aturanpakai.iyem")<30){
+            if(Valid.minutesOld("./cache/aturanpakai.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

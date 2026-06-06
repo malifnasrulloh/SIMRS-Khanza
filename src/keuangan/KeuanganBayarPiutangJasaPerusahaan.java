@@ -1032,7 +1032,7 @@ private void BtnPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/akunbayar.iyem")<8){
+            if(Valid.minutesOld("./cache/akunbayar.iyem") < 5){
                 runBackground(() ->tampilAkunBayar2());
             }else{
                 runBackground(() ->tampilAkunBayar());

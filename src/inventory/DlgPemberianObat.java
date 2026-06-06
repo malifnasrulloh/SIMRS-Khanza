@@ -1249,6 +1249,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             akunobatranap.SetAkunObatRanap();
         }
         
+        runBackground(() -> tampilPO());
+        
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override

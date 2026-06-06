@@ -6045,7 +6045,7 @@ public final class RMPenilaianAwalKeperawatanRanapBayiAnak extends javax.swing.J
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/masalahkeperawatanbayi.iyem")<30){
+            if(Valid.minutesOld("./cache/masalahkeperawatanbayi.iyem") < 5){
                 runBackground(() ->tampilMasalah2());
             }else{
                 runBackground(() ->tampilMasalah());

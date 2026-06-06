@@ -118,6 +118,13 @@ public final class DlgCariCaraBayar extends javax.swing.JDialog {
         
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                runBackground(() -> tampil());
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -447,7 +454,7 @@ public final class DlgCariCaraBayar extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/penjab.iyem")<30){
+            if(Valid.minutesOld("./cache/penjab.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

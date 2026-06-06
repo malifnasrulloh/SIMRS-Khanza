@@ -155,6 +155,19 @@ public class DlgPemesanan extends javax.swing.JDialog {
         tppn.setDocument(new batasInput((byte)5).getKata(tppn));
         Meterai.setDocument(new batasInput((byte)15).getOnlyAngka(Meterai));
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -1297,7 +1310,7 @@ private void btnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(tampikan==true){
             try {
-                if(Valid.daysOld("./cache/penerimaanobat.iyem")<8){
+                if(Valid.minutesOld("./cache/penerimaanobat.iyem") < 5){
                     runBackground(() ->tampil2());
                 }else{
                     runBackground(() ->LoadData());

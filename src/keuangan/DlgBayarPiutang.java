@@ -1321,13 +1321,14 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             System.out.println("Notif : "+e);
         }
         try {
-            if(Valid.daysOld("./cache/akunbayar.iyem")<8){
+            if(Valid.minutesOld("./cache/akunbayar.iyem") < 5){
                 runBackground(() ->tampilAkunBayar2());
             }else{
                 runBackground(() ->tampilAkunBayar());
             }
         } catch (Exception e) {
         }
+        runBackground(() -> tampil());
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override

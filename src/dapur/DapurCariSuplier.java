@@ -77,6 +77,19 @@ public class DapurCariSuplier extends javax.swing.JDialog {
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));  
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil2();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -236,7 +249,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/suplierdapur.iyem")<30){
+            if(Valid.minutesOld("./cache/suplierdapur.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

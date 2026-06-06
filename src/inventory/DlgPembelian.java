@@ -149,6 +149,19 @@ public class DlgPembelian extends javax.swing.JDialog {
         NoFaktur.setDocument(new batasInput((byte)20).getKata(NoFaktur));
         kdsup.setDocument(new batasInput((byte)5).getKata(kdsup));
         kdptg.setDocument(new batasInput((byte)25).getKata(kdptg));
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -1113,7 +1126,7 @@ private void btnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         }
         
         try {
-            if(Valid.daysOld("./cache/penerimaanobat.iyem")<8){
+            if(Valid.minutesOld("./cache/penerimaanobat.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->LoadData());

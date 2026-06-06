@@ -205,6 +205,13 @@ public class DlgBarang extends javax.swing.JDialog {
 
         ChkInput.setSelected(false);
         isForm();
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                runBackground(() -> tampil());
+            }
+        });
     }
 
     /**

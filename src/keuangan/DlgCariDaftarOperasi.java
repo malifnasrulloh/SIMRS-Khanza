@@ -97,6 +97,19 @@ public final class DlgCariDaftarOperasi extends javax.swing.JDialog {
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
+        
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
     }
 
@@ -565,7 +578,7 @@ public final class DlgCariDaftarOperasi extends javax.swing.JDialog {
         this.kd_pj=penjab;
         this.kelas=kelasoperasi;
         try {
-            if(Valid.daysOld("./cache/paketoperasi.iyem")<8){
+            if(Valid.minutesOld("./cache/paketoperasi.iyem") < 5){
                 tampil2();
             }
         } catch (Exception e) {

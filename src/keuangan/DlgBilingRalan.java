@@ -37,6 +37,7 @@ import inventory.DlgPemberianObat;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import simrskhanza.DlgCariPeriksaLabPA;
 import simrskhanza.DlgCariCaraBayar;
@@ -3783,55 +3784,61 @@ private void MnPeriksaLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     }//GEN-LAST:event_BtnAll1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            if(Valid.daysOld("./cache/akunpiutang.iyem")>30){
-                tampilAkunPiutang3();
-            }
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
+                    if(Valid.minutesOld("./cache/akunpiutang.iyem") > 5){
+                        tampilAkunPiutang3();
+                    }
 
-            if(Valid.daysOld("./cache/akunbayar.iyem")>30){
-                tampilAkunBayar3();
-            }
+                    if(Valid.minutesOld("./cache/akunbayar.iyem") > 5){
+                        tampilAkunBayar3();
+                    }
 
-            if(Valid.daysOld("./cache/akunbankjateng.iyem")>30){
-                tampilAkunBankJateng();
-            }else{
-                tampilAkunBankJateng2();
-            }
+                    if(Valid.minutesOld("./cache/akunbankjateng.iyem") > 5){
+                        tampilAkunBankJateng();
+                    }else{
+                        tampilAkunBankJateng2();
+                    }
 
-            if(Valid.daysOld("./cache/akunbankpapua.iyem")>30){
-                tampilAkunBankPapua();
-            }else{
-                tampilAkunBankPapua2();
-            }
+                    if(Valid.minutesOld("./cache/akunbankpapua.iyem") > 5){
+                        tampilAkunBankPapua();
+                    }else{
+                        tampilAkunBankPapua2();
+                    }
 
-            if(Valid.daysOld("./cache/akunbankjabar.iyem")>30){
-                tampilAkunBankJabar();
-            }else{
-                tampilAkunBankJabar2();
-            }
+                    if(Valid.minutesOld("./cache/akunbankjabar.iyem") > 5){
+                        tampilAkunBankJabar();
+                    }else{
+                        tampilAkunBankJabar2();
+                    }
 
-            if(Valid.daysOld("./cache/akunbankbri.iyem")>30){
-                tampilAkunBankBRI();
-            }else{
-                tampilAkunBankBRI2();
-            }
+                    if(Valid.minutesOld("./cache/akunbankbri.iyem") > 5){
+                        tampilAkunBankBRI();
+                    }else{
+                        tampilAkunBankBRI2();
+                    }
 
-            if(Valid.daysOld("./cache/akunbankmandiri.iyem")>30){
-                tampilAkunBankMandiri();
-            }else{
-                tampilAkunBankMandiri2();
+                    if(Valid.minutesOld("./cache/akunbankmandiri.iyem") > 5){
+                        tampilAkunBankMandiri();
+                    }else{
+                        tampilAkunBankMandiri2();
+                    }
+                } catch (Exception e) {
+                }
+
+                if(akunbillingralan.getTindakan_Ralan().equals("")){
+                    akunbillingralan.SetAkunBillingRalan();
+                }
+                return null;
             }
-        } catch (Exception e) {
-        }
-        
-        if(akunbillingralan.getTindakan_Ralan().equals("")){
-            akunbillingralan.SetAkunBillingRalan();
-        }
-        
+        }.execute();
+
         if(pengaturanbillingralan.getTampilkanPpnObatRalan().equals("Yes")){
             PPN_Keluaran=akunbillingralan.getPPNKeluaran();
         }
-        
+
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override

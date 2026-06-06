@@ -8567,6 +8567,13 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     }//GEN-LAST:event_CmbKeluargaKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                pilihantampil();
+                return null;
+            }
+        }.execute();
         try {
             ps=koneksi.prepareStatement("select * from set_alamat_pasien");
             try {

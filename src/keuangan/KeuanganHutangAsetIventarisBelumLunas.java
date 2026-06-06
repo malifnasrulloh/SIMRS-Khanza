@@ -1043,7 +1043,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         NoBukti.requestFocus();
         try {
-            if(Valid.daysOld("./cache/akunbankmandiri.iyem")<30){
+            if(Valid.minutesOld("./cache/akunbankmandiri.iyem") < 5){
                 tampilAkunBankMandiri2();
             }else{
                 tampilAkunBankMandiri();
@@ -1051,7 +1051,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         } catch (Exception e) {
         }
         try {
-            if(Valid.daysOld("./cache/akunbayarhutang.iyem")<8){
+            if(Valid.minutesOld("./cache/akunbayarhutang.iyem") < 5){
                 runBackground(() ->tampilAkunBayar2());
             }else{
                 runBackground(() ->tampilAkunBayar());

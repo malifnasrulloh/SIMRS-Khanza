@@ -86,6 +86,13 @@ public final class DlgCariPoli extends javax.swing.JDialog {
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                runBackground(() -> tampil());
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -319,7 +326,7 @@ public final class DlgCariPoli extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/poli.iyem")<30){
+            if(Valid.minutesOld("./cache/poli.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

@@ -285,7 +285,7 @@ public final class PCRAICRACariJenisAktivitasProyek extends javax.swing.JDialog 
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/pcraicraaktivitasproyek.iyem")<30){
+            if(Valid.minutesOld("./cache/pcraicraaktivitasproyek.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

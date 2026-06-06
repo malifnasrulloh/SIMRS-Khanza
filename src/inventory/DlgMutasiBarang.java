@@ -139,6 +139,19 @@ public class DlgMutasiBarang extends javax.swing.JDialog {
         } catch (Exception e) {
             hppfarmasi="dasar";
         }
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to

@@ -7037,7 +7037,13 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             LCount.setText("" + tabMode.getRowCount());
             cacheigd.clearDataPasien();
         }else{
-            tampil();
+            new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    tampil();
+                    return null;
+                }
+            }.execute();
         }
         
         if(koneksiDB.CARICEPAT().equals("aktif")){

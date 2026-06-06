@@ -1565,10 +1565,10 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(ubah==false){
-            emptTeksobat();
-        } 
-        
-        runBackground(() ->LoadPengaturan());
+            runBackground(() -> emptTeksobat());
+        }
+
+        runBackground(() -> LoadPengaturan());
         
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){

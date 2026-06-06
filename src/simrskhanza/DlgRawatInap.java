@@ -6451,6 +6451,31 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             akuntindakanranap.SetAkunTindakanRanap();
         }
         
+        runBackground(() -> {
+            switch (TabRawat.getSelectedIndex()) {
+                case 0:
+                    tampilDr();
+                    break;
+                case 1:
+                    tampilPr();
+                    break;
+                case 2:
+                    tampilDrPr();
+                    break;
+                case 3:
+                    tampilPemeriksaan();
+                    break;
+                case 4:
+                    tampilPemeriksaanObstetri();
+                    break;
+                case 5:
+                    tampilPemeriksaanGinekologi();
+                    break;
+                default:
+                    break;
+            }
+        });
+        
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override

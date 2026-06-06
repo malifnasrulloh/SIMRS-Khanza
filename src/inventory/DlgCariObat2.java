@@ -319,8 +319,21 @@ public final class DlgCariObat2 extends javax.swing.JDialog {
 
         warna3.kolom = 9;
         tbDetailObatRacikan.setDefaultRenderer(Object.class, warna3);
+        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
 
-        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
+
         jam();
 
         try {

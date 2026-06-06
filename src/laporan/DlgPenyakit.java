@@ -127,6 +127,13 @@ public final class DlgPenyakit extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
         ChkInput.setSelected(false);
         isForm(); 
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                runBackground(() -> tampil());
+            }
+        });
     }
     
     

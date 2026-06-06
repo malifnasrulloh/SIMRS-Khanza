@@ -292,7 +292,7 @@ public final class MandiriCariKodeTransaksiTujuanTransfer extends javax.swing.JD
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/kodetransaksitujuantransfer.iyem")<30){
+            if(Valid.minutesOld("./cache/kodetransaksitujuantransfer.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

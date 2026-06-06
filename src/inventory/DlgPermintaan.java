@@ -113,6 +113,19 @@ public class DlgPermintaan extends javax.swing.JDialog {
             System.out.println("E : "+e);
             DEPOAKTIFOBAT = "";
         }
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -673,7 +686,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/permintaanobat.iyem")<8){
+            if(Valid.minutesOld("./cache/permintaanobat.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->LoadData());

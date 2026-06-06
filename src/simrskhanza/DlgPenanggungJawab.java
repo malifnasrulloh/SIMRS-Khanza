@@ -136,6 +136,13 @@ public final class DlgPenanggungJawab extends javax.swing.JDialog {
         
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                runBackground(() -> tampil());
+            }
+        });
     }
 
 

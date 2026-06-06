@@ -1002,7 +1002,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/akunpemesananipsrs.iyem")<8){
+            if(Valid.minutesOld("./cache/akunpemesananipsrs.iyem") < 5){
                 tampilAkun2();
             }else{
                 tampilAkun();
@@ -1011,7 +1011,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
         if(tampikan==true){
             try {
-                if(Valid.daysOld("./cache/penerimaanipsrs.iyem")<8){
+                if(Valid.minutesOld("./cache/penerimaanipsrs.iyem") < 5){
                     runBackground(() ->tampil2());
                 }else{
                     runBackground(() ->tampil());

@@ -1340,7 +1340,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/akunbankmandiri.iyem")<30){
+            if(Valid.minutesOld("./cache/akunbankmandiri.iyem") < 5){
                 tampilAkunBankMandiri2();
             }else{
                 tampilAkunBankMandiri();
@@ -1348,7 +1348,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         } catch (Exception e) {
         }
         try {
-            if(Valid.daysOld("./cache/akunbayarhutang.iyem")<30){
+            if(Valid.minutesOld("./cache/akunbayarhutang.iyem") < 5){
                 runBackground(() ->tampilAkunBayar2());
             }else{
                 runBackground(() ->tampilAkunBayar());

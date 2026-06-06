@@ -91,6 +91,19 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
     
 
@@ -322,7 +335,7 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/petugas.iyem")<30){
+            if(Valid.minutesOld("./cache/petugas.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());
@@ -481,7 +494,7 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
     
     public String tampil3(String kode) {
         try {
-            if(Valid.daysOld("./cache/petugas.iyem")>7){
+            if(Valid.minutesOld("./cache/petugas.iyem") > 5){
                 tampil();
             }
         } catch (Exception e) {

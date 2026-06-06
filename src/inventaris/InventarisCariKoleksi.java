@@ -422,7 +422,7 @@ public final class InventarisCariKoleksi extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/inventariskoleksi.iyem")<30){
+            if(Valid.minutesOld("./cache/inventariskoleksi.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

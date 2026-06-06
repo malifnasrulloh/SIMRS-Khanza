@@ -1344,7 +1344,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_RekeningAtasNamaKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        if(Valid.daysOld("./cache/akunbankmandiri.iyem")<30){
+        if(Valid.minutesOld("./cache/akunbankmandiri.iyem") < 5){
             runBackground(() ->tampilAkunBankMandiri2());
         }else{
             runBackground(() ->tampilAkunBankMandiri());

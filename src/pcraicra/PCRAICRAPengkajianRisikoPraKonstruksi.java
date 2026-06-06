@@ -2710,43 +2710,43 @@ public final class PCRAICRAPengkajianRisikoPraKonstruksi extends javax.swing.JDi
     }//GEN-LAST:event_MnPenilaianMedisActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        if(Valid.daysOld("./cache/pcrakelompokrisikoarea.iyem")<30){
+        if(Valid.minutesOld("./cache/pcrakelompokrisikoarea.iyem") < 5){
             tampilKelompokRisiko2();
         }else{
             tampilKelompokRisiko();
         }
         
-        if(Valid.daysOld("./cache/pcraidentifikasirisikokebakaran.iyem")<30){
+        if(Valid.minutesOld("./cache/pcraidentifikasirisikokebakaran.iyem") < 5){
             tampilIdentifikasiRisikoKebakaran2();
         }else{
             tampilIdentifikasiRisikoKebakaran();
         }
         
-        if(Valid.daysOld("./cache/pcraidentifikasirisikoinfeksi.iyem")<30){
+        if(Valid.minutesOld("./cache/pcraidentifikasirisikoinfeksi.iyem") < 5){
             tampilIdentifikasiRisikoInfeksi2();
         }else{
             tampilIdentifikasiRisikoInfeksi();
         }
         
-        if(Valid.daysOld("./cache/pcraidentifikasirisikokeselamatan.iyem")<30){
+        if(Valid.minutesOld("./cache/pcraidentifikasirisikokeselamatan.iyem") < 5){
             tampilIdentifikasiRisikoKeselamatan2();
         }else{
             tampilIdentifikasiRisikoKeselamatan();
         }
         
-        if(Valid.daysOld("./cache/pcraidentifikasirisikoutilitas.iyem")<30){
+        if(Valid.minutesOld("./cache/pcraidentifikasirisikoutilitas.iyem") < 5){
             tampilIdentifikasiRisikoUtilitas2();
         }else{
             tampilIdentifikasiRisikoUtilitas();
         }
         
-        if(Valid.daysOld("./cache/pcratindakanpengendalian.iyem")<30){
+        if(Valid.minutesOld("./cache/pcratindakanpengendalian.iyem") < 5){
             tampilTindakanPengendalian2();
         }else{
             tampilTindakanPengendalian();
         }
         
-        if(Valid.daysOld("./cache/pcrapersyaratandipenuhi.iyem")<30){
+        if(Valid.minutesOld("./cache/pcrapersyaratandipenuhi.iyem") < 5){
             tampilPersyaratanDipenuhi2();
         }else{
             tampilPersyaratanDipenuhi();

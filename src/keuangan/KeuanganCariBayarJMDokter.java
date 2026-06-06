@@ -617,7 +617,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/akunbankmandiri.iyem")<30){
+            if(Valid.minutesOld("./cache/akunbankmandiri.iyem") < 5){
                 runBackground(() ->tampilAkunBankMandiri2());
             }else{
                 runBackground(() ->tampilAkunBankMandiri());

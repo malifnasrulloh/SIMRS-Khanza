@@ -350,6 +350,19 @@ public class DlgPenjualan extends javax.swing.JDialog {
         }else{
             PersenppnObat.setText("0");
         }
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
     
 
@@ -1878,7 +1891,7 @@ private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/akunbayar.iyem")<8){
+            if(Valid.minutesOld("./cache/akunbayar.iyem") < 5){
                 tampilAkunBayar2();
             }else{
                 tampilAkunBayar();

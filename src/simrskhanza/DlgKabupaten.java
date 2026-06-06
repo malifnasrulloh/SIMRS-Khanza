@@ -446,7 +446,7 @@ public class DlgKabupaten extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         emptTeks();
         try {
-            if(Valid.daysOld("./cache/masterkabupaten.iyem")<30){
+            if(Valid.minutesOld("./cache/masterkabupaten.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());
@@ -609,7 +609,7 @@ public class DlgKabupaten extends javax.swing.JDialog {
     
     public String tampil3(String nama) {
         try {
-            if(Valid.daysOld("./cache/masterkabupaten.iyem")>7){
+            if(Valid.minutesOld("./cache/masterkabupaten.iyem") > 5){
                 runBackground(() ->tampil());
             }
         } catch (Exception e) {

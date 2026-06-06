@@ -1311,7 +1311,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         isRawat();
         isPsien();
         try {
-            if(Valid.daysOld("./cache/permintaanradiologi.iyem")<3){
+            if(Valid.minutesOld("./cache/permintaanradiologi.iyem") < 5){
                 runBackground(() -> tampil2());
             }
         } catch (Exception e) {
@@ -1324,7 +1324,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         isRawat();
         isPsien();
         try {
-            if(Valid.daysOld("./cache/permintaanradiologi.iyem")<3){
+            if(Valid.minutesOld("./cache/permintaanradiologi.iyem") < 5){
                 runBackground(() -> tampil2());
             }
         } catch (Exception e) {

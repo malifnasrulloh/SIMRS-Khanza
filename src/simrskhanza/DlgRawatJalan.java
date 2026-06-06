@@ -5078,6 +5078,10 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             akuntindakanralan.SetAkunTindakanRalan();
         }
         
+        runBackground(() -> {
+            TampilkanData();
+        });
+        
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override

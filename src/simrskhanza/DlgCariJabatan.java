@@ -292,7 +292,7 @@ public final class DlgCariJabatan extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/jabatan.iyem")<30){
+            if(Valid.minutesOld("./cache/jabatan.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

@@ -316,7 +316,7 @@ public final class DlgCariCacatFisik extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/cacatfisik.iyem")<30){
+            if(Valid.minutesOld("./cache/cacatfisik.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

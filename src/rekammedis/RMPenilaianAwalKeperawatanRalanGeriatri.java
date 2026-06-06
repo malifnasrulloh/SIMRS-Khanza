@@ -3849,7 +3849,7 @@ public final class RMPenilaianAwalKeperawatanRalanGeriatri extends javax.swing.J
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/masalahkeperawatangeriatri.iyem")<8){
+            if(Valid.minutesOld("./cache/masalahkeperawatangeriatri.iyem") < 5){
                 runBackground(() ->tampilMasalah2());
             }else{
                 runBackground(() ->tampilMasalah());

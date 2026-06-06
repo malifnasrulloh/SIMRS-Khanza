@@ -6321,7 +6321,7 @@ public final class RMPenilaianAwalKeperawatanRanap extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/masalahkeperawatan.iyem")<30){
+            if(Valid.minutesOld("./cache/masalahkeperawatan.iyem") < 5){
                 runBackground(() ->tampilMasalah2());
             }else{
                 runBackground(() ->tampilMasalah());

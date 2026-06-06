@@ -422,7 +422,7 @@ public final class InventarisCariBarangCSSD extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/inentariscssd.iyem")<30){
+            if(Valid.minutesOld("./cache/inentariscssd.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

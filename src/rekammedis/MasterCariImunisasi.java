@@ -291,7 +291,7 @@ public final class MasterCariImunisasi extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/master_imunisasi.iyem")<30){
+            if(Valid.minutesOld("./cache/master_imunisasi.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());

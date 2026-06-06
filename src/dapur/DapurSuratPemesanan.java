@@ -119,6 +119,19 @@ public class DapurSuratPemesanan extends javax.swing.JDialog {
         kdptg.setDocument(new batasInput((byte)20).getKata(kdptg));        
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
         DlgCetak.setSize(550,145);
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                new javax.swing.SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        tampil();
+                        return null;
+                    }
+                }.execute();
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -871,7 +884,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(tampilkan==true){
             try {
-                if(Valid.daysOld("./cache/suratpemesanandapur.iyem")<8){
+                if(Valid.minutesOld("./cache/suratpemesanandapur.iyem") < 5){
                     runBackground(() ->tampil2());
                 }else{
                     runBackground(() ->tampil());

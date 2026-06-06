@@ -314,7 +314,7 @@ public final class DlgCariMasterMenolakAnjuranMedis extends javax.swing.JDialog 
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/masterMAM.iyem")<30){
+            if(Valid.minutesOld("./cache/masterMAM.iyem") < 5){
                 runBackground(() ->tampil2());
             }else{
                 runBackground(() ->tampil());
