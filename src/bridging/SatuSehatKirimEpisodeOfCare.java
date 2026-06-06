@@ -617,7 +617,6 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
         for (i = 0; i < tbObat.getRowCount(); i++) {
-//            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,5).toString().equals(""))&&(!tbObat.getValueAt(i,11).toString().equals(""))&&(!tbObat.getValueAt(i,13).toString().equals(""))&&tbObat.getValueAt(i,16).toString().equals("")){
             if (tbObat.getValueAt(i, 0).toString().equals("true")) {
                 try {
                     idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
@@ -650,29 +649,24 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                         response = root.path("id");
                         if (!response.asText().equals("")) {
                             Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
-                                tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 13).toString(), response.asText()
+                                tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), response.asText()
                             });
                         }
                     } catch (org.springframework.web.client.HttpStatusCodeException e) {
                         System.err.println("Error Status: " + e.getStatusCode());
                         System.err.println("Error Body: " + e.getResponseBodyAsString());
-                        if (e.getResponseBodyAsString().toLowerCase().contains("found duplicated EpisodeOfCare".toLowerCase())) {
-                            //TODO: MASIH SALAH                    iddokter = cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i, 12).toString());
-                            System.err.println("Coba cari data yang sudah ada");
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
-                            System.out.println("URL : " + link + "/EpisodeOfCare?patient=" + idpasien + "&care-manager=" + iddokter + "&organization=" + koneksiDB.IDSATUSEHAT());
-                            requestEntity = new HttpEntity(headers);
-                            json = api.getRest().exchange(link + "/EpisodeOfCare?patient=" + idpasien + "&care-manager=" + iddokter + "&organization=" + koneksiDB.IDSATUSEHAT(), HttpMethod.GET, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : " + json);
-                            root = mapper.readTree(json);
-                            response = root.path("entry").path(0).path("resource").path("id");
-                            if (!response.asText().equals("")) {
+                        String errorBody = e.getResponseBodyAsString();
+                        if (errorBody.toLowerCase().contains("found duplicated") || e.getStatusCode().value() == 409 || e.getStatusCode().value() == 400) {
+                            System.err.println("Duplicated EpisodeOfCare detected (Rule 10110). Resolving...");
+                            String stts = tbObat.getValueAt(i, 6).toString(); // reg_periksa.stts
+                            String recoveredId = resolveDuplicateEpisode(idpasien, episodeType.getCode(), tbObat.getValueAt(i, 2).toString(), stts, json);
+                            if (recoveredId != null && !recoveredId.isEmpty()) {
                                 Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
-                                    tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 13).toString(), response.asText()
+                                    tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), recoveredId
                                 });
-                                System.err.println("Berhasil mendapatkan data yang sudah ada");
+                                System.out.println("✓ Recovered EpisodeOfCare " + recoveredId);
+                            } else {
+                                System.err.println("✗ Failed to recover duplicate EpisodeOfCare.");
                             }
                         }
                     } catch (Exception e) {
@@ -801,20 +795,20 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
                     + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
                     + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join diagnosa_pasien on diagnosa_pasien.no_rawat=reg_periksa.no_rawat "
                     + "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit left join satu_sehat_episode_of_care on satu_sehat_episode_of_care.no_rawat=diagnosa_pasien.no_rawat "
-                    + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=diagnosa_pasien.status "
+                    + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=reg_periksa.status_lanjut "
                     + "where pemeriksaan_ralan.tgl_perawatan between ? and ? "
                     + "and " + icdWhereClause + " "
                     + (TCari.getText().equals("") ? "" : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
                     + "pasien.nm_pasien like ? or pasien.no_ktp like ? or diagnosa_pasien.kd_penyakit like ? or penyakit.nm_penyakit like ? or "
                     + "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)");
-
+ 
             String queryRanap = "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
                     + "reg_periksa.stts,reg_periksa.status_lanjut,concat(kamar_inap.tgl_keluar,'T',kamar_inap.jam_keluar,'+07:00') as pulang,satu_sehat_encounter.id_encounter, "
                     + "diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,ifnull(satu_sehat_episode_of_care.id_episode_of_care,''),diagnosa_pasien.status "
                     + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join kamar_inap on kamar_inap.no_rawat=reg_periksa.no_rawat "
                     + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join diagnosa_pasien on diagnosa_pasien.no_rawat=reg_periksa.no_rawat "
                     + "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit left join satu_sehat_episode_of_care on satu_sehat_episode_of_care.no_rawat=diagnosa_pasien.no_rawat "
-                    + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=diagnosa_pasien.status "
+                    + "and satu_sehat_episode_of_care.kd_penyakit=diagnosa_pasien.kd_penyakit and satu_sehat_episode_of_care.status=reg_periksa.status_lanjut "
                     + "where kamar_inap.tgl_keluar between ? and ? "
                     + "and " + icdWhereClause + " "
                     + (TCari.getText().equals("") ? "" : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
@@ -908,6 +902,199 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
     public void isCek() {
         BtnKirim.setEnabled(akses.getsatu_sehat_kirim_episodeofcare());
         BtnPrint.setEnabled(akses.getsatu_sehat_kirim_episodeofcare());
+    }
+
+    private String resolveDuplicateEpisode(String idPasien, String targetTypeCode, String noRawat, String stts, String originalPayload) {
+        String orgId = "";
+        try {
+            orgId = koneksiDB.IDSATUSEHAT();
+        } catch (Exception e) {
+            System.err.println("Error get orgId: " + e.getMessage());
+        }
+
+        // Tier 1: Search OUR organization
+        System.out.println("[RECOVERY] " + noRawat + ": Tier 1 - Searching our organization...");
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+            HttpEntity requestEntity = new HttpEntity(headers);
+            String url = link + "/EpisodeOfCare?patient=" + idPasien + "&organization=" + orgId + "&status=active";
+            String resultStr = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
+            JsonNode rootNode = mapper.readTree(resultStr);
+            JsonNode entryNode = rootNode.path("entry");
+            if (entryNode.isArray() && entryNode.size() > 0) {
+                for (JsonNode entry : entryNode) {
+                    JsonNode resource = entry.path("resource");
+                    String resStatus = resource.path("status").asText();
+                    String resTypeCode = resource.path("type").path(0).path("coding").path(0).path("code").asText();
+                    if (resStatus.equals("active") && resTypeCode.equals(targetTypeCode)) {
+                        String eocId = resource.path("id").asText();
+                        String periodStart = resource.path("period").path("start").asText();
+
+                        if (stts.equals("Batal")) {
+                            System.out.println("[RECOVERY] " + noRawat + ": Found our EoC " + eocId + ", stts=Batal -> PATCH cancelled");
+                            return patchAndRepost(eocId, "cancelled", periodStart, originalPayload, noRawat);
+                        } else if (stts.equals("Sudah")) {
+                            System.out.println("[RECOVERY] " + noRawat + ": Found our EoC " + eocId + ", stts=Sudah -> PATCH finished");
+                            return patchAndRepost(eocId, "finished", periodStart, originalPayload, noRawat);
+                        } else {
+                            // Visit still ongoing - check if stale
+                            if (isPeriodStale(periodStart)) {
+                                System.out.println("[RECOVERY] " + noRawat + ": Found our stale EoC " + eocId + " (period > 1 day) -> PATCH finished");
+                                return patchAndRepost(eocId, "finished", periodStart, originalPayload, noRawat);
+                            } else {
+                                System.out.println("[RECOVERY] " + noRawat + ": Found our active EoC " + eocId + " (recent, stts=" + stts + ") -> Reusing");
+                                return eocId;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[RECOVERY] Tier 1 failed: " + e.getMessage());
+        }
+
+        // Tier 2: Cross-organization search
+        System.out.println("[RECOVERY] " + noRawat + ": Tier 2 - Searching cross-organization...");
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+            HttpEntity requestEntity = new HttpEntity(headers);
+            String url = link + "/EpisodeOfCare?patient=" + idPasien + "&status=active";
+            String resultStr = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
+            JsonNode rootNode = mapper.readTree(resultStr);
+            JsonNode entryNode = rootNode.path("entry");
+            if (entryNode.isArray() && entryNode.size() > 0) {
+                for (JsonNode entry : entryNode) {
+                    JsonNode resource = entry.path("resource");
+                    String resStatus = resource.path("status").asText();
+                    String resTypeCode = resource.path("type").path(0).path("coding").path(0).path("code").asText();
+                    if (resStatus.equals("active") && resTypeCode.equals(targetTypeCode)) {
+                        String eocId = resource.path("id").asText();
+                        String remoteOrg = resource.path("managingOrganization").path("reference").asText();
+                        String periodStart = resource.path("period").path("start").asText();
+
+                        System.out.println("[RECOVERY] " + noRawat + ": Found cross-org EoC " + eocId + " (org: " + remoteOrg + ") -> PATCH finished");
+                        return patchAndRepost(eocId, "finished", periodStart, originalPayload, noRawat);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[RECOVERY] Tier 2 failed: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private String patchAndRepost(String eocId, String newStatus, String periodStart, String originalPayload, String noRawat) {
+        try {
+            StringBuilder patchJson = new StringBuilder();
+            patchJson.append("[");
+            patchJson.append("{\"op\":\"replace\",\"path\":\"/status\",\"value\":\"").append(newStatus).append("\"}");
+            
+            if (newStatus.equals("finished") && periodStart != null && !periodStart.isEmpty()) {
+                try {
+                    java.time.ZonedDateTime startDt = parseZonedDateTime(periodStart);
+                    if (startDt != null) {
+                        java.time.ZonedDateTime now = java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC);
+                        java.time.ZonedDateTime endDt;
+                        if (java.time.temporal.ChronoUnit.DAYS.between(startDt, now) > 1 || startDt.isAfter(now)) {
+                            endDt = startDt.plusDays(1);
+                        } else {
+                            endDt = now;
+                        }
+                        String periodEnd = endDt.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
+                        patchJson.append(",{\"op\":\"replace\",\"path\":\"/period/end\",\"value\":\"").append(periodEnd).append("\"}");
+                    }
+                } catch (Exception ex) {
+                    System.err.println("Could not parse periodStart: " + ex.getMessage());
+                }
+            }
+            patchJson.append("]");
+
+            System.out.println("PATCH request for EoC: " + patchJson.toString());
+            String url = link + "/EpisodeOfCare/" + eocId;
+
+            org.apache.http.client.methods.HttpPatch patchRequest = new org.apache.http.client.methods.HttpPatch(url);
+            patchRequest.addHeader("Authorization", "Bearer " + api.TokenSatuSehat());
+            patchRequest.addHeader("Content-Type", "application/json-patch+json");
+            patchRequest.setEntity(new org.apache.http.entity.StringEntity(patchJson.toString()));
+
+            org.springframework.http.client.HttpComponentsClientHttpRequestFactory rf = 
+                (org.springframework.http.client.HttpComponentsClientHttpRequestFactory) api.getRest().getRequestFactory();
+            org.apache.http.client.HttpClient httpClient = rf.getHttpClient();
+            org.apache.http.HttpResponse response = httpClient.execute(patchRequest);
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println("[RECOVERY] PATCH status code: " + statusCode);
+            if (statusCode < 200 || statusCode >= 300) {
+                String errorMsg = org.apache.http.util.EntityUtils.toString(response.getEntity());
+                System.err.println("[RECOVERY] PATCH failed with code " + statusCode + ": " + errorMsg);
+                throw new RuntimeException("PATCH failed with code " + statusCode + ": " + errorMsg);
+            }
+            org.apache.http.util.EntityUtils.consume(response.getEntity());
+            System.out.println("[RECOVERY] " + noRawat + ": PATCH " + eocId + " successfully to " + newStatus);
+
+            // Now re-POST
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+            requestEntity = new HttpEntity(originalPayload, headers);
+            
+            String postUrl = link + "/EpisodeOfCare";
+            String resultStr = api.getRest().exchange(postUrl, HttpMethod.POST, requestEntity, String.class).getBody();
+            JsonNode rootNode = mapper.readTree(resultStr);
+            String newId = rootNode.path("id").asText();
+            if (!newId.isEmpty()) {
+                System.out.println("[RECOVERY] " + noRawat + ": ✓ Re-POST successful -> new EpisodeOfCare " + newId);
+                return newId;
+            }
+        } catch (Exception e) {
+            System.err.println("[RECOVERY] patchAndRepost failed: " + e.getMessage());
+            if (e instanceof org.springframework.web.client.HttpStatusCodeException) {
+                System.err.println("PATCH error response body: " + ((org.springframework.web.client.HttpStatusCodeException)e).getResponseBodyAsString());
+            }
+        }
+        return null;
+    }
+
+    private boolean isPeriodStale(String periodStart) {
+        if (periodStart == null || periodStart.isEmpty()) {
+            return true;
+        }
+        try {
+            java.time.ZonedDateTime startDt = parseZonedDateTime(periodStart);
+            if (startDt == null) return true;
+            java.time.ZonedDateTime now = java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC);
+            long diffHours = java.time.Duration.between(startDt, now).toHours();
+            return diffHours > 24;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    private java.time.ZonedDateTime parseZonedDateTime(String dateTimeStr) {
+        if (dateTimeStr == null || dateTimeStr.isEmpty()) return null;
+        try {
+            return java.time.ZonedDateTime.parse(dateTimeStr);
+        } catch (Exception e) {
+            try {
+                return java.time.OffsetDateTime.parse(dateTimeStr).toZonedDateTime();
+            } catch (Exception e2) {
+                try {
+                    return java.time.LocalDateTime.parse(dateTimeStr).atZone(java.time.ZoneId.of("UTC"));
+                } catch (Exception e3) {
+                    try {
+                        String sanitized = dateTimeStr.replace(" ", "T");
+                        if (sanitized.length() == 19) {
+                            return java.time.LocalDateTime.parse(sanitized).atZone(java.time.ZoneId.of("UTC"));
+                        }
+                    } catch (Exception e4) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public JTable getTable() {
