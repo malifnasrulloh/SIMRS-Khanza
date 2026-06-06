@@ -1312,10 +1312,13 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     + "inner join gambar_radiologi on gambar_radiologi.no_rawat=periksa_radiologi.no_rawat "
                     + "and gambar_radiologi.tgl_periksa=periksa_radiologi.tgl_periksa "
                     + "and gambar_radiologi.jam=periksa_radiologi.jam "
-                    + "where periksa_radiologi.no_rawat=? and periksa_radiologi.kd_jenis_prw=?");
+                    + "inner join permintaan_radiologi on permintaan_radiologi.no_rawat=periksa_radiologi.no_rawat "
+                    + "and permintaan_radiologi.tgl_hasil=periksa_radiologi.tgl_periksa "
+                    + "where periksa_radiologi.no_rawat=? and periksa_radiologi.kd_jenis_prw=? and permintaan_radiologi.noorder=?");
             try {
                 psImg.setString(1, noRawat);
                 psImg.setString(2, kdJenis);
+                psImg.setString(3, noorder);
                 ResultSet rsImg = psImg.executeQuery();
                 while (rsImg.next()) {
                     String lf = rsImg.getString("lokasi_gambar");
@@ -2062,6 +2065,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     + "left join dokter on permintaan_radiologi.dokter_perujuk=dokter.kd_dokter "
                     + "left join satu_sehat_servicerequest_radiologi on satu_sehat_servicerequest_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder and satu_sehat_servicerequest_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
                     + "left join periksa_radiologi on periksa_radiologi.no_rawat=permintaan_radiologi.no_rawat and periksa_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
+                    + "and periksa_radiologi.tgl_periksa=permintaan_radiologi.tgl_hasil "
                     + "left join gambar_radiologi on gambar_radiologi.no_rawat=periksa_radiologi.no_rawat and gambar_radiologi.tgl_periksa=periksa_radiologi.tgl_periksa and gambar_radiologi.jam=periksa_radiologi.jam "
                     + "left join satu_sehat_imagingstudy_radiologi on satu_sehat_imagingstudy_radiologi.noorder=permintaan_pemeriksaan_radiologi.noorder "
                     + "and satu_sehat_imagingstudy_radiologi.kd_jenis_prw=permintaan_pemeriksaan_radiologi.kd_jenis_prw "
