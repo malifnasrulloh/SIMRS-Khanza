@@ -1153,6 +1153,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 try {
                     // Step 1: Find study in Orthanc using strict modality filter
                     String orthancStudyId = resolveOrthancStudyId(row);
+                    boolean isNewUpload = false;
                     if (orthancStudyId.isEmpty()) {
                         Object lokObj = tbObat.getValueAt(row, COL_LOKASI_IMAGE);
                         String lok = lokObj == null ? "" : lokObj.toString().trim();
@@ -1160,6 +1161,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                             System.out.println("Orthanc : Study not found in Orthanc, attempting auto-upload from webapps first");
                             if (uploadSingleRowToOrthanc(row)) {
                                 orthancStudyId = resolveOrthancStudyId(row);
+                                isNewUpload = true;
                             }
                         }
                     }
@@ -1171,14 +1173,18 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     }
 
                     // Step 2: Update all tags via UbahTagsStudy (KeepSource=false -> new study ID created)
-                    if (!orthanc.UbahTagsStudy(orthancStudyId, orthancModifyJson, true)) {
-                        SwingUtilities.invokeLater(() -> tbObat.setValueAt("Gagal Update Tags", row, COL_STATUS_ORTHANC));
-                        gagal++;
-                        System.out.println("Orthanc : Gagal update tags, skip kirim DICOM. noorder=" + noorder);
-                        continue;
+                    if (isNewUpload) {
+                        System.out.println("Orthanc : Skipping redundant UbahTagsStudy for newly uploaded study. noorder=" + noorder);
+                    } else {
+                        if (!orthanc.UbahTagsStudy(orthancStudyId, orthancModifyJson, true)) {
+                            SwingUtilities.invokeLater(() -> tbObat.setValueAt("Gagal Update Tags", row, COL_STATUS_ORTHANC));
+                            gagal++;
+                            System.out.println("Orthanc : Gagal update tags, skip kirim DICOM. noorder=" + noorder);
+                            continue;
+                        }
                     }
                     SwingUtilities.invokeLater(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
-                    System.out.println("Orthanc : Tags updated, ACSN -> " + acsn);
+                    System.out.println("Orthanc : Tags updated/skipped, ACSN -> " + acsn);
 
                     // Step 3: Re-find the study by ACSN to get the new Orthanc study ID
                     String newStudyId = orthanc.findStudyByAccession(acsn);
