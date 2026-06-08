@@ -50,6 +50,9 @@ import fungsi.akses;
 import inventory.DlgPeresepanDokter;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.AWTEvent;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -311,6 +314,8 @@ public final class DlgReg extends javax.swing.JDialog {
     private int i=0,kuota=0,jmlparsial=0;
     private DlgCariCaraBayar penjab;
     private boolean ceksukses=false;
+    private int idleTime = 0;
+    private int lastRecordCount = -1;
     private String nosisrute="",aktifkanparsial="no",BASENOREG="",TANGGALMUNDUR="yes",
             URUTNOREG="",status="Baru",order="reg_periksa.tgl_registrasi,reg_periksa.jam_reg desc",alamatperujuk="-",aktifjadwal="",IPPRINTERTRACER="",umur="0",sttsumur="Th",terbitsep="",
             norawatdipilih="",normdipilih="";
@@ -705,6 +710,13 @@ public final class DlgReg extends javax.swing.JDialog {
         if(catatanpasien.getTampilkanCatatan().equals("")){
             catatanpasien.SetCatatanPasien();
         }
+        
+        Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+            @Override
+            public void eventDispatched(AWTEvent event) {
+                idleTime = 0;
+            }
+        }, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK);
         
         ChkInput.setSelected(false);
         isForm(); 
@@ -6944,6 +6956,8 @@ public final class DlgReg extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
+        BtnAll.setText("Semua");
+        BtnAll.setForeground(new java.awt.Color(50, 50, 50));
         CrPoli.setText("");
         CrDokter.setText("");
         TCari.setText("");
@@ -17212,6 +17226,59 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                 CmbJam.setSelectedItem(jam);
                 CmbMenit.setSelectedItem(menit);
                 CmbDetik.setSelectedItem(detik);
+                
+                // Smart Auto-Refresh Logic
+                idleTime++;
+                if (idleTime % 10 == 0) { // Cek setiap 10 detik
+                    new SwingWorker<Void, Integer>() {
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            int currentCount = 0;
+                            try {
+                                PreparedStatement psCek = koneksi.prepareStatement("select count(no_rawat) from reg_periksa where tgl_registrasi = ?");
+                                try {
+                                    psCek.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem()+""));
+                                    ResultSet rsCek = psCek.executeQuery();
+                                    if(rsCek.next()) {
+                                        currentCount = rsCek.getInt(1);
+                                    }
+                                } finally {
+                                    if(psCek != null) psCek.close();
+                                }
+                            } catch (Exception ex) {}
+                            publish(currentCount);
+                            return null;
+                        }
+
+                        @Override
+                        protected void process(List<Integer> chunks) {
+                            int currentCount = chunks.get(chunks.size() - 1);
+                            if (lastRecordCount == -1) {
+                                lastRecordCount = currentCount; // Inisialisasi
+                            } else if (currentCount > lastRecordCount) {
+                                lastRecordCount = currentCount;
+                                
+                                // Cek apakah user sedang idle DAN form kosong
+                                if (idleTime > 15 && TNoRM.getText().trim().equals("") && TNoReg.getText().trim().equals("")) {
+                                    // Refresh seamless di background (tanpa clear form)
+                                    new SwingWorker<Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground() throws Exception {
+                                            tampil();
+                                            return null;
+                                        }
+                                    }.execute();
+                                    BtnAll.setText("Semua");
+                                    BtnAll.setForeground(new java.awt.Color(50, 50, 50));
+                                } else {
+                                    // User tidak idle, ubah tombol jadi notifikasi
+                                    BtnAll.setText("Ada Pasien Baru!");
+                                    BtnAll.setForeground(java.awt.Color.RED);
+                                }
+                            }
+                        }
+                    }.execute();
+                }
             }
         };
         // Timer
