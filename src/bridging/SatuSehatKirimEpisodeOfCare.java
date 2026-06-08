@@ -616,69 +616,84 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
+        java.util.Set<String> processedNoRawat = new java.util.HashSet<String>();
         for (i = 0; i < tbObat.getRowCount(); i++) {
             if (tbObat.getValueAt(i, 0).toString().equals("true")) {
                 try {
-                    idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
-
-                    // Auto-detect episode type from the ICD-10 diagnosis code
-                    EpisodeOfCareType episodeType = EpisodeOfCareType.fromIcdCode(tbObat.getValueAt(i, 10).toString());
-                    if (episodeType == null) {
-                        System.out.println("Notifikasi : Kode ICD " + tbObat.getValueAt(i, 10).toString() + " tidak cocok dengan tipe Episode of Care manapun, skip.");
+                    String noRawat = tbObat.getValueAt(i, 2).toString();
+                    if (processedNoRawat.contains(noRawat)) {
+                        continue;
+                    }
+                    
+                    // Skip if already exists in local DB
+                    String localEocId = Sequel.cariIsi("select id_episode_of_care from satu_sehat_episode_of_care where no_rawat=?", noRawat);
+                    if (localEocId != null && !localEocId.isEmpty()) {
+                        processedNoRawat.add(noRawat);
                         continue;
                     }
 
-                    try {
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
-                        json = EpisodeOfCareJsonBuilder.buildJson(
-                                episodeType,
-                                koneksiDB.IDSATUSEHAT(),
-                                tbObat.getValueAt(i, 2).toString(),
-                                idpasien,
-                                tbObat.getValueAt(i, 4).toString(),
-                                tbObat.getValueAt(i, 8).toString()
-                        );
-                        System.out.println("URL : " + link + "/EpisodeOfCare");
-                        System.out.println("Request JSON : " + json);
-                        requestEntity = new HttpEntity(json, headers);
-                        json = api.getRest().exchange(link + "/EpisodeOfCare", HttpMethod.POST, requestEntity, String.class).getBody();
-                        System.out.println("Result JSON : " + json);
-                        root = mapper.readTree(json);
-                        response = root.path("id");
-                        if (!response.asText().equals("")) {
-                            Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
-                                tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), response.asText()
-                            });
-                        }
-                    } catch (org.springframework.web.client.HttpStatusCodeException e) {
-                        System.err.println("Error Status: " + e.getStatusCode());
-                        System.err.println("Error Body: " + e.getResponseBodyAsString());
-                        String errorBody = e.getResponseBodyAsString();
-                        if (errorBody.toLowerCase().contains("found duplicated") || e.getStatusCode().value() == 409 || e.getStatusCode().value() == 400) {
-                            System.err.println("Duplicated EpisodeOfCare detected (Rule 10110). Resolving...");
-                            String stts = tbObat.getValueAt(i, 6).toString(); // reg_periksa.stts
-                            String recoveredId = resolveDuplicateEpisode(idpasien, episodeType.getCode(), tbObat.getValueAt(i, 2).toString(), stts, json);
-                            if (recoveredId != null && !recoveredId.isEmpty()) {
-                                Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
-                                    tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), recoveredId
-                                });
-                                System.out.println("✓ Recovered EpisodeOfCare " + recoveredId);
-                            } else {
-                                System.err.println("✗ Failed to recover duplicate EpisodeOfCare.");
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi Bridging : " + e);
-                    }
-                } catch (Exception e) {
-                    System.out.println("Notifikasi : " + e);
-                }
-            }
-        }
-        tampil();
-    }//GEN-LAST:event_BtnKirimActionPerformed
+                    idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
+ 
+                     // Auto-detect episode type from the ICD-10 diagnosis code
+                     EpisodeOfCareType episodeType = EpisodeOfCareType.fromIcdCode(tbObat.getValueAt(i, 10).toString());
+                     if (episodeType == null) {
+                         System.out.println("Notifikasi : Kode ICD " + tbObat.getValueAt(i, 10).toString() + " tidak cocok dengan tipe Episode of Care manapun, skip.");
+                         continue;
+                     }
+ 
+                     try {
+                         headers = new HttpHeaders();
+                         headers.setContentType(MediaType.APPLICATION_JSON);
+                         headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                         json = EpisodeOfCareJsonBuilder.buildJson(
+                                 episodeType,
+                                 koneksiDB.IDSATUSEHAT(),
+                                 noRawat,
+                                 idpasien,
+                                 tbObat.getValueAt(i, 4).toString(),
+                                 tbObat.getValueAt(i, 8).toString()
+                         );
+                         System.out.println("URL : " + link + "/EpisodeOfCare");
+                         System.out.println("Request JSON : " + json);
+                         requestEntity = new HttpEntity(json, headers);
+                         json = api.getRest().exchange(link + "/EpisodeOfCare", HttpMethod.POST, requestEntity, String.class).getBody();
+                         System.out.println("Result JSON : " + json);
+                         root = mapper.readTree(json);
+                         response = root.path("id");
+                         if (!response.asText().equals("")) {
+                             Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
+                                 noRawat, tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), response.asText()
+                             });
+                             processedNoRawat.add(noRawat);
+                         }
+                     } catch (org.springframework.web.client.HttpStatusCodeException e) {
+                         System.err.println("Error Status: " + e.getStatusCode());
+                         System.err.println("Error Body: " + e.getResponseBodyAsString());
+                         String errorBody = e.getResponseBodyAsString();
+                         if (errorBody.toLowerCase().contains("found duplicated") || errorBody.toLowerCase().contains("duplicate") || e.getStatusCode().value() == 409 || e.getStatusCode().value() == 400) {
+                             System.err.println("Duplicated EpisodeOfCare detected (Rule 10110/20002). Resolving...");
+                             String stts = tbObat.getValueAt(i, 6).toString(); // reg_periksa.stts
+                             String recoveredId = resolveDuplicateEpisode(idpasien, episodeType.getCode(), noRawat, stts, json);
+                             if (recoveredId != null && !recoveredId.isEmpty()) {
+                                 Sequel.menyimpan("satu_sehat_episode_of_care(no_rawat,kd_penyakit,status,id_episode_of_care)", "?,?,?,?", "EpisodeOfCare", 4, new String[]{
+                                     noRawat, tbObat.getValueAt(i, 10).toString(), tbObat.getValueAt(i, 7).toString(), recoveredId
+                                 });
+                                 System.out.println("✓ Recovered EpisodeOfCare " + recoveredId);
+                                 processedNoRawat.add(noRawat);
+                             } else {
+                                 System.err.println("✗ Failed to recover duplicate EpisodeOfCare.");
+                             }
+                         }
+                     } catch (Exception e) {
+                         System.out.println("Notifikasi Bridging : " + e);
+                     }
+                 } catch (Exception e) {
+                     System.out.println("Notifikasi : " + e);
+                 }
+             }
+         }
+         tampil();
+     }//GEN-LAST:event_BtnKirimActionPerformedrmed
 
     private void ppPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemuaActionPerformed
         for (i = 0; i < tbObat.getRowCount(); i++) {
@@ -904,12 +919,103 @@ public final class SatuSehatKirimEpisodeOfCare extends javax.swing.JDialog {
         BtnPrint.setEnabled(akses.getsatu_sehat_kirim_episodeofcare());
     }
 
+    private boolean patchEocStatusOnly(String eocId, String newStatus, String periodStart, String noRawat) {
+        try {
+            StringBuilder patchJson = new StringBuilder();
+            patchJson.append("[");
+            patchJson.append("{\"op\":\"replace\",\"path\":\"/status\",\"value\":\"").append(newStatus).append("\"}");
+            
+            if (newStatus.equals("finished") && periodStart != null && !periodStart.isEmpty()) {
+                try {
+                    java.time.ZonedDateTime startDt = parseZonedDateTime(periodStart);
+                    if (startDt != null) {
+                        java.time.ZonedDateTime now = java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC);
+                        java.time.ZonedDateTime endDt;
+                        if (java.time.temporal.ChronoUnit.DAYS.between(startDt, now) > 1 || startDt.isAfter(now)) {
+                            endDt = startDt.plusDays(1);
+                        } else {
+                            endDt = now;
+                        }
+                        String periodEnd = endDt.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
+                        patchJson.append(",{\"op\":\"replace\",\"path\":\"/period/end\",\"value\":\"").append(periodEnd).append("\"}");
+                    }
+                } catch (Exception ex) {
+                    System.err.println("Could not parse periodStart: " + ex.getMessage());
+                }
+            }
+            patchJson.append("]");
+
+            System.out.println("PATCH request for EoC (status only): " + patchJson.toString());
+            String url = link + "/EpisodeOfCare/" + eocId;
+
+            org.apache.http.client.methods.HttpPatch patchRequest = new org.apache.http.client.methods.HttpPatch(url);
+            patchRequest.addHeader("Authorization", "Bearer " + api.TokenSatuSehat());
+            patchRequest.addHeader("Content-Type", "application/json-patch+json");
+            patchRequest.setEntity(new org.apache.http.entity.StringEntity(patchJson.toString()));
+
+            org.springframework.http.client.HttpComponentsClientHttpRequestFactory rf = 
+                (org.springframework.http.client.HttpComponentsClientHttpRequestFactory) api.getRest().getRequestFactory();
+            org.apache.http.client.HttpClient httpClient = rf.getHttpClient();
+            org.apache.http.HttpResponse response = httpClient.execute(patchRequest);
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println("[RECOVERY] PATCH status code: " + statusCode);
+            if (statusCode < 200 || statusCode >= 300) {
+                String errorMsg = org.apache.http.util.EntityUtils.toString(response.getEntity());
+                System.err.println("[RECOVERY] PATCH status only failed with code " + statusCode + ": " + errorMsg);
+                return false;
+            }
+            org.apache.http.util.EntityUtils.consume(response.getEntity());
+            System.out.println("[RECOVERY] " + noRawat + ": PATCH " + eocId + " successfully to " + newStatus);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error in PATCH status only: " + e.getMessage());
+            return false;
+        }
+    }
+
     private String resolveDuplicateEpisode(String idPasien, String targetTypeCode, String noRawat, String stts, String originalPayload) {
         String orgId = "";
         try {
             orgId = koneksiDB.IDSATUSEHAT();
         } catch (Exception e) {
             System.err.println("Error get orgId: " + e.getMessage());
+        }
+
+        // Tier 0: Search by identifier (no_rawat)
+        System.out.println("[RECOVERY] " + noRawat + ": Tier 0 - Searching by identifier...");
+        try {
+            String identifierSystem = "http://sys-ids.kemkes.go.id/episode-of-care/" + orgId;
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+            HttpEntity requestEntity = new HttpEntity(headers);
+            String url = link + "/EpisodeOfCare?identifier=" + java.net.URLEncoder.encode(identifierSystem + "|" + noRawat, "UTF-8");
+            String resultStr = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
+            JsonNode rootNode = mapper.readTree(resultStr);
+            JsonNode entryNode = rootNode.path("entry");
+            if (entryNode.isArray() && entryNode.size() > 0) {
+                JsonNode resource = entryNode.get(0).path("resource");
+                String eocId = resource.path("id").asText();
+                if (eocId != null && !eocId.isEmpty()) {
+                    String currentStatus = resource.path("status").asText();
+                    System.out.println("[RECOVERY] " + noRawat + ": Found existing EoC " + eocId + " with status '" + currentStatus + "' via identifier search.");
+                    
+                    String targetStatus = "active";
+                    if (stts.equals("Batal")) {
+                        targetStatus = "cancelled";
+                    } else if (stts.equals("Sudah")) {
+                        targetStatus = "finished";
+                    }
+
+                    if (!currentStatus.equals(targetStatus)) {
+                        System.out.println("[RECOVERY] " + noRawat + ": Status mismatch (current: " + currentStatus + ", target: " + targetStatus + ") -> PATCHing...");
+                        String periodStart = resource.path("period").path("start").asText();
+                        patchEocStatusOnly(eocId, targetStatus, periodStart, noRawat);
+                    }
+                    return eocId;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[RECOVERY] Tier 0 identifier search failed: " + e.getMessage());
         }
 
         // Tier 1: Search OUR organization
