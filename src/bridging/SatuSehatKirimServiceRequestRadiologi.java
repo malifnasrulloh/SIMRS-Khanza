@@ -222,22 +222,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         });
         jPopupMenu1.add(ppPilihLokasiWebapps);
 
-        ppPilihACSNBelumTerkirim = new javax.swing.JMenuItem();
-        ppPilihACSNBelumTerkirim.setBackground(new java.awt.Color(255, 255, 254));
-        ppPilihACSNBelumTerkirim.setFont(new java.awt.Font("Tahoma", 0, 11));
-        ppPilihACSNBelumTerkirim.setForeground(new java.awt.Color(50, 50, 50));
-        ppPilihACSNBelumTerkirim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppPilihACSNBelumTerkirim.setText("Pilih ACSN Belum Terkirim");
-        ppPilihACSNBelumTerkirim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppPilihACSNBelumTerkirim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppPilihACSNBelumTerkirim.setName("ppPilihACSNBelumTerkirim");
-        ppPilihACSNBelumTerkirim.setPreferredSize(new java.awt.Dimension(150, 26));
-        ppPilihACSNBelumTerkirim.addActionListener(new java.awt.event.ActionListener() {
+        ppPilihLokasiOrthanc = new javax.swing.JMenuItem();
+        ppPilihLokasiOrthanc.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilihLokasiOrthanc.setFont(new java.awt.Font("Tahoma", 0, 11));
+        ppPilihLokasiOrthanc.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilihLokasiOrthanc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilihLokasiOrthanc.setText("Pilih Lokasi Orthanc");
+        ppPilihLokasiOrthanc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilihLokasiOrthanc.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilihLokasiOrthanc.setName("ppPilihLokasiOrthanc");
+        ppPilihLokasiOrthanc.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilihLokasiOrthanc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppPilihACSNBelumTerkirimActionPerformed(evt);
+                ppPilihLokasiOrthancActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(ppPilihACSNBelumTerkirim);
+        jPopupMenu1.add(ppPilihLokasiOrthanc);
 
         try {
             link = koneksiDB.URLFHIRSATUSEHAT();
@@ -1497,19 +1497,17 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
     private void ppPilihBelumTerkirim1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihBelumTerkirim1ActionPerformed
         for (int i = 0; i < tbObat.getRowCount(); i++) {
-            String val = tbObat.getValueAt(i, COL_ID_IMAGING) == null
+            String val = (tbObat.getValueAt(i, COL_ID_SR) != null) && (tbObat.getValueAt(i, COL_ID_IMAGING) == null)
                     ? "" : tbObat.getValueAt(i, COL_ID_IMAGING).toString().trim();
             tbObat.setValueAt(val.isEmpty() || val.equals("-"), i, COL_PILIH);
         }
     }//GEN-LAST:event_ppPilihBelumTerkirim1ActionPerformed
 
-    private void ppPilihACSNBelumTerkirimActionPerformed(java.awt.event.ActionEvent evt) {
+    private void ppPilihLokasiOrthancActionPerformed(java.awt.event.ActionEvent evt) {
         for (int i = 0; i < tbObat.getRowCount(); i++) {
-            Object imgObj = tbObat.getValueAt(i, COL_ID_IMAGING);
-            Object acsnObj = tbObat.getValueAt(i, COL_ACSN);
-            String imgVal = imgObj == null ? "" : imgObj.toString().trim();
-            String acsnVal = acsnObj == null ? "" : acsnObj.toString().trim();
-            tbObat.setValueAt(!acsnVal.isEmpty() && !acsnVal.equals("-") && (imgVal.isEmpty() || imgVal.equals("-")), i, COL_PILIH);
+            String val = tbObat.getValueAt(i, COL_LOKASI_IMAGE) == null
+                    ? "" : tbObat.getValueAt(i, COL_LOKASI_IMAGE).toString().trim();
+            tbObat.setValueAt(!val.isEmpty() && val.equalsIgnoreCase("orthanc"), i, COL_PILIH);
         }
     }
 
@@ -2387,5 +2385,5 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JMenuItem ppPilihLokasiWebapps;
-    private javax.swing.JMenuItem ppPilihACSNBelumTerkirim;
+    private javax.swing.JMenuItem ppPilihLokasiOrthanc;
 }
