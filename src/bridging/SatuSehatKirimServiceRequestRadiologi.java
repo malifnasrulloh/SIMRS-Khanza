@@ -1049,15 +1049,20 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     if (sentToRouter) {
                         String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
                         String finalAcsn = acsn;
-                        String imagingId = getImagingStudyID(finalAcsn, 5);
+                        setWebhookPending(noorder, kdJenisPrw, idServicerequest, finalAcsn);
+                        String imagingId = getImagingStudyID(finalAcsn, 5, row);
 
-                        if (imagingId != null && !imagingId.isEmpty()) {
+                        if (imagingId != null && !imagingId.isEmpty() && !imagingId.equals("FAILED_STATUS")) {
                             simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, finalAcsn, imagingId);
                             final String finalImgId = imagingId;
                             SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(finalAcsn, row, COL_ACSN);
                                 tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
                                 tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
+                                tbObat.setValueAt(false, row, COL_PILIH);
+                            });
+                        } else if ("FAILED_STATUS".equals(imagingId)) {
+                            SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(false, row, COL_PILIH);
                             });
                         } else {
@@ -1212,15 +1217,20 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     if (sentToRouter) {
                         String idServicerequest = tbObat.getValueAt(row, COL_ID_SR).toString();
                         String finalAcsn = acsn;
-                        String imagingId = getImagingStudyID(finalAcsn, 5);
+                        setWebhookPending(noorder, kdJenisPrw, idServicerequest, finalAcsn);
+                        String imagingId = getImagingStudyID(finalAcsn, 5, row);
 
-                        if (imagingId != null && !imagingId.isEmpty()) {
+                        if (imagingId != null && !imagingId.isEmpty() && !imagingId.equals("FAILED_STATUS")) {
                             simpanImagingStudy(noorder, kdJenisPrw, idServicerequest, finalAcsn, imagingId);
                             final String finalImgId = imagingId;
                             SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(finalAcsn, row, COL_ACSN);
                                 tbObat.setValueAt(finalImgId, row, COL_ID_IMAGING);
                                 tbObat.setValueAt("Terkirim & Synced", row, COL_STATUS_ORTHANC);
+                                tbObat.setValueAt(false, row, COL_PILIH);
+                            });
+                        } else if ("FAILED_STATUS".equals(imagingId)) {
+                            SwingUtilities.invokeLater(() -> {
                                 tbObat.setValueAt(false, row, COL_PILIH);
                             });
                         } else {
@@ -1882,7 +1892,73 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
      * @param acsn the AccessionNumber to search for
      * @return the ImagingStudy ID, or empty string if not found
      */
+    private String getImagingStudyIDLocal(String acsn) {
+        String idImaging = "";
+        try {
+            String sql = "SELECT id_imaging FROM satu_sehat_imagingstudy_radiologi WHERE acsn = ?";
+            try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+                ps.setString(1, acsn);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        idImaging = rs.getString("id_imaging");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("getImagingStudyIDLocal error : " + e);
+        }
+        return (idImaging == null || idImaging.equals("-")) ? "" : idImaging;
+    }
+
+    private void setWebhookPending(String noorder, String kdJenisPrw, String idServiceRequest, String acsn) {
+        try {
+            String sqlCheck = "SELECT acsn FROM satu_sehat_imagingstudy_radiologi WHERE noorder = ? AND kd_jenis_prw = ?";
+            try (PreparedStatement psCheck = koneksi.prepareStatement(sqlCheck)) {
+                psCheck.setString(1, noorder);
+                psCheck.setString(2, kdJenisPrw);
+                try (ResultSet rsCheck = psCheck.executeQuery()) {
+                    if (rsCheck.next()) {
+                        String sqlUpdate = "UPDATE satu_sehat_imagingstudy_radiologi SET id_servicerequest = ?, acsn = ?, status_webhook = 'PENDING', message_webhook = NULL WHERE noorder = ? AND kd_jenis_prw = ?";
+                        try (PreparedStatement psUpdate = koneksi.prepareStatement(sqlUpdate)) {
+                            psUpdate.setString(1, idServiceRequest);
+                            psUpdate.setString(2, acsn);
+                            psUpdate.setString(3, noorder);
+                            psUpdate.setString(4, kdJenisPrw);
+                            psUpdate.executeUpdate();
+                        }
+                    } else {
+                        String sqlInsert = "INSERT INTO satu_sehat_imagingstudy_radiologi (noorder, kd_jenis_prw, id_servicerequest, acsn, id_imaging, status_webhook, message_webhook) VALUES (?, ?, ?, ?, '-', 'PENDING', NULL)";
+                        try (PreparedStatement psInsert = koneksi.prepareStatement(sqlInsert)) {
+                            psInsert.setString(1, noorder);
+                            psInsert.setString(2, kdJenisPrw);
+                            psInsert.setString(3, idServiceRequest);
+                            psInsert.setString(4, acsn);
+                            psInsert.executeUpdate();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("setWebhookPending error : " + e);
+        }
+    }
+
+    /**
+     * Fetches the Satu Sehat ImagingStudy resource ID matching the given ACSN.
+     * Checks the local database first before falling back to SatuSehat API.
+     *
+     * @param acsn the AccessionNumber to search for
+     * @return the ImagingStudy ID, or empty string if not found
+     */
     private String getImagingStudyID(String acsn) {
+        // 1. Check local database cache first
+        String localId = getImagingStudyIDLocal(acsn);
+        if (localId != null && !localId.isEmpty()) {
+            System.out.println("getImagingStudyID: Found cached local ID for ACSN " + acsn + " : " + localId);
+            return localId;
+        }
+
+        // 2. Fallback to external SatuSehat API
         try {
             HttpHeaders h = new HttpHeaders();
             h.setContentType(MediaType.APPLICATION_JSON);
@@ -1911,19 +1987,51 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     }
 
     private String getImagingStudyID(String acsn, int maxRetries) {
+        return getImagingStudyID(acsn, maxRetries, -1);
+    }
+
+    private String getImagingStudyID(String acsn, int maxRetries, int row) {
         String imagingId = "";
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
-            imagingId = getImagingStudyID(acsn);
-            if (imagingId != null && !imagingId.isEmpty()) {
-                return imagingId;
+            // Check local database for webhook update (SUCCESS or FAILED)
+            try {
+                String sql = "SELECT id_imaging, status_webhook, message_webhook FROM satu_sehat_imagingstudy_radiologi WHERE acsn = ?";
+                try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+                    ps.setString(1, acsn);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            String status = rs.getString("status_webhook");
+                            String message = rs.getString("message_webhook");
+                            imagingId = rs.getString("id_imaging");
+
+                            if ("SUCCESS".equals(status)) {
+                                System.out.println("Satu Sehat : Webhook success detected for ACSN=" + acsn);
+                                return (imagingId == null) ? "" : imagingId;
+                            } else if ("FAILED".equals(status)) {
+                                System.out.println("Satu Sehat : Webhook failure detected for ACSN=" + acsn + " Msg: " + message);
+                                if (row >= 0) {
+                                    final String finalMsg = (message != null && !message.isEmpty()) ? "Gagal: " + message : "Gagal Kirim";
+                                    SwingUtilities.invokeLater(() -> tbObat.setValueAt(finalMsg, row, COL_STATUS_ORTHANC));
+                                }
+                                return "FAILED_STATUS";
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error polling webhook status locally: " + e);
             }
+
             if (attempt < maxRetries) {
-                int sleepSec = 1 + (attempt * 2); // 3s, 5s, 7s, 9s...
+                int sleepSec = 1 + (attempt * 2); // 3s, 5s, 7s...
                 System.out.println("Satu Sehat : Waiting " + sleepSec + " seconds before query attempt " + attempt + "/" + maxRetries + " for ACSN=" + acsn);
                 try { Thread.sleep(sleepSec * 1000); } catch (InterruptedException ignored) {}
             }
         }
-        return "";
+
+        // Final fallback: if local polling yields nothing (pending), query external SatuSehat API
+        System.out.println("Satu Sehat : Local polling finished. Executing fallback external API call for ACSN=" + acsn);
+        return getImagingStudyID(acsn);
     }
 
     /**
