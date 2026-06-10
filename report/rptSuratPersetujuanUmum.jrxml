@@ -481,357 +481,381 @@
 				<textFieldExpression><![CDATA["Saya memahami tentang informasi biaya pengobatan atau biaya tindakan yang dijelaskan oleh petugas rumah sakit. Apabila saya adalah pasien BPJS/asuransi, saya bersedia mematuhi peraturan yang ditentukan oleh pihak penjamin untuk mendapatkan pelayanan kesehatan."]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="765">
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="10" y="15" width="520" height="13" uuid="0f8aa283-e233-4b19-8017-f96f4750532a"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI " + $P{namars}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="30" width="510" height="13" uuid="b03e58b3-ec13-4f79-9580-d7028f2f9d76"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["1. Dilarang membawa barang-barang berharga/perhiasan."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="45" width="510" height="13" uuid="44a7debc-69dc-45fb-990c-05cf6f7935ba"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["2. Dilarang membawa senjata tajam/senjata api."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="60" width="510" height="13" uuid="e6d2983e-d236-4b62-8514-9e583643ba62"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["3. Jam Kunjungan:"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="35" y="75" width="495" height="13" uuid="f14994b4-b108-4214-8b32-d5328198ee00"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["   a. Poli Bedah: 08.00 - 11.00 & 19.00 – 21.00"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="35" y="90" width="495" height="13" uuid="d23258a1-8b5a-47fe-bba6-389abbcfc568"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["   b. Poli Penyakit Dalam: 18.00 – 19.00"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="105" width="510" height="13" uuid="534ecef4-96a1-4575-87ab-9b6ec76bcae2"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["4. Dilarang merokok di luar/di dalam ruangan (lingkungan rumah sakit)."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="120" width="510" height="13" uuid="dcb5c48a-2e24-4d82-8ca9-ca6a922bf004"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["5. Dilarang memindahkan alat, mengubah-ubah, dan membawa pulang alat perawatan yang ada."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="135" width="510" height="13" uuid="50905355-15a8-4f20-8afc-c45fa98d1b8e"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["6. Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="150" width="510" height="13" uuid="12df2d00-7055-4ca3-91d7-f6457cd3c967"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["7. Pasien yang menggunakan BPJS/Asuransi, jika disarankan untuk operasi, maka waktu berunding maksimal 3x24 jam setelah melakukan konsultasi dokter."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="10" y="175" width="520" height="13" uuid="9285e4e8-b123-4e7d-8176-026d12b7ec1a"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["HAK PASIEN"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="190" width="510" height="13" uuid="7a932aff-8565-411e-9394-cc1bec30a1c8"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["1. Pasien berhak memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="205" width="510" height="13" uuid="67f2fb05-42fc-4dca-b2f5-6817d530c000"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["2. Pasien berhak memperoleh informasi tentang hak dan kewajiban pasien."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="220" width="510" height="13" uuid="e0ebd9a5-cccc-4646-aa5b-e286066a9848"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["3. Pasien berhak memperoleh pelayanan yang manusiawi, adil, jujur, tanpa diskriminasi."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="235" width="510" height="13" uuid="34d697dd-44dd-4b01-8eee-95749c429a4f"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["4. Pasien berhak memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan standar prosedur operasional."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="250" width="510" height="13" uuid="e163df35-0802-411e-8de6-31e86fe31777"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["5. Pasien berhak memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik dan materi."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="265" width="510" height="13" uuid="ee2293f6-7a61-45c1-a22b-f7414f1b6cf1"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["6. Pasien berhak mengajukan pengaduan atas kualitas pelayanan yang didapatkan."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="280" width="510" height="13" uuid="d002528a-285b-4d24-b17b-956504cde73d"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["7. Pasien berhak memilih dokter dan kelas perawatan sesuai dengan keinginan dan ketentuan yang berlaku di rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="295" width="510" height="13" uuid="7e7b6e6d-6273-402f-9f72-2ab0fbd51efe"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["8. Pasien berhak meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai Surat Izin Praktik (SIP) baik di dalam maupun di luar rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="310" width="510" height="13" uuid="a2cc3af9-0180-4652-a83e-fb09a6ee3bba"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["9. Pasien berhak mendapat privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="325" width="510" height="13" uuid="fedcff5d-031c-4509-a52e-cf0898d984d6"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["10. Pasien berhak mendapat informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, risiko, komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="340" width="510" height="13" uuid="9a2fe56e-a57f-40ee-bfc0-d62181a4e8a2"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["11. Pasien berhak memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="355" width="510" height="13" uuid="8588ffbd-d9b9-497b-8523-4a6d3f2b58ab"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["12. Pasien berhak didampingi keluarganya dalam keadaan kritis."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="370" width="510" height="13" uuid="ead3cfa5-5e0c-4081-9444-c1878c70af69"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["13. Pasien berhak menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lain."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="385" width="510" height="13" uuid="5de3da7d-2d36-4bbb-9077-e9d84dc49230"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["14. Pasien berhak memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="400" width="510" height="13" uuid="2b5ce1fa-f394-4166-bf2f-0a0060a68ef5"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["15. Pasien berhak mengajukan usul, saran, perbaikan atas perilaku rumah sakit terhadap dirinya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="415" width="510" height="13" uuid="4c6c4a25-f1f0-4cb1-bf48-e7c1ac49c3d5"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["16. Pasien berhak menolak pelayanan bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="430" width="510" height="13" uuid="b741c2b6-1ec7-4f4f-ac51-f871cd9f19fa"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["17. Pasien berhak menggugat dan/atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan tidak sesuai dengan standar baik secara perdata maupun pidana."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="445" width="510" height="13" uuid="e6d08e7d-31a2-4708-ac21-5ea12fc92273"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["18. Pasien berhak mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan standar pelayanan melalui media cetak atau elektronik sesuai dengan ketentuan peraturan perundang-undangan."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="10" y="470" width="520" height="13" uuid="c1e13868-2179-44b1-8220-773f5d6930be"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["KEWAJIBAN PASIEN"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="485" width="510" height="13" uuid="a60de387-9480-48c1-85a0-6dd972308800"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["1. Mematuhi peraturan yang berlaku di rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="500" width="510" height="13" uuid="4152a1af-e91c-4af8-bfd8-72740809ef3d"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["2. Menggunakan fasilitas rumah sakit secara bertanggung jawab."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="515" width="510" height="13" uuid="eda5afc3-b984-4f5b-891d-91e0091db523"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["3. Menghormati hak pasien lain, pengunjung, dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="530" width="510" height="13" uuid="dd70e0bc-548a-4393-bbb7-8aa9846bf321"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["4. Memberikan informasi yang jujur, lengkap, dan akurat sesuai dengan kemampuan dan pengetahuannya tentang masalah kesehatannya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="545" width="510" height="13" uuid="6a064869-390c-45b2-a581-d27cb44032b6"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["5. Memberikan informasi mengenai kemampuan finansial dan jaminan kesehatan yang dimilikinya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="560" width="510" height="13" uuid="7d95bf00-6518-4217-ae2e-5eb0e17d9e90"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["6. Mematuhi rencana terapi yang direkomendasikan oleh tenaga kesehatan di rumah sakit dan disetujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang-undangan."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="575" width="510" height="13" uuid="dc53abb0-1829-4251-8164-a3b72219aaa6"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["7. Menerima segala konsekuensi atas keputusan pribadinya untuk menolak rencana terapi yang direkomendasikan oleh tenaga kesehatan dan/atau tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="20" y="590" width="510" height="13" uuid="dcc2ccb1-6155-4987-b555-77dd6b80adf3"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="9" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA["8. Meminta imbalan jasa atas pelayanan yang diterima."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="360" y="625" width="167" height="12" uuid="58106b8b-d9e2-46fc-b213-1cb8976696c3"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{kotars}+", "+new SimpleDateFormat("dd-MM-yyyy", new java.util.Locale("id")).format($F{tanggal})]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement positionType="Float" x="10" y="625" width="167" height="12" uuid="cead2676-6ac7-4cf5-94be-45e52273e4e7"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="9"/>
-				</textElement>
-				<text><![CDATA[Petugas Pendaftaran]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="Float" x="360" y="640" width="167" height="12" uuid="897f8e59-7527-4241-8afb-bffa41bc033e"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="9"/>
-				</textElement>
-				<text><![CDATA[Pasien / Wali Pasien]]></text>
-			</staticText>
-			<componentElement>
-				<reportElement positionType="Float" x="12" y="655" width="158" height="75" uuid="28dc0ea2-8391-4cc0-b059-933a31f6affa"/>
-				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<jr:codeExpression><![CDATA[$P{finger}]]></jr:codeExpression>
-				</jr:QRCode>
-			</componentElement>
-			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement positionType="Float" x="370" y="655" width="147" height="80" uuid="62e77726-cccf-4085-b728-018dccb7b0ad"/>
-				<imageExpression><![CDATA[$P{photo}]]></imageExpression>
-			</image>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="10" y="740" width="167" height="12" uuid="adef38d8-26ae-46a0-894e-f541770e42a2"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="9" isUnderline="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["("+$F{nama}+")"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="360" y="740" width="167" height="12" uuid="066793fc-7621-48a4-9903-37a9765004e8"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="9" isUnderline="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["("+$F{nama_pj}+")"]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="820">
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="0" y="10" width="553" height="13" uuid="e6ed1526-d915-4e23-820c-47fb0f941f23"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI " + $P{namars}.toUpperCase()]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="25" width="543" height="13" uuid="5dd038e4-9593-4c68-a06e-55d6d5a95bb0"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["1. Dilarang membawa barang-barang berharga/perhiasan."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="40" width="543" height="13" uuid="384667cb-c5f1-41f7-9cd5-2bdb03351749"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["2. Dilarang membawa senjata tajam/senjata api."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="55" width="543" height="13" uuid="5a257f43-b575-44c6-a108-dc4fa5d6a772"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["3. Jam Kunjungan:"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="25" y="70" width="528" height="13" uuid="1a8afdc9-1e97-4be3-baf5-e0bc376ada78"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["   a. Poli Bedah: 08.00 - 11.00 & 19.00 – 21.00"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="25" y="85" width="528" height="13" uuid="57d5326e-ca9c-4635-8e96-c4d014441864"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["   b. Poli Penyakit Dalam: 18.00 – 19.00"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="100" width="543" height="13" uuid="4aade9ea-530b-49ee-9337-5ff37ab619a1"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["4. Dilarang merokok di luar/di dalam ruangan (lingkungan rumah sakit)."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="115" width="543" height="13" uuid="e7c432d7-5f49-47b0-985e-9cc1f6147745"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["5. Dilarang memindahkan alat, mengubah-ubah, dan membawa pulang alat perawatan yang ada."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="130" width="543" height="13" uuid="41c1f40d-bec6-4f6a-ac65-e68c0d1e90ec"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["6. Dilarang melakukan tindakan kriminal."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="145" width="543" height="13" uuid="6915cd09-258c-4e75-bc5b-ac84014c340d"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["7. Dilarang menggunakan/mengedarkan narkoba."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="160" width="543" height="13" uuid="93024bc9-dadf-4e75-a0bf-0bb84db72b5c"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["8. Dilarang melakukan tindak asusila."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="175" width="543" height="13" uuid="6c9d8ef0-96b4-412e-9acf-cc2536ad0785"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["9. Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="190" width="543" height="13" uuid="6a5b77d0-d1be-4803-a5f7-7bfa2d26a938"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["10. Pasien yang menggunakan BPJS/Asuransi, jika disarankan untuk operasi, maka waktu berunding maksimal 3x24 jam setelah melakukan konsultasi dokter."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="205" width="543" height="13" uuid="da66581c-9444-4c8d-8d33-51e52df2b49d"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["11. Pasien diwajibkan mematuhi segala regulasi " + $P{namars} + " demi keamanan dan keselamatan (safety) bersama."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="0" y="230" width="553" height="13" uuid="375b571e-92d4-45bf-9298-b5b994286bb2"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["HAK PASIEN"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="245" width="543" height="13" uuid="2d51fd9b-fa28-4182-bbd5-0352c793bc80"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["1. Pasien berhak memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="260" width="543" height="13" uuid="89b5edb1-b2c9-431e-9b93-1c189e623f93"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["2. Pasien berhak memperoleh informasi tentang hak dan kewajiban pasien."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="275" width="543" height="13" uuid="5ea77e18-d799-4fa6-9ad9-85b1b46f04d9"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["3. Pasien berhak memperoleh pelayanan yang manusiawi, adil, jujur, tanpa diskriminasi."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="290" width="543" height="13" uuid="09391df9-58c9-433d-b3b0-0a3c9d1711c2"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["4. Pasien berhak memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan standar prosedur operasional."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="305" width="543" height="13" uuid="54a99dca-5ab3-4eaf-bc23-7f25bd7626fc"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["5. Pasien berhak memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik dan materi."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="320" width="543" height="13" uuid="0c2c0574-8ec4-43e5-92d8-dac222dca82b"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["6. Pasien berhak mengajukan pengaduan atas kualitas pelayanan yang didapatkan."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="335" width="543" height="13" uuid="b037ccbf-eb21-426a-9db2-650571f69160"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["7. Pasien berhak memilih dokter dan kelas perawatan sesuai dengan keinginan dan ketentuan yang berlaku di rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="350" width="543" height="13" uuid="90f654c5-9abe-4b60-9e77-8212f597db1b"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["8. Pasien berhak meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai Surat Izin Praktik (SIP) baik di dalam maupun di luar rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="365" width="543" height="13" uuid="c32bbbff-1191-4e9c-847a-f215f861b3dc"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["9. Pasien berhak mendapat privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="380" width="543" height="13" uuid="b4c1f007-2593-45de-978c-1ffda8f069f1"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["10. Pasien berhak mendapat informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, risiko, komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="395" width="543" height="13" uuid="fd8f5535-23aa-40a5-b0b6-24e008f12521"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["11. Pasien berhak memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="410" width="543" height="13" uuid="366c6d6f-df21-43d4-a8f0-7b7a49eb4aff"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["12. Pasien berhak didampingi keluarganya dalam keadaan kritis."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="425" width="543" height="13" uuid="fee85309-6718-4548-93f5-e059414350fe"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["13. Pasien berhak menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lain."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="440" width="543" height="13" uuid="cf35cd09-4bcf-4a3d-b494-aaff0df31599"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["14. Pasien berhak memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="455" width="543" height="13" uuid="e26e9eec-83b0-4d23-8b71-137ac2560a33"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["15. Pasien berhak mengajukan usul, saran, perbaikan atas perilaku rumah sakit terhadap dirinya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="470" width="543" height="13" uuid="4f6484e3-0978-4f9e-a088-8182e98cb886"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["16. Pasien berhak menolak pelayanan bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="485" width="543" height="13" uuid="95c826a9-8652-470a-affe-6b8f491ec525"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["17. Pasien berhak menggugat dan/atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan tidak sesuai dengan standar baik secara perdata maupun pidana."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="500" width="543" height="13" uuid="5bd88b17-d306-4c1e-8b54-caf9a1c00e82"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["18. Pasien berhak mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan standar pelayanan melalui media cetak atau elektronik sesuai dengan ketentuan peraturan perundang-undangan."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="0" y="525" width="553" height="13" uuid="8fa8c120-2a12-4fdf-92fc-629f17e6d729"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["KEWAJIBAN PASIEN"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="540" width="543" height="13" uuid="43533098-00a6-4db6-b328-589010bdf015"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["1. Mematuhi peraturan yang berlaku di rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="555" width="543" height="13" uuid="c28ab51c-1a86-45f6-98aa-9d4f14857882"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["2. Menggunakan fasilitas rumah sakit secara bertanggung jawab."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="570" width="543" height="13" uuid="392760b8-6639-41b0-8488-9052dc9135b6"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["3. Menghormati hak pasien lain, pengunjung, dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="585" width="543" height="13" uuid="8fe53e77-a813-4f99-b128-01f781572280"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["4. Memberikan informasi yang jujur, lengkap, dan akurat sesuai dengan kemampuan dan pengetahuannya tentang masalah kesehatannya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="600" width="543" height="13" uuid="7ce5ca95-b2c4-43fb-9b90-a221131607db"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["5. Memberikan informasi mengenai kemampuan finansial dan jaminan kesehatan yang dimilikinya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="615" width="543" height="13" uuid="c46d1860-964c-4941-874b-40346b133037"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["6. Mematuhi rencana terapi yang direkomendasikan oleh tenaga kesehatan di rumah sakit dan disetujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang-undangan."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="630" width="543" height="13" uuid="2344d727-cfc6-4475-bdaa-0c3a3c8c3e1d"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["7. Menerima segala konsekuensi atas keputusan pribadinya untuk menolak rencana terapi yang direkomendasikan oleh tenaga kesehatan dan/atau tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="10" y="645" width="543" height="13" uuid="99dc7e76-c02c-4137-8b81-96f57829a4a4"/>
+                <textElement textAlignment="Justified">
+                    <font fontName="Tahoma" size="9" isBold="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["8. Meminta imbalan jasa atas pelayanan yang diterima."]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="350" y="680" width="200" height="12" uuid="fa4c3fbd-d51d-43b2-b765-e9599fd047bf"/>
+                <textElement textAlignment="Center"><font fontName="Tahoma" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{kotars}+", "+new SimpleDateFormat("dd-MM-yyyy", new
+java.util.Locale("id")).format($F{tanggal})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement positionType="Float" x="0" y="680" width="200" height="12" uuid="ae73eda0-bd1d-4bef-91ef-d35c764b9e32"/>
+                <textElement textAlignment="Center"><font fontName="Tahoma" size="9"/></textElement>
+                <text><![CDATA[Petugas Pendaftaran]]></text>
+            </staticText>
+            <staticText>
+                <reportElement positionType="Float" x="350" y="695" width="200" height="12" uuid="de44ffe2-de84-4e0e-b9b8-4776c4d99d30"/>
+                <textElement textAlignment="Center"><font fontName="Tahoma" size="9"/></textElement>
+                <text><![CDATA[Pasien / Wali Pasien]]></text>
+            </staticText>
+            <componentElement>
+                <reportElement positionType="Float" x="2" y="710" width="196" height="80" uuid="adc21123-e9d1-44d6-8f89-28f32bf8f601"/>
+                <jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
+xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+                    <jr:codeExpression><![CDATA[$P{finger}]]></jr:codeExpression>
+                </jr:QRCode>
+            </componentElement>
+            <image scaleImage="FillFrame" onErrorType="Blank">
+                <reportElement positionType="Float" x="360" y="710" width="180" height="80" uuid="4fcba1eb-cbff-404f-a529-19cf14a3daac"/>
+                <imageExpression><![CDATA[$P{photo}]]></imageExpression>
+            </image>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="0" y="795" width="200" height="12" uuid="bdd0c4e3-10c0-4411-a0a6-6ea37989884c"/>
+                <textElement textAlignment="Center"><font fontName="Tahoma" size="9" isUnderline="false"/></textElement>
+                <textFieldExpression><![CDATA["("+$F{nama}+")"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" x="350" y="795" width="200" height="12" uuid="d1547cc1-755c-48b7-b800-6b439a461f95"/>
+                <textElement textAlignment="Center"><font fontName="Tahoma" size="9" isUnderline="false"/></textElement>
+                <textFieldExpression><![CDATA["("+$F{nama_pj}+")"]]></textFieldExpression>
+            </textField>
+</band>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>

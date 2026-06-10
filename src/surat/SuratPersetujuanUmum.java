@@ -55,6 +55,10 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
     private String finger="",lokasifile="";
+    private String pjNama = "";
+    private String pjHubungan = "";
+    private String pjUmur = "";
+    private String pjJk = "";
     
     public SuratPersetujuanUmum(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -133,10 +137,22 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         KdPetugas.setDocument(new batasInput((byte)20).getKata(KdPetugas));  
         NoSurat.setDocument(new batasInput((byte)20).getKata(NoSurat));
         TCari.setDocument(new batasInput((int)100).getKata(TCari));
-        NamaPJ.setDocument(new batasInput((byte)50).getKata(NamaPJ));
-        NoKTP.setDocument(new batasInput((byte)20).getKata(NoKTP)); 
-        UmurPJ.setDocument(new batasInput((byte)3).getKata(UmurPJ));  
-        NoTelp.setDocument(new batasInput((byte)30).getKata(NoTelp));    
+        NamaPenerima1.setDocument(new batasInput((byte)50).getKata(NamaPenerima1));
+        NamaPenerima2.setDocument(new batasInput((byte)50).getKata(NamaPenerima2));
+        NamaPenerima3.setDocument(new batasInput((byte)50).getKata(NamaPenerima3));
+        
+        NamaPenerima1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+            @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+            @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+        });
+        NamaPenerima2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+            @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+            @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { adjustReceiverFields(); }
+        });
+        
+        adjustReceiverFields();
         
         ChkInput.setSelected(false);
         isForm();
@@ -206,12 +222,9 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         TNoRw = new widget.TextBox();
         TPasien = new widget.TextBox();
         TNoRM = new widget.TextBox();
-        jLabel8 = new widget.Label();
-        NamaPJ = new widget.TextBox();
+        NamaPenerima1 = new widget.TextBox();
         jLabel9 = new widget.Label();
-        JKPJ = new widget.ComboBox();
         jLabel10 = new widget.Label();
-        BertindakAtas = new widget.ComboBox();
         jLabel17 = new widget.Label();
         LahirPasien = new widget.TextBox();
         jLabel18 = new widget.Label();
@@ -219,16 +232,19 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         NmPetugas = new widget.TextBox();
         BtnPetugas = new widget.Button();
         jLabel16 = new widget.Label();
-        jLabel44 = new widget.Label();
-        UmurPJ = new widget.TextBox();
         Tanggal = new widget.Tanggal();
         jLabel14 = new widget.Label();
         jLabel3 = new widget.Label();
         NoSurat = new widget.TextBox();
+        BertindakAtas1 = new widget.ComboBox();
+        NamaPenerima2 = new widget.TextBox();
+        jLabel11 = new widget.Label();
+        jLabel12 = new widget.Label();
+        BertindakAtas2 = new widget.ComboBox();
+        NamaPenerima3 = new widget.TextBox();
+        jLabel13 = new widget.Label();
         jLabel15 = new widget.Label();
-        NoKTP = new widget.TextBox();
-        NoTelp = new widget.TextBox();
-        jLabel20 = new widget.Label();
+        BertindakAtas3 = new widget.ComboBox();
         ChkInput = new widget.CekBox();
         PanelAccor = new widget.PanelBiasa();
         ChkAccor = new widget.CekBox();
@@ -428,7 +444,7 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-02-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-06-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -442,7 +458,7 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-02-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-06-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -502,12 +518,9 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
 
         FormInput.setName("FormInput"); // NOI18N
         FormInput.setPreferredSize(new java.awt.Dimension(100, 165));
-        FormInput.setLayout(null);
 
         jLabel4.setText("No.Rawat :");
         jLabel4.setName("jLabel4"); // NOI18N
-        FormInput.add(jLabel4);
-        jLabel4.setBounds(0, 10, 70, 23);
 
         TNoRw.setHighlighter(null);
         TNoRw.setName("TNoRw"); // NOI18N
@@ -516,8 +529,6 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 TNoRwKeyPressed(evt);
             }
         });
-        FormInput.add(TNoRw);
-        TNoRw.setBounds(74, 10, 136, 23);
 
         TPasien.setEditable(false);
         TPasien.setHighlighter(null);
@@ -527,8 +538,6 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 TPasienKeyPressed(evt);
             }
         });
-        FormInput.add(TPasien);
-        TPasien.setBounds(325, 10, 255, 23);
 
         TNoRM.setEditable(false);
         TNoRM.setHighlighter(null);
@@ -538,78 +547,35 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 TNoRMKeyPressed(evt);
             }
         });
-        FormInput.add(TNoRM);
-        TNoRM.setBounds(212, 10, 111, 23);
 
-        jLabel8.setText("Bertindak Untuk/Atas Nama :");
-        jLabel8.setName("jLabel8"); // NOI18N
-        FormInput.add(jLabel8);
-        jLabel8.setBounds(459, 120, 160, 23);
-
-        NamaPJ.setName("NamaPJ"); // NOI18N
-        NamaPJ.addKeyListener(new java.awt.event.KeyAdapter() {
+        NamaPenerima1.setName("NamaPenerima1"); // NOI18N
+        NamaPenerima1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                NamaPJKeyPressed(evt);
+                NamaPenerima1KeyPressed(evt);
             }
         });
-        FormInput.add(NamaPJ);
-        NamaPJ.setBounds(89, 90, 260, 23);
 
-        jLabel9.setText("J.K. :");
+        jLabel9.setText("Bertindak Sebagai :");
         jLabel9.setName("jLabel9"); // NOI18N
-        FormInput.add(jLabel9);
-        jLabel9.setBounds(0, 120, 85, 23);
 
-        JKPJ.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Laki-laki", "Perempuan" }));
-        JKPJ.setName("JKPJ"); // NOI18N
-        JKPJ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                JKPJKeyPressed(evt);
-            }
-        });
-        FormInput.add(JKPJ);
-        JKPJ.setBounds(89, 120, 110, 23);
-
-        jLabel10.setText("Nama :");
+        jLabel10.setText("Nama Penerima 1 :");
         jLabel10.setName("jLabel10"); // NOI18N
-        FormInput.add(jLabel10);
-        jLabel10.setBounds(0, 90, 85, 23);
-
-        BertindakAtas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Suami", "Istri", "Anak", "Ayah", "Saudara", "Keponakan", "Cucu", "Kakek", "Nenek", "Kakak", "Adik", "Ibu", "Diri Sendiri" }));
-        BertindakAtas.setName("BertindakAtas"); // NOI18N
-        BertindakAtas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BertindakAtasKeyPressed(evt);
-            }
-        });
-        FormInput.add(BertindakAtas);
-        BertindakAtas.setBounds(623, 120, 110, 23);
 
         jLabel17.setText("Tgl.Lahir :");
         jLabel17.setName("jLabel17"); // NOI18N
-        FormInput.add(jLabel17);
-        jLabel17.setBounds(584, 10, 60, 23);
 
         LahirPasien.setHighlighter(null);
         LahirPasien.setName("LahirPasien"); // NOI18N
-        FormInput.add(LahirPasien);
-        LahirPasien.setBounds(648, 10, 85, 23);
 
         jLabel18.setText("Petugas :");
         jLabel18.setName("jLabel18"); // NOI18N
-        FormInput.add(jLabel18);
-        jLabel18.setBounds(170, 40, 55, 23);
 
         KdPetugas.setEditable(false);
         KdPetugas.setHighlighter(null);
         KdPetugas.setName("KdPetugas"); // NOI18N
-        FormInput.add(KdPetugas);
-        KdPetugas.setBounds(229, 40, 100, 23);
 
         NmPetugas.setEditable(false);
         NmPetugas.setName("NmPetugas"); // NOI18N
-        FormInput.add(NmPetugas);
-        NmPetugas.setBounds(331, 40, 157, 23);
 
         BtnPetugas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         BtnPetugas.setMnemonic('2');
@@ -625,31 +591,13 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 BtnPetugasKeyPressed(evt);
             }
         });
-        FormInput.add(BtnPetugas);
-        BtnPetugas.setBounds(490, 40, 28, 23);
 
         jLabel16.setText("Tanggal :");
         jLabel16.setName("jLabel16"); // NOI18N
         jLabel16.setVerifyInputWhenFocusTarget(false);
-        FormInput.add(jLabel16);
-        jLabel16.setBounds(0, 40, 70, 23);
-
-        jLabel44.setText("Umur (Tahun) :");
-        jLabel44.setName("jLabel44"); // NOI18N
-        FormInput.add(jLabel44);
-        jLabel44.setBounds(353, 90, 90, 23);
-
-        UmurPJ.setName("UmurPJ"); // NOI18N
-        UmurPJ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                UmurPJKeyPressed(evt);
-            }
-        });
-        FormInput.add(UmurPJ);
-        UmurPJ.setBounds(447, 90, 47, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-02-2026" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-06-2026" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -658,18 +606,12 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 TanggalKeyPressed(evt);
             }
         });
-        FormInput.add(Tanggal);
-        Tanggal.setBounds(74, 40, 90, 23);
 
-        jLabel14.setText("Penanggung Jawab Pasien :");
+        jLabel14.setText("Penerima Berkas Rekam Medis :");
         jLabel14.setName("jLabel14"); // NOI18N
-        FormInput.add(jLabel14);
-        jLabel14.setBounds(0, 70, 154, 23);
 
         jLabel3.setText("No.Persetujuan :");
         jLabel3.setName("jLabel3"); // NOI18N
-        FormInput.add(jLabel3);
-        jLabel3.setBounds(520, 40, 90, 23);
 
         NoSurat.setHighlighter(null);
         NoSurat.setName("NoSurat"); // NOI18N
@@ -678,36 +620,171 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                 NoSuratKeyPressed(evt);
             }
         });
-        FormInput.add(NoSurat);
-        NoSurat.setBounds(614, 40, 119, 23);
 
-        jLabel15.setText("Nomor KTP :");
+        BertindakAtas1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Suami", "Istri", "Anak", "Ayah", "Saudara", "Keponakan", "Cucu", "Kakek", "Nenek", "Kakak", "Adik", "Ibu", "Diri Sendiri", "Lainnya" }));
+        BertindakAtas1.setName("BertindakAtas1"); // NOI18N
+        BertindakAtas1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BertindakAtas1KeyPressed(evt);
+            }
+        });
+
+        NamaPenerima2.setName("NamaPenerima2"); // NOI18N
+        NamaPenerima2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                NamaPenerima2KeyPressed(evt);
+            }
+        });
+
+        jLabel11.setText("Nama Penerima 2 :");
+        jLabel11.setName("jLabel11"); // NOI18N
+
+        jLabel12.setText("Bertindak Sebagai :");
+        jLabel12.setName("jLabel12"); // NOI18N
+
+        BertindakAtas2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Suami", "Istri", "Anak", "Ayah", "Saudara", "Keponakan", "Cucu", "Kakek", "Nenek", "Kakak", "Adik", "Ibu", "Diri Sendiri", "Lainnya" }));
+        BertindakAtas2.setName("BertindakAtas2"); // NOI18N
+        BertindakAtas2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BertindakAtas2KeyPressed(evt);
+            }
+        });
+
+        NamaPenerima3.setName("NamaPenerima3"); // NOI18N
+        NamaPenerima3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                NamaPenerima3KeyPressed(evt);
+            }
+        });
+
+        jLabel13.setText("Bertindak Sebagai :");
+        jLabel13.setName("jLabel13"); // NOI18N
+
+        jLabel15.setText("Nama Penerima 3 :");
         jLabel15.setName("jLabel15"); // NOI18N
-        FormInput.add(jLabel15);
-        jLabel15.setBounds(509, 90, 70, 23);
 
-        NoKTP.setName("NoKTP"); // NOI18N
-        NoKTP.addKeyListener(new java.awt.event.KeyAdapter() {
+        BertindakAtas3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Suami", "Istri", "Anak", "Ayah", "Saudara", "Keponakan", "Cucu", "Kakek", "Nenek", "Kakak", "Adik", "Ibu", "Diri Sendiri", "Lainnya" }));
+        BertindakAtas3.setName("BertindakAtas3"); // NOI18N
+        BertindakAtas3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                NoKTPKeyPressed(evt);
+                BertindakAtas3KeyPressed(evt);
             }
         });
-        FormInput.add(NoKTP);
-        NoKTP.setBounds(583, 90, 150, 23);
 
-        NoTelp.setName("NoTelp"); // NOI18N
-        NoTelp.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NoTelpKeyPressed(evt);
-            }
-        });
-        FormInput.add(NoTelp);
-        NoTelp.setBounds(300, 120, 160, 23);
-
-        jLabel20.setText("Nomor Telp/HP :");
-        jLabel20.setName("jLabel20"); // NOI18N
-        FormInput.add(jLabel20);
-        jLabel20.setBounds(200, 120, 96, 23);
+        javax.swing.GroupLayout FormInputLayout = new javax.swing.GroupLayout(FormInput);
+        FormInput.setLayout(FormInputLayout);
+        FormInputLayout.setHorizontalGroup(
+            FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FormInputLayout.createSequentialGroup()
+                .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(TNoRw, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(TNoRM, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(TPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(LahirPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(FormInputLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NamaPenerima1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NamaPenerima2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NamaPenerima3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(Tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KdPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(NmPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(NoSurat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(144, 144, 144))
+        );
+        FormInputLayout.setVerticalGroup(
+            FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FormInputLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TNoRw, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TNoRM, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LahirPasien, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(KdPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NmPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnPetugas, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NoSurat, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(NamaPenerima1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(NamaPenerima2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(FormInputLayout.createSequentialGroup()
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(NamaPenerima3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addGroup(FormInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BertindakAtas3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+        );
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -833,28 +910,48 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
         if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
             Valid.textKosong(TNoRw,"Pasien");
-        }else if(NamaPJ.getText().trim().equals("")){
-            Valid.textKosong(NamaPJ,"Nama Penanggung Jawab");
-        }else if(UmurPJ.getText().trim().equals("")){
-            Valid.textKosong(UmurPJ,"Umur");
-        }else if(NoTelp.getText().trim().equals("")){
-            Valid.textKosong(NoTelp,"Nomor Telp");
-        }else if(NoKTP.getText().trim().equals("")){
-            Valid.textKosong(NoKTP,"Nomor KTP");
+        }else if(NamaPenerima1.getText().trim().equals("")){
+            Valid.textKosong(NamaPenerima1,"Nama Penerima 1");
         }else if(NmPetugas.getText().trim().equals("")){
             Valid.textKosong(NmPetugas,"Petugas");
         }else if(NoSurat.getText().trim().equals("")){
             Valid.textKosong(NoSurat,"No.Pernyataan");
         }else{
+            String jkSave = "-";
+            if (pjJk != null && pjJk.length() > 0) {
+                jkSave = pjJk.substring(0, 1);
+            }
             if(Sequel.menyimpantf("surat_persetujuan_umum","?,?,?,?,?,?,?,?,?,?,?,?","Data",12,new String[]{
-                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",NamaPJ.getText(),UmurPJ.getText(),NoKTP.getText(),
-                    JKPJ.getSelectedItem().toString().substring(0,1),BertindakAtas.getSelectedItem().toString(),NoTelp.getText(),KdPetugas.getText()
+                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,"-",
+                    jkSave,pjHubungan,"-",KdPetugas.getText()
                 })==true){
+                
+                if (isValidReceiver(NamaPenerima1.getText())) {
+                    Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 1", 4, new String[]{
+                        NoSurat.getText(), "1", NamaPenerima1.getText(), BertindakAtas1.getSelectedItem().toString()
+                    });
+                }
+                if (isValidReceiver(NamaPenerima2.getText())) {
+                    Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 2", 4, new String[]{
+                        NoSurat.getText(), "2", NamaPenerima2.getText(), BertindakAtas2.getSelectedItem().toString()
+                    });
+                }
+                if (isValidReceiver(NamaPenerima3.getText())) {
+                    Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 3", 4, new String[]{
+                        NoSurat.getText(), "3", NamaPenerima3.getText(), BertindakAtas3.getSelectedItem().toString()
+                    });
+                }
+
                 tabMode.addRow(new Object[]{
                     NoSurat.getText(),TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),LahirPasien.getText(),
-                    Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",NamaPJ.getText(),UmurPJ.getText(),NoKTP.getText(),JKPJ.getSelectedItem().toString().substring(0,1),
-                    NoTelp.getText(),BertindakAtas.getSelectedItem().toString(),KdPetugas.getText(),NmPetugas.getText(),
-                    "-","-","-","-","-","-"
+                    Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,"-",jkSave,
+                    "-",pjHubungan,KdPetugas.getText(),NmPetugas.getText(),
+                    isValidReceiver(NamaPenerima1.getText()) ? NamaPenerima1.getText() : "-",
+                    isValidReceiver(NamaPenerima1.getText()) ? BertindakAtas1.getSelectedItem().toString() : "-",
+                    isValidReceiver(NamaPenerima2.getText()) ? NamaPenerima2.getText() : "-",
+                    isValidReceiver(NamaPenerima2.getText()) ? BertindakAtas2.getSelectedItem().toString() : "-",
+                    isValidReceiver(NamaPenerima3.getText()) ? NamaPenerima3.getText() : "-",
+                    isValidReceiver(NamaPenerima3.getText()) ? BertindakAtas3.getSelectedItem().toString() : "-"
                 });
                 LCount.setText(""+tabMode.getRowCount());
                 emptTeks();
@@ -866,7 +963,7 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             BtnSimpanActionPerformed(null);
         }else{
-            Valid.pindah(evt,JKPJ,BtnBatal);
+            Valid.pindah(evt,BertindakAtas3,BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -910,14 +1007,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
         if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
             Valid.textKosong(TNoRw,"Pasien");
-        }else if(NamaPJ.getText().trim().equals("")){
-            Valid.textKosong(NamaPJ,"Nama Penanggung Jawab");
-        }else if(UmurPJ.getText().trim().equals("")){
-            Valid.textKosong(UmurPJ,"Umur");
-        }else if(NoTelp.getText().trim().equals("")){
-            Valid.textKosong(NoTelp,"Nomor Telp");
-        }else if(NoKTP.getText().trim().equals("")){
-            Valid.textKosong(NoKTP,"Nomor KTP");
+        }else if(NamaPenerima1.getText().trim().equals("")){
+            Valid.textKosong(NamaPenerima1,"Nama Penerima 1");
         }else if(NmPetugas.getText().trim().equals("")){
             Valid.textKosong(NmPetugas,"Petugas");
         }else if(NoSurat.getText().trim().equals("")){
@@ -1088,7 +1179,7 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }//GEN-LAST:event_tbObatKeyReleased
 
     private void BtnPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPetugasKeyPressed
-        Valid.pindah(evt,Tanggal,NamaPJ);
+        Valid.pindah(evt,Tanggal,NamaPenerima1);
     }//GEN-LAST:event_BtnPetugasKeyPressed
 
     private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPetugasActionPerformed
@@ -1123,17 +1214,9 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         petugas.setVisible(true);
     }//GEN-LAST:event_BtnPetugasActionPerformed
 
-    private void BertindakAtasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BertindakAtasKeyPressed
-        Valid.pindah(evt,NoTelp,BtnSimpan);
-    }//GEN-LAST:event_BertindakAtasKeyPressed
-
-    private void JKPJKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JKPJKeyPressed
-        Valid.pindah(evt,NoKTP,NoTelp);
-    }//GEN-LAST:event_JKPJKeyPressed
-
-    private void NamaPJKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaPJKeyPressed
-        Valid.pindah(evt,NoSurat,UmurPJ);
-    }//GEN-LAST:event_NamaPJKeyPressed
+    private void NamaPenerima1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaPenerima1KeyPressed
+        Valid.pindah(evt,NoSurat,BertindakAtas1);
+    }//GEN-LAST:event_NamaPenerima1KeyPressed
 
     private void TNoRMKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRMKeyPressed
     // Valid.pindah(evt, TNm, BtnSimpan);
@@ -1156,16 +1239,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }//GEN-LAST:event_TanggalKeyPressed
 
     private void NoSuratKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoSuratKeyPressed
-        Valid.pindah(evt,BtnPetugas,NamaPJ);
+        Valid.pindah(evt,BtnPetugas,NamaPenerima1);
     }//GEN-LAST:event_NoSuratKeyPressed
-
-    private void NoKTPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoKTPKeyPressed
-        Valid.pindah(evt,UmurPJ,JKPJ);
-    }//GEN-LAST:event_NoKTPKeyPressed
-
-    private void NoTelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoTelpKeyPressed
-        Valid.pindah(evt,JKPJ,BertindakAtas);
-    }//GEN-LAST:event_NoTelpKeyPressed
 
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
         if(tbObat.getSelectedRow()!= -1){
@@ -1206,10 +1281,6 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
-
-    private void UmurPJKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UmurPJKeyPressed
-        Valid.pindah(evt,NamaPJ,NoKTP);
-    }//GEN-LAST:event_UmurPJKeyPressed
 
     private void BtnPrint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint1ActionPerformed
         if(tbObat.getSelectedRow()>-1){
@@ -1270,6 +1341,26 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_formWindowOpened
 
+    private void BertindakAtas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BertindakAtas1KeyPressed
+        Valid.pindah(evt, NamaPenerima1, NamaPenerima2);
+    }//GEN-LAST:event_BertindakAtas1KeyPressed
+
+    private void NamaPenerima2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaPenerima2KeyPressed
+        Valid.pindah(evt, BertindakAtas1, BertindakAtas2);
+    }//GEN-LAST:event_NamaPenerima2KeyPressed
+
+    private void BertindakAtas2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BertindakAtas2KeyPressed
+        Valid.pindah(evt, NamaPenerima2, NamaPenerima3);
+    }//GEN-LAST:event_BertindakAtas2KeyPressed
+
+    private void NamaPenerima3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaPenerima3KeyPressed
+        Valid.pindah(evt, BertindakAtas2, BertindakAtas3);
+    }//GEN-LAST:event_NamaPenerima3KeyPressed
+
+    private void BertindakAtas3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BertindakAtas3KeyPressed
+        Valid.pindah(evt, NamaPenerima3, BtnSimpan);
+    }//GEN-LAST:event_BertindakAtas3KeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -1287,7 +1378,9 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private widget.ComboBox BertindakAtas;
+    private widget.ComboBox BertindakAtas1;
+    private widget.ComboBox BertindakAtas2;
+    private widget.ComboBox BertindakAtas3;
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
@@ -1307,16 +1400,15 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private widget.PanelBiasa FormPass3;
     private widget.PanelBiasa FormPhoto;
     private widget.TextBox JK;
-    private widget.ComboBox JKPJ;
     private widget.TextBox KdPetugas;
     private widget.Label LCount;
     private widget.TextBox LahirPasien;
     private widget.editorpane LoadHTML2;
-    private widget.TextBox NamaPJ;
+    private widget.TextBox NamaPenerima1;
+    private widget.TextBox NamaPenerima2;
+    private widget.TextBox NamaPenerima3;
     private widget.TextBox NmPetugas;
-    private widget.TextBox NoKTP;
     private widget.TextBox NoSurat;
-    private widget.TextBox NoTelp;
     private widget.PanelBiasa PanelAccor;
     private javax.swing.JPanel PanelInput;
     private widget.ScrollPane Scroll;
@@ -1327,24 +1419,23 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private widget.TextBox TPasien;
     private widget.Tanggal Tanggal;
     private widget.TextBox Umur;
-    private widget.TextBox UmurPJ;
     private widget.Button btnAmbil;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
+    private widget.Label jLabel11;
+    private widget.Label jLabel12;
+    private widget.Label jLabel13;
     private widget.Label jLabel14;
     private widget.Label jLabel15;
     private widget.Label jLabel16;
     private widget.Label jLabel17;
     private widget.Label jLabel18;
     private widget.Label jLabel19;
-    private widget.Label jLabel20;
     private widget.Label jLabel21;
     private widget.Label jLabel3;
     private widget.Label jLabel4;
-    private widget.Label jLabel44;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
-    private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private widget.panelisi panelGlass8;
@@ -1439,15 +1530,19 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }
 
     public void emptTeks() {
-        NamaPJ.setText("");
-        UmurPJ.setText("");
-        BertindakAtas.setSelectedIndex(0);
-        JKPJ.setSelectedIndex(0);
-        NoTelp.setText("");
-        NoKTP.setText("");
+        NamaPenerima1.setText("");
+        NamaPenerima2.setText("");
+        NamaPenerima3.setText("");
+        BertindakAtas1.setSelectedIndex(0);
+        BertindakAtas2.setSelectedIndex(0);
+        BertindakAtas3.setSelectedIndex(0);
+        pjNama = "";
+        pjHubungan = "";
+        pjUmur = "";
+        pjJk = "";
         Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(surat_persetujuan_umum.no_surat,3),signed)),0) from surat_persetujuan_umum where surat_persetujuan_umum.tanggal='"+Valid.SetTgl(Tanggal.getSelectedItem()+"")+"' ",
                 "PSU"+Tanggal.getSelectedItem().toString().substring(6,10)+Tanggal.getSelectedItem().toString().substring(3,5)+Tanggal.getSelectedItem().toString().substring(0,2),3,NoSurat);
-        NamaPJ.requestFocus();
+        NamaPenerima1.requestFocus();
     }
 
  
@@ -1460,21 +1555,69 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
             LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-            NamaPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString()); 
-            UmurPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());  
-            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString()); 
-            JKPJ.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString().replaceAll("L","Laki-laki").replaceAll("P","Perempuan")); 
-            NoTelp.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString()); 
-            BertindakAtas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());  
+            
+            pjNama = tbObat.getValueAt(tbObat.getSelectedRow(),10).toString();
+            pjUmur = tbObat.getValueAt(tbObat.getSelectedRow(),11).toString();
+            pjJk = tbObat.getValueAt(tbObat.getSelectedRow(),13).toString();
+            pjHubungan = tbObat.getValueAt(tbObat.getSelectedRow(),15).toString();
+
+            String rec1 = tbObat.getValueAt(tbObat.getSelectedRow(),18).toString();
+            String rel1 = tbObat.getValueAt(tbObat.getSelectedRow(),19).toString();
+            String rec2 = tbObat.getValueAt(tbObat.getSelectedRow(),20).toString();
+            String rel2 = tbObat.getValueAt(tbObat.getSelectedRow(),21).toString();
+            String rec3 = tbObat.getValueAt(tbObat.getSelectedRow(),22).toString();
+            String rel3 = tbObat.getValueAt(tbObat.getSelectedRow(),23).toString();
+
+            NamaPenerima1.setText(rec1.equals("-") ? "" : rec1);
+            BertindakAtas1.setSelectedItem(rel1.equals("-") ? "Diri Sendiri" : rel1);
+            NamaPenerima2.setText(rec2.equals("-") ? "" : rec2);
+            BertindakAtas2.setSelectedItem(rel2.equals("-") ? "Diri Sendiri" : rel2);
+            NamaPenerima3.setText(rec3.equals("-") ? "" : rec3);
+            BertindakAtas3.setSelectedItem(rel3.equals("-") ? "Diri Sendiri" : rel3);
+            
+            adjustReceiverFields();
+            
             Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
         }
+    }
+
+    private void adjustReceiverFields() {
+        String val1 = NamaPenerima1.getText().trim();
+        String val2 = NamaPenerima2.getText().trim();
+        
+        boolean hasPenerima1 = !val1.isEmpty() && !val1.equals("-");
+        boolean hasPenerima2 = !val2.isEmpty() && !val2.equals("-");
+        
+        NamaPenerima2.setEnabled(hasPenerima1);
+        BertindakAtas2.setEnabled(hasPenerima1);
+        
+        if (!hasPenerima1) {
+            NamaPenerima2.setText("");
+            BertindakAtas2.setSelectedIndex(0);
+            NamaPenerima3.setText("");
+            BertindakAtas3.setSelectedIndex(0);
+        }
+        
+        NamaPenerima3.setEnabled(hasPenerima1 && hasPenerima2);
+        BertindakAtas3.setEnabled(hasPenerima1 && hasPenerima2);
+        
+        if (!hasPenerima2) {
+            NamaPenerima3.setText("");
+            BertindakAtas3.setSelectedIndex(0);
+        }
+    }
+
+    private boolean isValidReceiver(String name) {
+        if (name == null) return false;
+        String clean = name.trim().replaceAll("[\\-\\s_\\?\\.\\,\\/\\\\]", "");
+        return !clean.isEmpty();
     }
 
     private void isRawat() {
         try {
             ps=koneksi.prepareStatement(
                     "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,"+
-                    "reg_periksa.umurdaftar,reg_periksa.sttsumur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                    "reg_periksa.umurdaftar,reg_periksa.sttsumur,reg_periksa.p_jawab,reg_periksa.hubunganpj from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "where reg_periksa.no_rawat=?");
             try {
                 ps.setString(1,TNoRw.getText());
@@ -1485,7 +1628,19 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     LahirPasien.setText(rs.getString("tgl_lahir"));
-                    UmurPJ.setText(rs.getString("umurdaftar")+" "+rs.getString("sttsumur"));
+                    Umur.setText(rs.getString("umurdaftar")+" "+rs.getString("sttsumur"));
+                    
+                    pjNama = rs.getString("p_jawab");
+                    pjHubungan = rs.getString("hubunganpj");
+                    if (pjNama == null || pjNama.trim().isEmpty() || pjNama.trim().equals("-")) {
+                        pjNama = rs.getString("nm_pasien");
+                        pjHubungan = "Diri Sendiri";
+                        pjUmur = rs.getString("umurdaftar")+" "+rs.getString("sttsumur");
+                        pjJk = rs.getString("jk");
+                    } else {
+                        pjUmur = "-";
+                        pjJk = "-";
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
@@ -1544,11 +1699,33 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }
   
     private void ganti() {
+        String jkSave = "-";
+        if (pjJk != null && pjJk.length() > 0) {
+            jkSave = pjJk.substring(0, 1);
+        }
         if(Sequel.mengedittf("surat_persetujuan_umum","no_surat=?","no_surat=?,no_rawat=?,tanggal=?,nama_pj=?,umur_pj=?,no_ktppj=?,jkpj=?,bertindak_atas=?,no_telp=?,nip=?",11,new String[]{
-            NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),NamaPJ.getText(),UmurPJ.getText(),NoKTP.getText(),
-            JKPJ.getSelectedItem().toString().substring(0,1),BertindakAtas.getSelectedItem().toString(),NoTelp.getText(),KdPetugas.getText(),
+            NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),pjNama,pjUmur,"-",
+            jkSave,pjHubungan,"-",KdPetugas.getText(),
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
+            Sequel.queryu2("delete from surat_persetujuan_umum_penerima where no_surat=?",1,new String[]{NoSurat.getText()});
+            
+            if (isValidReceiver(NamaPenerima1.getText())) {
+                Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 1", 4, new String[]{
+                    NoSurat.getText(), "1", NamaPenerima1.getText(), BertindakAtas1.getSelectedItem().toString()
+                });
+            }
+            if (isValidReceiver(NamaPenerima2.getText())) {
+                Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 2", 4, new String[]{
+                    NoSurat.getText(), "2", NamaPenerima2.getText(), BertindakAtas2.getSelectedItem().toString()
+                });
+            }
+            if (isValidReceiver(NamaPenerima3.getText())) {
+                Sequel.menyimpan("surat_persetujuan_umum_penerima", "?,?,?,?", "Penerima 3", 4, new String[]{
+                    NoSurat.getText(), "3", NamaPenerima3.getText(), BertindakAtas3.getSelectedItem().toString()
+                });
+            }
+
             tbObat.setValueAt(NoSurat.getText(),tbObat.getSelectedRow(),0);
             tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),1);
             tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),2);
@@ -1557,14 +1734,21 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             tbObat.setValueAt(JK.getText(),tbObat.getSelectedRow(),5);
             tbObat.setValueAt(LahirPasien.getText(),tbObat.getSelectedRow(),6);
             tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem()+""),tbObat.getSelectedRow(),7);
-            tbObat.setValueAt(NamaPJ.getText(),tbObat.getSelectedRow(),10);
-            tbObat.setValueAt(UmurPJ.getText(),tbObat.getSelectedRow(),11);
-            tbObat.setValueAt(NoKTP.getText(),tbObat.getSelectedRow(),12);
-            tbObat.setValueAt(JKPJ.getSelectedItem().toString().substring(0,1),tbObat.getSelectedRow(),13);
-            tbObat.setValueAt(NoTelp.getText(),tbObat.getSelectedRow(),14);
-            tbObat.setValueAt(BertindakAtas.getSelectedItem().toString(),tbObat.getSelectedRow(),15);
+            tbObat.setValueAt(pjNama,tbObat.getSelectedRow(),10);
+            tbObat.setValueAt(pjUmur,tbObat.getSelectedRow(),11);
+            tbObat.setValueAt("-",tbObat.getSelectedRow(),12);
+            tbObat.setValueAt(jkSave,tbObat.getSelectedRow(),13);
+            tbObat.setValueAt("-",tbObat.getSelectedRow(),14);
+            tbObat.setValueAt(pjHubungan,tbObat.getSelectedRow(),15);
             tbObat.setValueAt(KdPetugas.getText(),tbObat.getSelectedRow(),16);
             tbObat.setValueAt(NmPetugas.getText(),tbObat.getSelectedRow(),17);
+            
+            tbObat.setValueAt(isValidReceiver(NamaPenerima1.getText()) ? NamaPenerima1.getText() : "-", tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(isValidReceiver(NamaPenerima1.getText()) ? BertindakAtas1.getSelectedItem().toString() : "-", tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(isValidReceiver(NamaPenerima2.getText()) ? NamaPenerima2.getText() : "-", tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(isValidReceiver(NamaPenerima2.getText()) ? BertindakAtas2.getSelectedItem().toString() : "-", tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(isValidReceiver(NamaPenerima3.getText()) ? NamaPenerima3.getText() : "-", tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(isValidReceiver(NamaPenerima3.getText()) ? BertindakAtas3.getSelectedItem().toString() : "-", tbObat.getSelectedRow(), 23);
             emptTeks();
         }
     }

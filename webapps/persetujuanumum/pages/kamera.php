@@ -67,6 +67,16 @@
         $bertindak_atas = $data2['bertindak_atas'];
         $no_telp        = $data2['no_telp'];
     }
+
+    $penerima = array();
+    $_sql3 = "select nama, hubungan from surat_persetujuan_umum_penerima where no_surat='$nosurat' order by no_urut";
+    $hasil3 = bukaquery2($_sql3);
+    while ($data3 = mysqli_fetch_array($hasil3)) {
+        $penerima[] = array(
+            'nama' => $data3['nama'],
+            'hubungan' => $data3['hubungan']
+        );
+    }
 ?>
 
 <!DOCTYPE html>
@@ -121,7 +131,7 @@
                     </button>
                 </nav>                <!-- TAB CONTENT: Rules -->
                 <div id="tab-rules" class="tab-content-pane active">
-                    <h3 class="mb-3">KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI RS BEDAH SURYA DHARMA HUSADA</h3>
+                    <h3 class="mb-3">KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI <?=strtoupper($namars);?></h3>
                     <div class="rules-list">
                         <div class="list-card rule-highlight">
                             <div class="num-badge">1</div>
@@ -148,11 +158,27 @@
                         </div>
                         <div class="list-card">
                             <div class="num-badge">6</div>
-                            <p>Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit.</p>
+                            <p>Dilarang melakukan tindakan kriminal.</p>
                         </div>
                         <div class="list-card">
                             <div class="num-badge">7</div>
+                            <p>Dilarang menggunakan/mengedarkan narkoba.</p>
+                        </div>
+                        <div class="list-card">
+                            <div class="num-badge">8</div>
+                            <p>Dilarang melakukan tindak asusila.</p>
+                        </div>
+                        <div class="list-card">
+                            <div class="num-badge">9</div>
+                            <p>Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit.</p>
+                        </div>
+                        <div class="list-card">
+                            <div class="num-badge">10</div>
                             <p>Pasien yang menggunakan BPJS/Asuransi, jika disarankan untuk operasi, maka waktu berunding maksimal 3x24 jam setelah melakukan konsultasi dokter.</p>
+                        </div>
+                        <div class="list-card">
+                            <div class="num-badge">11</div>
+                            <p>Pasien diwajibkan mematuhi segala regulasi <?=$namars;?> demi keamanan dan keselamatan (safety) bersama.</p>
                         </div>
                     </div>
                 </div>
@@ -352,30 +378,45 @@
                             </div>
                         </div>
 
-                        <!-- Authorized Medical Record Receivers Deck (Dynamic) -->
+                        <!-- Authorized Medical Record Receivers Deck (Read-Only) -->
                         <div class="receivers-deck-container mt-4 mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <label class="font-weight-bold text-teal mb-0" style="font-size: 0.9rem; letter-spacing: 0.02em;">
-                                    Daftar Penerima Informasi Medis/Hasil Rekam Medis (Maksimal 3 Orang):
-                                </label>
-                                <button type="button" class="btn btn-sm btn-outline-teal d-flex align-items-center gap-1" id="btn-add-receiver" onclick="addReceiverRow()" style="border-radius: 20px; font-size: 0.8rem; padding: 0.35rem 0.75rem; font-weight: 600;">
-                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-right: 2px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    Tambah Penerima
-                                </button>
-                            </div>
+                            <label class="font-weight-bold text-teal mb-3" style="font-size: 0.95rem; letter-spacing: 0.02em; display: block;">
+                                Daftar Penerima Informasi Medis/Hasil Rekam Medis:
+                            </label>
                             
-                            <div id="receivers-list" class="d-flex flex-column gap-3">
-                                <!-- Dynamic receiver rows will be rendered here by JavaScript -->
+                            <div class="d-flex flex-column gap-3">
+                                <?php if (empty($penerima)) { ?>
+                                    <div class="receiver-card-readonly" style="padding: 16px; border: 1px dashed #cbd5e1; border-radius: 12px; text-align: center; color: #64748b; font-style: italic; background-color: #f8fafc;">
+                                        Tidak ada penerima informasi tambahan yang didaftarkan.
+                                    </div>
+                                <?php } else { 
+                                    foreach ($penerima as $idx => $p) { ?>
+                                        <div class="receiver-card-readonly" style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #f8fafc; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease;">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="avatar-circle" style="width: 36px; height: 36px; background-color: #e0f2fe; color: #0284c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                                                    <?= ($idx + 1); ?>
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight: 600; color: #1e293b; font-size: 0.95rem;"><?= htmlspecialchars($p['nama']); ?></div>
+                                                    <div style="font-size: 0.8rem; color: #64748b;">Penerima Informasi Medis</div>
+                                                </div>
+                                            </div>
+                                            <span class="badge" style="font-size: 0.8rem; padding: 6px 12px; border: 1px solid #0d9488; color: #0d9488; background-color: #f0fdfa; border-radius: 20px; font-weight: 600;">
+                                                <?= htmlspecialchars($p['hubungan']); ?>
+                                            </span>
+                                        </div>
+                                    <?php }
+                                } ?>
                             </div>
                             
                             <!-- Hidden input fields to hold value for form submission -->
                             <input type="hidden" name="pengobatan_kepada" id="pengobatan_kepada" value="-">
-                            <input type="hidden" name="penerima_nama_1" id="penerima_nama_1" value="-">
-                            <input type="hidden" name="penerima_hubungan_1" id="penerima_hubungan_1" value="-">
-                            <input type="hidden" name="penerima_nama_2" id="penerima_nama_2" value="-">
-                            <input type="hidden" name="penerima_hubungan_2" id="penerima_hubungan_2" value="-">
-                            <input type="hidden" name="penerima_nama_3" id="penerima_nama_3" value="-">
-                            <input type="hidden" name="penerima_hubungan_3" id="penerima_hubungan_3" value="-">
+                            <input type="hidden" name="penerima_nama_1" id="penerima_nama_1" value="<?= isset($penerima[0]) ? htmlspecialchars($penerima[0]['nama']) : '-'; ?>">
+                            <input type="hidden" name="penerima_hubungan_1" id="penerima_hubungan_1" value="<?= isset($penerima[0]) ? htmlspecialchars($penerima[0]['hubungan']) : '-'; ?>">
+                            <input type="hidden" name="penerima_nama_2" id="penerima_nama_2" value="<?= isset($penerima[1]) ? htmlspecialchars($penerima[1]['nama']) : '-'; ?>">
+                            <input type="hidden" name="penerima_hubungan_2" id="penerima_hubungan_2" value="<?= isset($penerima[1]) ? htmlspecialchars($penerima[1]['hubungan']) : '-'; ?>">
+                            <input type="hidden" name="penerima_nama_3" id="penerima_nama_3" value="<?= isset($penerima[2]) ? htmlspecialchars($penerima[2]['nama']) : '-'; ?>">
+                            <input type="hidden" name="penerima_hubungan_3" id="penerima_hubungan_3" value="<?= isset($penerima[2]) ? htmlspecialchars($penerima[2]['hubungan']) : '-'; ?>">
                         </div>
 
                         <div class="form-group-custom">
@@ -482,178 +523,7 @@
 
     <!-- State-of-the-Art Application Logic -->
     <script>
-        // Dynamic Receivers Deck Logic
-        const patientName = <?=json_encode($nm_pasien);?>;
-        var activeReceivers = [];
-
-        function renderReceivers() {
-            var container = document.getElementById("receivers-list");
-            container.innerHTML = "";
-
-            if (activeReceivers.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-4 text-muted" style="border: 1px dashed var(--border-color); border-radius: 12px; font-size: 0.85rem;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="mb-2" style="opacity: 0.5; display: block; margin: 0 auto 8px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        <div>Belum ada penerima informasi tambahan yang ditambahkan. Silakan klik tombol di atas.</div>
-                    </div>
-                `;
-                document.getElementById("btn-add-receiver").disabled = false;
-                updateHiddenInputs();
-                return;
-            }
-
-            activeReceivers.forEach(function(receiver, idx) {
-                var index = idx + 1;
-                var isCustom = !['Diri Sendiri','Suami','Istri','Anak','Ayah','Ibu','Saudara','Kakak','Adik','-'].includes(receiver.relation);
-                var html = `
-                    <div class="receiver-row-card" id="receiver-row-${index}" style="opacity: 0; transform: translateY(10px); transition: all 0.3s ease;">
-                        <div class="receiver-card-header d-flex justify-content-between align-items-center">
-                            <span class="receiver-badge">Penerima #${index}</span>
-                            <button type="button" class="btn-remove-receiver" onclick="removeReceiverRow(${idx})" title="Hapus Penerima">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
-                        <div class="receiver-card-body">
-                            <div class="form-group-custom mb-2">
-                                <label>Hubungan dengan Pasien:</label>
-                                <select class="form-input-custom py-1 receiver-relation-select" id="receiver-relation-${index}" onchange="handleRelationChange(${idx}, this.value)">
-                                    <option value="-">- Pilih Hubungan -</option>
-                                    <option value="Diri Sendiri" ${receiver.relation === 'Diri Sendiri' ? 'selected' : ''}>Diri Sendiri (Pasien)</option>
-                                    <option value="Suami" ${receiver.relation === 'Suami' ? 'selected' : ''}>Suami</option>
-                                    <option value="Istri" ${receiver.relation === 'Istri' ? 'selected' : ''}>Istri</option>
-                                    <option value="Anak" ${receiver.relation === 'Anak' ? 'selected' : ''}>Anak</option>
-                                    <option value="Ayah" ${receiver.relation === 'Ayah' ? 'selected' : ''}>Ayah</option>
-                                    <option value="Ibu" ${receiver.relation === 'Ibu' ? 'selected' : ''}>Ibu</option>
-                                    <option value="Saudara" ${receiver.relation === 'Saudara' ? 'selected' : ''}>Saudara</option>
-                                    <option value="Kakak" ${receiver.relation === 'Kakak' ? 'selected' : ''}>Kakak</option>
-                                    <option value="Adik" ${receiver.relation === 'Adik' ? 'selected' : ''}>Adik</option>
-                                    <option value="Lainnya" ${isCustom ? 'selected' : ''}>Lainnya...</option>
-                                </select>
-                                <input type="text" class="form-input-custom mt-2 py-1 receiver-custom-relation-input ${isCustom ? '' : 'd-none'}" id="receiver-custom-relation-${index}" placeholder="Tulis Hubungan Lainnya..." value="${isCustom ? receiver.relation : ''}" oninput="syncReceiverData(${idx})">
-                            </div>
-                            <div class="form-group-custom mb-0">
-                                <label>Nama Lengkap Penerima:</label>
-                                <input type="text" class="form-input-custom py-1 receiver-name-input" id="receiver-name-${index}" placeholder="Masukkan nama lengkap..." value="${receiver.name}" oninput="syncReceiverData(${idx})" autocomplete="off" ${receiver.relation === 'Diri Sendiri' ? 'readonly style="background-color: #f1f5f9;"' : ''}>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-
-                // Quick fade-in animation trigger
-                setTimeout(function() {
-                    var el = document.getElementById(`receiver-row-${index}`);
-                    if (el) {
-                        el.style.opacity = "1";
-                        el.style.transform = "translateY(0)";
-                    }
-                }, 50);
-            });
-
-            // Enable or disable addition button based on max limit (3)
-            document.getElementById("btn-add-receiver").disabled = (activeReceivers.length >= 3);
-            updateHiddenInputs();
-        }
-
-        function addReceiverRow() {
-            if (activeReceivers.length < 3) {
-                activeReceivers.push({ name: "", relation: "-" });
-                renderReceivers();
-            }
-        }
-
-        function removeReceiverRow(idx) {
-            var index = idx + 1;
-            var el = document.getElementById(`receiver-row-${index}`);
-            if (el) {
-                el.style.opacity = "0";
-                el.style.transform = "translateY(10px)";
-                setTimeout(function() {
-                    activeReceivers.splice(idx, 1);
-                    renderReceivers();
-                }, 300);
-            } else {
-                activeReceivers.splice(idx, 1);
-                renderReceivers();
-            }
-        }
-
-        function handleRelationChange(idx, val) {
-            var index = idx + 1;
-            var customInput = document.getElementById(`receiver-custom-relation-${index}`);
-            var nameInput = document.getElementById(`receiver-name-${index}`);
-
-            if (val === 'Lainnya') {
-                customInput.classList.remove("d-none");
-                customInput.focus();
-                activeReceivers[idx].relation = customInput.value || "";
-                nameInput.readOnly = false;
-                nameInput.style.backgroundColor = "";
-            } else {
-                customInput.classList.add("d-none");
-                customInput.value = "";
-                activeReceivers[idx].relation = val;
-                
-                if (val === 'Diri Sendiri') {
-                    activeReceivers[idx].name = patientName;
-                    nameInput.value = patientName;
-                    nameInput.readOnly = true;
-                    nameInput.style.backgroundColor = "#f1f5f9";
-                } else {
-                    nameInput.readOnly = false;
-                    nameInput.style.backgroundColor = "";
-                }
-            }
-            updateHiddenInputs();
-        }
-
-        function syncReceiverData(idx) {
-            var index = idx + 1;
-            var selectVal = document.getElementById(`receiver-relation-${index}`).value;
-            var customVal = document.getElementById(`receiver-custom-relation-${index}`).value;
-            var nameVal = document.getElementById(`receiver-name-${index}`).value;
-
-            activeReceivers[idx].name = nameVal;
-            if (selectVal === 'Lainnya') {
-                activeReceivers[idx].relation = customVal;
-            } else {
-                activeReceivers[idx].relation = selectVal;
-            }
-            updateHiddenInputs();
-        }
-
-        function updateHiddenInputs() {
-            // Reset all hidden fields to default "-"
-            for (var i = 1; i <= 3; i++) {
-                document.getElementById(`penerima_nama_${i}`).value = "-";
-                document.getElementById(`penerima_hubungan_${i}`).value = "-";
-            }
-
-            // Sync with current list
-            activeReceivers.forEach(function(rec, idx) {
-                var index = idx + 1;
-                document.getElementById(`penerima_nama_${index}`).value = rec.name.trim() || "-";
-                document.getElementById(`penerima_hubungan_${index}`).value = rec.relation.trim() || "-";
-            });
-
-            // Sync pengobatan_kepada (legacy field) with relation of first receiver
-            var firstRel = "-";
-            if (activeReceivers.length > 0) {
-                var rel = activeReceivers[0].relation;
-                // ENUM: 'Suami','Istri','Anak','Ayah','Ibu','Saudara','Keponakan','Adik','Kakak','Orang Tua','Diri Sendiri','-'
-                if (['Suami','Istri','Anak','Ayah','Ibu','Saudara','Keponakan','Adik','Kakak','Orang Tua','Diri Sendiri'].includes(rel)) {
-                    firstRel = rel;
-                } else if (rel !== "-" && rel !== "") {
-                    firstRel = "Saudara"; // Fallback to ENUM-compatible 'Saudara' for custom relations
-                }
-            }
-            document.getElementById("pengobatan_kepada").value = firstRel;
-        }
-
-        // Initialize receivers list
-        document.addEventListener("DOMContentLoaded", function() {
-            renderReceivers();
-        });
+        // Receivers logic handled server-side in PHP read-only cards view.
 
         // Tab Navigation Logic
         function switchTab(evt, tabId) {
