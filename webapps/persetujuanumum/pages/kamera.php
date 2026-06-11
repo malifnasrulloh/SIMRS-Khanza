@@ -3,7 +3,23 @@
         exit(header("Location:../index.php"));
     }
     
-    $namars       = getOne("select setting.nama_instansi from setting");
+    $namars          = "";
+    $alamat_instansi = "";
+    $kabupaten_rs    = "";
+    $propinsi_rs     = "";
+    $kontak_rs       = "";
+    $logo_rs         = "";
+    
+    $_sql_setting = "select nama_instansi, alamat_instansi, kabupaten, propinsi, kontak, logo from setting";
+    $hasil_setting = bukaquery2($_sql_setting);
+    while ($data_setting = mysqli_fetch_array($hasil_setting)) {
+        $namars          = $data_setting['nama_instansi'];
+        $alamat_instansi = $data_setting['alamat_instansi'];
+        $kabupaten_rs    = $data_setting['kabupaten'];
+        $propinsi_rs     = $data_setting['propinsi'];
+        $kontak_rs       = $data_setting['kontak'];
+        $logo_rs         = $data_setting['logo'];
+    }
     $nosurat      = "";
     $norawat      = "";
 
@@ -99,10 +115,23 @@
         <!-- Top Modern Header -->
         <header class="brand-section">
             <div class="brand-logo-area">
-                <div class="brand-icon">SDH</div>
+                <?php if (!empty($logo_rs)): ?>
+                    <img class="brand-logo-img" src="data:image/jpeg;base64,<?=base64_encode($logo_rs);?>" alt="Logo Hospital" style="width: 54px; height: 54px; object-fit: contain; border-radius: 8px;" />
+                <?php else: ?>
+                    <div class="brand-icon">
+                        <?php
+                            $words = explode(" ", $namars);
+                            $initials = "";
+                            foreach ($words as $w) {
+                                $initials .= strtoupper($w[0] ?? '');
+                            }
+                            echo !empty($initials) ? substr($initials, 0, 3) : "RS";
+                        ?>
+                    </div>
+                <?php endif; ?>
                 <div class="hospital-meta">
                     <h2><?=$namars;?></h2>
-                    <p>Jl. KH Hasyim Asy’ari No.123 Jombang | Telp: 0321-860777</p>
+                    <p><?=$alamat_instansi;?>, <?=$kabupaten_rs;?>, <?=$propinsi_rs;?> | <?=$kontak_rs;?></p>
                 </div>
             </div>
             <div class="form-id-badge">
@@ -113,113 +142,114 @@
 
         <!-- Dynamic Two-Column Layout -->
         <div class="consent-grid">
-            
-            <!-- LEFT PANEL: Interactive Rules, Rights & Obligations -->
-            <section class="info-panel">
-                <nav class="custom-tabs-nav">
-                    <button type="button" class="tab-btn active" onclick="switchTab(event, 'tab-rules')">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        Ketentuan Layanan
-                    </button>
-                    <button type="button" class="tab-btn" onclick="switchTab(event, 'tab-rights')">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        Hak Pasien
-                    </button>
-                    <button type="button" class="tab-btn" onclick="switchTab(event, 'tab-obligations')">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Kewajiban Pasien
-                    </button>
-                </nav>                <!-- TAB CONTENT: Rules -->
-                <div id="tab-rules" class="tab-content-pane active">
-                    <h3 class="mb-3">KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI <?=strtoupper($namars);?></h3>
-                    <div class="rules-list">
-                        <div class="list-card rule-highlight">
-                            <div class="num-badge">1</div>
-                            <p>Dilarang membawa barang-barang berharga/perhiasan.</p>
-                        </div>
-                        <div class="list-card rule-highlight">
-                            <div class="num-badge">2</div>
-                            <p>Dilarang membawa senjata tajam/senjata api.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">3</div>
-                            <p>Jam Kunjungan:<br>
-                                • <strong>Poli Bedah:</strong> 08.00 - 11.00 & 19.00 – 21.00<br>
-                                • <strong>Poli Penyakit Dalam:</strong> 18.00 – 19.00
-                            </p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">4</div>
-                            <p>Dilarang merokok di luar/di dalam ruangan (lingkungan rumah sakit).</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">5</div>
-                            <p>Dilarang memindahkan alat, mengubah-ubah, dan membawa pulang alat perawatan yang ada.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">6</div>
-                            <p>Dilarang melakukan tindakan kriminal.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">7</div>
-                            <p>Dilarang menggunakan/mengedarkan narkoba.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">8</div>
-                            <p>Dilarang melakukan tindak asusila.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">9</div>
-                            <p>Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">10</div>
-                            <p>Pasien yang menggunakan BPJS/Asuransi, jika disarankan untuk operasi, maka waktu berunding maksimal 3x24 jam setelah melakukan konsultasi dokter.</p>
-                        </div>
-                        <div class="list-card">
-                            <div class="num-badge">11</div>
-                            <p>Pasien diwajibkan mematuhi segala regulasi <?=$namars;?> demi keamanan dan keselamatan (safety) bersama.</p>
+                        <section class="info-panel">
+                <div class="info-panel-wrapper">
+                    <nav class="custom-tabs-nav">
+                        <button type="button" class="tab-btn active" onclick="switchTab(event, 'tab-rules')">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            Ketentuan Layanan
+                        </button>
+                        <button type="button" class="tab-btn" onclick="switchTab(event, 'tab-rights')">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            Hak Pasien
+                        </button>
+                        <button type="button" class="tab-btn" onclick="switchTab(event, 'tab-obligations')">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Kewajiban Pasien
+                        </button>
+                    </nav>
+                    <!-- TAB CONTENT: Rules -->
+                    <div id="tab-rules" class="tab-content-pane active">
+                        <h3 class="mb-3">KETENTUAN YANG WAJIB DITAATI WAKTU RAWAT JALAN DI <?=strtoupper($namars);?></h3>
+                        <div class="rules-list">
+                            <div class="list-card rule-highlight">
+                                <div class="num-badge">1</div>
+                                <p>Dilarang membawa barang-barang berharga/perhiasan.</p>
+                            </div>
+                            <div class="list-card rule-highlight">
+                                <div class="num-badge">2</div>
+                                <p>Dilarang membawa senjata tajam/senjata api.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">3</div>
+                                <p>Jam Kunjungan:<br>
+                                    • <strong>Poli Bedah:</strong> 08.00 - 11.00 & 19.00 – 21.00<br>
+                                    • <strong>Poli Penyakit Dalam:</strong> 18.00 – 19.00
+                                </p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">4</div>
+                                <p>Dilarang merokok di luar/di dalam ruangan (lingkungan rumah sakit).</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">5</div>
+                                <p>Dilarang memindahkan alat, mengubah-ubah, dan membawa pulang alat perawatan yang ada.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">6</div>
+                                <p>Dilarang melakukan tindakan kriminal.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">7</div>
+                                <p>Dilarang menggunakan/mengedarkan narkoba.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">8</div>
+                                <p>Dilarang melakukan tindak asusila.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">9</div>
+                                <p>Untuk menjaga privasi, dilarang mengambil gambar, merekam suara maupun video terhadap pelayanan yang diberikan kepada pasien tanpa izin dari pihak rumah sakit.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">10</div>
+                                <p>Pasien yang menggunakan BPJS/Asuransi, jika disarankan untuk operasi, maka waktu berunding maksimal 3x24 jam setelah melakukan konsultasi dokter.</p>
+                            </div>
+                            <div class="list-card">
+                                <div class="num-badge">11</div>
+                                <p>Pasien diwajibkan mematuhi segala regulasi <?=$namars;?> demi keamanan dan keselamatan (safety) bersama.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- TAB CONTENT: Rights -->
-                <div id="tab-rights" class="tab-content-pane">
-                    <h3 class="mb-3">HAK PASIEN</h3>
-                    <div class="rights-list">
-                        <div class="list-card"><div class="num-badge">1</div><p>Pasien berhak memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">2</div><p>Pasien berhak memperoleh informasi tentang hak dan kewajiban pasien.</p></div>
-                        <div class="list-card"><div class="num-badge">3</div><p>Pasien berhak memperoleh pelayanan yang manusiawi, adil, jujur, tanpa diskriminasi.</p></div>
-                        <div class="list-card"><div class="num-badge">4</div><p>Pasien berhak memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan standar prosedur operasional.</p></div>
-                        <div class="list-card"><div class="num-badge">5</div><p>Pasien berhak memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik dan materi.</p></div>
-                        <div class="list-card"><div class="num-badge">6</div><p>Pasien berhak mengajukan pengaduan atas kualitas pelayanan yang didapatkan.</p></div>
-                        <div class="list-card"><div class="num-badge">7</div><p>Pasien berhak memilih dokter dan kelas perawatan sesuai dengan keinginan dan ketentuan yang berlaku di rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">8</div><p>Pasien berhak meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai Surat Izin Praktik (SIP) baik di dalam maupun di luar rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">9</div><p>Pasien berhak mendapat privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya.</p></div>
-                        <div class="list-card"><div class="num-badge">10</div><p>Pasien berhak mendapat informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, risiko, komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan.</p></div>
-                        <div class="list-card"><div class="num-badge">11</div><p>Pasien berhak memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya.</p></div>
-                        <div class="list-card"><div class="num-badge">12</div><p>Pasien berhak didampingi keluarganya dalam keadaan kritis.</p></div>
-                        <div class="list-card"><div class="num-badge">13</div><p>Pasien berhak menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lain.</p></div>
-                        <div class="list-card"><div class="num-badge">14</div><p>Pasien berhak memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">15</div><p>Pasien berhak mengajukan usul, saran, perbaikan atas perilaku rumah sakit terhadap dirinya.</p></div>
-                        <div class="list-card"><div class="num-badge">16</div><p>Pasien berhak menolak pelayanan bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya.</p></div>
-                        <div class="list-card"><div class="num-badge">17</div><p>Pasien berhak menggugat dan/atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan tidak sesuai dengan standar baik secara perdata maupun pidana.</p></div>
-                        <div class="list-card"><div class="num-badge">18</div><p>Pasien berhak mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan standar pelayanan melalui media cetak atau elektronik sesuai dengan ketentuan peraturan perundang-undangan.</p></div>
+                    <!-- TAB CONTENT: Rights -->
+                    <div id="tab-rights" class="tab-content-pane">
+                        <h3 class="mb-3">HAK PASIEN</h3>
+                        <div class="rights-list">
+                            <div class="list-card"><div class="num-badge">1</div><p>Pasien berhak memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">2</div><p>Pasien berhak memperoleh informasi tentang hak dan kewajiban pasien.</p></div>
+                            <div class="list-card"><div class="num-badge">3</div><p>Pasien berhak memperoleh pelayanan yang manusiawi, adil, jujur, tanpa diskriminasi.</p></div>
+                            <div class="list-card"><div class="num-badge">4</div><p>Pasien berhak memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan standar prosedur operasional.</p></div>
+                            <div class="list-card"><div class="num-badge">5</div><p>Pasien berhak memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik dan materi.</p></div>
+                            <div class="list-card"><div class="num-badge">6</div><p>Pasien berhak mengajukan pengaduan atas kualitas pelayanan yang didapatkan.</p></div>
+                            <div class="list-card"><div class="num-badge">7</div><p>Pasien berhak memilih dokter dan kelas perawatan sesuai dengan keinginan dan ketentuan yang berlaku di rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">8</div><p>Pasien berhak meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai Surat Izin Praktik (SIP) baik di dalam maupun di luar rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">9</div><p>Pasien berhak mendapat privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya.</p></div>
+                            <div class="list-card"><div class="num-badge">10</div><p>Pasien berhak mendapat informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, risiko, komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan.</p></div>
+                            <div class="list-card"><div class="num-badge">11</div><p>Pasien berhak memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya.</p></div>
+                            <div class="list-card"><div class="num-badge">12</div><p>Pasien berhak didampingi keluarganya dalam keadaan kritis.</p></div>
+                            <div class="list-card"><div class="num-badge">13</div><p>Pasien berhak menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lain.</p></div>
+                            <div class="list-card"><div class="num-badge">14</div><p>Pasien berhak memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">15</div><p>Pasien berhak mengajukan usul, saran, perbaikan atas perilaku rumah sakit terhadap dirinya.</p></div>
+                            <div class="list-card"><div class="num-badge">16</div><p>Pasien berhak menolak pelayanan bimbingan rohani yang tidak sesuai dengan agama and kepercayaan yang dianutnya.</p></div>
+                            <div class="list-card"><div class="num-badge">17</div><p>Pasien berhak menggugat dan/atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan tidak sesuai dengan standar baik secara perdata maupun pidana.</p></div>
+                            <div class="list-card"><div class="num-badge">18</div><p>Pasien berhak mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan standar pelayanan melalui media cetak atau elektronik sesuai dengan ketentuan peraturan perundang-undangan.</p></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- TAB CONTENT: Obligations -->
-                <div id="tab-obligations" class="tab-content-pane">
-                    <h3 class="mb-3">KEWAJIBAN PASIEN</h3>
-                    <div class="obligations-list">
-                        <div class="list-card"><div class="num-badge">1</div><p>Mematuhi peraturan yang berlaku di rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">2</div><p>Menggunakan fasilitas rumah sakit secara bertanggung jawab.</p></div>
-                        <div class="list-card"><div class="num-badge">3</div><p>Menghormati hak pasien lain, pengunjung, dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit.</p></div>
-                        <div class="list-card"><div class="num-badge">4</div><p>Memberikan informasi yang jujur, lengkap, dan akurat sesuai dengan kemampuan dan pengetahuannya tentang masalah kesehatannya.</p></div>
-                        <div class="list-card"><div class="num-badge">5</div><p>Memberikan informasi mengenai kemampuan finansial dan jaminan kesehatan yang dimilikinya.</p></div>
-                        <div class="list-card"><div class="num-badge">6</div><p>Mematuhi rencana terapi yang direkomendasikan oleh tenaga kesehatan di rumah sakit dan disetujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang-undangan.</p></div>
-                        <div class="list-card"><div class="num-badge">7</div><p>Menerima segala konsekuensi atas keputusan pribadinya untuk menolak rencana terapi yang direkomendasikan oleh tenaga kesehatan dan/atau tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya.</p></div>
-                        <div class="list-card"><div class="num-badge">8</div><p>Meminta imbalan jasa atas pelayanan yang diterima.</p></div>
+                    <!-- TAB CONTENT: Obligations -->
+                    <div id="tab-obligations" class="tab-content-pane">
+                        <h3 class="mb-3">KEWAJIBAN PASIEN</h3>
+                        <div class="obligations-list">
+                            <div class="list-card"><div class="num-badge">1</div><p>Mematuhi peraturan yang berlaku di rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">2</div><p>Menggunakan fasilitas rumah sakit secara bertanggung jawab.</p></div>
+                            <div class="list-card"><div class="num-badge">3</div><p>Menghormati hak pasien lain, pengunjung, dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit.</p></div>
+                            <div class="list-card"><div class="num-badge">4</div><p>Memberikan informasi yang jujur, lengkap, dan akurat sesuai dengan kemampuan dan pengetahuannya tentang masalah kesehatannya.</p></div>
+                            <div class="list-card"><div class="num-badge">5</div><p>Memberikan informasi mengenai kemampuan finansial dan jaminan kesehatan yang dimilikinya.</p></div>
+                            <div class="list-card"><div class="num-badge">6</div><p>Mematuhi rencana terapi yang direkomendasikan oleh tenaga kesehatan di rumah sakit dan disetujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang-undangan.</p></div>
+                            <div class="list-card"><div class="num-badge">7</div><p>Menerima segala konsekuensi atas keputusan pribadinya untuk menolak rencana terapi yang direkomendasikan oleh tenaga kesehatan dan/atau tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya.</p></div>
+                            <div class="list-card"><div class="num-badge">8</div><p>Meminta imbalan jasa atas pelayanan yang diterima.</p></div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -286,16 +316,8 @@
                                 <span class="info-item-value"><?=$bertindak_atas;?></span>
                             </div>
                             <div class="info-item">
-                                <span class="info-item-label">No. Identitas (KTP)</span>
-                                <span class="info-item-value"><?=$no_ktppj;?></span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-item-label">No. Telpon / HP</span>
-                                <span class="info-item-value"><?=$no_telp;?></span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-item-label">Umur / Gender Wali</span>
-                                <span class="info-item-value"><?=$umur_pj;?> / <?=$jkpj;?></span>
+                                <span class="info-item-label">Gender Wali</span>
+                                <span class="info-item-value"><?=$jkpj;?></span>
                             </div>
                             <div class="info-item">
                                 <span class="info-item-label">Tanggal Pernyataan</span>

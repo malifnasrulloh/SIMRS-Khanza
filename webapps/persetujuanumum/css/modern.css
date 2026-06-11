@@ -133,6 +133,34 @@ h6 {
     grid-template-columns: 1.1fr 0.9fr;
     /* Balanced Split */
   }
+
+  .info-panel {
+    position: relative;
+    padding: 0 !important;
+    height: 100%;
+  }
+
+  .info-panel-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2.25rem;
+  }
+
+  .tab-content-pane.active {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .rights-list,
+  .obligations-list,
+  .rules-list {
+    max-height: none !important;
+    flex: 1;
+    min-height: 0;
+  }
 }
 
 /* Panel Glassmorphism Containers */
@@ -152,6 +180,11 @@ h6 {
 .info-panel:hover,
 .form-panel:hover {
   box-shadow: 0 25px 35px -5px rgba(15, 118, 110, 0.07), 0 12px 15px -5px rgba(0, 0, 0, 0.03);
+}
+
+.info-panel-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Interactive Tabs (Left Panel) */
@@ -197,7 +230,8 @@ h6 {
 }
 
 .tab-content-pane.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeIn {

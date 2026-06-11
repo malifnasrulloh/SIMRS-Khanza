@@ -59,6 +59,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private String pjHubungan = "";
     private String pjUmur = "";
     private String pjJk = "";
+    private String pjKtp = "-";
+    private String pjTelp = "-";
     
     public SuratPersetujuanUmum(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -153,6 +155,69 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         });
         
         adjustReceiverFields();
+        
+        java.awt.event.ItemListener listener1 = new java.awt.event.ItemListener() {
+            private Object lastSelected = null;
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                    Object selected = BertindakAtas1.getSelectedItem();
+                    if (selected != null && selected.toString().equals("Diri Sendiri")) {
+                        NamaPenerima1.setText(TPasien.getText());
+                        NamaPenerima1.setEditable(false);
+                    } else {
+                        NamaPenerima1.setEditable(true);
+                        if (lastSelected != null && lastSelected.toString().equals("Diri Sendiri")) {
+                            NamaPenerima1.setText("");
+                        }
+                    }
+                    lastSelected = selected;
+                }
+            }
+        };
+        BertindakAtas1.addItemListener(listener1);
+
+        java.awt.event.ItemListener listener2 = new java.awt.event.ItemListener() {
+            private Object lastSelected = null;
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                    Object selected = BertindakAtas2.getSelectedItem();
+                    if (selected != null && selected.toString().equals("Diri Sendiri")) {
+                        NamaPenerima2.setText(TPasien.getText());
+                        NamaPenerima2.setEditable(false);
+                    } else {
+                        NamaPenerima2.setEditable(true);
+                        if (lastSelected != null && lastSelected.toString().equals("Diri Sendiri")) {
+                            NamaPenerima2.setText("");
+                        }
+                    }
+                    lastSelected = selected;
+                }
+            }
+        };
+        BertindakAtas2.addItemListener(listener2);
+
+        java.awt.event.ItemListener listener3 = new java.awt.event.ItemListener() {
+            private Object lastSelected = null;
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                    Object selected = BertindakAtas3.getSelectedItem();
+                    if (selected != null && selected.toString().equals("Diri Sendiri")) {
+                        NamaPenerima3.setText(TPasien.getText());
+                        NamaPenerima3.setEditable(false);
+                    } else {
+                        NamaPenerima3.setEditable(true);
+                        if (lastSelected != null && lastSelected.toString().equals("Diri Sendiri")) {
+                            NamaPenerima3.setText("");
+                        }
+                    }
+                    lastSelected = selected;
+                }
+            }
+        };
+        BertindakAtas3.addItemListener(listener3);
         
         ChkInput.setSelected(false);
         isForm();
@@ -910,20 +975,21 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
         if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
             Valid.textKosong(TNoRw,"Pasien");
-        }else if(NamaPenerima1.getText().trim().equals("")){
-            Valid.textKosong(NamaPenerima1,"Nama Penerima 1");
         }else if(NmPetugas.getText().trim().equals("")){
             Valid.textKosong(NmPetugas,"Petugas");
         }else if(NoSurat.getText().trim().equals("")){
             Valid.textKosong(NoSurat,"No.Pernyataan");
         }else{
-            String jkSave = "-";
-            if (pjJk != null && pjJk.length() > 0) {
-                jkSave = pjJk.substring(0, 1);
+            isRawat();
+            String jkSave = "L";
+            if (pjJk != null && (pjJk.trim().toUpperCase().startsWith("L") || pjJk.trim().toUpperCase().startsWith("P"))) {
+                jkSave = pjJk.trim().toUpperCase().substring(0, 1);
+            } else {
+                jkSave = getPJGender(JK.getText(), pjHubungan);
             }
             if(Sequel.menyimpantf("surat_persetujuan_umum","?,?,?,?,?,?,?,?,?,?,?,?","Data",12,new String[]{
-                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,"-",
-                    jkSave,pjHubungan,"-",KdPetugas.getText()
+                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,pjKtp,
+                    jkSave,getValidBertindakAtas(pjHubungan),pjTelp,KdPetugas.getText()
                 })==true){
                 
                 if (isValidReceiver(NamaPenerima1.getText())) {
@@ -944,8 +1010,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
 
                 tabMode.addRow(new Object[]{
                     NoSurat.getText(),TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),LahirPasien.getText(),
-                    Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,"-",jkSave,
-                    "-",pjHubungan,KdPetugas.getText(),NmPetugas.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem()+""),"-","",pjNama,pjUmur,pjKtp,jkSave,
+                    pjTelp,getValidBertindakAtas(pjHubungan),KdPetugas.getText(),NmPetugas.getText(),
                     isValidReceiver(NamaPenerima1.getText()) ? NamaPenerima1.getText() : "-",
                     isValidReceiver(NamaPenerima1.getText()) ? BertindakAtas1.getSelectedItem().toString() : "-",
                     isValidReceiver(NamaPenerima2.getText()) ? NamaPenerima2.getText() : "-",
@@ -1007,8 +1073,6 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
         if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
             Valid.textKosong(TNoRw,"Pasien");
-        }else if(NamaPenerima1.getText().trim().equals("")){
-            Valid.textKosong(NamaPenerima1,"Nama Penerima 1");
         }else if(NmPetugas.getText().trim().equals("")){
             Valid.textKosong(NmPetugas,"Petugas");
         }else if(NoSurat.getText().trim().equals("")){
@@ -1540,6 +1604,8 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         pjHubungan = "";
         pjUmur = "";
         pjJk = "";
+        pjKtp = "-";
+        pjTelp = "-";
         Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(surat_persetujuan_umum.no_surat,3),signed)),0) from surat_persetujuan_umum where surat_persetujuan_umum.tanggal='"+Valid.SetTgl(Tanggal.getSelectedItem()+"")+"' ",
                 "PSU"+Tanggal.getSelectedItem().toString().substring(6,10)+Tanggal.getSelectedItem().toString().substring(3,5)+Tanggal.getSelectedItem().toString().substring(0,2),3,NoSurat);
         NamaPenerima1.requestFocus();
@@ -1558,7 +1624,9 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             
             pjNama = tbObat.getValueAt(tbObat.getSelectedRow(),10).toString();
             pjUmur = tbObat.getValueAt(tbObat.getSelectedRow(),11).toString();
+            pjKtp = tbObat.getValueAt(tbObat.getSelectedRow(),12).toString();
             pjJk = tbObat.getValueAt(tbObat.getSelectedRow(),13).toString();
+            pjTelp = tbObat.getValueAt(tbObat.getSelectedRow(),14).toString();
             pjHubungan = tbObat.getValueAt(tbObat.getSelectedRow(),15).toString();
 
             String rec1 = tbObat.getValueAt(tbObat.getSelectedRow(),18).toString();
@@ -1613,11 +1681,53 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
         return !clean.isEmpty();
     }
 
+    private String getPJGender(String patientJk, String hubungan) {
+        if (hubungan == null) return "L";
+        String hub = hubungan.toLowerCase().trim();
+        if (hub.equals("suami") || hub.equals("ayah") || hub.equals("kakek") || hub.equals("laki-laki") || hub.equals("laki")) {
+            return "L";
+        }
+        if (hub.equals("istri") || hub.equals("ibu") || hub.equals("nenek") || hub.equals("perempuan")) {
+            return "P";
+        }
+        if (patientJk != null && (patientJk.trim().toUpperCase().startsWith("L") || patientJk.trim().toUpperCase().startsWith("P"))) {
+            return patientJk.trim().toUpperCase().substring(0, 1);
+        }
+        return "L";
+    }
+
+    private String getValidBertindakAtas(String hubungan) {
+        if (hubungan == null) return "Diri Sendiri";
+        String hub = hubungan.trim();
+        String[] validValues = {"Suami", "Istri", "Anak", "Ayah", "Saudara", "Keponakan", "Cucu", "Kakek", "Nenek", "Kakak", "Adik", "Diri Sendiri", "Ibu"};
+        for (String v : validValues) {
+            if (v.equalsIgnoreCase(hub)) {
+                return v;
+            }
+        }
+        String lower = hub.toLowerCase();
+        if (lower.startsWith("suami")) return "Suami";
+        if (lower.startsWith("istri")) return "Istri";
+        if (lower.startsWith("anak")) return "Anak";
+        if (lower.startsWith("ayah") || lower.startsWith("bapak")) return "Ayah";
+        if (lower.startsWith("ibu")) return "Ibu";
+        if (lower.startsWith("saudara")) return "Saudara";
+        if (lower.startsWith("keponakan")) return "Keponakan";
+        if (lower.startsWith("cucu")) return "Cucu";
+        if (lower.startsWith("kakek")) return "Kakek";
+        if (lower.startsWith("nenek")) return "Nenek";
+        if (lower.startsWith("kakak")) return "Kakak";
+        if (lower.startsWith("adik")) return "Adik";
+        if (lower.startsWith("diri")) return "Diri Sendiri";
+        
+        return "Diri Sendiri";
+    }
+
     private void isRawat() {
         try {
             ps=koneksi.prepareStatement(
                     "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,"+
-                    "reg_periksa.umurdaftar,reg_periksa.sttsumur,reg_periksa.p_jawab,reg_periksa.hubunganpj from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                    "reg_periksa.umurdaftar,reg_periksa.sttsumur,reg_periksa.p_jawab,reg_periksa.hubunganpj,pasien.no_ktp,pasien.no_tlp,pasien.keluarga from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "where reg_periksa.no_rawat=?");
             try {
                 ps.setString(1,TNoRw.getText());
@@ -1632,14 +1742,41 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
                     
                     pjNama = rs.getString("p_jawab");
                     pjHubungan = rs.getString("hubunganpj");
-                    if (pjNama == null || pjNama.trim().isEmpty() || pjNama.trim().equals("-")) {
+                    String pasienKeluarga = rs.getString("keluarga");
+                    
+                    boolean isDiriSendiri = false;
+                    if (pasienKeluarga != null && pasienKeluarga.trim().toUpperCase().equals("DIRI SENDIRI")) {
+                        isDiriSendiri = true;
+                    } else if (pjNama == null || pjNama.trim().isEmpty() || pjNama.trim().equals("-")) {
+                        isDiriSendiri = true;
+                    } else if (pjHubungan != null && getValidBertindakAtas(pjHubungan).equals("Diri Sendiri")) {
+                        isDiriSendiri = true;
+                    }
+                    
+                    if (isDiriSendiri) {
                         pjNama = rs.getString("nm_pasien");
                         pjHubungan = "Diri Sendiri";
                         pjUmur = rs.getString("umurdaftar")+" "+rs.getString("sttsumur");
                         pjJk = rs.getString("jk");
+                        pjKtp = rs.getString("no_ktp");
+                        pjTelp = rs.getString("no_tlp");
                     } else {
                         pjUmur = "-";
-                        pjJk = "-";
+                        pjJk = getPJGender(rs.getString("jk"), pjHubungan);
+                        pjKtp = "-";
+                        pjTelp = "-";
+                    }
+                    if (pjKtp == null || pjKtp.trim().isEmpty()) pjKtp = "-";
+                    if (pjTelp == null || pjTelp.trim().isEmpty()) pjTelp = "-";
+                    
+                    if (BertindakAtas1.getSelectedItem() != null && BertindakAtas1.getSelectedItem().toString().equals("Diri Sendiri")) {
+                        NamaPenerima1.setText(TPasien.getText());
+                    }
+                    if (BertindakAtas2.getSelectedItem() != null && BertindakAtas2.getSelectedItem().toString().equals("Diri Sendiri")) {
+                        NamaPenerima2.setText(TPasien.getText());
+                    }
+                    if (BertindakAtas3.getSelectedItem() != null && BertindakAtas3.getSelectedItem().toString().equals("Diri Sendiri")) {
+                        NamaPenerima3.setText(TPasien.getText());
                     }
                 }
             } catch (Exception e) {
@@ -1699,13 +1836,16 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
     }
   
     private void ganti() {
-        String jkSave = "-";
-        if (pjJk != null && pjJk.length() > 0) {
-            jkSave = pjJk.substring(0, 1);
+        isRawat();
+        String jkSave = "L";
+        if (pjJk != null && (pjJk.trim().toUpperCase().startsWith("L") || pjJk.trim().toUpperCase().startsWith("P"))) {
+            jkSave = pjJk.trim().toUpperCase().substring(0, 1);
+        } else {
+            jkSave = getPJGender(JK.getText(), pjHubungan);
         }
         if(Sequel.mengedittf("surat_persetujuan_umum","no_surat=?","no_surat=?,no_rawat=?,tanggal=?,nama_pj=?,umur_pj=?,no_ktppj=?,jkpj=?,bertindak_atas=?,no_telp=?,nip=?",11,new String[]{
-            NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),pjNama,pjUmur,"-",
-            jkSave,pjHubungan,"-",KdPetugas.getText(),
+            NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),pjNama,pjUmur,pjKtp,
+            jkSave,getValidBertindakAtas(pjHubungan),pjTelp,KdPetugas.getText(),
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
             Sequel.queryu2("delete from surat_persetujuan_umum_penerima where no_surat=?",1,new String[]{NoSurat.getText()});
@@ -1736,10 +1876,10 @@ public final class SuratPersetujuanUmum extends javax.swing.JDialog {
             tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem()+""),tbObat.getSelectedRow(),7);
             tbObat.setValueAt(pjNama,tbObat.getSelectedRow(),10);
             tbObat.setValueAt(pjUmur,tbObat.getSelectedRow(),11);
-            tbObat.setValueAt("-",tbObat.getSelectedRow(),12);
+            tbObat.setValueAt(pjKtp,tbObat.getSelectedRow(),12);
             tbObat.setValueAt(jkSave,tbObat.getSelectedRow(),13);
-            tbObat.setValueAt("-",tbObat.getSelectedRow(),14);
-            tbObat.setValueAt(pjHubungan,tbObat.getSelectedRow(),15);
+            tbObat.setValueAt(pjTelp,tbObat.getSelectedRow(),14);
+            tbObat.setValueAt(getValidBertindakAtas(pjHubungan),tbObat.getSelectedRow(),15);
             tbObat.setValueAt(KdPetugas.getText(),tbObat.getSelectedRow(),16);
             tbObat.setValueAt(NmPetugas.getText(),tbObat.getSelectedRow(),17);
             
