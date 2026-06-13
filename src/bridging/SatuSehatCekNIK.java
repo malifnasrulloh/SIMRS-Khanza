@@ -252,7 +252,12 @@ public String tampilIDPasien(String cari) {
 
         if (Sequel.cariInteger("select count(nikpasien) from satu_sehat_ihs_patient where nikpasien='" + cari + "'") > 0) {
             idpasien = Sequel.cariIsi("select ihspasien from satu_sehat_ihs_patient where nikpasien='" + cari + "'");
-        } else {
+            if (idpasien.equals("-")) {
+                idpasien = "";
+            }
+        }
+
+        if (idpasien.equals("")) {
             try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -265,9 +270,13 @@ public String tampilIDPasien(String cari) {
                 for (JsonNode list : root.path("entry")) {
                     idpasien = list.path("resource").path("id").asText();
                     if (!idpasien.equals("")) {
-                        Sequel.menyimpan("satu_sehat_ihs_patient", "?,?", "IHS Pasien", 2, new String[]{
-                            cari, idpasien
-                        });
+                        if (Sequel.cariInteger("select count(nikpasien) from satu_sehat_ihs_patient where nikpasien='" + cari + "'") > 0) {
+                            Sequel.mengedit("satu_sehat_ihs_patient", "nikpasien='" + cari + "'", "ihspasien='" + idpasien + "'");
+                        } else {
+                            Sequel.menyimpan("satu_sehat_ihs_patient", "?,?", "IHS Pasien", 2, new String[]{
+                                cari, idpasien
+                            });
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -284,7 +293,12 @@ public String tampilIDPasien(String cari) {
 
         if (Sequel.cariInteger("select count(nikpegawai) from satu_sehat_ihs_practitioner where nikpegawai='" + cari + "'") > 0) {
             idpasien = Sequel.cariIsi("select ihspegawai from satu_sehat_ihs_practitioner where nikpegawai='" + cari + "'");
-        } else {
+            if (idpasien.equals("-")) {
+                idpasien = "";
+            }
+        }
+
+        if (idpasien.equals("")) {
             try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -298,9 +312,13 @@ public String tampilIDPasien(String cari) {
                 for (JsonNode list : response) {
                     idpasien = list.path("resource").path("id").asText();
                     if (!idpasien.equals("")) {
-                        Sequel.menyimpan("satu_sehat_ihs_practitioner", "?,?", "IHS Pasien", 2, new String[]{
-                            cari, idpasien
-                        });
+                        if (Sequel.cariInteger("select count(nikpegawai) from satu_sehat_ihs_practitioner where nikpegawai='" + cari + "'") > 0) {
+                            Sequel.mengedit("satu_sehat_ihs_practitioner", "nikpegawai='" + cari + "'", "ihspegawai='" + idpasien + "'");
+                        } else {
+                            Sequel.menyimpan("satu_sehat_ihs_practitioner", "?,?", "IHS Pasien", 2, new String[]{
+                                cari, idpasien
+                            });
+                        }
                     }
                 }
             } catch (Exception e) {
