@@ -586,6 +586,18 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                                     "}," +
                                     "\"title\" : \"Instruksi Medik dan Keperawatan Pasien\"," +
                                     "\"status\" : \"active\"," +
+                                    (tbObat.getValueAt(i,12).toString().equals("IGD")?
+                                        "\"category\" : [" +
+                                            "{" +
+                                                "\"coding\" : [" +
+                                                    "{" +
+                                                        "\"system\" : \"http://terminology.kemkes.go.id\"," +
+                                                        "\"code\" : \"TK000068\"," +
+                                                        "\"display\" : \"Emergency care plan\"" +
+                                                    "}" +
+                                                "]" +
+                                            "}" +
+                                        "],":
                                     (tbObat.getValueAt(i,12).toString().equals("Ralan")?
                                         "\"category\" : [" +
                                             "{" +
@@ -608,7 +620,7 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                                                     "}" +
                                                 "]" +
                                             "}" +
-                                        "],"
+                                        "],")
                                     )+
                                     "\"intent\" : \"plan\"," +
                                     "\"description\" : \""+tbObat.getValueAt(i,7).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\"," +
@@ -682,6 +694,18 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                                     "}," +
                                     "\"title\" : \"Instruksi Medik dan Keperawatan Pasien\"," +
                                     "\"status\" : \"active\"," +
+                                    (tbObat.getValueAt(i,12).toString().equals("IGD")?
+                                        "\"category\" : [" +
+                                            "{" +
+                                                "\"coding\" : [" +
+                                                    "{" +
+                                                        "\"system\" : \"http://terminology.kemkes.go.id\"," +
+                                                        "\"code\" : \"TK000068\"," +
+                                                        "\"display\" : \"Emergency care plan\"" +
+                                                    "}" +
+                                                "]" +
+                                            "}" +
+                                        "],":
                                     (tbObat.getValueAt(i,12).toString().equals("Ralan")?
                                         "\"category\" : [" +
                                             "{" +
@@ -704,7 +728,7 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                                                     "}" +
                                                 "]" +
                                             "}" +
-                                        "],"
+                                        "],")
                                     )+
                                     "\"intent\" : \"plan\"," +
                                     "\"description\" : \""+tbObat.getValueAt(i,7).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\"," +
@@ -827,7 +851,7 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,"+
                    "pasien.nm_pasien,pasien.no_ktp,satu_sehat_encounter.id_encounter,pemeriksaan_ralan.rtl,"+
                    "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,"+
-                   "ifnull(satu_sehat_careplan.id_careplan,'') as satu_sehat_careplan "+
+                   "ifnull(satu_sehat_careplan.id_careplan,'') as satu_sehat_careplan,reg_periksa.kd_poli "+
                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
@@ -853,7 +877,7 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                     tabMode.addRow(new Object[]{
                         false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
                         rs.getString("no_ktp"),rs.getString("id_encounter"),rs.getString("rtl"),rs.getString("nama"),rs.getString("ktppraktisi"),
-                        rs.getString("tgl_perawatan")+" "+rs.getString("jam_rawat"),rs.getString("satu_sehat_careplan"),"Ralan"
+                        rs.getString("tgl_perawatan")+" "+rs.getString("jam_rawat"),rs.getString("satu_sehat_careplan"),rs.getString("kd_poli").equals("IGDK")?"IGD":"Ralan"
                     });
                 }
             } catch (Exception e) {
@@ -871,7 +895,7 @@ public final class SatuSehatKirimCarePlan extends javax.swing.JDialog {
                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,"+
                    "pasien.nm_pasien,pasien.no_ktp,satu_sehat_encounter.id_encounter,pemeriksaan_ranap.rtl,"+
                    "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,"+
-                   "ifnull(satu_sehat_careplan.id_careplan,'') as satu_sehat_careplan "+
+                   "ifnull(satu_sehat_careplan.id_careplan,'') as satu_sehat_careplan,reg_periksa.kd_poli "+
                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
