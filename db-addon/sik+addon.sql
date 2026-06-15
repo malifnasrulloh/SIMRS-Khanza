@@ -9337,7 +9337,7 @@ CREATE TABLE `kabupaten` (
   `nm_kab` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kab`),
   UNIQUE KEY `nm_kab` (`nm_kab`)
-) ENGINE=InnoDB AUTO_INCREMENT=545 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=552 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9552,7 +9552,7 @@ CREATE TABLE `kecamatan` (
   `nm_kec` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kec`),
   UNIQUE KEY `nm_kec` (`nm_kec`)
-) ENGINE=InnoDB AUTO_INCREMENT=813 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=820 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9582,7 +9582,7 @@ CREATE TABLE `kelurahan` (
   `nm_kel` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kel`),
   UNIQUE KEY `nm_kel` (`nm_kel`)
-) ENGINE=InnoDB AUTO_INCREMENT=1101010310 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1101010317 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -12328,6 +12328,26 @@ CREATE TABLE `pasien_tni` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pasien_wearable`
+--
+
+DROP TABLE IF EXISTS `pasien_wearable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pasien_wearable` (
+  `no_rkm_medis` varchar(15) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `item` enum('heartRate','restingHeartRate','walkingHeartRateAverage','heartRateVariabilitySDNN','heartRateRecoveryOneMinute','atrialFibrillationBurden','peripheralPerfusionIndex','oxygenSaturation','electrocardiogramType','vo2Max','bloodPressureSystolic','bloodPressureDiastolic','respiratoryRate','forcedVitalCapacity','forcedExpiratoryVolume1Second','peakExpiratoryFlowRate','inhalerUsage','bodyTemperature','basalBodyTemperature','appleSleepingWristTemperature','bodyMass','height','bodyMassIndex','bodyFatPercentage','leanBodyMass','waistCircumference','stepCount','distanceWalkingRunning','distanceCycling','distanceSwimming','activeEnergyBurned','basalEnergyBurned','flightsClimbed','appleExerciseTime','appleStandTime','swimmingStrokeCount','pushCount','runningSpeed','runningPower','runningStrideLength','runningVerticalOscillation','runningGroundContactTime','bloodGlucose','insulinDelivery','bloodAlcoholContent','sleepAnalysis','mindfulSession','numberOfTimesFallen','highHeartRateEvent','lowHeartRateEvent','irregularHeartRhythmEvent','environmentalAudioExposure','headphoneAudioExposure') NOT NULL,
+  `nilai` varchar(50) DEFAULT NULL,
+  `satuan` varchar(20) DEFAULT NULL,
+  `status` varchar(300) NOT NULL,
+  PRIMARY KEY (`no_rkm_medis`,`tanggal`,`item`),
+  KEY `idx_pasien_tgl` (`no_rkm_medis`,`tanggal`),
+  CONSTRAINT `pasien_wearable_ibfk_1` FOREIGN KEY (`no_rkm_medis`) REFERENCES `pasien` (`no_rkm_medis`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `password_asuransi`
 --
 
@@ -13128,7 +13148,7 @@ CREATE TABLE `pegawai` (
   CONSTRAINT `pegawai_ibfk_7` FOREIGN KEY (`indexins`) REFERENCES `departemen` (`dep_id`) ON UPDATE CASCADE,
   CONSTRAINT `pegawai_ibfk_8` FOREIGN KEY (`bpd`) REFERENCES `bank` (`namabank`) ON UPDATE CASCADE,
   CONSTRAINT `pegawai_ibfk_9` FOREIGN KEY (`kode_emergency`) REFERENCES `emergency_index` (`kode_emergency`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -20716,7 +20736,7 @@ CREATE TABLE `propinsi` (
   `nm_prop` varchar(30) NOT NULL,
   PRIMARY KEY (`kd_prop`),
   UNIQUE KEY `nm_prop` (`nm_prop`)
-) ENGINE=InnoDB AUTO_INCREMENT=632 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=639 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -22396,6 +22416,8 @@ CREATE TABLE `satu_sehat_imagingstudy_radiologi` (
   `id_servicerequest` varchar(40) DEFAULT NULL,
   `id_imaging` varchar(40) DEFAULT NULL,
   `acsn` varchar(50) DEFAULT NULL,
+  `status_webhook` varchar(20) DEFAULT 'PENDING',
+  `message_webhook` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`noorder`,`kd_jenis_prw`) USING BTREE,
   KEY `kd_jenis_prw` (`kd_jenis_prw`) USING BTREE,
   CONSTRAINT `satu_sehat_imagingstudy_radiologi_ibfk_1` FOREIGN KEY (`noorder`) REFERENCES `permintaan_radiologi` (`noorder`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -26907,7 +26929,7 @@ CREATE TABLE `suku_bangsa` (
   `nama_suku_bangsa` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama_suku_bangsa` (`nama_suku_bangsa`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -29384,7 +29406,7 @@ CREATE TABLE `temporary_grafik` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=121 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=133 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -32803,4 +32825,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-06-03 16:52:14
+-- Dump completed on 2026-06-15 11:46:21
