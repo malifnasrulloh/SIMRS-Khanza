@@ -1497,9 +1497,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
     private void ppPilihBelumTerkirim1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihBelumTerkirim1ActionPerformed
         for (int i = 0; i < tbObat.getRowCount(); i++) {
-            String val = (tbObat.getValueAt(i, COL_ID_SR) != null) && (tbObat.getValueAt(i, COL_ID_IMAGING) == null)
-                    ? "" : tbObat.getValueAt(i, COL_ID_IMAGING).toString().trim();
-            tbObat.setValueAt(val.isEmpty() || val.equals("-"), i, COL_PILIH);
+            Object srObj = tbObat.getValueAt(i, COL_ID_SR);
+            Object imgObj = tbObat.getValueAt(i, COL_ID_IMAGING);
+            String srVal = srObj == null ? "" : srObj.toString().trim();
+            String imgVal = imgObj == null ? "" : imgObj.toString().trim();
+            tbObat.setValueAt(!srVal.isEmpty() && !srVal.equals("-") && (imgVal.isEmpty() || imgVal.equals("-")), i, COL_PILIH);
         }
     }//GEN-LAST:event_ppPilihBelumTerkirim1ActionPerformed
 
