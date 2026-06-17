@@ -10145,6 +10145,12 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             KdPeg.setText(akses.getkode());
             TPegawai.setText(Sequel.CariPegawai(KdPeg.getText()));
             Jabatan.setText(Sequel.CariJabatanPegawai(KdPeg.getText()));
+            kdptg.setText(KdPeg.getText());
+            TPerawat.setText(Sequel.CariPegawai(KdPeg.getText()));
+            kdptg2.setText(KdPeg.getText());
+            TPerawat2.setText(Sequel.CariPegawai(KdPeg.getText()));
+            BtnSeekPetugas.setEnabled(false);
+            BtnSeekPetugas2.setEnabled(false);
         }
         
         if(TANGGALMUNDUR.equals("no")){
