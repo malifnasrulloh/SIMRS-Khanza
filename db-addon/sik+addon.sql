@@ -3636,6 +3636,33 @@ CREATE TABLE `catatan_observasi_restrain_nonfarma` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `catatan_observasi_ruang_ok`
+--
+
+DROP TABLE IF EXISTS `catatan_observasi_ruang_ok`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `catatan_observasi_ruang_ok` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tgl_perawatan` date NOT NULL,
+  `jam_rawat` time NOT NULL,
+  `gcs` varchar(10) DEFAULT NULL,
+  `td` varchar(8) NOT NULL,
+  `hr` varchar(5) DEFAULT NULL,
+  `rr` varchar(5) DEFAULT NULL,
+  `suhu` varchar(5) DEFAULT NULL,
+  `spo2` varchar(3) NOT NULL,
+  `keterangan` varchar(100) NOT NULL,
+  `nip` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_rawat`,`tgl_perawatan`,`jam_rawat`),
+  KEY `no_rawat` (`no_rawat`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `catatan_observasi_ruang_ok_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `catatan_observasi_ruang_ok_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `petugas` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `catatan_observasi_ventilator`
 --
 
@@ -7496,8 +7523,8 @@ DROP TABLE IF EXISTS `industrifarmasi`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `industrifarmasi` (
   `kode_industri` char(5) NOT NULL DEFAULT '',
-  `nama_industri` varchar(50) DEFAULT NULL,
-  `alamat` varchar(50) DEFAULT NULL,
+  `nama_industri` varchar(1000) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
   `kota` varchar(20) DEFAULT NULL,
   `no_telp` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`kode_industri`),
@@ -22737,17 +22764,17 @@ CREATE TABLE `satu_sehat_mapping_obat` (
   `kode_brng` varchar(15) NOT NULL,
   `obat_code` varchar(15) DEFAULT NULL,
   `obat_system` varchar(100) NOT NULL,
-  `obat_display` varchar(80) DEFAULT NULL,
+  `obat_display` varchar(1000) DEFAULT NULL,
   `form_code` varchar(30) DEFAULT NULL,
   `form_system` varchar(100) DEFAULT NULL,
-  `form_display` varchar(80) DEFAULT NULL,
+  `form_display` varchar(100) DEFAULT NULL,
   `numerator_code` varchar(15) DEFAULT NULL,
-  `numerator_system` varchar(80) DEFAULT NULL,
+  `numerator_system` varchar(100) DEFAULT NULL,
   `denominator_code` varchar(15) DEFAULT NULL,
-  `denominator_system` varchar(80) DEFAULT NULL,
+  `denominator_system` varchar(100) DEFAULT NULL,
   `route_code` varchar(30) DEFAULT NULL,
   `route_system` varchar(100) DEFAULT NULL,
-  `route_display` varchar(80) DEFAULT NULL,
+  `route_display` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`kode_brng`),
   CONSTRAINT `satu_sehat_mapping_obat_ibfk_1` FOREIGN KEY (`kode_brng`) REFERENCES `databarang` (`kode_brng`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -29306,7 +29333,7 @@ CREATE TABLE `temporary_booking_registrasi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -29356,7 +29383,7 @@ CREATE TABLE `temporary_gizi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=621 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=642 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -32132,8 +32159,8 @@ CREATE TABLE `user` (
   `surat_permintaan_second_opinion` enum('true','false') DEFAULT NULL,
   `surat_keterangan_berobat` enum('true','false') DEFAULT NULL,
   `surat_penolakan_resusitasi` enum('true','false') DEFAULT NULL,
+  `catatan_observasi_ruang_ok` enum('true','false') DEFAULT NULL,
   `manajemen` enum('true','false') DEFAULT NULL,
-  `satu_sehat_kirim_questionnairerequest` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -32825,4 +32852,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-06-15 11:46:21
+-- Dump completed on 2026-06-19 19:04:52

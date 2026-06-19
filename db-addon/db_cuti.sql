@@ -10,3 +10,7 @@ CREATE TABLE `set_pengaturan_cuti` (
 
 -- Initialize default settings
 INSERT INTO `set_pengaturan_cuti` (`maks_pengajuan`, `maks_jatah_semester`) VALUES (3, 12);
+
+-- pastikan database sudah tersinkron dengan sik terbaru
+ALTER TABLE `user` ADD manajemen enum('true','false') CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL NULL;
+ALTER TABLE `pengajuan_cuti` ADD status_manajemen enum('Proses Pengajuan','Disetujui','Ditolak') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Proses Pengajuan';

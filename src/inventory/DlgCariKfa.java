@@ -14,6 +14,7 @@ package inventory;
 import bridging.ApiSatuSehat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.TableColumnAdjuster;
 import fungsi.WarnaTable;
 import fungsi.koneksiDB;
 import fungsi.sekuel;
@@ -79,34 +80,13 @@ public class DlgCariKfa extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 12; i++) {
-            TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if (i == 0) {
-                column.setPreferredWidth(80);
-            } else if (i == 1) {
-                column.setPreferredWidth(400);
-            } else if (i == 2) {
-                column.setPreferredWidth(80);
-            } else if (i == 3) {
-                column.setPreferredWidth(80);
-            } else if (i == 4) {
-                column.setPreferredWidth(80);
-            } else if (i == 5) {
-                column.setPreferredWidth(80);
-            } else if (i == 6) {
-                column.setPreferredWidth(80);
-            } else if (i == 7) {
-                column.setPreferredWidth(80);
-            } else if (i == 8) {
-                column.setPreferredWidth(200);
-            } else if (i == 9) {
-                column.setPreferredWidth(200);
-            } else if (i == 10) {
-                column.setPreferredWidth(110);
-            } else if (i == 11) {
-                column.setPreferredWidth(110);
-            }
-        }
+        TableColumnAdjuster tca = new TableColumnAdjuster(tbObat);
+        tca.setColumnHeaderIncluded(true);
+        tca.setColumnDataIncluded(true);
+        tca.setDynamicAdjustment(true);
+        tca.setOnlyAdjustLarger(false);
+        tca.adjustColumns();
+
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         BtnMiningKFA = new widget.Button();
@@ -246,7 +226,6 @@ public class DlgCariKfa extends javax.swing.JDialog {
         jLabel6 = new widget.Label();
         cmbHlm = new widget.ComboBox();
         BtnKeluar = new widget.Button();
-        BtnUpdateKFA = new widget.Button();
         scrollPane1 = new widget.ScrollPane();
         tbObat = new widget.Table();
 
@@ -357,24 +336,6 @@ public class DlgCariKfa extends javax.swing.JDialog {
         });
         panelisi2.add(BtnKeluar);
 
-        BtnUpdateKFA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/inventaris.png"))); // NOI18N
-        BtnUpdateKFA.setMnemonic('K');
-        BtnUpdateKFA.setText("Update KFA");
-        BtnUpdateKFA.setToolTipText("Alt+K");
-        BtnUpdateKFA.setName("BtnUpdateKFA"); // NOI18N
-        BtnUpdateKFA.setPreferredSize(new java.awt.Dimension(150, 30));
-        BtnUpdateKFA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnUpdateKFAActionPerformed(evt);
-            }
-        });
-        BtnUpdateKFA.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnUpdateKFAKeyPressed(evt);
-            }
-        });
-        panelisi2.add(BtnUpdateKFA);
-
         jPanel2.add(panelisi2, java.awt.BorderLayout.PAGE_START);
 
         internalFrame1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -464,161 +425,6 @@ public class DlgCariKfa extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
-    private void BtnUpdateKFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUpdateKFAActionPerformed
-        // Ambil keyword dan registrar dari textbox
-        String keyword = TCari.getText().trim();
-        String registrar = TCari2.getText().trim();
-
-        // Validasi input
-        if (keyword.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Keyword tidak boleh kosong!", "Peringatan", javax.swing.JOptionPane.WARNING_MESSAGE);
-            TCari.requestFocus();
-            return;
-        }
-
-        link = "https://api-satusehat.kemkes.go.id/kfa-v2/";
-
-        try {
-            // Setup headers untuk API request
-            headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
-            requestEntity = new HttpEntity(headers);
-
-            int limit = 100;
-            int totalSaved = 0;
-            int totalFailed = 0;
-
-            System.out.println("=== Mulai pencarian KFA ===");
-            System.out.println("Keyword: " + keyword);
-            System.out.println("Registrar: " + (registrar.isEmpty() ? "Semua" : registrar));
-
-            // Loop untuk pagination (max 10 halaman untuk safety)
-            for (int page = 1; page <= 10; page++) {
-                System.out.println("Mengambil halaman ke-" + page + "...");
-
-                // Build URL dengan parameter search
-                String url = link + "products/all?page=" + page + "&size=" + limit + "&product_type=farmasi";
-
-                // Tambahkan parameter keyword (search by name)
-                if (!keyword.isEmpty()) {
-                    url += "&name=" + java.net.URLEncoder.encode(keyword, "UTF-8");
-                }
-
-                // Tambahkan parameter registrar jika diisi
-                if (!registrar.isEmpty()) {
-                    url += "&registrar=" + java.net.URLEncoder.encode(registrar, "UTF-8");
-                }
-
-                System.out.println("URL: " + url);
-
-                // Call API
-                json = api.getRest().exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
-                root = mapper.readTree(json);
-
-                // Parse response
-                JsonNode dataArray = root.path("items").path("data");
-
-                // Jika tidak ada data, hentikan loop
-                if (dataArray.size() == 0) {
-                    System.out.println("Tidak ada data lagi di halaman " + page);
-                    break;
-                }
-
-                System.out.println("Ditemukan " + dataArray.size() + " produk di halaman " + page);
-
-                // Process each product
-                for (JsonNode data : dataArray) {
-                    try {
-                        // Extract all fields
-                        String name = data.path("name").asText();
-                        String kfaCode = data.path("kfa_code").asText();
-                        String active = data.path("active").asText();
-                        String state = data.path("state").asText();
-                        String image = data.path("image").asText();
-                        String updatedAt = data.path("updated_at").asText();
-                        String produksiBuatan = data.path("produksi_buatan").asText();
-                        String nie = data.path("nie").asText();
-                        String namaDagang = data.path("nama_dagang").asText();
-                        String manufacturer = data.path("manufacturer").asText();
-                        String registrarData = data.path("registrar").asText();
-                        String generik = data.path("generik").asText();
-                        String rxterm = data.path("rxterm").asText();
-                        String dosePerUnit = data.path("dose_per_unit").asText();
-                        String fixPrice = data.path("fix_price").asText();
-                        String hetPrice = data.path("het_price").asText();
-                        String farmalkesHscode = data.path("farmalkes_hscode").asText();
-                        String tayangLkpp = data.path("tayang_lkpp").asText();
-                        String kodeLkpp = data.path("kode_lkpp").asText();
-                        String netWeight = data.path("net_weight").asText();
-                        String netWeightUomName = data.path("net_weight_uom_name").asText();
-                        String volume = data.path("volume").asText();
-                        String volumeUomName = data.path("volume_uom_name").asText();
-                        String dosageFormCode = data.path("dosage_form").path("code").asText();
-                        String dosageFormName = data.path("dosage_form").path("name").asText();
-                        String productTemplateKfaCode = data.path("product_template").path("kfa_code").asText();
-                        String productTemplateName = data.path("product_template").path("name").asText();
-                        String productTemplateState = data.path("product_template").path("state").asText();
-                        String productTemplateActive = data.path("product_template").path("active").asText();
-                        String productTemplateDisplayName = data.path("product_template").path("display_name").asText();
-                        String productTemplateUpdatedAt = data.path("product_template").path("updated_at").asText();
-
-                        // Store data into MySQL table
-                        if (Sequel.menyimpantf2("satu_sehat_kfa_master", "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-                                "Kfa Master",
-                                31, // 31 columns
-                                new String[]{name, kfaCode, active, state, image, updatedAt, produksiBuatan, nie, namaDagang, manufacturer, registrarData, generik, rxterm, dosePerUnit, fixPrice, hetPrice, farmalkesHscode, tayangLkpp, kodeLkpp, netWeight, netWeightUomName, volume, volumeUomName, dosageFormCode, dosageFormName, productTemplateKfaCode, productTemplateName, productTemplateState, productTemplateActive, productTemplateDisplayName, productTemplateUpdatedAt}
-                        ) == true) {
-                            totalSaved++;
-                            System.out.println("✓ Tersimpan: " + name + " (" + kfaCode + ")");
-                        } else {
-                            totalFailed++;
-                        }
-                    } catch (Exception e) {
-                        totalFailed++;
-                        System.out.println("✗ Error menyimpan produk: " + e.getMessage());
-                    }
-                }
-
-                // Delay untuk menghindari rate limit
-                Thread.sleep(2000);
-
-                // Jika data kurang dari limit, berarti sudah halaman terakhir
-                if (dataArray.size() < limit) {
-                    System.out.println("Halaman terakhir tercapai");
-                    break;
-                }
-            }
-
-            // Tampilkan summary
-            System.out.println("\n=== SELESAI ===");
-            System.out.println("Total tersimpan: " + totalSaved);
-            System.out.println("Total gagal/duplikat: " + totalFailed);
-
-            javax.swing.JOptionPane.showMessageDialog(null,
-                    "Pencarian selesai!\n"
-                    + "Total tersimpan: " + totalSaved + "\n"
-                    + "Total gagal/duplikat: " + totalFailed,
-                    "Informasi",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-            // Refresh tampilan
-            runBackground(() -> tampil());
-
-        } catch (Exception ea) {
-            System.out.println("Error Bridging KFA: " + ea);
-            ea.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(null,
-                    "Error: " + ea.getMessage(),
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_BtnUpdateKFAActionPerformed
-
-    private void BtnUpdateKFAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnUpdateKFAKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnUpdateKFAKeyPressed
-
     /**
      * @param args the command line arguments
      */
@@ -638,7 +444,6 @@ public class DlgCariKfa extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnCari;
     private widget.Button BtnKeluar;
-    private widget.Button BtnUpdateKFA;
     private widget.Label LCount;
     private widget.TextBox TCari;
     private widget.TextBox TCari2;

@@ -938,7 +938,6 @@ private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         } else {
                             tbUser.setValueAt(false, tbUser.getSelectedRow(), tbUser.getSelectedColumn());
                         }
-
                     }
                 }
             }

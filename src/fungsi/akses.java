@@ -1050,7 +1050,6 @@ public final class akses {
     public static boolean getsatu_sehat_mapping_departemen() {return hakAkses.get(EnumAkses.satu_sehat_mapping_departemen);}
     public static boolean getsatu_sehat_mapping_lokasi() {return hakAkses.get(EnumAkses.satu_sehat_mapping_lokasi);}
     public static boolean getsatu_sehat_kirim_encounter() {return hakAkses.get(EnumAkses.satu_sehat_kirim_encounter);}
-    public static boolean getsatu_sehat_kirim_questionnairerequest() {return hakAkses.get(EnumAkses.satu_sehat_kirim_questionnairerequest);}
     public static boolean getsatu_sehat_kirim_episodeofcare() {return hakAkses.get(EnumAkses.satu_sehat_kirim_episodeofcare);}
     public static boolean getcatatan_cek_gds() {return hakAkses.get(EnumAkses.catatan_cek_gds);}
     public static boolean getsatu_sehat_kirim_condition() {return hakAkses.get(EnumAkses.satu_sehat_kirim_condition);}
@@ -1354,4 +1353,5 @@ public final class akses {
     public static boolean getsurat_permintaan_second_opinion(){return hakAkses.get(EnumAkses.surat_permintaan_second_opinion);}
     public static boolean getsurat_keterangan_berobat(){return hakAkses.get(EnumAkses.surat_keterangan_berobat);}
     public static boolean getsurat_penolakan_resusitasi(){return hakAkses.get(EnumAkses.surat_penolakan_resusitasi);}
+    public static boolean getcatatan_observasi_ruang_ok(){return hakAkses.get(EnumAkses.catatan_observasi_ruang_ok);}
 }

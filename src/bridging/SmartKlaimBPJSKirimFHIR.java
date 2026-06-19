@@ -1529,66 +1529,71 @@ public final class SmartKlaimBPJSKirimFHIR extends javax.swing.JDialog {
                                     + "WHERE prosedur_pasien.no_rawat = ? ORDER BY prosedur_pasien.prioritas"
                             );
                             try {
-                                ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
-                                rs = ps.executeQuery();
-                                while (rs.next()) {
+                                ps.setString(1,tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
+                                rs=ps.executeQuery();
+                                if(rs.next()){
                                     iyembuilder.append("{").
-                                            append("\"resource\": {").
-                                            append("\"resourceType\": \"Procedure\",").
-                                            append("\"id\": \"").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString() + rs.getString("kode"))).append("\",").
-                                            append("\"text\": {").
-                                            append("\"status\": \"generated\",").
-                                            append("\"div\": \"Generated Narrative with Details\"").
-                                            append("},").
-                                            append("\"status\": \"completed\",").
-                                            append("\"code\": {").
-                                            append("\"coding\": [").
-                                            append("{").
-                                            append("\"system\": \"").append(rs.getString("system")).append("\",").
-                                            append("\"code\": \"").append(rs.getString("kode_snomed")).append("\",").
-                                            append("\"display\": \"").append(rs.getString("display").replace("\"", "'")).append("\"").
-                                            append("}").
-                                            append("]").
-                                            append("},").
-                                            append("\"subject\": {").
-                                            append("\"reference\": \"Patient/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString())).append("\",").
-                                            append("\"display\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString()).append("\"").
-                                            append("},").
-                                            append("\"context\": {").
-                                            append("\"reference\": \"Encounter/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString())).append("\",").
-                                            append("\"display\": \"Admitted to ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString()).append(" ").append(akses.getnamars()).append(" between ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString()).append(" and ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString()).append("\"").
-                                            append("},").
-                                            append("\"performedPeriod\": {").
-                                            append("\"start\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString()).append("\",").
-                                            append("\"end\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString()).append("\"").
-                                            append("},").
-                                            append("\"performer\": [{").
-                                            append("\"role\": {").
-                                            append("\"coding\": [").
-                                            append("{").
-                                            append("\"system\": \"http://snomed.info/sct\",").
-                                            append("\"code\": \"309343006\",").
-                                            append("\"display\": \"Physician\"").
-                                            append("}").
-                                            append("]").
-                                            append("},").
-                                            append("\"actor\": {").
-                                            append("\"reference\": \"Practitioner/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString())).append("\",").
-                                            append("\"display\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString()).append("\"").
-                                            append("}").
-                                            append("}],").
-                                            append("\"reasonCode\": [").
-                                            append("{").
-                                            append("\"text\": \"").append(jalannyapenyakit).append("\"").
-                                            append("}").
-                                            append("],").
-                                            append("\"note\": [").
-                                            append("{").
-                                            append("\"text\": \"").append("Prognosa : ").append((jalannyapenyakit.equals("") ? "Sesuai prognosa di resume" : jalannyapenyakit)).append(". Prosedur/Tindakan : ").append(rs.getString("deskripsi_panjang")).append("\"").
-                                            append("}").
-                                            append("]").
-                                            append("}").
-                                            append("},");
+                                                    append("\"resource\": [");
+                                    do{
+                                        iyembuilder.append("{").
+                                                        append("\"resourceType\": \"Procedure\",").
+                                                        append("\"id\": \"").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString()+rs.getString("kode"))).append("\",").
+                                                        append("\"text\": {").
+                                                            append("\"status\": \"generated\",").
+                                                            append("\"div\": \"Generated Narrative with Details\"").
+                                                        append("},").
+                                                        append("\"status\": \"completed\",").
+                                                        append("\"code\": {").
+                                                            append("\"coding\": [").
+                                                                append("{").
+                                                                    append("\"system\": \"").append(rs.getString("system")).append("\",").
+                                                                    append("\"code\": \"").append(rs.getString("kode_snomed")).append("\",").
+                                                                    append("\"display\": \"").append(rs.getString("display").replace("\"", "'")).append("\"").
+                                                                append("}").
+                                                            append("]").
+                                                        append("},").
+                                                        append("\"subject\": {").
+                                                            append("\"reference\": \"Patient/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString())).append("\",").
+                                                            append("\"display\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString()).append("\"").
+                                                        append("},").
+                                                        append("\"context\": {").
+                                                            append("\"reference\": \"Encounter/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(0, 1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString())).append("\",").
+                                                            append("\"display\": \"Admitted to ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString()).append(" ").append(akses.getnamars()).append(" between ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString()).append(" and ").append(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString()).append("\"").
+                                                        append("},").
+                                                        append("\"performedPeriod\": {").
+                                                            append("\"start\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString()).append("\",").
+                                                            append("\"end\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString()).append("\"").
+                                                        append("},").
+                                                        append("\"performer\": [{").
+                                                            append("\"role\": {").
+                                                                append("\"coding\": [").
+                                                                    append("{").
+                                                                        append("\"system\": \"http://snomed.info/sct\",").
+                                                                        append("\"code\": \"309343006\",").
+                                                                        append("\"display\": \"Physician\"").
+                                                                    append("}").
+                                                                append("]").
+                                                            append("},").
+                                                            append("\"actor\": {").
+                                                                append("\"reference\": \"Practitioner/").append(akses.getkodeppkbpjs()).append("-").append(akses.getkodeppkkemenkes()).append("-").append(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString().substring(0,1)).append("-").append(jadikanUUID(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString())).append("\",").
+                                                                append("\"display\": \"").append(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString()).append("\"").
+                                                            append("}").
+                                                        append("}],").
+                                                        append("\"reasonCode\": [").
+                                                            append("{").
+                                                                append("\"text\": \"").append(jalannyapenyakit).append("\"").
+                                                            append("}").
+                                                        append("],").
+                                                        append("\"note\": [").
+                                                            append("{").
+                                                                append("\"text\": \"").append("Prognosa : ").append((jalannyapenyakit.equals("")?"Sesuai prognosa di resume":jalannyapenyakit)).append(". Prosedur/Tindakan : ").append(rs.getString("deskripsi_panjang")).append("\"").
+                                                            append("}").
+                                                        append("]").
+                                                   append("},");
+                                    }while(rs.next());
+                                    iyembuilder.deleteCharAt(iyembuilder.length()-1);
+                                    iyembuilder.append("]").
+                                                append("},");
                                 }
                             } catch (Exception e) {
                                 System.out.println("Notif Procedure : " + e);

@@ -925,6 +925,7 @@ import rekammedis.RMDataCatatanObservasiRanap;
 import rekammedis.RMDataCatatanObservasiRanapKebidanan;
 import rekammedis.RMDataCatatanObservasiRanapPostPartum;
 import rekammedis.RMDataCatatanObservasiRestrainNonFarmakologi;
+import rekammedis.RMDataCatatanObservasiRuangOperasi;
 import rekammedis.RMDataCatatanObservasiVentilator;
 import rekammedis.RMDataFollowUpDBD;
 import rekammedis.RMDataMonitoringAsuhanGizi;
@@ -17904,6 +17905,18 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
 
+    private void btnCatatanObservasiRuangOperasiActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        RMDataCatatanObservasiRuangOperasi form=new RMDataCatatanObservasiRuangOperasi(this,false);
+        form.isCek();
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -18161,7 +18174,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
             btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
-            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi;
+            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi;
 
     public void isWall() {
         try {
@@ -19958,6 +19971,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.getcatatan_observasi_ranap_postpartum(), btnCatatanObservasiRanapPostPartum);
 
+            addMenu(akses.getcatatan_observasi_ruang_ok(), btnCatatanObservasiRuangOperasi);
+
             addMenu(akses.getcatatan_observasi_bayi(), btnCatatanObservasiBayi);
 
             addMenu(akses.getcatatan_observasi_chbp(), btnCatatanObservasiCHBP);
@@ -20714,2396 +20729,2398 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void initKhanza() {
-        btnDataPenjualan = createMenuButton("/48x48/1485357971_desktop_computer.png", "Data Penjualan Obat & BHP", "btnDataPenjualan", new java.awt.Dimension(200, 90), this::btnDataPenjualanActionPerformed);
+        btnDataPenjualan = createMenuButton("/48x48/1485357971_desktop_computer.png", "Data Penjualan Obat & BHP", "btnDataPenjualan", this::btnDataPenjualanActionPerformed);
 
-        btnInputPenjualan = createMenuButton("/48x48/cashbox.png", "Input Penjualan Obat & BHP", "btnInputPenjualan", new java.awt.Dimension(200, 90), this::btnInputPenjualanActionPerformed);
+        btnInputPenjualan = createMenuButton("/48x48/cashbox.png", "Input Penjualan Obat & BHP", "btnInputPenjualan", this::btnInputPenjualanActionPerformed);
 
-        btnDataPenyerahanDarah = createMenuButton("/48x48/kwrite.png", "Data Penyerahan Darah", "btnDataPenyerahanDarah", new java.awt.Dimension(200, 90), this::btnDataPenyerahanDarahActionPerformed);
+        btnDataPenyerahanDarah = createMenuButton("/48x48/kwrite.png", "Data Penyerahan Darah", "btnDataPenyerahanDarah", this::btnDataPenyerahanDarahActionPerformed);
 
-        btnResepObatDepan = createMenuButton("/48x48/stock_task.png", "No. Resep", "btnResepObatDepan", new java.awt.Dimension(200, 90), this::btnResepObatDepanActionPerformed);
+        btnResepObatDepan = createMenuButton("/48x48/stock_task.png", "No. Resep", "btnResepObatDepan", this::btnResepObatDepanActionPerformed);
 
-        btnBarcode = createMenuButton("/48x48/1360484263_barcode.png", "Barcode Presensi", "btnBarcode", new java.awt.Dimension(200, 90), this::btnBarcodeActionPerformed);
+        btnBarcode = createMenuButton("/48x48/1360484263_barcode.png", "Barcode Presensi", "btnBarcode", this::btnBarcodeActionPerformed);
 
-        btnICD = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "ICD 10", "btnICD", new java.awt.Dimension(200, 90), this::btnICDActionPerformed);
+        btnICD = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "ICD 10", "btnICD", this::btnICDActionPerformed);
 
-        btnObat = createMenuButton("/48x48/1360815855_laboratory.png", "Obat, Alkes & BHP", "btnObat", new java.awt.Dimension(200, 90), this::btnObatActionPerformed);
+        btnObat = createMenuButton("/48x48/1360815855_laboratory.png", "Obat, Alkes & BHP", "btnObat", this::btnObatActionPerformed);
 
-        btnObatPenyakit = createMenuButton("/48x48/1360484848_applications-science.png", "Obat Penyakit", "btnObatPenyakit", new java.awt.Dimension(200, 90), this::btnObatPenyakitActionPerformed);
+        btnObatPenyakit = createMenuButton("/48x48/1360484848_applications-science.png", "Obat Penyakit", "btnObatPenyakit", this::btnObatPenyakitActionPerformed);
 
-        btnKamar = createMenuButton("/48x48/industry.png", "Kamar", "btnKamar", new java.awt.Dimension(200, 90), this::btnKamarActionPerformed);
+        btnKamar = createMenuButton("/48x48/industry.png", "Kamar", "btnKamar", this::btnKamarActionPerformed);
 
-        btnTindakanRalan = createMenuButton("/48x48/plaster.png", "Tarif Ralan", "btnTindakanRalan", new java.awt.Dimension(200, 90), this::btnTindakanRalanActionPerformed);
+        btnTindakanRalan = createMenuButton("/48x48/plaster.png", "Tarif Ralan", "btnTindakanRalan", this::btnTindakanRalanActionPerformed);
 
-        btnDokter = createMenuButton("/48x48/doctor2.png", "Dokter", "btnDokter", new java.awt.Dimension(200, 90), this::btnDokterActionPerformed);
+        btnDokter = createMenuButton("/48x48/doctor2.png", "Dokter", "btnDokter", this::btnDokterActionPerformed);
 
-        btnPegawai = createMenuButton("/48x48/receptionist.png", "Petugas", "btnPegawai", new java.awt.Dimension(200, 90), this::btnPegawaiActionPerformed);
+        btnPegawai = createMenuButton("/48x48/receptionist.png", "Petugas", "btnPegawai", this::btnPegawaiActionPerformed);
 
-        btnPasien = createMenuButton("/48x48/patient.png", "Pasien", "btnPasien", new java.awt.Dimension(200, 90), this::btnPasienActionPerformed);
+        btnPasien = createMenuButton("/48x48/patient.png", "Pasien", "btnPasien", this::btnPasienActionPerformed);
 
-        btnRegistrasi = createMenuButton("/48x48/checklist.png", "Registrasi", "btnRegistrasi", new java.awt.Dimension(200, 90), this::btnRegistrasiActionPerformed);
+        btnRegistrasi = createMenuButton("/48x48/checklist.png", "Registrasi", "btnRegistrasi", this::btnRegistrasiActionPerformed);
 
-        btnRalan = createMenuButton("/48x48/Icon-Tindakan-Rajal.png", "Tindakan Ralan", "btnRalan", new java.awt.Dimension(200, 90), this::btnRalanActionPerformed);
+        btnRalan = createMenuButton("/48x48/Icon-Tindakan-Rajal.png", "Tindakan Ralan", "btnRalan", this::btnRalanActionPerformed);
 
-        btnKamarInap = createMenuButton("/48x48/Home.png", "Rawat Inap", "btnKamarInap", new java.awt.Dimension(200, 90), this::btnKamarInapActionPerformed);
+        btnKamarInap = createMenuButton("/48x48/Home.png", "Rawat Inap", "btnKamarInap", this::btnKamarInapActionPerformed);
 
-        btnRanap = createMenuButton("/48x48/tindakanranap.png", "Tindakan Ranap", "btnRanap", new java.awt.Dimension(200, 90), this::btnRanapActionPerformed);
+        btnRanap = createMenuButton("/48x48/tindakanranap.png", "Tindakan Ranap", "btnRanap", this::btnRanapActionPerformed);
 
-        btnResepObat = createMenuButton("/48x48/iconnomorresep.png", "No. Resep", "btnResepObat", new java.awt.Dimension(200, 90), this::btnResepObatActionPerformed);
+        btnResepObat = createMenuButton("/48x48/iconnomorresep.png", "No. Resep", "btnResepObat", this::btnResepObatActionPerformed);
 
-        btnRujukPasien = createMenuButton("/48x48/1485357758_Doctor.png", "Rujukan Keluar", "btnRujukPasien", new java.awt.Dimension(200, 90), this::btnRujukPasienActionPerformed);
+        btnRujukPasien = createMenuButton("/48x48/1485357758_Doctor.png", "Rujukan Keluar", "btnRujukPasien", this::btnRujukPasienActionPerformed);
 
-        btnBeriObat = createMenuButton("/48x48/first_aid_kit.png", "Beri Obat/BHP", "btnBeriObat", new java.awt.Dimension(200, 90), this::btnBeriObatActionPerformed);
+        btnBeriObat = createMenuButton("/48x48/first_aid_kit.png", "Beri Obat/BHP", "btnBeriObat", this::btnBeriObatActionPerformed);
 
-        btnPasienMati = createMenuButton("/48x48/Ambulance.png", "Pasien Meninggal", "btnPasienMati", new java.awt.Dimension(200, 90), this::btnPasienMatiActionPerformed);
+        btnPasienMati = createMenuButton("/48x48/Ambulance.png", "Pasien Meninggal", "btnPasienMati", this::btnPasienMatiActionPerformed);
 
-        btnAdmin = createMenuButton("/48x48/preferences-desktop-cryptography.png", "Set Admin", "btnAdmin", new java.awt.Dimension(200, 90), this::btnAdminActionPerformed);
+        btnAdmin = createMenuButton("/48x48/preferences-desktop-cryptography.png", "Set Admin", "btnAdmin", this::btnAdminActionPerformed);
 
-        btnVakum = createMenuButton("/48x48/1360486615_remove-from-database.png", "Vakum Table", "btnVakum", new java.awt.Dimension(200, 90), this::btnVakumActionPerformed);
+        btnVakum = createMenuButton("/48x48/1360486615_remove-from-database.png", "Vakum Table", "btnVakum", this::btnVakumActionPerformed);
 
-        btnDisplay = createMenuButton("/48x48/find.png", "Display Antrian Registrasi & Poli", "btnDisplay", new java.awt.Dimension(200, 90), this::btnDisplayActionPerformed);
+        btnDisplay = createMenuButton("/48x48/find.png", "Display Antrian Registrasi & Poli", "btnDisplay", this::btnDisplayActionPerformed);
 
-        btnSetupHarga = createMenuButton("/48x48/1360487093_price.png", "Set Harga Obat", "btnSetupHarga", new java.awt.Dimension(200, 90), this::btnSetupHargaActionPerformed);
+        btnSetupHarga = createMenuButton("/48x48/1360487093_price.png", "Set Harga Obat", "btnSetupHarga", this::btnSetupHargaActionPerformed);
 
-        btnSuplier = createMenuButton("/48x48/1485357959_truck.png", "Suplier Obat/Alkes/BHP", "btnSuplier", new java.awt.Dimension(200, 90), this::btnSuplierActionPerformed);
+        btnSuplier = createMenuButton("/48x48/1485357959_truck.png", "Suplier Obat/Alkes/BHP", "btnSuplier", this::btnSuplierActionPerformed);
 
-        btnJnsBarang = createMenuButton("/48x48/Card_file.png", "Jenis Obat, Alkes & BHP", "btnJnsBarang", new java.awt.Dimension(200, 90), this::btnJnsBarangActionPerformed);
+        btnJnsBarang = createMenuButton("/48x48/Card_file.png", "Jenis Obat, Alkes & BHP", "btnJnsBarang", this::btnJnsBarangActionPerformed);
 
-        btnKonversi = createMenuButton("/48x48/ark2.png", "Konversi Satuan", "btnKonversi", new java.awt.Dimension(200, 90), this::btnKonversiActionPerformed);
+        btnKonversi = createMenuButton("/48x48/ark2.png", "Konversi Satuan", "btnKonversi", this::btnKonversiActionPerformed);
 
-        btnSatuan = createMenuButton("/48x48/bag1.png", "Satuan Barang", "btnSatuan", new java.awt.Dimension(200, 90), this::btnSatuanActionPerformed);
+        btnSatuan = createMenuButton("/48x48/bag1.png", "Satuan Barang", "btnSatuan", this::btnSatuanActionPerformed);
 
-        btnCashFlow = createMenuButton("/48x48/1360486845_23.png", "Cash Flow", "btnCashFlow", new java.awt.Dimension(200, 90), this::btnCashFlowActionPerformed);
+        btnCashFlow = createMenuButton("/48x48/1360486845_23.png", "Cash Flow", "btnCashFlow", this::btnCashFlowActionPerformed);
 
-        btnBubes = createMenuButton("/48x48/applications-office.png", "Buku Besar", "btnBubes", new java.awt.Dimension(200, 90), this::btnBubesActionPerformed);
+        btnBubes = createMenuButton("/48x48/applications-office.png", "Buku Besar", "btnBubes", this::btnBubesActionPerformed);
 
-        btnPostingJurnal = createMenuButton("/48x48/1360485642_edit-notes.png", "Posting Jurnal", "btnPostingJurnal", new java.awt.Dimension(200, 90), this::btnPostingJurnalActionPerformed);
+        btnPostingJurnal = createMenuButton("/48x48/1360485642_edit-notes.png", "Posting Jurnal", "btnPostingJurnal", this::btnPostingJurnalActionPerformed);
 
-        btnRekeningTahun = createMenuButton("/48x48/money_bag.png", "Rekening Tahun", "btnRekeningTahun", new java.awt.Dimension(200, 90), this::btnRekeningTahunActionPerformed);
+        btnRekeningTahun = createMenuButton("/48x48/money_bag.png", "Rekening Tahun", "btnRekeningTahun", this::btnRekeningTahunActionPerformed);
 
-        btnRekening = createMenuButton("/48x48/kwrite.png", "Akun Rekening", "btnRekening", new java.awt.Dimension(200, 90), this::btnRekeningActionPerformed);
+        btnRekening = createMenuButton("/48x48/kwrite.png", "Akun Rekening", "btnRekening", this::btnRekeningActionPerformed);
 
-        btnPembelian = createMenuButton("/48x48/1360487067_calculator.png", "Pengadaan Obat & BHP", "btnPembelian", new java.awt.Dimension(200, 90), this::btnPembelianActionPerformed);
+        btnPembelian = createMenuButton("/48x48/1360487067_calculator.png", "Pengadaan Obat & BHP", "btnPembelian", this::btnPembelianActionPerformed);
 
-        btnPenjualan = createMenuButton("/48x48/cashbox.png", "Penjualan Obat & BHP", "btnPenjualan", new java.awt.Dimension(200, 90), this::btnPenjualanActionPerformed);
+        btnPenjualan = createMenuButton("/48x48/cashbox.png", "Penjualan Obat & BHP", "btnPenjualan", this::btnPenjualanActionPerformed);
 
-        btnPiutang = createMenuButton("/48x48/checklist.png", "Piutang Obat & BHP", "btnPiutang", new java.awt.Dimension(200, 90), this::btnPiutangActionPerformed);
+        btnPiutang = createMenuButton("/48x48/checklist.png", "Piutang Obat & BHP", "btnPiutang", this::btnPiutangActionPerformed);
 
-        btnBayarPiutang = createMenuButton("/48x48/1404046811_money.png", "Bayar Piutang", "btnBayarPiutang", new java.awt.Dimension(200, 90), this::btnBayarPiutangActionPerformed);
+        btnBayarPiutang = createMenuButton("/48x48/1404046811_money.png", "Bayar Piutang", "btnBayarPiutang", this::btnBayarPiutangActionPerformed);
 
-        btnOpname = createMenuButton("/48x48/1360487078_shipping.png", "Stok Opname Obat & BHP", "btnOpname", new java.awt.Dimension(200, 90), this::btnOpnameActionPerformed);
+        btnOpname = createMenuButton("/48x48/1360487078_shipping.png", "Stok Opname Obat & BHP", "btnOpname", this::btnOpnameActionPerformed);
 
-        btnReturBeli = createMenuButton("/48x48/1360816189_arrow_down.png", "Retur Ke Suplier", "btnReturBeli", new java.awt.Dimension(200, 90), this::btnReturBeliActionPerformed);
+        btnReturBeli = createMenuButton("/48x48/1360816189_arrow_down.png", "Retur Ke Suplier", "btnReturBeli", this::btnReturBeliActionPerformed);
 
-        btnReturJual = createMenuButton("/48x48/1360486142_shopping_cart.png", "Retur Dari Pembeli", "btnReturJual", new java.awt.Dimension(200, 90), this::btnReturJualActionPerformed);
+        btnReturJual = createMenuButton("/48x48/1360486142_shopping_cart.png", "Retur Dari Pembeli", "btnReturJual", this::btnReturJualActionPerformed);
 
-        btnSirkulasi = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP", "btnSirkulasi", new java.awt.Dimension(200, 90), this::btnSirkulasiActionPerformed);
+        btnSirkulasi = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP", "btnSirkulasi", this::btnSirkulasiActionPerformed);
 
-        btnKeuntungan = createMenuButton("/48x48/coins.png", "Keuntungan Penjualan", "btnKeuntungan", new java.awt.Dimension(200, 90), this::btnKeuntunganActionPerformed);
+        btnKeuntungan = createMenuButton("/48x48/coins.png", "Keuntungan Penjualan", "btnKeuntungan", this::btnKeuntunganActionPerformed);
 
-        btnLabaRugi = createMenuButton("/48x48/1360486822_20.png", "Keuangan", "btnLabaRugi", new java.awt.Dimension(200, 90), this::btnLabaRugiActionPerformed);
+        btnLabaRugi = createMenuButton("/48x48/1360486822_20.png", "Keuangan", "btnLabaRugi", this::btnLabaRugiActionPerformed);
 
-        btnReturPiutang = createMenuButton("/48x48/custom-reports.png", "Retur Piutang Pembeli", "btnReturPiutang", new java.awt.Dimension(200, 90), this::btnReturPiutangActionPerformed);
+        btnReturPiutang = createMenuButton("/48x48/custom-reports.png", "Retur Piutang Pembeli", "btnReturPiutang", this::btnReturPiutangActionPerformed);
 
-        btnAnalisaKamar = createMenuButton("/48x48/iconfinder_cleaning-door-knob-object-hygiene_5728178.png", "Informasi Kamar", "btnAnalisaKamar", new java.awt.Dimension(200, 90), this::btnAnalisaKamarActionPerformed);
+        btnAnalisaKamar = createMenuButton("/48x48/iconfinder_cleaning-door-knob-object-hygiene_5728178.png", "Informasi Kamar", "btnAnalisaKamar", this::btnAnalisaKamarActionPerformed);
 
-        btnRHDOkter = createMenuButton("/48x48/address-book.png", "Harian Dokter", "btnRHDOkter", new java.awt.Dimension(200, 90), this::btnRHDOkterActionPerformed);
+        btnRHDOkter = createMenuButton("/48x48/address-book.png", "Harian Dokter", "btnRHDOkter", this::btnRHDOkterActionPerformed);
 
-        btnRBDokter = createMenuButton("/48x48/address-book.png", "Bulanan Dokter", "btnRBDokter", new java.awt.Dimension(200, 90), this::btnRBDokterActionPerformed);
+        btnRBDokter = createMenuButton("/48x48/address-book.png", "Bulanan Dokter", "btnRBDokter", this::btnRBDokterActionPerformed);
 
-        btnTagihanMasuk = createMenuButton("/48x48/1404046800_Cash_register.png", "Tagihan Masuk", "btnTagihanMasuk", new java.awt.Dimension(200, 90), this::btnTagihanMasukActionPerformed);
+        btnTagihanMasuk = createMenuButton("/48x48/1404046800_Cash_register.png", "Tagihan Masuk", "btnTagihanMasuk", this::btnTagihanMasukActionPerformed);
 
-        btnResume = createMenuButton("/48x48/1360816018_tests.png", "Riwayat Perawatan", "btnResume", new java.awt.Dimension(200, 90), this::btnResumeActionPerformed);
+        btnResume = createMenuButton("/48x48/1360816018_tests.png", "Riwayat Perawatan", "btnResume", this::btnResumeActionPerformed);
 
-        btnDiet = createMenuButton("/48x48/dietpasien.png", "Diet Pasien", "btnDiet", new java.awt.Dimension(200, 90), this::btnDietActionPerformed);
+        btnDiet = createMenuButton("/48x48/dietpasien.png", "Diet Pasien", "btnDiet", this::btnDietActionPerformed);
 
-        btnRHParamedis = createMenuButton("/48x48/1360485894_add-notes.png", "Harian Paramedis", "btnRHParamedis", new java.awt.Dimension(200, 90), this::btnRHParamedisActionPerformed);
+        btnRHParamedis = createMenuButton("/48x48/1360485894_add-notes.png", "Harian Paramedis", "btnRHParamedis", this::btnRHParamedisActionPerformed);
 
-        btnRBParamedis = createMenuButton("/48x48/1360485894_add-notes.png", "Bulanan Paramedis", "btnRBParamedis", new java.awt.Dimension(200, 90), this::btnRBParamedisActionPerformed);
+        btnRBParamedis = createMenuButton("/48x48/1360485894_add-notes.png", "Bulanan Paramedis", "btnRBParamedis", this::btnRBParamedisActionPerformed);
 
-        btnKasir = createMenuButton("/48x48/cashbox.png", "Rawat Jalan", "btnKasir", new java.awt.Dimension(200, 90), this::btnKasirActionPerformed);
+        btnKasir = createMenuButton("/48x48/cashbox.png", "Rawat Jalan", "btnKasir", this::btnKasirActionPerformed);
 
-        btnLahir = createMenuButton("/48x48/baby-girl.png", "Kelahiran Bayi", "btnLahir", new java.awt.Dimension(200, 90), this::btnLahirActionPerformed);
+        btnLahir = createMenuButton("/48x48/baby-girl.png", "Kelahiran Bayi", "btnLahir", this::btnLahirActionPerformed);
 
-        btnSetBiayaHarian = createMenuButton("/48x48/1360486845_23.png", "Biaya Harian", "btnSetBiayaHarian", new java.awt.Dimension(200, 90), this::btnSetBiayaHarianActionPerformed);
+        btnSetBiayaHarian = createMenuButton("/48x48/1360486845_23.png", "Biaya Harian", "btnSetBiayaHarian", this::btnSetBiayaHarianActionPerformed);
 
-        btnJenisInventaris = createMenuButton("/48x48/cabinet.png", "Jenis Inventaris", "btnJenisInventaris", new java.awt.Dimension(200, 90), this::btnJenisInventarisActionPerformed);
+        btnJenisInventaris = createMenuButton("/48x48/cabinet.png", "Jenis Inventaris", "btnJenisInventaris", this::btnJenisInventarisActionPerformed);
 
-        btnKategoriInventaris = createMenuButton("/48x48/1360487078_shipping.png", "Kategori Inventaris", "btnKategoriInventaris", new java.awt.Dimension(200, 90), this::btnKategoriInventarisActionPerformed);
+        btnKategoriInventaris = createMenuButton("/48x48/1360487078_shipping.png", "Kategori Inventaris", "btnKategoriInventaris", this::btnKategoriInventarisActionPerformed);
 
-        btnLihatPiutang = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Pasien", "btnLihatPiutang", new java.awt.Dimension(200, 90), this::btnLihatPiutangActionPerformed);
+        btnLihatPiutang = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Pasien", "btnLihatPiutang", this::btnLihatPiutangActionPerformed);
 
-        btnLaboratorium = createMenuButton("/48x48/laboratory.png", "Periksa Lab PK", "btnLaboratorium", new java.awt.Dimension(200, 90), this::btnLaboratoriumActionPerformed);
+        btnLaboratorium = createMenuButton("/48x48/laboratory.png", "Periksa Lab PK", "btnLaboratorium", this::btnLaboratoriumActionPerformed);
 
-        btnRalanMasuk = createMenuButton("/48x48/1404047007_02.png", "Pembayaran Ralan", "btnRalanMasuk", new java.awt.Dimension(200, 90), this::btnRalanMasukActionPerformed);
+        btnRalanMasuk = createMenuButton("/48x48/1404047007_02.png", "Pembayaran Ralan", "btnRalanMasuk", this::btnRalanMasukActionPerformed);
 
-        btnSetupAplikasi = createMenuButton("/48x48/local_network.png", "Set Aplikasi", "btnSetupAplikasi", new java.awt.Dimension(200, 90), this::btnSetupAplikasiActionPerformed);
+        btnSetupAplikasi = createMenuButton("/48x48/local_network.png", "Set Aplikasi", "btnSetupAplikasi", this::btnSetupAplikasiActionPerformed);
 
-        btnSetOtoRalan = createMenuButton("/48x48/stethoscope (1).png", "Set Oto Ralan", "btnSetOtoRalan", new java.awt.Dimension(200, 90), this::btnSetOtoRalanActionPerformed);
+        btnSetOtoRalan = createMenuButton("/48x48/stethoscope (1).png", "Set Oto Ralan", "btnSetOtoRalan", this::btnSetOtoRalanActionPerformed);
 
-        btnRanapMasuk = createMenuButton("/48x48/1404047007_02.png", "Pembayaran Ranap", "btnRanapMasuk", new java.awt.Dimension(200, 90), this::btnRanapMasukActionPerformed);
+        btnRanapMasuk = createMenuButton("/48x48/1404047007_02.png", "Pembayaran Ranap", "btnRanapMasuk", this::btnRanapMasukActionPerformed);
 
-        btnProdusenInventaris = createMenuButton("/48x48/industry.png", "Produsen Inventaris", "btnProdusenInventaris", new java.awt.Dimension(200, 90), this::btnProdusenInventarisActionPerformed);
+        btnProdusenInventaris = createMenuButton("/48x48/industry.png", "Produsen Inventaris", "btnProdusenInventaris", this::btnProdusenInventarisActionPerformed);
 
-        btnSetBiayaMasukSekali = createMenuButton("/48x48/1360486845_23.png", "Biaya Masuk Sekali", "btnSetBiayaMasukSekali", new java.awt.Dimension(200, 90), this::btnSetBiayaMasukSekaliActionPerformed);
+        btnSetBiayaMasukSekali = createMenuButton("/48x48/1360486845_23.png", "Biaya Masuk Sekali", "btnSetBiayaMasukSekali", this::btnSetBiayaMasukSekaliActionPerformed);
 
-        btnPaketOperasi = createMenuButton("/48x48/1360487111_stock_paste.png", "Tarif Operasi/VK", "btnPaketOperasi", new java.awt.Dimension(200, 90), this::btnPaketOperasiActionPerformed);
+        btnPaketOperasi = createMenuButton("/48x48/1360487111_stock_paste.png", "Tarif Operasi/VK", "btnPaketOperasi", this::btnPaketOperasiActionPerformed);
 
-        btnTagihanOperasi = createMenuButton("/48x48/surgeon.png", "Operasi/VK", "btnTagihanOperasi", new java.awt.Dimension(200, 90), this::btnTagihanOperasiActionPerformed);
+        btnTagihanOperasi = createMenuButton("/48x48/surgeon.png", "Operasi/VK", "btnTagihanOperasi", this::btnTagihanOperasiActionPerformed);
 
-        BtnJadwal = createMenuButton("/48x48/informasidokter.png", "Jadwal Praktek", "BtnJadwal", new java.awt.Dimension(200, 90), this::BtnJadwalActionPerformed);
+        BtnJadwal = createMenuButton("/48x48/informasidokter.png", "Jadwal Praktek", "BtnJadwal", this::BtnJadwalActionPerformed);
 
-        btnMerkInventaris = createMenuButton("/48x48/bag1.png", "Merk Inventaris", "btnMerkInventaris", new java.awt.Dimension(200, 90), this::btnMerkInventarisActionPerformed);
+        btnMerkInventaris = createMenuButton("/48x48/bag1.png", "Merk Inventaris", "btnMerkInventaris", this::btnMerkInventarisActionPerformed);
 
-        btnRuangInventaris = createMenuButton("/48x48/bedroom.png", "Ruang Inventaris", "btnRuangInventaris", new java.awt.Dimension(200, 90), this::btnRuangInventarisActionPerformed);
+        btnRuangInventaris = createMenuButton("/48x48/bedroom.png", "Ruang Inventaris", "btnRuangInventaris", this::btnRuangInventarisActionPerformed);
 
-        btnBarangInventaris = createMenuButton("/48x48/fax.png", "Koleksi Inventaris", "btnBarangInventaris", new java.awt.Dimension(200, 90), this::btnBarangInventarisActionPerformed);
+        btnBarangInventaris = createMenuButton("/48x48/fax.png", "Koleksi Inventaris", "btnBarangInventaris", this::btnBarangInventarisActionPerformed);
 
-        btnInventaris = createMenuButton("/48x48/1360486921_bar-code.png", "Data Inventaris", "btnInventaris", new java.awt.Dimension(200, 90), this::btnInventarisActionPerformed);
+        btnInventaris = createMenuButton("/48x48/1360486921_bar-code.png", "Data Inventaris", "btnInventaris", this::btnInventarisActionPerformed);
 
-        btnSirkulasiInventaris = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Inventaris", "btnSirkulasiInventaris", new java.awt.Dimension(200, 90), this::btnSirkulasiInventarisActionPerformed);
+        btnSirkulasiInventaris = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Inventaris", "btnSirkulasiInventaris", this::btnSirkulasiInventarisActionPerformed);
 
-        btnFrekuensiRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Frekuensi Penyakit Ralan", "btnFrekuensiRalan", new java.awt.Dimension(200, 90), this::btnFrekuensiRalanActionPerformed);
+        btnFrekuensiRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Frekuensi Penyakit Ralan", "btnFrekuensiRalan", this::btnFrekuensiRalanActionPerformed);
 
-        btnFrekuensiRanap = createMenuButton("/48x48/applications-office.png", "Frekuensi Penyakit Ranap", "btnFrekuensiRanap", new java.awt.Dimension(200, 90), this::btnFrekuensiRanapActionPerformed);
+        btnFrekuensiRanap = createMenuButton("/48x48/applications-office.png", "Frekuensi Penyakit Ranap", "btnFrekuensiRanap", this::btnFrekuensiRanapActionPerformed);
 
-        btnSetupOtoLokasi = createMenuButton("/48x48/our_process_2.png", "Set Oto Lokasi", "btnSetupOtoLokasi", new java.awt.Dimension(200, 90), this::btnSetupOtoLokasiActionPerformed);
+        btnSetupOtoLokasi = createMenuButton("/48x48/our_process_2.png", "Set Oto Lokasi", "btnSetupOtoLokasi", this::btnSetupOtoLokasiActionPerformed);
 
-        btnTagihanPoli = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Dokter Poli", "btnTagihanPoli", new java.awt.Dimension(200, 90), this::btnTagihanPoliActionPerformed);
+        btnTagihanPoli = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Dokter Poli", "btnTagihanPoli", this::btnTagihanPoliActionPerformed);
 
-        btnRujukMasuk = createMenuButton("/48x48/if_vector_65_13_473800.png", "Rujukan Masuk", "btnRujukMasuk", new java.awt.Dimension(200, 90), this::btnRujukMasukActionPerformed);
+        btnRujukMasuk = createMenuButton("/48x48/if_vector_65_13_473800.png", "Rujukan Masuk", "btnRujukMasuk", this::btnRujukMasukActionPerformed);
 
-        btnTracker = createMenuButton("/48x48/receptionist.png", "Tracker Login", "btnTracker", new java.awt.Dimension(200, 90), this::btnTrackerActionPerformed);
+        btnTracker = createMenuButton("/48x48/receptionist.png", "Tracker Login", "btnTracker", this::btnTrackerActionPerformed);
 
-        btnTindakanRanap = createMenuButton("/48x48/doctor (2).png", "Tarif Ranap", "btnTindakanRanap", new java.awt.Dimension(200, 90), this::btnTindakanRanapActionPerformed);
+        btnTindakanRanap = createMenuButton("/48x48/doctor (2).png", "Tarif Ranap", "btnTindakanRanap", this::btnTindakanRanapActionPerformed);
 
-        btnSetupJamInap = createMenuButton("/48x48/Time.png", "Set Kamar Inap", "btnSetupJamInap", new java.awt.Dimension(200, 90), this::btnSetupJamInapActionPerformed);
+        btnSetupJamInap = createMenuButton("/48x48/Time.png", "Set Kamar Inap", "btnSetupJamInap", this::btnSetupJamInapActionPerformed);
 
-        btnStokObatPasien = createMenuButton("/48x48/1360487078_shipping.png", "Stok Obat Pasien", "btnStokObatPasien", new java.awt.Dimension(200, 90), this::btnStokObatPasienActionPerformed);
+        btnStokObatPasien = createMenuButton("/48x48/1360487078_shipping.png", "Stok Obat Pasien", "btnStokObatPasien", this::btnStokObatPasienActionPerformed);
 
-        btnTarifLab = createMenuButton("/48x48/address-book.png", "Tarif Lab", "btnTarifLab", new java.awt.Dimension(200, 90), this::btnTarifLabActionPerformed);
+        btnTarifLab = createMenuButton("/48x48/address-book.png", "Tarif Lab", "btnTarifLab", this::btnTarifLabActionPerformed);
 
-        btnSetPenjab = createMenuButton("/48x48/user3.png", "Set P.J. Unit Penunjang", "btnSetPenjab", new java.awt.Dimension(200, 90), this::btnSetPenjabActionPerformed);
+        btnSetPenjab = createMenuButton("/48x48/user3.png", "Set P.J. Unit Penunjang", "btnSetPenjab", this::btnSetPenjabActionPerformed);
 
-        btnTagihanObatPoli = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Poli", "btnTagihanObatPoli", new java.awt.Dimension(200, 90), this::btnTagihanObatPoliActionPerformed);
+        btnTagihanObatPoli = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Poli", "btnTagihanObatPoli", this::btnTagihanObatPoliActionPerformed);
 
-        btnTagihanObatBangsal = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Kamar", "btnTagihanObatBangsal", new java.awt.Dimension(200, 90), this::btnTagihanObatBangsalActionPerformed);
+        btnTagihanObatBangsal = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Kamar", "btnTagihanObatBangsal", this::btnTagihanObatBangsalActionPerformed);
 
-        btnReturPasien = createMenuButton("/48x48/1360815295_medical_case.png", "Retur Obat Ranap", "btnReturPasien", new java.awt.Dimension(200, 90), this::btnReturPasienActionPerformed);
+        btnReturPasien = createMenuButton("/48x48/1360815295_medical_case.png", "Retur Obat Ranap", "btnReturPasien", this::btnReturPasienActionPerformed);
 
-        btnKeuntunganObatRanap = createMenuButton("/48x48/coins.png", "Keuntungan Beri Obat ", "btnKeuntunganObatRanap", new java.awt.Dimension(200, 90), this::btnKeuntunganObatRanapActionPerformed);
+        btnKeuntunganObatRanap = createMenuButton("/48x48/coins.png", "Keuntungan Beri Obat ", "btnKeuntunganObatRanap", this::btnKeuntunganObatRanapActionPerformed);
 
-        btnPenggajian = createMenuButton("/48x48/1404046603_wallet.png", "Kepegawaian & Gaji", "btnPenggajian", new java.awt.Dimension(200, 90), this::btnPenggajianActionPerformed);
+        btnPenggajian = createMenuButton("/48x48/1404046603_wallet.png", "Kepegawaian & Gaji", "btnPenggajian", this::btnPenggajianActionPerformed);
 
-        btnRekapPresensi = createMenuButton("/48x48/sign-up.png", "Rekap Kehadiran", "btnRekapPresensi", new java.awt.Dimension(200, 90), this::btnRekapPresensiActionPerformed);
+        btnRekapPresensi = createMenuButton("/48x48/sign-up.png", "Rekap Kehadiran", "btnRekapPresensi", this::btnRekapPresensiActionPerformed);
 
-        btnRekapHarian = createMenuButton("/48x48/rekap.png", "Presensi Harian", "btnRekapHarian", new java.awt.Dimension(200, 90), this::btnRekapHarianActionPerformed);
+        btnRekapHarian = createMenuButton("/48x48/rekap.png", "Presensi Harian", "btnRekapHarian", this::btnRekapHarianActionPerformed);
 
-        btnRekapBulanan = createMenuButton("/48x48/1360486898_project-plan.png", "Presensi Bulanan", "btnRekapBulanan", new java.awt.Dimension(200, 90), this::btnRekapBulananActionPerformed);
+        btnRekapBulanan = createMenuButton("/48x48/1360486898_project-plan.png", "Presensi Bulanan", "btnRekapBulanan", this::btnRekapBulananActionPerformed);
 
-        btnDeposit = createMenuButton("/48x48/Money.png", "Deposit Pasien", "btnDeposit", new java.awt.Dimension(200, 90), this::btnDepositActionPerformed);
+        btnDeposit = createMenuButton("/48x48/Money.png", "Deposit Pasien", "btnDeposit", this::btnDepositActionPerformed);
 
-        btnSetupRM = createMenuButton("/48x48/patient (1).png", "Set RM", "btnSetupRM", new java.awt.Dimension(200, 90), this::btnSetupRMActionPerformed);
+        btnSetupRM = createMenuButton("/48x48/patient (1).png", "Set RM", "btnSetupRM", this::btnSetupRMActionPerformed);
 
-        btnResepPulang = createMenuButton("/48x48/IconResepPulang.png", "Resep Pulang", "btnResepPulang", new java.awt.Dimension(200, 90), this::btnResepPulangActionPerformed);
+        btnResepPulang = createMenuButton("/48x48/IconResepPulang.png", "Resep Pulang", "btnResepPulang", this::btnResepPulangActionPerformed);
 
-        btnSetupTarif = createMenuButton("/48x48/x-office-address-book.png", "Set Penggunaan Tarif", "btnSetupTarif", new java.awt.Dimension(200, 90), this::btnSetupTarifActionPerformed);
+        btnSetupTarif = createMenuButton("/48x48/x-office-address-book.png", "Set Penggunaan Tarif", "btnSetupTarif", this::btnSetupTarifActionPerformed);
 
-        btnBarangIpsrs = createMenuButton("/48x48/1360487078_shipping.png", "Barang Non Medis", "btnBarangIpsrs", new java.awt.Dimension(200, 90), this::btnBarangIpsrsActionPerformed);
+        btnBarangIpsrs = createMenuButton("/48x48/1360487078_shipping.png", "Barang Non Medis", "btnBarangIpsrs", this::btnBarangIpsrsActionPerformed);
 
-        btnPembelianIpsrs = createMenuButton("/48x48/inventory-maintenance.png", "Pengadaan Barang Non Medis", "btnPembelianIpsrs", new java.awt.Dimension(200, 90), this::btnPembelianIpsrsActionPerformed);
+        btnPembelianIpsrs = createMenuButton("/48x48/inventory-maintenance.png", "Pengadaan Barang Non Medis", "btnPembelianIpsrs", this::btnPembelianIpsrsActionPerformed);
 
-        btnPengeluaranIpsrs = createMenuButton("/48x48/shopping-basket-full.png", "Stok Keluar Non Medis", "btnPengeluaranIpsrs", new java.awt.Dimension(200, 90), this::btnPengeluaranIpsrsActionPerformed);
+        btnPengeluaranIpsrs = createMenuButton("/48x48/shopping-basket-full.png", "Stok Keluar Non Medis", "btnPengeluaranIpsrs", this::btnPengeluaranIpsrsActionPerformed);
 
-        btnRHMasukIpsrs = createMenuButton("/48x48/shopping_cart.png", "Rekap Pengadaan Non Medis", "btnRHMasukIpsrs", new java.awt.Dimension(200, 90), this::btnRHMasukIpsrsActionPerformed);
+        btnRHMasukIpsrs = createMenuButton("/48x48/shopping_cart.png", "Rekap Pengadaan Non Medis", "btnRHMasukIpsrs", this::btnRHMasukIpsrsActionPerformed);
 
-        btnRHKeluarIpsrs = createMenuButton("/48x48/1360816018_tests.png", "Rekap Stok Keluar Non Medis", "btnRHKeluarIpsrs", new java.awt.Dimension(200, 90), this::btnRHKeluarIpsrsActionPerformed);
+        btnRHKeluarIpsrs = createMenuButton("/48x48/1360816018_tests.png", "Rekap Stok Keluar Non Medis", "btnRHKeluarIpsrs", this::btnRHKeluarIpsrsActionPerformed);
 
-        btnRBiayaIpsrs = createMenuButton("/48x48/1360486845_23.png", "Biaya Pengadaan Non Medis", "btnRBiayaIpsrs", new java.awt.Dimension(200, 90), this::btnRBiayaIpsrsActionPerformed);
+        btnRBiayaIpsrs = createMenuButton("/48x48/1360486845_23.png", "Biaya Pengadaan Non Medis", "btnRBiayaIpsrs", this::btnRBiayaIpsrsActionPerformed);
 
-        btnTarifRadiologi = createMenuButton("/48x48/1410153940_radiology.png", "Tarif Radiologi", "btnTarifRadiologi", new java.awt.Dimension(200, 90), this::btnTarifRadiologiActionPerformed);
+        btnTarifRadiologi = createMenuButton("/48x48/1410153940_radiology.png", "Tarif Radiologi", "btnTarifRadiologi", this::btnTarifRadiologiActionPerformed);
 
-        btnPeriksaRadiologi = createMenuButton("/48x48/Icon-Radiologi.png", "Periksa Radiologi", "btnPeriksaRadiologi", new java.awt.Dimension(200, 90), this::btnPeriksaRadiologiActionPerformed);
+        btnPeriksaRadiologi = createMenuButton("/48x48/Icon-Radiologi.png", "Periksa Radiologi", "btnPeriksaRadiologi", this::btnPeriksaRadiologiActionPerformed);
 
-        btnTagihanRalanPerhari = createMenuButton("/48x48/1360485865_schedule.png", "Rekap Pembayaran Ralan", "btnTagihanRalanPerhari", new java.awt.Dimension(200, 90), this::btnTagihanRalanPerhariActionPerformed);
+        btnTagihanRalanPerhari = createMenuButton("/48x48/1360485865_schedule.png", "Rekap Pembayaran Ralan", "btnTagihanRalanPerhari", this::btnTagihanRalanPerhariActionPerformed);
 
-        btnTagihanRanapPerhari = createMenuButton("/48x48/1360485865_schedule.png", "Rekap Pembayaran Ranap", "btnTagihanRanapPerhari", new java.awt.Dimension(200, 90), this::btnTagihanRanapPerhariActionPerformed);
+        btnTagihanRanapPerhari = createMenuButton("/48x48/1360485865_schedule.png", "Rekap Pembayaran Ranap", "btnTagihanRanapPerhari", this::btnTagihanRanapPerhariActionPerformed);
 
-        btnSetupEmbalase = createMenuButton("/48x48/Money.png", "Set Embalase & Tuslah", "btnSetupEmbalase", new java.awt.Dimension(200, 90), this::btnSetupEmbalaseActionPerformed);
+        btnSetupEmbalase = createMenuButton("/48x48/Money.png", "Set Embalase & Tuslah", "btnSetupEmbalase", this::btnSetupEmbalaseActionPerformed);
 
-        btnSirkulasiBerkas = createMenuButton("/48x48/data_management.png", "Peminjaman Berkas RM", "btnSirkulasiBerkas", new java.awt.Dimension(200, 90), this::btnSirkulasiBerkasActionPerformed);
+        btnSirkulasiBerkas = createMenuButton("/48x48/data_management.png", "Peminjaman Berkas RM", "btnSirkulasiBerkas", this::btnSirkulasiBerkasActionPerformed);
 
-        btnObatPasienRalan = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Ralan", "btnObatPasienRalan", new java.awt.Dimension(200, 90), this::btnObatPasienRalanActionPerformed);
+        btnObatPasienRalan = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Ralan", "btnObatPasienRalan", this::btnObatPasienRalanActionPerformed);
 
-        btnObatPasienRanap = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Ranap", "btnObatPasienRanap", new java.awt.Dimension(200, 90), this::btnObatPasienRanapActionPerformed);
+        btnObatPasienRanap = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Ranap", "btnObatPasienRanap", this::btnObatPasienRanapActionPerformed);
 
-        btnPemesanan = createMenuButton("/48x48/kwrite.png", "Penerimaan Obat & BHP", "btnPemesanan", new java.awt.Dimension(200, 90), this::btnPemesananActionPerformed);
+        btnPemesanan = createMenuButton("/48x48/kwrite.png", "Penerimaan Obat & BHP", "btnPemesanan", this::btnPemesananActionPerformed);
 
-        btnPengeluaran = createMenuButton("/48x48/1404047106_emblem-money.png", "Pengeluaran Harian", "btnPengeluaran", new java.awt.Dimension(200, 90), this::btnPengeluaranActionPerformed);
+        btnPengeluaran = createMenuButton("/48x48/1404047106_emblem-money.png", "Pengeluaran Harian", "btnPengeluaran", this::btnPengeluaranActionPerformed);
 
-        btnTambahanBiaya = createMenuButton("/48x48/1404046786_Money.png", "Tambahan Biaya Pasien", "btnTambahanBiaya", new java.awt.Dimension(200, 90), this::btnTambahanBiayaActionPerformed);
+        btnTambahanBiaya = createMenuButton("/48x48/1404046786_Money.png", "Tambahan Biaya Pasien", "btnTambahanBiaya", this::btnTambahanBiayaActionPerformed);
 
-        btnPotonganBiaya = createMenuButton("/48x48/1404046786_Money.png", "Potongan Biaya Pasien", "btnPotonganBiaya", new java.awt.Dimension(200, 90), this::btnPotonganBiayaActionPerformed);
+        btnPotonganBiaya = createMenuButton("/48x48/1404046786_Money.png", "Potongan Biaya Pasien", "btnPotonganBiaya", this::btnPotonganBiayaActionPerformed);
 
-        btnJMDetailDokter = createMenuButton("/48x48/address-book.png", "Detail JM Dokter", "btnJMDetailDokter", new java.awt.Dimension(200, 90), this::btnJMDetailDokterActionPerformed);
+        btnJMDetailDokter = createMenuButton("/48x48/address-book.png", "Detail JM Dokter", "btnJMDetailDokter", this::btnJMDetailDokterActionPerformed);
 
-        btnIGD = createMenuButton("/48x48/Iconigd.png", "IGD/UGD", "btnIGD", new java.awt.Dimension(200, 90), this::btnIGDActionPerformed);
+        btnIGD = createMenuButton("/48x48/Iconigd.png", "IGD/UGD", "btnIGD", this::btnIGDActionPerformed);
 
-        btnBarcodeRalan = createMenuButton("/48x48/Barcode-Rawat-Jalan.png", "Rawat Jalan", "btnBarcodeRalan", new java.awt.Dimension(200, 90), this::btnBarcodeRalanActionPerformed);
+        btnBarcodeRalan = createMenuButton("/48x48/Barcode-Rawat-Jalan.png", "Rawat Jalan", "btnBarcodeRalan", this::btnBarcodeRalanActionPerformed);
 
-        btnBarcodeRanap = createMenuButton("/48x48/Barcode-Rawat-Inap.png", "Rawat Inap", "btnBarcodeRanap", new java.awt.Dimension(200, 90), this::btnBarcodeRanapActionPerformed);
+        btnBarcodeRanap = createMenuButton("/48x48/Barcode-Rawat-Inap.png", "Rawat Inap", "btnBarcodeRanap", this::btnBarcodeRanapActionPerformed);
 
-        btnSetObatRalan = createMenuButton("/48x48/1360487093_price.png", "Set Obat Ralan", "btnSetObatRalan", new java.awt.Dimension(200, 90), this::btnSetObatRalanActionPerformed);
+        btnSetObatRalan = createMenuButton("/48x48/1360487093_price.png", "Set Obat Ralan", "btnSetObatRalan", this::btnSetObatRalanActionPerformed);
 
-        btnSetObatRanap = createMenuButton("/48x48/1360487093_price.png", "Set Obat Ranap", "btnSetObatRanap", new java.awt.Dimension(200, 90), this::btnSetObatRanapActionPerformed);
+        btnSetObatRanap = createMenuButton("/48x48/1360487093_price.png", "Set Obat Ranap", "btnSetObatRanap", this::btnSetObatRanapActionPerformed);
 
-        btnPenyakitPD3I = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Penyakit AFP & PD3I", "btnPenyakitPD3I", new java.awt.Dimension(200, 90), this::btnPenyakitPD3IActionPerformed);
+        btnPenyakitPD3I = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Penyakit AFP & PD3I", "btnPenyakitPD3I", this::btnPenyakitPD3IActionPerformed);
 
-        btnSurveilansPD3I = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans AFP & PD3I", "btnSurveilansPD3I", new java.awt.Dimension(200, 90), this::btnSurveilansPD3IActionPerformed);
+        btnSurveilansPD3I = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans AFP & PD3I", "btnSurveilansPD3I", this::btnSurveilansPD3IActionPerformed);
 
-        btnSurveilansRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans Ralan", "btnSurveilansRalan", new java.awt.Dimension(200, 90), this::btnSurveilansRalanActionPerformed);
+        btnSurveilansRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans Ralan", "btnSurveilansRalan", this::btnSurveilansRalanActionPerformed);
 
-        btnDiagnosa = createMenuButton("/48x48/health.png", "Diagnosa Pasien", "btnDiagnosa", new java.awt.Dimension(200, 90), this::btnDiagnosaActionPerformed);
+        btnDiagnosa = createMenuButton("/48x48/health.png", "Diagnosa Pasien", "btnDiagnosa", this::btnDiagnosaActionPerformed);
 
-        btnSurveilansRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans Ranap", "btnSurveilansRanap", new java.awt.Dimension(200, 90), this::btnSurveilansRanapActionPerformed);
+        btnSurveilansRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Surveilans Ranap", "btnSurveilansRanap", this::btnSurveilansRanapActionPerformed);
 
-        btnPnyTakMenularRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Tdk Menular Ranap", "btnPnyTakMenularRanap", new java.awt.Dimension(200, 90), this::btnPnyTakMenularRanapActionPerformed);
+        btnPnyTakMenularRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Tdk Menular Ranap", "btnPnyTakMenularRanap", this::btnPnyTakMenularRanapActionPerformed);
 
-        btnPnyTakMenularRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Tdk Menular Ralan", "btnPnyTakMenularRalan", new java.awt.Dimension(200, 90), this::btnPnyTakMenularRalanActionPerformed);
+        btnPnyTakMenularRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Tdk Menular Ralan", "btnPnyTakMenularRalan", this::btnPnyTakMenularRalanActionPerformed);
 
-        btnKunjunganRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Ralan", "btnKunjunganRalan", new java.awt.Dimension(200, 90), this::btnKunjunganRalanActionPerformed);
+        btnKunjunganRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Ralan", "btnKunjunganRalan", this::btnKunjunganRalanActionPerformed);
 
-        btnRl32 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.2 Rawat Darurat", "btnRl32", new java.awt.Dimension(200, 90), this::btnRl32ActionPerformed);
+        btnRl32 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.2 Rawat Darurat", "btnRl32", this::btnRl32ActionPerformed);
 
-        btnRl33 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.3 Gigi dan Mulut", "btnRl33", new java.awt.Dimension(200, 90), this::btnRl33ActionPerformed);
+        btnRl33 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.3 Gigi dan Mulut", "btnRl33", this::btnRl33ActionPerformed);
 
-        btnRl37 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.7 Radiologi", "btnRl37", new java.awt.Dimension(200, 90), this::btnRl37ActionPerformed);
+        btnRl37 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.7 Radiologi", "btnRl37", this::btnRl37ActionPerformed);
 
-        btnRl38 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.8 Laboratorium", "btnRl38", new java.awt.Dimension(200, 90), this::btnRl38ActionPerformed);
+        btnRl38 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.8 Laboratorium", "btnRl38", this::btnRl38ActionPerformed);
 
-        btnTagihanDokter = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Dokter Ralan", "btnTagihanDokter", new java.awt.Dimension(200, 90), this::btnTagihanDokterActionPerformed);
+        btnTagihanDokter = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Dokter Ralan", "btnTagihanDokter", this::btnTagihanDokterActionPerformed);
 
-        btnSMS = createMenuButton("/48x48/1360485538_recieve-mail.png", "SMS Gateway", "btnSMS", new java.awt.Dimension(200, 90), this::btnSMSActionPerformed);
+        btnSMS = createMenuButton("/48x48/1360485538_recieve-mail.png", "SMS Gateway", "btnSMS", this::btnSMSActionPerformed);
 
-        btnSidikJari = createMenuButton("/48x48/finger.png", "Sidik Jari", "btnSidikJari", new java.awt.Dimension(200, 90), this::btnSidikJariActionPerformed);
+        btnSidikJari = createMenuButton("/48x48/finger.png", "Sidik Jari", "btnSidikJari", this::btnSidikJariActionPerformed);
 
-        btnJamPresensi = createMenuButton("/48x48/Time.png", "Jam Presensi", "btnJamPresensi", new java.awt.Dimension(200, 90), this::btnJamPresensiActionPerformed);
+        btnJamPresensi = createMenuButton("/48x48/Time.png", "Jam Presensi", "btnJamPresensi", this::btnJamPresensiActionPerformed);
 
-        btnJadwalPegawai = createMenuButton("/48x48/1360485865_schedule.png", "Jadwal Pegawai", "btnJadwalPegawai", new java.awt.Dimension(200, 90), this::btnJadwalPegawaiActionPerformed);
+        btnJadwalPegawai = createMenuButton("/48x48/1360485865_schedule.png", "Jadwal Pegawai", "btnJadwalPegawai", this::btnJadwalPegawaiActionPerformed);
 
-        btnJenisParkir = createMenuButton("/48x48/parkirjenis.png", "Jenis Parkir", "btnJenisParkir", new java.awt.Dimension(200, 90), this::btnJenisParkirActionPerformed);
+        btnJenisParkir = createMenuButton("/48x48/parkirjenis.png", "Jenis Parkir", "btnJenisParkir", this::btnJenisParkirActionPerformed);
 
-        btnBarcodeParkir = createMenuButton("/48x48/1360484263_barcode.png", "Barcode Parkir", "btnBarcodeParkir", new java.awt.Dimension(200, 90), this::btnBarcodeParkirActionPerformed);
+        btnBarcodeParkir = createMenuButton("/48x48/1360484263_barcode.png", "Barcode Parkir", "btnBarcodeParkir", this::btnBarcodeParkirActionPerformed);
 
-        btnParkirMasuk = createMenuButton("/48x48/parkirmasuk.png", "Parkir Masuk", "btnParkirMasuk", new java.awt.Dimension(200, 90), this::btnParkirMasukActionPerformed);
+        btnParkirMasuk = createMenuButton("/48x48/parkirmasuk.png", "Parkir Masuk", "btnParkirMasuk", this::btnParkirMasukActionPerformed);
 
-        btnSetupNota = createMenuButton("/48x48/1360485642_edit-notes.png", "Set Billing", "btnSetupNota", new java.awt.Dimension(200, 90), this::btnSetupNotaActionPerformed);
+        btnSetupNota = createMenuButton("/48x48/1360485642_edit-notes.png", "Set Billing", "btnSetupNota", this::btnSetupNotaActionPerformed);
 
-        BtnDpjp = createMenuButton("/48x48/doctor2.png", "DPJP Ranap", "BtnDpjp", new java.awt.Dimension(200, 90), this::BtnDpjpActionPerformed);
+        BtnDpjp = createMenuButton("/48x48/doctor2.png", "DPJP Ranap", "BtnDpjp", this::BtnDpjpActionPerformed);
 
-        btnMutasiBarang = createMenuButton("/48x48/1360485642_edit-notes.png", "Mutasi Obat & BHP", "btnMutasiBarang", new java.awt.Dimension(200, 90), this::btnMutasiBarangActionPerformed);
+        btnMutasiBarang = createMenuButton("/48x48/1360485642_edit-notes.png", "Mutasi Obat & BHP", "btnMutasiBarang", this::btnMutasiBarangActionPerformed);
 
-        btnRl34 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.4 Kebidanan", "btnRl34", new java.awt.Dimension(200, 90), this::btnRl34ActionPerformed);
+        btnRl34 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.4 Kebidanan", "btnRl34", this::btnRl34ActionPerformed);
 
-        btnRl36 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.6 Pembedahan", "btnRl36", new java.awt.Dimension(200, 90), this::btnRl36ActionPerformed);
+        btnRl36 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 3.6 Pembedahan", "btnRl36", this::btnRl36ActionPerformed);
 
-        btnfee_bacaan_ekg = createMenuButton("/48x48/1360485865_schedule.png", "Fee Bacaan EKG", "btnfee_bacaan_ekg", new java.awt.Dimension(200, 90), this::btnfee_bacaan_ekgActionPerformed);
+        btnfee_bacaan_ekg = createMenuButton("/48x48/1360485865_schedule.png", "Fee Bacaan EKG", "btnfee_bacaan_ekg", this::btnfee_bacaan_ekgActionPerformed);
 
-        btnfee_rujukan_rontgen = createMenuButton("/48x48/1360485865_schedule.png", "Fee Rujukan Rontgen", "btnfee_rujukan_rontgen", new java.awt.Dimension(200, 90), this::btnfee_rujukan_rontgenActionPerformed);
+        btnfee_rujukan_rontgen = createMenuButton("/48x48/1360485865_schedule.png", "Fee Rujukan Rontgen", "btnfee_rujukan_rontgen", this::btnfee_rujukan_rontgenActionPerformed);
 
-        btnfee_rujukan_ranap = createMenuButton("/48x48/1360485865_schedule.png", "Fee Rujukan Ranap", "btnfee_rujukan_ranap", new java.awt.Dimension(200, 90), this::btnfee_rujukan_ranapActionPerformed);
+        btnfee_rujukan_ranap = createMenuButton("/48x48/1360485865_schedule.png", "Fee Rujukan Ranap", "btnfee_rujukan_ranap", this::btnfee_rujukan_ranapActionPerformed);
 
-        btnfee_ralan = createMenuButton("/48x48/1360485865_schedule.png", "Fee Periksa Ralan", "btnfee_ralan", new java.awt.Dimension(200, 90), this::btnfee_ralanActionPerformed);
+        btnfee_ralan = createMenuButton("/48x48/1360485865_schedule.png", "Fee Periksa Ralan", "btnfee_ralan", this::btnfee_ralanActionPerformed);
 
-        btnakun_bayar = createMenuButton("/48x48/checklist.png", "Akun Bayar", "btnakun_bayar", new java.awt.Dimension(200, 90), this::btnakun_bayarActionPerformed);
+        btnakun_bayar = createMenuButton("/48x48/checklist.png", "Akun Bayar", "btnakun_bayar", this::btnakun_bayarActionPerformed);
 
-        btnbayar_pemesanan = createMenuButton("/48x48/cashbox.png", "Bayar Pesan Obat/BHP", "btnbayar_pemesanan", new java.awt.Dimension(200, 90), this::btnbayar_pemesananActionPerformed);
+        btnbayar_pemesanan = createMenuButton("/48x48/cashbox.png", "Bayar Pesan Obat/BHP", "btnbayar_pemesanan", this::btnbayar_pemesananActionPerformed);
 
-        btnObatPasienPeresep = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Peresep", "btnObatPasienPeresep", new java.awt.Dimension(200, 90), this::btnObatPasienPeresepActionPerformed);
+        btnObatPasienPeresep = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Dokter Peresep", "btnObatPasienPeresep", this::btnObatPasienPeresepActionPerformed);
 
-        btnJenisIpsrs = createMenuButton("/48x48/cabinet.png", "Jenis Barang Non Medis", "btnJenisIpsrs", new java.awt.Dimension(200, 90), this::btnJenisIpsrsActionPerformed);
+        btnJenisIpsrs = createMenuButton("/48x48/cabinet.png", "Jenis Barang Non Medis", "btnJenisIpsrs", this::btnJenisIpsrsActionPerformed);
 
-        btnPemasukanLain = createMenuButton("/48x48/1360486845_23.png", "Pemasukan Lain-Lain", "btnPemasukanLain", new java.awt.Dimension(200, 90), this::btnPemasukanLainActionPerformed);
+        btnPemasukanLain = createMenuButton("/48x48/1360486845_23.png", "Pemasukan Lain-Lain", "btnPemasukanLain", this::btnPemasukanLainActionPerformed);
 
-        btnPengaturanRekening = createMenuButton("/48x48/gtk-stock-book.png", "Pengaturan Rekening", "btnPengaturanRekening", new java.awt.Dimension(200, 90), this::btnPengaturanRekeningActionPerformed);
+        btnPengaturanRekening = createMenuButton("/48x48/gtk-stock-book.png", "Pengaturan Rekening", "btnPengaturanRekening", this::btnPengaturanRekeningActionPerformed);
 
-        btnJadwalTambahan = createMenuButton("/48x48/1360485865_schedule.png", "Jadwal Tambahan", "btnJadwalTambahan", new java.awt.Dimension(200, 90), this::btnJadwalTambahanActionPerformed);
+        btnJadwalTambahan = createMenuButton("/48x48/1360485865_schedule.png", "Jadwal Tambahan", "btnJadwalTambahan", this::btnJadwalTambahanActionPerformed);
 
-        btnClosingKasir = createMenuButton("/48x48/1360485865_schedule.png", "Closing Kasir", "btnClosingKasir", new java.awt.Dimension(200, 90), this::btnClosingKasirActionPerformed);
+        btnClosingKasir = createMenuButton("/48x48/1360485865_schedule.png", "Closing Kasir", "btnClosingKasir", this::btnClosingKasirActionPerformed);
 
-        btnKeterlambatanPresensi = createMenuButton("/48x48/Time.png", "Set Keterlambatan Presensi", "btnKeterlambatanPresensi", new java.awt.Dimension(200, 90), this::btnKeterlambatanPresensiActionPerformed);
+        btnKeterlambatanPresensi = createMenuButton("/48x48/Time.png", "Set Keterlambatan Presensi", "btnKeterlambatanPresensi", this::btnKeterlambatanPresensiActionPerformed);
 
-        btnSetHargaKamar = createMenuButton("/48x48/bedroom.png", "Set Harga Kamar", "btnSetHargaKamar", new java.awt.Dimension(200, 90), this::btnSetHargaKamarActionPerformed);
+        btnSetHargaKamar = createMenuButton("/48x48/bedroom.png", "Set Harga Kamar", "btnSetHargaKamar", this::btnSetHargaKamarActionPerformed);
 
-        btnRekapPershift = createMenuButton("/48x48/checklist.png", "Rekap Uang Pershift", "btnRekapPershift", new java.awt.Dimension(200, 90), this::btnRekapPershiftActionPerformed);
+        btnRekapPershift = createMenuButton("/48x48/checklist.png", "Rekap Uang Pershift", "btnRekapPershift", this::btnRekapPershiftActionPerformed);
 
-        btnCekBPJSNik = createMenuButton("/48x48/vclaim.png", "Cek NIK VClaim", "btnCekBPJSNik", new java.awt.Dimension(200, 90), this::btnCekBPJSNikActionPerformed);
+        btnCekBPJSNik = createMenuButton("/48x48/vclaim.png", "Cek NIK VClaim", "btnCekBPJSNik", this::btnCekBPJSNikActionPerformed);
 
-        btnCekBPJSKartu = createMenuButton("/48x48/vclaim.png", "Cek No.Kartu VClaim", "btnCekBPJSKartu", new java.awt.Dimension(200, 90), this::btnCekBPJSKartuActionPerformed);
+        btnCekBPJSKartu = createMenuButton("/48x48/vclaim.png", "Cek No.Kartu VClaim", "btnCekBPJSKartu", this::btnCekBPJSKartuActionPerformed);
 
-        btnCekBPJSRiwayatRujukanPCare = createMenuButton("/48x48/vclaim.png", "Riwayat Rujukan PCare di VClaim", "btnCekBPJSRiwayatRujukanPCare", new java.awt.Dimension(200, 90), this::btnCekBPJSRiwayatRujukanPCareActionPerformed);
+        btnCekBPJSRiwayatRujukanPCare = createMenuButton("/48x48/vclaim.png", "Riwayat Rujukan PCare di VClaim", "btnCekBPJSRiwayatRujukanPCare", this::btnCekBPJSRiwayatRujukanPCareActionPerformed);
 
-        btnRekapPresensi2 = createMenuButton("/48x48/sign-up.png", "Rekap Kehadiran 2", "btnRekapPresensi2", new java.awt.Dimension(200, 90), this::btnRekapPresensi2ActionPerformed);
+        btnRekapPresensi2 = createMenuButton("/48x48/sign-up.png", "Rekap Kehadiran 2", "btnRekapPresensi2", this::btnRekapPresensi2ActionPerformed);
 
-        btnObatPerCaraBayar = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Cara Bayar", "btnObatPerCaraBayar", new java.awt.Dimension(200, 90), this::btnObatPerCaraBayarActionPerformed);
+        btnObatPerCaraBayar = createMenuButton("/48x48/1360815855_laboratory.png", "Obat Per Cara Bayar", "btnObatPerCaraBayar", this::btnObatPerCaraBayarActionPerformed);
 
-        btnKunjunganRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Ranap", "btnKunjunganRanap", new java.awt.Dimension(200, 90), this::btnKunjunganRanapActionPerformed);
+        btnKunjunganRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Ranap", "btnKunjunganRanap", this::btnKunjunganRanapActionPerformed);
 
-        btnPaymentPoint = createMenuButton("/48x48/coins.png", "Payment Point", "btnPaymentPoint", new java.awt.Dimension(200, 90), this::btnPaymentPointActionPerformed);
+        btnPaymentPoint = createMenuButton("/48x48/coins.png", "Payment Point", "btnPaymentPoint", this::btnPaymentPointActionPerformed);
 
-        btnCekBPJSNomorRujukanPCare = createMenuButton("/48x48/vclaim.png", "Cek No.Rujukan PCare di VClaim", "btnCekBPJSNomorRujukanPCare", new java.awt.Dimension(200, 90), this::btnCekBPJSNomorRujukanPCareActionPerformed);
+        btnCekBPJSNomorRujukanPCare = createMenuButton("/48x48/vclaim.png", "Cek No.Rujukan PCare di VClaim", "btnCekBPJSNomorRujukanPCare", this::btnCekBPJSNomorRujukanPCareActionPerformed);
 
-        btnICD9 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "ICD 9", "btnICD9", new java.awt.Dimension(200, 90), this::btnICD9ActionPerformed);
+        btnICD9 = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "ICD 9", "btnICD9", this::btnICD9ActionPerformed);
 
-        btnDaruratStok = createMenuButton("/48x48/1360487078_shipping.png", "Darurat Stok", "btnDaruratStok", new java.awt.Dimension(200, 90), this::btnDaruratStokActionPerformed);
+        btnDaruratStok = createMenuButton("/48x48/1360487078_shipping.png", "Darurat Stok", "btnDaruratStok", this::btnDaruratStokActionPerformed);
 
-        btnRetensiRM = createMenuButton("/48x48/reportorium.png", "Retensi Berkas R.M.", "btnRetensiRM", new java.awt.Dimension(200, 90), this::btnRetensiRMActionPerformed);
+        btnRetensiRM = createMenuButton("/48x48/reportorium.png", "Retensi Berkas R.M.", "btnRetensiRM", this::btnRetensiRMActionPerformed);
 
-        btnTemporaryPresensi = createMenuButton("/48x48/1404047834_application-vnd.ms-excel.png", "Temporary Presensi", "btnTemporaryPresensi", new java.awt.Dimension(200, 90), this::btnTemporaryPresensiActionPerformed);
+        btnTemporaryPresensi = createMenuButton("/48x48/1404047834_application-vnd.ms-excel.png", "Temporary Presensi", "btnTemporaryPresensi", this::btnTemporaryPresensiActionPerformed);
 
-        btnJurnalHarian = createMenuButton("/48x48/1360485865_schedule.png", "Jurnal Harian", "btnJurnalHarian", new java.awt.Dimension(200, 90), this::btnJurnalHarianActionPerformed);
+        btnJurnalHarian = createMenuButton("/48x48/1360485865_schedule.png", "Jurnal Harian", "btnJurnalHarian", this::btnJurnalHarianActionPerformed);
 
-        btnSirkulasi2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 2", "btnSirkulasi2", new java.awt.Dimension(200, 90), this::btnSirkulasi2ActionPerformed);
+        btnSirkulasi2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 2", "btnSirkulasi2", this::btnSirkulasi2ActionPerformed);
 
-        btnCekBPJSDiagnosa = createMenuButton("/48x48/vclaim.png", "Referensi Diagnosa VClaim", "btnCekBPJSDiagnosa", new java.awt.Dimension(200, 90), this::btnCekBPJSDiagnosaActionPerformed);
+        btnCekBPJSDiagnosa = createMenuButton("/48x48/vclaim.png", "Referensi Diagnosa VClaim", "btnCekBPJSDiagnosa", this::btnCekBPJSDiagnosaActionPerformed);
 
-        btnCekBPJSPoli = createMenuButton("/48x48/vclaim.png", "Referensi Poli VClaim", "btnCekBPJSPoli", new java.awt.Dimension(200, 90), this::btnCekBPJSPoliActionPerformed);
+        btnCekBPJSPoli = createMenuButton("/48x48/vclaim.png", "Referensi Poli VClaim", "btnCekBPJSPoli", this::btnCekBPJSPoliActionPerformed);
 
-        btnIndustriFarmasi = createMenuButton("/48x48/1360486910_company.png", "Industri Farmasi", "btnIndustriFarmasi", new java.awt.Dimension(200, 90), this::btnIndustriFarmasiActionPerformed);
+        btnIndustriFarmasi = createMenuButton("/48x48/1360486910_company.png", "Industri Farmasi", "btnIndustriFarmasi", this::btnIndustriFarmasiActionPerformed);
 
-        btnRHJasaSarana = createMenuButton("/48x48/address-book.png", "Harian Jasa Sarana", "btnRHJasaSarana", new java.awt.Dimension(200, 90), this::btnRHJasaSaranaActionPerformed);
+        btnRHJasaSarana = createMenuButton("/48x48/address-book.png", "Harian Jasa Sarana", "btnRHJasaSarana", this::btnRHJasaSaranaActionPerformed);
 
-        btnRBJasaSarana = createMenuButton("/48x48/address-book.png", "Bulanan Jasa Sarana", "btnRBJasaSarana", new java.awt.Dimension(200, 90), this::btnRBJasaSaranaActionPerformed);
+        btnRBJasaSarana = createMenuButton("/48x48/address-book.png", "Bulanan Jasa Sarana", "btnRBJasaSarana", this::btnRBJasaSaranaActionPerformed);
 
-        btnRHPaketBHP = createMenuButton("/48x48/1360815855_laboratory.png", "Harian BHP Medis/Paket Obat", "btnRHPaketBHP", new java.awt.Dimension(200, 90), this::btnRHPaketBHPActionPerformed);
+        btnRHPaketBHP = createMenuButton("/48x48/1360815855_laboratory.png", "Harian BHP Medis/Paket Obat", "btnRHPaketBHP", this::btnRHPaketBHPActionPerformed);
 
-        btnRBPaketBHP = createMenuButton("/48x48/1360815855_laboratory.png", "Bulanan BHP Medis/Paket Obat", "btnRBPaketBHP", new java.awt.Dimension(200, 90), this::btnRBPaketBHPActionPerformed);
+        btnRBPaketBHP = createMenuButton("/48x48/1360815855_laboratory.png", "Bulanan BHP Medis/Paket Obat", "btnRBPaketBHP", this::btnRBPaketBHPActionPerformed);
 
-        btnPiutangBelumLunas = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Belum Lunas", "btnPiutangBelumLunas", new java.awt.Dimension(200, 90), this::btnPiutangBelumLunasActionPerformed);
+        btnPiutangBelumLunas = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Belum Lunas", "btnPiutangBelumLunas", this::btnPiutangBelumLunasActionPerformed);
 
-        btnCekBPJSFaskes = createMenuButton("/48x48/vclaim.png", "Referensi Faskes VClaim", "btnCekBPJSFaskes", new java.awt.Dimension(200, 90), this::btnCekBPJSFaskesActionPerformed);
+        btnCekBPJSFaskes = createMenuButton("/48x48/vclaim.png", "Referensi Faskes VClaim", "btnCekBPJSFaskes", this::btnCekBPJSFaskesActionPerformed);
 
-        btnBPJSSEP = createMenuButton("/48x48/vclaim.png", "Data Bridging SEP VClaim", "btnBPJSSEP", new java.awt.Dimension(200, 90), this::btnBPJSSEPActionPerformed);
+        btnBPJSSEP = createMenuButton("/48x48/vclaim.png", "Data Bridging SEP VClaim", "btnBPJSSEP", this::btnBPJSSEPActionPerformed);
 
-        btnPengambilanUTD = createMenuButton("/48x48/1360487078_shipping.png", "Pengambilan BHP UTD", "btnPengambilanUTD", new java.awt.Dimension(200, 90), this::btnPengambilanUTDActionPerformed);
+        btnPengambilanUTD = createMenuButton("/48x48/1360487078_shipping.png", "Pengambilan BHP UTD", "btnPengambilanUTD", this::btnPengambilanUTDActionPerformed);
 
-        btnTarifUtd = createMenuButton("/48x48/1481001686_injection_blood.png", "Tarif UTD", "btnTarifUtd", new java.awt.Dimension(200, 90), this::btnTarifUtdActionPerformed);
+        btnTarifUtd = createMenuButton("/48x48/1481001686_injection_blood.png", "Tarif UTD", "btnTarifUtd", this::btnTarifUtdActionPerformed);
 
-        btnPengambilanUTD2 = createMenuButton("/48x48/1360487078_shipping.png", "Pengambilan BHP Medis", "btnPengambilanUTD2", new java.awt.Dimension(200, 90), this::btnPengambilanUTD2ActionPerformed);
+        btnPengambilanUTD2 = createMenuButton("/48x48/1360487078_shipping.png", "Pengambilan BHP Medis", "btnPengambilanUTD2", this::btnPengambilanUTD2ActionPerformed);
 
-        btnUTDMedisRusak = createMenuButton("/48x48/1360486858_stock-market.png", "BHP Medis Rusak", "btnUTDMedisRusak", new java.awt.Dimension(200, 90), this::btnUTDMedisRusakActionPerformed);
+        btnUTDMedisRusak = createMenuButton("/48x48/1360486858_stock-market.png", "BHP Medis Rusak", "btnUTDMedisRusak", this::btnUTDMedisRusakActionPerformed);
 
-        btnPengambilanPenunjangUTD = createMenuButton("/48x48/1481002155_skills.png", "Pengambilan UTD", "btnPengambilanPenunjangUTD", new java.awt.Dimension(200, 90), this::btnPengambilanPenunjangUTDActionPerformed);
+        btnPengambilanPenunjangUTD = createMenuButton("/48x48/1481002155_skills.png", "Pengambilan UTD", "btnPengambilanPenunjangUTD", this::btnPengambilanPenunjangUTDActionPerformed);
 
-        btnPengambilanPenunjangUTD2 = createMenuButton("/48x48/1481002155_skills.png", "Pengambilan BHP Non Medis", "btnPengambilanPenunjangUTD2", new java.awt.Dimension(200, 90), this::btnPengambilanPenunjangUTD2ActionPerformed);
+        btnPengambilanPenunjangUTD2 = createMenuButton("/48x48/1481002155_skills.png", "Pengambilan BHP Non Medis", "btnPengambilanPenunjangUTD2", this::btnPengambilanPenunjangUTD2ActionPerformed);
 
-        btnUTDPenunjangRusak = createMenuButton("/48x48/inventory-maintenance.png", "BHP Non Medis Rusak", "btnUTDPenunjangRusak", new java.awt.Dimension(200, 90), this::btnUTDPenunjangRusakActionPerformed);
+        btnUTDPenunjangRusak = createMenuButton("/48x48/inventory-maintenance.png", "BHP Non Medis Rusak", "btnUTDPenunjangRusak", this::btnUTDPenunjangRusakActionPerformed);
 
-        btnSuplierIPSRS = createMenuButton("/48x48/1481002123_wheelchair.png", "Suplier Non Medis", "btnSuplierIPSRS", new java.awt.Dimension(200, 90), this::btnSuplierIPSRSActionPerformed);
+        btnSuplierIPSRS = createMenuButton("/48x48/1481002123_wheelchair.png", "Suplier Non Medis", "btnSuplierIPSRS", this::btnSuplierIPSRSActionPerformed);
 
-        btnUTDDonorDarah = createMenuButton("/48x48/1481001706_heart_beat.png", "Donor Darah", "btnUTDDonorDarah", new java.awt.Dimension(200, 90), this::btnUTDDonorDarahActionPerformed);
+        btnUTDDonorDarah = createMenuButton("/48x48/1481001706_heart_beat.png", "Donor Darah", "btnUTDDonorDarah", this::btnUTDDonorDarahActionPerformed);
 
-        btnMonitoringKlaim = createMenuButton("/48x48/vclaim.png", "Monitoring Verifikasi Klaim BPJS", "btnMonitoringKlaim", new java.awt.Dimension(200, 90), this::btnMonitoringKlaimActionPerformed);
+        btnMonitoringKlaim = createMenuButton("/48x48/vclaim.png", "Monitoring Verifikasi Klaim BPJS", "btnMonitoringKlaim", this::btnMonitoringKlaimActionPerformed);
 
-        btnUTDCekalDarah = createMenuButton("/48x48/1360487093_price.png", "Pencekalan Darah", "btnUTDCekalDarah", new java.awt.Dimension(200, 90), this::btnUTDCekalDarahActionPerformed);
+        btnUTDCekalDarah = createMenuButton("/48x48/1360487093_price.png", "Pencekalan Darah", "btnUTDCekalDarah", this::btnUTDCekalDarahActionPerformed);
 
-        btnUTDKomponenDarah = createMenuButton("/48x48/1481001686_injection_blood.png", "Komponen Darah", "btnUTDKomponenDarah", new java.awt.Dimension(200, 90), this::btnUTDKomponenDarahActionPerformed);
+        btnUTDKomponenDarah = createMenuButton("/48x48/1481001686_injection_blood.png", "Komponen Darah", "btnUTDKomponenDarah", this::btnUTDKomponenDarahActionPerformed);
 
-        btnUTDStokDarah = createMenuButton("/48x48/1481001585_blood_drop.png", "Stok Darah", "btnUTDStokDarah", new java.awt.Dimension(200, 90), this::btnUTDStokDarahActionPerformed);
+        btnUTDStokDarah = createMenuButton("/48x48/1481001585_blood_drop.png", "Stok Darah", "btnUTDStokDarah", this::btnUTDStokDarahActionPerformed);
 
-        btnUTDPemisahanDarah = createMenuButton("/48x48/1360815855_laboratory.png", "Pemisahan Darah", "btnUTDPemisahanDarah", new java.awt.Dimension(200, 90), this::btnUTDPemisahanDarahActionPerformed);
+        btnUTDPemisahanDarah = createMenuButton("/48x48/1360815855_laboratory.png", "Pemisahan Darah", "btnUTDPemisahanDarah", this::btnUTDPemisahanDarahActionPerformed);
 
-        btnHarianKamar = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Kamar", "btnHarianKamar", new java.awt.Dimension(200, 90), this::btnHarianKamarActionPerformed);
+        btnHarianKamar = createMenuButton("/48x48/1404047106_emblem-money.png", "Harian Kamar", "btnHarianKamar", this::btnHarianKamarActionPerformed);
 
-        btnRincianPiutangPasien = createMenuButton("/48x48/checklist_pencil-o.png", "Rincian Piutang Pasien", "btnRincianPiutangPasien", new java.awt.Dimension(200, 90), this::btnRincianPiutangPasienActionPerformed);
+        btnRincianPiutangPasien = createMenuButton("/48x48/checklist_pencil-o.png", "Rincian Piutang Pasien", "btnRincianPiutangPasien", this::btnRincianPiutangPasienActionPerformed);
 
-        btnKeuntunganObat2 = createMenuButton("/48x48/coins.png", "Keuntungan Beri Obat 2", "btnKeuntunganObat2", new java.awt.Dimension(200, 90), this::btnKeuntunganObat2ActionPerformed);
+        btnKeuntunganObat2 = createMenuButton("/48x48/coins.png", "Keuntungan Beri Obat 2", "btnKeuntunganObat2", this::btnKeuntunganObat2ActionPerformed);
 
-        btnReklasifikasiRalan = createMenuButton("/48x48/1404047007_02.png", "Reklasifikasi Ralan", "btnReklasifikasiRalan", new java.awt.Dimension(200, 90), this::btnReklasifikasiRalanActionPerformed);
+        btnReklasifikasiRalan = createMenuButton("/48x48/1404047007_02.png", "Reklasifikasi Ralan", "btnReklasifikasiRalan", this::btnReklasifikasiRalanActionPerformed);
 
-        btnReklasifikasiRanap = createMenuButton("/48x48/1404047007_02.png", "Reklasifikasi Ranap", "btnReklasifikasiRanap", new java.awt.Dimension(200, 90), this::btnReklasifikasiRanapActionPerformed);
+        btnReklasifikasiRanap = createMenuButton("/48x48/1404047007_02.png", "Reklasifikasi Ranap", "btnReklasifikasiRanap", this::btnReklasifikasiRanapActionPerformed);
 
-        btnUTDPenyerahanDarah = createMenuButton("/48x48/health.png", "Penyerahan Darah", "btnUTDPenyerahanDarah", new java.awt.Dimension(200, 90), this::btnUTDPenyerahanDarahActionPerformed);
+        btnUTDPenyerahanDarah = createMenuButton("/48x48/health.png", "Penyerahan Darah", "btnUTDPenyerahanDarah", this::btnUTDPenyerahanDarahActionPerformed);
 
-        btnHutangObat = createMenuButton("/48x48/cashbox.png", "Hutang Obat & BHP", "btnHutangObat", new java.awt.Dimension(200, 90), this::btnHutangObatActionPerformed);
+        btnHutangObat = createMenuButton("/48x48/cashbox.png", "Hutang Obat & BHP", "btnHutangObat", this::btnHutangObatActionPerformed);
 
-        btnRiwayatBarangMedis = createMenuButton("/48x48/gnome-searchtool.png", "Riwayat Obat, Alkes & BHP", "btnRiwayatBarangMedis", new java.awt.Dimension(200, 90), this::btnRiwayatBarangMedisActionPerformed);
+        btnRiwayatBarangMedis = createMenuButton("/48x48/gnome-searchtool.png", "Riwayat Obat, Alkes & BHP", "btnRiwayatBarangMedis", this::btnRiwayatBarangMedisActionPerformed);
 
-        btnSensusHarianPoli = createMenuButton("/48x48/custom-reports.png", "Sensus Harian Poli", "btnSensusHarianPoli", new java.awt.Dimension(200, 90), this::btnSensusHarianPoliActionPerformed);
+        btnSensusHarianPoli = createMenuButton("/48x48/custom-reports.png", "Sensus Harian Poli", "btnSensusHarianPoli", this::btnSensusHarianPoliActionPerformed);
 
-        btnRl4a = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4A Morbiditas Ranap", "btnRl4a", new java.awt.Dimension(200, 90), this::btnRl4aActionPerformed);
+        btnRl4a = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4A Morbiditas Ranap", "btnRl4a", this::btnRl4aActionPerformed);
 
-        btnAplicareReferensiKamar = createMenuButton("/48x48/bedroom.png", "Referensi Kamar Aplicare", "btnAplicareReferensiKamar", new java.awt.Dimension(200, 90), this::btnAplicareReferensiKamarActionPerformed);
+        btnAplicareReferensiKamar = createMenuButton("/48x48/bedroom.png", "Referensi Kamar Aplicare", "btnAplicareReferensiKamar", this::btnAplicareReferensiKamarActionPerformed);
 
-        btnAplicareKetersediaanKamar = createMenuButton("/48x48/1485357524_Company.png", "Ketersediaan Kamar Aplicare", "btnAplicareKetersediaanKamar", new java.awt.Dimension(200, 90), this::btnAplicareKetersediaanKamarActionPerformed);
+        btnAplicareKetersediaanKamar = createMenuButton("/48x48/1485357524_Company.png", "Ketersediaan Kamar Aplicare", "btnAplicareKetersediaanKamar", this::btnAplicareKetersediaanKamarActionPerformed);
 
-        btnInaCBGKlaimBaruOtomatis = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Otomatis INACBG", "btnInaCBGKlaimBaruOtomatis", new java.awt.Dimension(200, 90), this::btnInaCBGKlaimBaruOtomatisActionPerformed);
+        btnInaCBGKlaimBaruOtomatis = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Otomatis INACBG", "btnInaCBGKlaimBaruOtomatis", this::btnInaCBGKlaimBaruOtomatisActionPerformed);
 
-        btnInaCBGKlaimBaruManual = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Manual INACBG", "btnInaCBGKlaimBaruManual", new java.awt.Dimension(200, 90), this::btnInaCBGKlaimBaruManualActionPerformed);
+        btnInaCBGKlaimBaruManual = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Manual INACBG", "btnInaCBGKlaimBaruManual", this::btnInaCBGKlaimBaruManualActionPerformed);
 
-        btnInaCBGCoderNIK = createMenuButton("/48x48/1481002113_guard.png", "Coder NIK INACBG", "btnInaCBGCoderNIK", new java.awt.Dimension(200, 90), this::btnInaCBGCoderNIKActionPerformed);
+        btnInaCBGCoderNIK = createMenuButton("/48x48/1481002113_guard.png", "Coder NIK INACBG", "btnInaCBGCoderNIK", this::btnInaCBGCoderNIKActionPerformed);
 
-        btnMutasiBerkas = createMenuButton("/48x48/1360485642_edit-notes.png", "Mutasi Berkas RM", "btnMutasiBerkas", new java.awt.Dimension(200, 90), this::btnMutasiBerkasActionPerformed);
+        btnMutasiBerkas = createMenuButton("/48x48/1360485642_edit-notes.png", "Mutasi Berkas RM", "btnMutasiBerkas", this::btnMutasiBerkasActionPerformed);
 
-        btnAkunPiutang = createMenuButton("/48x48/1404046603_wallet.png", "Akun Piutang", "btnAkunPiutang", new java.awt.Dimension(200, 90), this::btnAkunPiutangActionPerformed);
+        btnAkunPiutang = createMenuButton("/48x48/1404046603_wallet.png", "Akun Piutang", "btnAkunPiutang", this::btnAkunPiutangActionPerformed);
 
-        btnRHKSO = createMenuButton("/48x48/address-book.png", "Harian KSO", "btnRHKSO", new java.awt.Dimension(200, 90), this::btnRHKSOActionPerformed);
+        btnRHKSO = createMenuButton("/48x48/address-book.png", "Harian KSO", "btnRHKSO", this::btnRHKSOActionPerformed);
 
-        btnRBKSO = createMenuButton("/48x48/address-book.png", "Bulanan KSO", "btnRBKSO", new java.awt.Dimension(200, 90), this::btnRBKSOActionPerformed);
+        btnRBKSO = createMenuButton("/48x48/address-book.png", "Bulanan KSO", "btnRBKSO", this::btnRBKSOActionPerformed);
 
-        btnRHMenejemen = createMenuButton("/48x48/address-book.png", "Harian Menejemen", "btnRHMenejemen", new java.awt.Dimension(200, 90), this::btnRHMenejemenActionPerformed);
+        btnRHMenejemen = createMenuButton("/48x48/address-book.png", "Harian Menejemen", "btnRHMenejemen", this::btnRHMenejemenActionPerformed);
 
-        btnRBMenejemen = createMenuButton("/48x48/address-book.png", "Bulanan Menejemen", "btnRBMenejemen", new java.awt.Dimension(200, 90), this::btnRBMenejemenActionPerformed);
+        btnRBMenejemen = createMenuButton("/48x48/address-book.png", "Bulanan Menejemen", "btnRBMenejemen", this::btnRBMenejemenActionPerformed);
 
-        btnCekEligibilitasInhealth = createMenuButton("/48x48/inhealth.png", "Cek Eligibilitas Inhealth", "btnCekEligibilitasInhealth", new java.awt.Dimension(200, 90), this::btnCekEligibilitasInhealthActionPerformed);
+        btnCekEligibilitasInhealth = createMenuButton("/48x48/inhealth.png", "Cek Eligibilitas Inhealth", "btnCekEligibilitasInhealth", this::btnCekEligibilitasInhealthActionPerformed);
 
-        btnReferensiKamarInhealth = createMenuButton("/48x48/inhealth.png", "Referensi Ruang Rawat Inhealth", "btnReferensiKamarInhealth", new java.awt.Dimension(200, 90), this::btnReferensiKamarInhealthActionPerformed);
+        btnReferensiKamarInhealth = createMenuButton("/48x48/inhealth.png", "Referensi Ruang Rawat Inhealth", "btnReferensiKamarInhealth", this::btnReferensiKamarInhealthActionPerformed);
 
-        btnCekInhealthPoli = createMenuButton("/48x48/inhealth.png", "Referensi Poli Inhealth", "btnCekInhealthPoli", new java.awt.Dimension(200, 90), this::btnCekInhealthPoliActionPerformed);
+        btnCekInhealthPoli = createMenuButton("/48x48/inhealth.png", "Referensi Poli Inhealth", "btnCekInhealthPoli", this::btnCekInhealthPoliActionPerformed);
 
-        btnCekInhealthFaskes = createMenuButton("/48x48/inhealth.png", "Referensi Faskes Inhealth", "btnCekInhealthFaskes", new java.awt.Dimension(200, 90), this::btnCekInhealthFaskesActionPerformed);
+        btnCekInhealthFaskes = createMenuButton("/48x48/inhealth.png", "Referensi Faskes Inhealth", "btnCekInhealthFaskes", this::btnCekInhealthFaskesActionPerformed);
 
-        btnInhealthSJP = createMenuButton("/48x48/inhealth.png", "Data Bridging SJP Inhealth", "btnInhealthSJP", new java.awt.Dimension(200, 90), this::btnInhealthSJPActionPerformed);
+        btnInhealthSJP = createMenuButton("/48x48/inhealth.png", "Data Bridging SJP Inhealth", "btnInhealthSJP", this::btnInhealthSJPActionPerformed);
 
-        btnPiutangRalan = createMenuButton("/48x48/1404047007_02.png", "Piutang Ralan", "btnPiutangRalan", new java.awt.Dimension(200, 90), this::btnPiutangRalanActionPerformed);
+        btnPiutangRalan = createMenuButton("/48x48/1404047007_02.png", "Piutang Ralan", "btnPiutangRalan", this::btnPiutangRalanActionPerformed);
 
-        btnPiutangRanap = createMenuButton("/48x48/1404047007_02.png", "Piutang Ranap", "btnPiutangRanap", new java.awt.Dimension(200, 90), this::btnPiutangRanapActionPerformed);
+        btnPiutangRanap = createMenuButton("/48x48/1404047007_02.png", "Piutang Ranap", "btnPiutangRanap", this::btnPiutangRanapActionPerformed);
 
-        btnPiutangPerCaraBayar = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Per Cara Bayar", "btnPiutangPerCaraBayar", new java.awt.Dimension(200, 90), this::btnPiutangPerCaraBayarActionPerformed);
+        btnPiutangPerCaraBayar = createMenuButton("/48x48/checklist_pencil-o.png", "Piutang Per Cara Bayar", "btnPiutangPerCaraBayar", this::btnPiutangPerCaraBayarActionPerformed);
 
-        btnLamaPelayananRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Ralan", "btnLamaPelayananRalan", new java.awt.Dimension(200, 90), this::btnLamaPelayananRalanActionPerformed);
+        btnLamaPelayananRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Ralan", "btnLamaPelayananRalan", this::btnLamaPelayananRalanActionPerformed);
 
-        btnCatatanPasien = createMenuButton("/48x48/kwrite.png", "Catatan Pasien", "btnCatatanPasien", new java.awt.Dimension(200, 90), this::btnCatatanPasienActionPerformed);
+        btnCatatanPasien = createMenuButton("/48x48/kwrite.png", "Catatan Pasien", "btnCatatanPasien", this::btnCatatanPasienActionPerformed);
 
-        btnRl4b = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4B Morbiditas Ralan", "btnRl4b", new java.awt.Dimension(200, 90), this::btnRl4bActionPerformed);
+        btnRl4b = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4B Morbiditas Ralan", "btnRl4b", this::btnRl4bActionPerformed);
 
-        btnRl4asebab = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4A Sebab Morbiditas Ranap", "btnRl4asebab", new java.awt.Dimension(200, 90), this::btnRl4asebabActionPerformed);
+        btnRl4asebab = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4A Sebab Morbiditas Ranap", "btnRl4asebab", this::btnRl4asebabActionPerformed);
 
-        btnRl4bsebab = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4B Sebab Morbiditas Ralan", "btnRl4bsebab", new java.awt.Dimension(200, 90), this::btnRl4bsebabActionPerformed);
+        btnRl4bsebab = createMenuButton("/48x48/1491582089_Finance_financial_report.png", "RL 4B Sebab Morbiditas Ralan", "btnRl4bsebab", this::btnRl4bsebabActionPerformed);
 
-        btnDataHAIs = createMenuButton("/48x48/1360816018_tests.png", "Data HAIs", "btnDataHAIs", new java.awt.Dimension(200, 90), this::btnDataHAIsActionPerformed);
+        btnDataHAIs = createMenuButton("/48x48/1360816018_tests.png", "Data HAIs", "btnDataHAIs", this::btnDataHAIsActionPerformed);
 
-        btnHarianHAIs = createMenuButton("/48x48/if_house_shelf_1378832.png", "Harian HAIs", "btnHarianHAIs", new java.awt.Dimension(200, 90), this::btnHarianHAIsActionPerformed);
+        btnHarianHAIs = createMenuButton("/48x48/if_house_shelf_1378832.png", "Harian HAIs", "btnHarianHAIs", this::btnHarianHAIsActionPerformed);
 
-        btnBulananHAIs = createMenuButton("/48x48/if_house_shelf_1378832.png", "Bulanan HAIs", "btnBulananHAIs", new java.awt.Dimension(200, 90), this::btnBulananHAIsActionPerformed);
+        btnBulananHAIs = createMenuButton("/48x48/if_house_shelf_1378832.png", "Bulanan HAIs", "btnBulananHAIs", this::btnBulananHAIsActionPerformed);
 
-        btnHitungBor = createMenuButton("/48x48/bedroom.png", "Hitung BOR", "btnHitungBor", new java.awt.Dimension(200, 90), this::btnHitungBorActionPerformed);
+        btnHitungBor = createMenuButton("/48x48/bedroom.png", "Hitung BOR", "btnHitungBor", this::btnHitungBorActionPerformed);
 
-        btnPerusahaan = createMenuButton("/48x48/1485357524_Company.png", "Instansi/Perusahaan Pasien", "btnPerusahaan", new java.awt.Dimension(200, 90), this::btnPerusahaanActionPerformed);
+        btnPerusahaan = createMenuButton("/48x48/1485357524_Company.png", "Instansi/Perusahaan Pasien", "btnPerusahaan", this::btnPerusahaanActionPerformed);
 
-        btnDaftarPermintaanResep = createMenuButton("/48x48/1360485894_add-notes.png", "Daftar Resep Dokter", "btnDaftarPermintaanResep", new java.awt.Dimension(200, 90), this::btnDaftarPermintaanResepActionPerformed);
+        btnDaftarPermintaanResep = createMenuButton("/48x48/1360485894_add-notes.png", "Daftar Resep Dokter", "btnDaftarPermintaanResep", this::btnDaftarPermintaanResepActionPerformed);
 
-        btnLamaPelayananApotek = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Apotek", "btnLamaPelayananApotek", new java.awt.Dimension(200, 90), this::btnLamaPelayananApotekActionPerformed);
+        btnLamaPelayananApotek = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Apotek", "btnLamaPelayananApotek", this::btnLamaPelayananApotekActionPerformed);
 
-        btnHitungAlos = createMenuButton("/48x48/bedroom.png", "Hitung ALOS", "btnHitungAlos", new java.awt.Dimension(200, 90), this::btnHitungAlosActionPerformed);
+        btnHitungAlos = createMenuButton("/48x48/bedroom.png", "Hitung ALOS", "btnHitungAlos", this::btnHitungAlosActionPerformed);
 
-        btnDetailTindakan = createMenuButton("/48x48/address-book.png", "Detail Tindakan", "btnDetailTindakan", new java.awt.Dimension(200, 90), this::btnDetailTindakanActionPerformed);
+        btnDetailTindakan = createMenuButton("/48x48/address-book.png", "Detail Tindakan", "btnDetailTindakan", this::btnDetailTindakanActionPerformed);
 
-        btnRekapPoliAnak = createMenuButton("/48x48/address-book.png", "Rekap Poli Anak", "btnRekapPoliAnak", new java.awt.Dimension(200, 90), this::btnRekapPoliAnakActionPerformed);
+        btnRekapPoliAnak = createMenuButton("/48x48/address-book.png", "Rekap Poli Anak", "btnRekapPoliAnak", this::btnRekapPoliAnakActionPerformed);
 
-        btnGrafikKunjunganPoli = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Poli", "btnGrafikKunjunganPoli", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPoliActionPerformed);
+        btnGrafikKunjunganPoli = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Poli", "btnGrafikKunjunganPoli", this::btnGrafikKunjunganPoliActionPerformed);
 
-        btnGrafikKunjunganPerDokter = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Dokter", "btnGrafikKunjunganPerDokter", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerDokterActionPerformed);
+        btnGrafikKunjunganPerDokter = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Dokter", "btnGrafikKunjunganPerDokter", this::btnGrafikKunjunganPerDokterActionPerformed);
 
-        btnGrafikKunjunganPerPekerjaan = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Pekerjaan", "btnGrafikKunjunganPerPekerjaan", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerPekerjaanActionPerformed);
+        btnGrafikKunjunganPerPekerjaan = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Pekerjaan", "btnGrafikKunjunganPerPekerjaan", this::btnGrafikKunjunganPerPekerjaanActionPerformed);
 
-        btnGrafikKunjunganPerPendidikan = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Pendidikan", "btnGrafikKunjunganPerPendidikan", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerPendidikanActionPerformed);
+        btnGrafikKunjunganPerPendidikan = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Pendidikan", "btnGrafikKunjunganPerPendidikan", this::btnGrafikKunjunganPerPendidikanActionPerformed);
 
-        btnGrafikKunjunganPerTahun = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Tahun", "btnGrafikKunjunganPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerTahunActionPerformed);
+        btnGrafikKunjunganPerTahun = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Tahun", "btnGrafikKunjunganPerTahun", this::btnGrafikKunjunganPerTahunActionPerformed);
 
-        btnBerkasDigitalPerawatan = createMenuButton("/48x48/if_folder_images_61610.png", "Berkas Digital Perawatan", "btnBerkasDigitalPerawatan", new java.awt.Dimension(200, 90), this::btnBerkasDigitalPerawatanActionPerformed);
+        btnBerkasDigitalPerawatan = createMenuButton("/48x48/if_folder_images_61610.png", "Berkas Digital Perawatan", "btnBerkasDigitalPerawatan", this::btnBerkasDigitalPerawatanActionPerformed);
 
-        btnPnyMenularRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Menular Ranap", "btnPnyMenularRanap", new java.awt.Dimension(200, 90), this::btnPnyMenularRanapActionPerformed);
+        btnPnyMenularRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Menular Ranap", "btnPnyMenularRanap", this::btnPnyMenularRanapActionPerformed);
 
-        btnPnyMenularRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Menular Ralan", "btnPnyMenularRalan", new java.awt.Dimension(200, 90), this::btnPnyMenularRalanActionPerformed);
+        btnPnyMenularRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Pny Menular Ralan", "btnPnyMenularRalan", this::btnPnyMenularRalanActionPerformed);
 
-        btnGrafikKunjunganPerBulan = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Bulan", "btnGrafikKunjunganPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerBulanActionPerformed);
+        btnGrafikKunjunganPerBulan = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Bulan", "btnGrafikKunjunganPerBulan", this::btnGrafikKunjunganPerBulanActionPerformed);
 
-        btnGrafikKunjunganPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Tanggal", "btnGrafikKunjunganPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerTanggalActionPerformed);
+        btnGrafikKunjunganPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Tanggal", "btnGrafikKunjunganPerTanggal", this::btnGrafikKunjunganPerTanggalActionPerformed);
 
-        btnGrafikDemografiRegistrasi = createMenuButton("/48x48/1491582080_6.png", "Demografi Registrasi", "btnGrafikDemografiRegistrasi", new java.awt.Dimension(200, 90), this::btnGrafikDemografiRegistrasiActionPerformed);
+        btnGrafikDemografiRegistrasi = createMenuButton("/48x48/1491582080_6.png", "Demografi Registrasi", "btnGrafikDemografiRegistrasi", this::btnGrafikDemografiRegistrasiActionPerformed);
 
-        btnGrafikStatusRegPerTahun = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Tahun", "btnGrafikStatusRegPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerTahunActionPerformed);
+        btnGrafikStatusRegPerTahun = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Tahun", "btnGrafikStatusRegPerTahun", this::btnGrafikStatusRegPerTahunActionPerformed);
 
-        btnGrafikStatusRegPerTahun2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Tahun", "btnGrafikStatusRegPerTahun2", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerTahun2ActionPerformed);
+        btnGrafikStatusRegPerTahun2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Tahun", "btnGrafikStatusRegPerTahun2", this::btnGrafikStatusRegPerTahun2ActionPerformed);
 
-        btnGrafikStatusRegPerBulan = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Bulan", "btnGrafikStatusRegPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerBulanActionPerformed);
+        btnGrafikStatusRegPerBulan = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Bulan", "btnGrafikStatusRegPerBulan", this::btnGrafikStatusRegPerBulanActionPerformed);
 
-        btnGrafikStatusRegPerBulan2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Bulan", "btnGrafikStatusRegPerBulan2", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerBulan2ActionPerformed);
+        btnGrafikStatusRegPerBulan2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Bulan", "btnGrafikStatusRegPerBulan2", this::btnGrafikStatusRegPerBulan2ActionPerformed);
 
-        btnGrafikStatusRegPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Tanggal", "btnGrafikStatusRegPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerTanggalActionPerformed);
+        btnGrafikStatusRegPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Registrasi Lama Per Tanggal", "btnGrafikStatusRegPerTanggal", this::btnGrafikStatusRegPerTanggalActionPerformed);
 
-        btnGrafikStatusRegPerTanggal2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Tanggal", "btnGrafikStatusRegPerTanggal2", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegPerTanggal2ActionPerformed);
+        btnGrafikStatusRegPerTanggal2 = createMenuButton("/48x48/1491582080_6.png", "Registrasi Baru Per Tanggal", "btnGrafikStatusRegPerTanggal2", this::btnGrafikStatusRegPerTanggal2ActionPerformed);
 
-        btnGrafikStatusRegBatalPerTahun = createMenuButton("/48x48/1491582015_11.png", "Batal Periksa Per Tahun", "btnGrafikStatusRegBatalPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegBatalPerTahunActionPerformed);
+        btnGrafikStatusRegBatalPerTahun = createMenuButton("/48x48/1491582015_11.png", "Batal Periksa Per Tahun", "btnGrafikStatusRegBatalPerTahun", this::btnGrafikStatusRegBatalPerTahunActionPerformed);
 
-        btnGrafikStatusRegBatalPerBulan = createMenuButton("/48x48/1491582080_6.png", "Batal Periksa Per Bulan", "btnGrafikStatusRegBatalPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegBatalPerBulanActionPerformed);
+        btnGrafikStatusRegBatalPerBulan = createMenuButton("/48x48/1491582080_6.png", "Batal Periksa Per Bulan", "btnGrafikStatusRegBatalPerBulan", this::btnGrafikStatusRegBatalPerBulanActionPerformed);
 
-        btnCekPCareDiagnosa = createMenuButton("/48x48/pcare.png", "Referensi Diagnosa PCare", "btnCekPCareDiagnosa", new java.awt.Dimension(200, 90), this::btnCekPCareDiagnosaActionPerformed);
+        btnCekPCareDiagnosa = createMenuButton("/48x48/pcare.png", "Referensi Diagnosa PCare", "btnCekPCareDiagnosa", this::btnCekPCareDiagnosaActionPerformed);
 
-        btnGrafikStatusRegBatalPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Batal Periksa Per Tanggal", "btnGrafikStatusRegBatalPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikStatusRegBatalPerTanggalActionPerformed);
+        btnGrafikStatusRegBatalPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Batal Periksa Per Tanggal", "btnGrafikStatusRegBatalPerTanggal", this::btnGrafikStatusRegBatalPerTanggalActionPerformed);
 
-        btnKategoriBarang = createMenuButton("/48x48/address-book.png", "Kategori Obat, Alkes & BHP", "btnKategoriBarang", new java.awt.Dimension(200, 90), this::btnKategoriBarangActionPerformed);
+        btnKategoriBarang = createMenuButton("/48x48/address-book.png", "Kategori Obat, Alkes & BHP", "btnKategoriBarang", this::btnKategoriBarangActionPerformed);
 
-        btnGolonganBarang = createMenuButton("/48x48/1360485894_add-notes.png", "Golongan Obat, Alkes & BHP", "btnGolonganBarang", new java.awt.Dimension(200, 90), this::btnGolonganBarangActionPerformed);
+        btnGolonganBarang = createMenuButton("/48x48/1360485894_add-notes.png", "Golongan Obat, Alkes & BHP", "btnGolonganBarang", this::btnGolonganBarangActionPerformed);
 
-        btnObatPerTanggal = createMenuButton("/48x48/1360485865_schedule.png", "Obat/Alkes/BHP Per Tanggal", "btnObatPerTanggal", new java.awt.Dimension(200, 90), this::btnObatPerTanggalActionPerformed);
+        btnObatPerTanggal = createMenuButton("/48x48/1360485865_schedule.png", "Obat/Alkes/BHP Per Tanggal", "btnObatPerTanggal", this::btnObatPerTanggalActionPerformed);
 
-        btnPenjualanPerTanggal = createMenuButton("/48x48/1360485865_schedule.png", "Penjualan Bebas Per Tanggal", "btnPenjualanPerTanggal", new java.awt.Dimension(200, 90), this::btnPenjualanPerTanggalActionPerformed);
+        btnPenjualanPerTanggal = createMenuButton("/48x48/1360485865_schedule.png", "Penjualan Bebas Per Tanggal", "btnPenjualanPerTanggal", this::btnPenjualanPerTanggalActionPerformed);
 
-        btnCekPCareKesadaran = createMenuButton("/48x48/pcare.png", "Referensi Kesadaran PCare", "btnCekPCareKesadaran", new java.awt.Dimension(200, 90), this::btnCekPCareKesadaranActionPerformed);
+        btnCekPCareKesadaran = createMenuButton("/48x48/pcare.png", "Referensi Kesadaran PCare", "btnCekPCareKesadaran", this::btnCekPCareKesadaranActionPerformed);
 
-        btnPembatalanPeriksaDokter = createMenuButton("/48x48/address-book.png", "Pembatalan Periksa Per Dokter", "btnPembatalanPeriksaDokter", new java.awt.Dimension(200, 90), this::btnPembatalanPeriksaDokterActionPerformed);
+        btnPembatalanPeriksaDokter = createMenuButton("/48x48/address-book.png", "Pembatalan Periksa Per Dokter", "btnPembatalanPeriksaDokter", this::btnPembatalanPeriksaDokterActionPerformed);
 
-        btnPembayaranPerUnit = createMenuButton("/48x48/if_TextEdit_37595.png", "Pembayaran Per Unit", "btnPembayaranPerUnit", new java.awt.Dimension(200, 90), this::btnPembayaranPerUnitActionPerformed);
+        btnPembayaranPerUnit = createMenuButton("/48x48/if_TextEdit_37595.png", "Pembayaran Per Unit", "btnPembayaranPerUnit", this::btnPembayaranPerUnitActionPerformed);
 
-        btnRekapPembayaranPerUnit = createMenuButton("/48x48/if_kde-document-open_23426.png", "Rekap Pembayaran Per Unit", "btnRekapPembayaranPerUnit", new java.awt.Dimension(200, 90), this::btnRekapPembayaranPerUnitActionPerformed);
+        btnRekapPembayaranPerUnit = createMenuButton("/48x48/if_kde-document-open_23426.png", "Rekap Pembayaran Per Unit", "btnRekapPembayaranPerUnit", this::btnRekapPembayaranPerUnitActionPerformed);
 
-        btnGrafikKunjunganPerCarabayar = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Cara Bayar", "btnGrafikKunjunganPerCarabayar", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerCarabayarActionPerformed);
+        btnGrafikKunjunganPerCarabayar = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Cara Bayar", "btnGrafikKunjunganPerCarabayar", this::btnGrafikKunjunganPerCarabayarActionPerformed);
 
-        btnPengadaanIPSRSPerTanggal = createMenuButton("/48x48/if_document-new_23212.png", "Pengadaan Non Medis Per Tanggal", "btnPengadaanIPSRSPerTanggal", new java.awt.Dimension(200, 90), this::btnPengadaanIPSRSPerTanggalActionPerformed);
+        btnPengadaanIPSRSPerTanggal = createMenuButton("/48x48/if_document-new_23212.png", "Pengadaan Non Medis Per Tanggal", "btnPengadaanIPSRSPerTanggal", this::btnPengadaanIPSRSPerTanggalActionPerformed);
 
-        btnStokKeluarIPSRSPerTanggal = createMenuButton("/48x48/if_document-open_23214.png", "Stok Keluar Non Medis Per Tanggal", "btnStokKeluarIPSRSPerTanggal", new java.awt.Dimension(200, 90), this::btnStokKeluarIPSRSPerTanggalActionPerformed);
+        btnStokKeluarIPSRSPerTanggal = createMenuButton("/48x48/if_document-open_23214.png", "Stok Keluar Non Medis Per Tanggal", "btnStokKeluarIPSRSPerTanggal", this::btnStokKeluarIPSRSPerTanggalActionPerformed);
 
-        btnGrafikKunjunganRanapPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Ranap Per Tahun", "btnGrafikKunjunganRanapPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganRanapPerTahunActionPerformed);
+        btnGrafikKunjunganRanapPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Ranap Per Tahun", "btnGrafikKunjunganRanapPerTahun", this::btnGrafikKunjunganRanapPerTahunActionPerformed);
 
-        btnCekPCareRujukan = createMenuButton("/48x48/pcare.png", "Cek Rujukan PCare", "btnCekPCareRujukan", new java.awt.Dimension(200, 90), this::btnCekPCareRujukanActionPerformed);
+        btnCekPCareRujukan = createMenuButton("/48x48/pcare.png", "Cek Rujukan PCare", "btnCekPCareRujukan", this::btnCekPCareRujukanActionPerformed);
 
-        btnGrafikLabRalanPerTahun = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Lab Ralan Per Tahun", "btnGrafikLabRalanPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikLabRalanPerTahunActionPerformed);
+        btnGrafikLabRalanPerTahun = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Lab Ralan Per Tahun", "btnGrafikLabRalanPerTahun", this::btnGrafikLabRalanPerTahunActionPerformed);
 
-        btnGrafikRadRalanPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Rad Ralan Per Tahun", "btnGrafikRadRalanPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikRadRalanPerTahunActionPerformed);
+        btnGrafikRadRalanPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Rad Ralan Per Tahun", "btnGrafikRadRalanPerTahun", this::btnGrafikRadRalanPerTahunActionPerformed);
 
-        btnCekEntryRalan = createMenuButton("/48x48/if_TextEdit_37595.png", "Cek Entry Ralan", "btnCekEntryRalan", new java.awt.Dimension(200, 90), this::btnCekEntryRalanActionPerformed);
+        btnCekEntryRalan = createMenuButton("/48x48/if_TextEdit_37595.png", "Cek Entry Ralan", "btnCekEntryRalan", this::btnCekEntryRalanActionPerformed);
 
-        btnInaCBGKlaimBaruManual2 = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Manual INACBG 2", "btnInaCBGKlaimBaruManual2", new java.awt.Dimension(200, 90), this::btnInaCBGKlaimBaruManual2ActionPerformed);
+        btnInaCBGKlaimBaruManual2 = createMenuButton("/48x48/1485358050_receptionist.png", "Klaim Baru Manual INACBG 2", "btnInaCBGKlaimBaruManual2", this::btnInaCBGKlaimBaruManual2ActionPerformed);
 
-        btnPermintaanMedis = createMenuButton("/48x48/if_packing_49602.png", "Permintaan Obat & BHP", "btnPermintaanMedis", new java.awt.Dimension(200, 90), this::btnPermintaanMedisActionPerformed);
+        btnPermintaanMedis = createMenuButton("/48x48/if_packing_49602.png", "Permintaan Obat & BHP", "btnPermintaanMedis", this::btnPermintaanMedisActionPerformed);
 
-        btnRingkasanPermintaanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Permintaan Obat & BHP", "btnRingkasanPermintaanMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPermintaanMedisActionPerformed);
+        btnRingkasanPermintaanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Permintaan Obat & BHP", "btnRingkasanPermintaanMedis", this::btnRingkasanPermintaanMedisActionPerformed);
 
-        btnSuratPemesananMedis = createMenuButton("/48x48/if_Select-Language_49621.png", "Surat Pemesanan Obat & BHP", "btnSuratPemesananMedis", new java.awt.Dimension(200, 90), this::btnSuratPemesananMedisActionPerformed);
+        btnSuratPemesananMedis = createMenuButton("/48x48/if_Select-Language_49621.png", "Surat Pemesanan Obat & BHP", "btnSuratPemesananMedis", this::btnSuratPemesananMedisActionPerformed);
 
-        btnPermintaanNonMedis = createMenuButton("/48x48/if_packing_49602.png", "Permintaan Barang Non Medis", "btnPermintaanNonMedis", new java.awt.Dimension(200, 90), this::btnPermintaanNonMedisActionPerformed);
+        btnPermintaanNonMedis = createMenuButton("/48x48/if_packing_49602.png", "Permintaan Barang Non Medis", "btnPermintaanNonMedis", this::btnPermintaanNonMedisActionPerformed);
 
-        btnRekapPermintaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Permintaan Barang Non Medis", "btnRekapPermintaanNonMedis", new java.awt.Dimension(200, 90), this::btnRekapPermintaanNonMedisActionPerformed);
+        btnRekapPermintaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Permintaan Barang Non Medis", "btnRekapPermintaanNonMedis", this::btnRekapPermintaanNonMedisActionPerformed);
 
-        btnSuratPemesananNonMedis = createMenuButton("/48x48/if_Select-Language_49621.png", "Surat Pemesanan Barang Non Medis", "btnSuratPemesananNonMedis", new java.awt.Dimension(200, 90), this::btnSuratPemesananNonMedisActionPerformed);
+        btnSuratPemesananNonMedis = createMenuButton("/48x48/if_Select-Language_49621.png", "Surat Pemesanan Barang Non Medis", "btnSuratPemesananNonMedis", this::btnSuratPemesananNonMedisActionPerformed);
 
-        btnGrafikPerPerujuk = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Perujuk", "btnGrafikPerPerujuk", new java.awt.Dimension(200, 90), this::btnGrafikPerPerujukActionPerformed);
+        btnGrafikPerPerujuk = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Perujuk", "btnGrafikPerPerujuk", this::btnGrafikPerPerujukActionPerformed);
 
-        btnCekReferensiProsedurBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Prosedur VClaim", "btnCekReferensiProsedurBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiProsedurBPJSActionPerformed);
+        btnCekReferensiProsedurBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Prosedur VClaim", "btnCekReferensiProsedurBPJS", this::btnCekReferensiProsedurBPJSActionPerformed);
 
-        btnCekReferensiKelasRawatBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kelas Rawat VClaim", "btnCekReferensiKelasRawatBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiKelasRawatBPJSActionPerformed);
+        btnCekReferensiKelasRawatBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kelas Rawat VClaim", "btnCekReferensiKelasRawatBPJS", this::btnCekReferensiKelasRawatBPJSActionPerformed);
 
-        btnCekReferensiDokterBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter VClaim", "btnCekReferensiDokterBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiDokterBPJSActionPerformed);
+        btnCekReferensiDokterBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter VClaim", "btnCekReferensiDokterBPJS", this::btnCekReferensiDokterBPJSActionPerformed);
 
-        btnCekReferensiSpesialistikBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Spesialistik VClaim", "btnCekReferensiSpesialistikBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiSpesialistikBPJSActionPerformed);
+        btnCekReferensiSpesialistikBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Spesialistik VClaim", "btnCekReferensiSpesialistikBPJS", this::btnCekReferensiSpesialistikBPJSActionPerformed);
 
-        btnCekReferensiRuangRawatBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Ruang Rawat VClaim", "btnCekReferensiRuangRawatBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiRuangRawatBPJSActionPerformed);
+        btnCekReferensiRuangRawatBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Ruang Rawat VClaim", "btnCekReferensiRuangRawatBPJS", this::btnCekReferensiRuangRawatBPJSActionPerformed);
 
-        btnCekReferensiCaraKeluarBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Cara Keluar VClaim", "btnCekReferensiCaraKeluarBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiCaraKeluarBPJSActionPerformed);
+        btnCekReferensiCaraKeluarBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Cara Keluar VClaim", "btnCekReferensiCaraKeluarBPJS", this::btnCekReferensiCaraKeluarBPJSActionPerformed);
 
-        btnCekReferensiPascaPulangBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Pasca Pulang VClaim", "btnCekReferensiPascaPulangBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiPascaPulangBPJSActionPerformed);
+        btnCekReferensiPascaPulangBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Pasca Pulang VClaim", "btnCekReferensiPascaPulangBPJS", this::btnCekReferensiPascaPulangBPJSActionPerformed);
 
-        btnDetailVKOK = createMenuButton("/48x48/address-book.png", "Detail VK & OK", "btnDetailVKOK", new java.awt.Dimension(200, 90), this::btnDetailVKOKActionPerformed);
+        btnDetailVKOK = createMenuButton("/48x48/address-book.png", "Detail VK & OK", "btnDetailVKOK", this::btnDetailVKOKActionPerformed);
 
-        btnCekBPJSNomorRujukanRS = createMenuButton("/48x48/vclaim.png", "Cek No.Rujukan RS di VClaim", "btnCekBPJSNomorRujukanRS", new java.awt.Dimension(200, 90), this::btnCekBPJSNomorRujukanRSActionPerformed);
+        btnCekBPJSNomorRujukanRS = createMenuButton("/48x48/vclaim.png", "Cek No.Rujukan RS di VClaim", "btnCekBPJSNomorRujukanRS", this::btnCekBPJSNomorRujukanRSActionPerformed);
 
-        btnCekBPJSRujukanKartuPCare = createMenuButton("/48x48/vclaim.png", "Cek Rujukan Kartu PCare di VClaim", "btnCekBPJSRujukanKartuPCare", new java.awt.Dimension(200, 90), this::btnCekBPJSRujukanKartuPCareActionPerformed);
+        btnCekBPJSRujukanKartuPCare = createMenuButton("/48x48/vclaim.png", "Cek Rujukan Kartu PCare di VClaim", "btnCekBPJSRujukanKartuPCare", this::btnCekBPJSRujukanKartuPCareActionPerformed);
 
-        btnCekBPJSRujukanKartuRS = createMenuButton("/48x48/vclaim.png", "Cek Rujukan Kartu RS di VClaim", "btnCekBPJSRujukanKartuRS", new java.awt.Dimension(200, 90), this::btnCekBPJSRujukanKartuRSActionPerformed);
+        btnCekBPJSRujukanKartuRS = createMenuButton("/48x48/vclaim.png", "Cek Rujukan Kartu RS di VClaim", "btnCekBPJSRujukanKartuRS", this::btnCekBPJSRujukanKartuRSActionPerformed);
 
-        btnRujukanKeluarBPJS = createMenuButton("/48x48/vclaim.png", "Data Rujukan Keluar VClaim", "btnRujukanKeluarBPJS", new java.awt.Dimension(200, 90), this::btnRujukanKeluarBPJSActionPerformed);
+        btnRujukanKeluarBPJS = createMenuButton("/48x48/vclaim.png", "Data Rujukan Keluar VClaim", "btnRujukanKeluarBPJS", this::btnRujukanKeluarBPJSActionPerformed);
 
-        btnGrafikLabRalanPerBulan = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Lab Ralan Per Bulan", "btnGrafikLabRalanPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikLabRalanPerBulanActionPerformed);
+        btnGrafikLabRalanPerBulan = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Lab Ralan Per Bulan", "btnGrafikLabRalanPerBulan", this::btnGrafikLabRalanPerBulanActionPerformed);
 
-        btnStokKeluarMedis = createMenuButton("/48x48/shopping-basket-full.png", "Stok Keluar Medis", "btnStokKeluarMedis", new java.awt.Dimension(200, 90), this::btnStokKeluarMedisActionPerformed);
+        btnStokKeluarMedis = createMenuButton("/48x48/shopping-basket-full.png", "Stok Keluar Medis", "btnStokKeluarMedis", this::btnStokKeluarMedisActionPerformed);
 
-        btnGrafikRadRalanPerBulan = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Rad Ralan Per Bulan", "btnGrafikRadRalanPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikRadRalanPerBulanActionPerformed);
+        btnGrafikRadRalanPerBulan = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Rad Ralan Per Bulan", "btnGrafikRadRalanPerBulan", this::btnGrafikRadRalanPerBulanActionPerformed);
 
-        btnJMDetailDokter2 = createMenuButton("/48x48/address-book.png", "Detail JM Dokter 2", "btnJMDetailDokter2", new java.awt.Dimension(200, 90), this::btnJMDetailDokter2ActionPerformed);
+        btnJMDetailDokter2 = createMenuButton("/48x48/address-book.png", "Detail JM Dokter 2", "btnJMDetailDokter2", this::btnJMDetailDokter2ActionPerformed);
 
-        btnPengaduan = createMenuButton("/48x48/if_message_add_17398.png", "Pengaduan/Chat", "btnPengaduan", new java.awt.Dimension(200, 90), this::btnPengaduanActionPerformed);
+        btnPengaduan = createMenuButton("/48x48/if_message_add_17398.png", "Pengaduan/Chat", "btnPengaduan", this::btnPengaduanActionPerformed);
 
-        btnGrafikLabRalanPerHari = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Lab Ralan Per Tanggal", "btnGrafikLabRalanPerHari", new java.awt.Dimension(200, 90), this::btnGrafikLabRalanPerHariActionPerformed);
+        btnGrafikLabRalanPerHari = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Lab Ralan Per Tanggal", "btnGrafikLabRalanPerHari", this::btnGrafikLabRalanPerHariActionPerformed);
 
-        btnGrafikRadRalanPerHari = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Rad Ralan Per Tanggal", "btnGrafikRadRalanPerHari", new java.awt.Dimension(200, 90), this::btnGrafikRadRalanPerHariActionPerformed);
+        btnGrafikRadRalanPerHari = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Rad Ralan Per Tanggal", "btnGrafikRadRalanPerHari", this::btnGrafikRadRalanPerHariActionPerformed);
 
-        btnSensusHarianRalan = createMenuButton("/48x48/custom-reports.png", "Sensus Harian Ralan", "btnSensusHarianRalan", new java.awt.Dimension(200, 90), this::btnSensusHarianRalanActionPerformed);
+        btnSensusHarianRalan = createMenuButton("/48x48/custom-reports.png", "Sensus Harian Ralan", "btnSensusHarianRalan", this::btnSensusHarianRalanActionPerformed);
 
-        btnMetodeRacik = createMenuButton("/48x48/if_document-new_23212.png", "Metode Racik", "btnMetodeRacik", new java.awt.Dimension(200, 90), this::btnMetodeRacikActionPerformed);
+        btnMetodeRacik = createMenuButton("/48x48/if_document-new_23212.png", "Metode Racik", "btnMetodeRacik", this::btnMetodeRacikActionPerformed);
 
-        btnPembayaranAkunBayar = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar", "btnPembayaranAkunBayar", new java.awt.Dimension(200, 90), this::btnPembayaranAkunBayarActionPerformed);
+        btnPembayaranAkunBayar = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar", "btnPembayaranAkunBayar", this::btnPembayaranAkunBayarActionPerformed);
 
-        btnPenggunaObatResep = createMenuButton("/48x48/family.png", "Pengguna Obat/Alkes/BHP Resep", "btnPenggunaObatResep", new java.awt.Dimension(200, 90), this::btnPenggunaObatResepActionPerformed);
+        btnPenggunaObatResep = createMenuButton("/48x48/family.png", "Pengguna Obat/Alkes/BHP Resep", "btnPenggunaObatResep", this::btnPenggunaObatResepActionPerformed);
 
-        btnRekapPenerimaanObat = createMenuButton("/48x48/if_TextEdit_37595.png", "Rekap Penerimaan Obat & BHP", "btnRekapPenerimaanObat", new java.awt.Dimension(200, 90), this::btnRekapPenerimaanObatActionPerformed);
+        btnRekapPenerimaanObat = createMenuButton("/48x48/if_TextEdit_37595.png", "Rekap Penerimaan Obat & BHP", "btnRekapPenerimaanObat", this::btnRekapPenerimaanObatActionPerformed);
 
-        btnMasterBerkasPegawai = createMenuButton("/48x48/folder.png", "Master Berkas Pegawai", "btnMasterBerkasPegawai", new java.awt.Dimension(200, 90), this::btnMasterBerkasPegawaiActionPerformed);
+        btnMasterBerkasPegawai = createMenuButton("/48x48/folder.png", "Master Berkas Pegawai", "btnMasterBerkasPegawai", this::btnMasterBerkasPegawaiActionPerformed);
 
-        btnBerkasPegawai = createMenuButton("/48x48/1481002437_partners.png", "Berkas Kepegawaian", "btnBerkasPegawai", new java.awt.Dimension(200, 90), this::btnBerkasPegawaiActionPerformed);
+        btnBerkasPegawai = createMenuButton("/48x48/1481002437_partners.png", "Berkas Kepegawaian", "btnBerkasPegawai", this::btnBerkasPegawaiActionPerformed);
 
-        btnRiwayatJabatan = createMenuButton("/48x48/if_TextEdit_37595.png", "Riwayat Jabatan", "btnRiwayatJabatan", new java.awt.Dimension(200, 90), this::btnRiwayatJabatanActionPerformed);
+        btnRiwayatJabatan = createMenuButton("/48x48/if_TextEdit_37595.png", "Riwayat Jabatan", "btnRiwayatJabatan", this::btnRiwayatJabatanActionPerformed);
 
-        btnRiwayatPendidikan = createMenuButton("/48x48/1481038237_Adobe_Bridge_CS.png", "Riwayat Pendidikan", "btnRiwayatPendidikan", new java.awt.Dimension(200, 90), this::btnRiwayatPendidikanActionPerformed);
+        btnRiwayatPendidikan = createMenuButton("/48x48/1481038237_Adobe_Bridge_CS.png", "Riwayat Pendidikan", "btnRiwayatPendidikan", this::btnRiwayatPendidikanActionPerformed);
 
-        btnRiwayatNaikGaji = createMenuButton("/48x48/coins.png", "Riwayat Naik Gaji", "btnRiwayatNaikGaji", new java.awt.Dimension(200, 90), this::btnRiwayatNaikGajiActionPerformed);
+        btnRiwayatNaikGaji = createMenuButton("/48x48/coins.png", "Riwayat Naik Gaji", "btnRiwayatNaikGaji", this::btnRiwayatNaikGajiActionPerformed);
 
-        btnKegiatanIlmiah = createMenuButton("/48x48/if_gtk-find-and-replace_39047.png", "Kegiatan Ilmiah & Pelatihan", "btnKegiatanIlmiah", new java.awt.Dimension(200, 90), this::btnKegiatanIlmiahActionPerformed);
+        btnKegiatanIlmiah = createMenuButton("/48x48/if_gtk-find-and-replace_39047.png", "Kegiatan Ilmiah & Pelatihan", "btnKegiatanIlmiah", this::btnKegiatanIlmiahActionPerformed);
 
-        btnRiwayatPenghargaan = createMenuButton("/48x48/if_folder_images_61610.png", "Riwayat Penghargaan", "btnRiwayatPenghargaan", new java.awt.Dimension(200, 90), this::btnRiwayatPenghargaanActionPerformed);
+        btnRiwayatPenghargaan = createMenuButton("/48x48/if_folder_images_61610.png", "Riwayat Penghargaan", "btnRiwayatPenghargaan", this::btnRiwayatPenghargaanActionPerformed);
 
-        btnRiwayatPenelitian = createMenuButton("/48x48/if_research_87460.png", "Riwayat Penelitian", "btnRiwayatPenelitian", new java.awt.Dimension(200, 90), this::btnRiwayatPenelitianActionPerformed);
+        btnRiwayatPenelitian = createMenuButton("/48x48/if_research_87460.png", "Riwayat Penelitian", "btnRiwayatPenelitian", this::btnRiwayatPenelitianActionPerformed);
 
-        btnPenerimaanNonMedis = createMenuButton("/48x48/1481038192_market.png", "Penerimaan Barang Non Medis", "btnPenerimaanNonMedis", new java.awt.Dimension(200, 90), this::btnPenerimaanNonMedisActionPerformed);
+        btnPenerimaanNonMedis = createMenuButton("/48x48/1481038192_market.png", "Penerimaan Barang Non Medis", "btnPenerimaanNonMedis", this::btnPenerimaanNonMedisActionPerformed);
 
-        btnBayarPesanNonMedis = createMenuButton("/48x48/1360487067_calculator.png", "Bayar Pesan Non Medis", "btnBayarPesanNonMedis", new java.awt.Dimension(200, 90), this::btnBayarPesanNonMedisActionPerformed);
+        btnBayarPesanNonMedis = createMenuButton("/48x48/1360487067_calculator.png", "Bayar Pesan Non Medis", "btnBayarPesanNonMedis", this::btnBayarPesanNonMedisActionPerformed);
 
-        btnHutangNonMedis = createMenuButton("/48x48/1360487067_calculator.png", "Hutang Non Medis", "btnHutangNonMedis", new java.awt.Dimension(200, 90), this::btnHutangNonMedisActionPerformed);
+        btnHutangNonMedis = createMenuButton("/48x48/1360487067_calculator.png", "Hutang Non Medis", "btnHutangNonMedis", this::btnHutangNonMedisActionPerformed);
 
-        btnRekapPenerimaanNonMedis = createMenuButton("/48x48/if_TextEdit_37595.png", "Rekap Penerimaan Non Medis", "btnRekapPenerimaanNonMedis", new java.awt.Dimension(200, 90), this::btnRekapPenerimaanNonMedisActionPerformed);
+        btnRekapPenerimaanNonMedis = createMenuButton("/48x48/if_TextEdit_37595.png", "Rekap Penerimaan Non Medis", "btnRekapPenerimaanNonMedis", this::btnRekapPenerimaanNonMedisActionPerformed);
 
-        btnInsidenKeselamatan = createMenuButton("/48x48/1481002123_wheelchair.png", "Insiden Keselamatan", "btnInsidenKeselamatan", new java.awt.Dimension(200, 90), this::btnInsidenKeselamatanActionPerformed);
+        btnInsidenKeselamatan = createMenuButton("/48x48/1481002123_wheelchair.png", "Insiden Keselamatan", "btnInsidenKeselamatan", this::btnInsidenKeselamatanActionPerformed);
 
-        btnInsidenKeselamatanPasien = createMenuButton("/48x48/1485357758_Doctor.png", "Data Insiden Keselamatan", "btnInsidenKeselamatanPasien", new java.awt.Dimension(200, 90), this::btnInsidenKeselamatanPasienActionPerformed);
+        btnInsidenKeselamatanPasien = createMenuButton("/48x48/1485357758_Doctor.png", "Data Insiden Keselamatan", "btnInsidenKeselamatanPasien", this::btnInsidenKeselamatanPasienActionPerformed);
 
-        btnGrafikKejadianIKPPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Tahun", "btnGrafikKejadianIKPPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikKejadianIKPPerTahunActionPerformed);
+        btnGrafikKejadianIKPPerTahun = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Tahun", "btnGrafikKejadianIKPPerTahun", this::btnGrafikKejadianIKPPerTahunActionPerformed);
 
-        btnGrafikKejadianIKPPerBulan = createMenuButton("/48x48/1491582080_6.png", "Kejadian IKP Per Bulan", "btnGrafikKejadianIKPPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikKejadianIKPPerBulanActionPerformed);
+        btnGrafikKejadianIKPPerBulan = createMenuButton("/48x48/1491582080_6.png", "Kejadian IKP Per Bulan", "btnGrafikKejadianIKPPerBulan", this::btnGrafikKejadianIKPPerBulanActionPerformed);
 
-        btnGrafikKejadianIKPPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Tanggal", "btnGrafikKejadianIKPPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikKejadianIKPPerTanggalActionPerformed);
+        btnGrafikKejadianIKPPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Tanggal", "btnGrafikKejadianIKPPerTanggal", this::btnGrafikKejadianIKPPerTanggalActionPerformed);
 
-        btnRiwayatBatch = createMenuButton("/48x48/1481038237_Adobe_Bridge_CS.png", "Riwayat Batch", "btnRiwayatBatch", new java.awt.Dimension(200, 90), this::btnRiwayatBatchActionPerformed);
+        btnRiwayatBatch = createMenuButton("/48x48/1481038237_Adobe_Bridge_CS.png", "Riwayat Batch", "btnRiwayatBatch", this::btnRiwayatBatchActionPerformed);
 
-        btnGrafikKejadianIKPPerJenis = createMenuButton("/48x48/1491582080_6.png", "Kejadian IKP Per Jenis", "btnGrafikKejadianIKPPerJenis", new java.awt.Dimension(200, 90), this::btnGrafikKejadianIKPPerJenisActionPerformed);
+        btnGrafikKejadianIKPPerJenis = createMenuButton("/48x48/1491582080_6.png", "Kejadian IKP Per Jenis", "btnGrafikKejadianIKPPerJenis", this::btnGrafikKejadianIKPPerJenisActionPerformed);
 
-        btnGrafikKejadianIKPPerDampak = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Dampak", "btnGrafikKejadianIKPPerDampak", new java.awt.Dimension(200, 90), this::btnGrafikKejadianIKPPerDampakActionPerformed);
+        btnGrafikKejadianIKPPerDampak = createMenuButton("/48x48/1491582015_11.png", "Kejadian IKP Per Dampak", "btnGrafikKejadianIKPPerDampak", this::btnGrafikKejadianIKPPerDampakActionPerformed);
 
-        btnPiutangPerAkunPiutang = createMenuButton("/48x48/stock_task.png", "Piutang Per Akun Piutang", "btnPiutangPerAkunPiutang", new java.awt.Dimension(200, 90), this::btnPiutangPerAkunPiutangActionPerformed);
+        btnPiutangPerAkunPiutang = createMenuButton("/48x48/stock_task.png", "Piutang Per Akun Piutang", "btnPiutangPerAkunPiutang", this::btnPiutangPerAkunPiutangActionPerformed);
 
-        btnGrafikKunjunganPerAgama = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Agama", "btnGrafikKunjunganPerAgama", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerAgamaActionPerformed);
+        btnGrafikKunjunganPerAgama = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Agama", "btnGrafikKunjunganPerAgama", this::btnGrafikKunjunganPerAgamaActionPerformed);
 
-        btnGrafikKunjunganPerUmur = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Umur", "btnGrafikKunjunganPerUmur", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerUmurActionPerformed);
+        btnGrafikKunjunganPerUmur = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Umur", "btnGrafikKunjunganPerUmur", this::btnGrafikKunjunganPerUmurActionPerformed);
 
-        btnSuku = createMenuButton("/48x48/if_Login Manager_3503.png", "Suku/Bangsa Pasien", "btnSuku", new java.awt.Dimension(200, 90), this::btnSukuActionPerformed);
+        btnSuku = createMenuButton("/48x48/if_Login Manager_3503.png", "Suku/Bangsa Pasien", "btnSuku", this::btnSukuActionPerformed);
 
-        btnBahasa = createMenuButton("/48x48/if_Orange forum_54521.png", "Bahasa Pasien", "btnBahasa", new java.awt.Dimension(200, 90), this::btnBahasaActionPerformed);
+        btnBahasa = createMenuButton("/48x48/if_Orange forum_54521.png", "Bahasa Pasien", "btnBahasa", this::btnBahasaActionPerformed);
 
-        btnGolonganTNI = createMenuButton("/48x48/if_advantage_teamwork_1034367.png", "Golongan TNI", "btnGolonganTNI", new java.awt.Dimension(200, 90), this::btnGolonganTNIActionPerformed);
+        btnGolonganTNI = createMenuButton("/48x48/if_advantage_teamwork_1034367.png", "Golongan TNI", "btnGolonganTNI", this::btnGolonganTNIActionPerformed);
 
-        btnSatuanTNI = createMenuButton("/48x48/if_17_2959846.png", "Satuan TNI", "btnSatuanTNI", new java.awt.Dimension(200, 90), this::btnSatuanTNIActionPerformed);
+        btnSatuanTNI = createMenuButton("/48x48/if_17_2959846.png", "Satuan TNI", "btnSatuanTNI", this::btnSatuanTNIActionPerformed);
 
-        btnJabatanTNI = createMenuButton("/48x48/if_house_kitchen_table_1378836.png", "Jabatan TNI", "btnJabatanTNI", new java.awt.Dimension(200, 90), this::btnJabatanTNIActionPerformed);
+        btnJabatanTNI = createMenuButton("/48x48/if_house_kitchen_table_1378836.png", "Jabatan TNI", "btnJabatanTNI", this::btnJabatanTNIActionPerformed);
 
-        btnPangkatTNI = createMenuButton("/48x48/if_23_Page_Rank_Badge_1688850.png", "Pangkat TNI", "btnPangkatTNI", new java.awt.Dimension(200, 90), this::btnPangkatTNIActionPerformed);
+        btnPangkatTNI = createMenuButton("/48x48/if_23_Page_Rank_Badge_1688850.png", "Pangkat TNI", "btnPangkatTNI", this::btnPangkatTNIActionPerformed);
 
-        btnGolonganPolri = createMenuButton("/48x48/if_advantage_teamwork_1034367.png", "Golongan POLRI", "btnGolonganPolri", new java.awt.Dimension(200, 90), this::btnGolonganPolriActionPerformed);
+        btnGolonganPolri = createMenuButton("/48x48/if_advantage_teamwork_1034367.png", "Golongan POLRI", "btnGolonganPolri", this::btnGolonganPolriActionPerformed);
 
-        btnSatuanPolri = createMenuButton("/48x48/if_17_2959846.png", "Satuan POLRI", "btnSatuanPolri", new java.awt.Dimension(200, 90), this::btnSatuanPolriActionPerformed);
+        btnSatuanPolri = createMenuButton("/48x48/if_17_2959846.png", "Satuan POLRI", "btnSatuanPolri", this::btnSatuanPolriActionPerformed);
 
-        btnJabatanPolri = createMenuButton("/48x48/if_house_kitchen_table_1378836.png", "Jabatan POLRI", "btnJabatanPolri", new java.awt.Dimension(200, 90), this::btnJabatanPolriActionPerformed);
+        btnJabatanPolri = createMenuButton("/48x48/if_house_kitchen_table_1378836.png", "Jabatan POLRI", "btnJabatanPolri", this::btnJabatanPolriActionPerformed);
 
-        btnPangkatPolri = createMenuButton("/48x48/if_23_Page_Rank_Badge_1688850.png", "Pangkat POLRI", "btnPangkatPolri", new java.awt.Dimension(200, 90), this::btnPangkatPolriActionPerformed);
+        btnPangkatPolri = createMenuButton("/48x48/if_23_Page_Rank_Badge_1688850.png", "Pangkat POLRI", "btnPangkatPolri", this::btnPangkatPolriActionPerformed);
 
-        btnCacatFisik = createMenuButton("/48x48/plaster.png", "Cacat Fisik", "btnCacatFisik", new java.awt.Dimension(200, 90), this::btnCacatFisikActionPerformed);
+        btnCacatFisik = createMenuButton("/48x48/plaster.png", "Cacat Fisik", "btnCacatFisik", this::btnCacatFisikActionPerformed);
 
-        btnGrafikKunjunganPerSuku = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Suku/Bangsa", "btnGrafikKunjunganPerSuku", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerSukuActionPerformed);
+        btnGrafikKunjunganPerSuku = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Suku/Bangsa", "btnGrafikKunjunganPerSuku", this::btnGrafikKunjunganPerSukuActionPerformed);
 
-        btnGrafikKunjunganPerBahasa = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Bahasa", "btnGrafikKunjunganPerBahasa", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerBahasaActionPerformed);
+        btnGrafikKunjunganPerBahasa = createMenuButton("/48x48/1491582015_11.png", "Registrasi Per Bahasa", "btnGrafikKunjunganPerBahasa", this::btnGrafikKunjunganPerBahasaActionPerformed);
 
-        btnJadwalOperasi = createMenuButton("/48x48/JadwalOperasi.png", "Jadwal Operasi", "btnJadwalOperasi", new java.awt.Dimension(200, 90), this::btnJadwalOperasiActionPerformed);
+        btnJadwalOperasi = createMenuButton("/48x48/JadwalOperasi.png", "Jadwal Operasi", "btnJadwalOperasi", this::btnJadwalOperasiActionPerformed);
 
-        btnMapingPoliBPJS = createMenuButton("/48x48/vclaim.png", "Mapping Poli VClaim", "btnMapingPoliBPJS", new java.awt.Dimension(200, 90), this::btnMapingPoliBPJSActionPerformed);
+        btnMapingPoliBPJS = createMenuButton("/48x48/vclaim.png", "Mapping Poli VClaim", "btnMapingPoliBPJS", this::btnMapingPoliBPJSActionPerformed);
 
-        btnGrafikKunjunganPerCacat = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Cacat Fisik", "btnGrafikKunjunganPerCacat", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganPerCacatActionPerformed);
+        btnGrafikKunjunganPerCacat = createMenuButton("/48x48/1491582080_6.png", "Registrasi Per Cacat Fisik", "btnGrafikKunjunganPerCacat", this::btnGrafikKunjunganPerCacatActionPerformed);
 
-        btnBarangCSSD = createMenuButton("/48x48/if_order-history_49596.png", "Barang CSSD", "btnBarangCSSD", new java.awt.Dimension(200, 90), this::btnBarangCSSDActionPerformed);
+        btnBarangCSSD = createMenuButton("/48x48/if_order-history_49596.png", "Barang CSSD", "btnBarangCSSD", this::btnBarangCSSDActionPerformed);
 
-        btnSKDPBPJS = createMenuButton("/48x48/iconfinder_vector_66_15_473627.png", "Surat Kontrol", "btnSKDPBPJS", new java.awt.Dimension(200, 90), this::btnSKDPBPJSActionPerformed);
+        btnSKDPBPJS = createMenuButton("/48x48/iconfinder_vector_66_15_473627.png", "Surat Kontrol", "btnSKDPBPJS", this::btnSKDPBPJSActionPerformed);
 
-        btnBookingRegistrasi = createMenuButton("/48x48/Icon-Booking.png", "Booking Registrasi", "btnBookingRegistrasi", new java.awt.Dimension(200, 90), this::btnBookingRegistrasiActionPerformed);
+        btnBookingRegistrasi = createMenuButton("/48x48/Icon-Booking.png", "Booking Registrasi", "btnBookingRegistrasi", this::btnBookingRegistrasiActionPerformed);
 
-        btnCekReferensiPropinsiBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Propinsi VClaim", "btnCekReferensiPropinsiBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiPropinsiBPJSActionPerformed);
+        btnCekReferensiPropinsiBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Propinsi VClaim", "btnCekReferensiPropinsiBPJS", this::btnCekReferensiPropinsiBPJSActionPerformed);
 
-        btnCekReferensiKabupatenBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kabupaten VClaim", "btnCekReferensiKabupatenBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiKabupatenBPJSActionPerformed);
+        btnCekReferensiKabupatenBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kabupaten VClaim", "btnCekReferensiKabupatenBPJS", this::btnCekReferensiKabupatenBPJSActionPerformed);
 
-        btnCekReferensiKecamatanBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kecamatan VClaim", "btnCekReferensiKecamatanBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiKecamatanBPJSActionPerformed);
+        btnCekReferensiKecamatanBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Kecamatan VClaim", "btnCekReferensiKecamatanBPJS", this::btnCekReferensiKecamatanBPJSActionPerformed);
 
-        btnCekReferensiDokterDPJPBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter DPJP VClaim", "btnCekReferensiDokterDPJPBPJS", new java.awt.Dimension(200, 90), this::btnCekReferensiDokterDPJPBPJSActionPerformed);
+        btnCekReferensiDokterDPJPBPJS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter DPJP VClaim", "btnCekReferensiDokterDPJPBPJS", this::btnCekReferensiDokterDPJPBPJSActionPerformed);
 
-        btnCekBPJSRiwayatRujukanRS = createMenuButton("/48x48/vclaim.png", "Riwayat Rujukan RS di VClaim", "btnCekBPJSRiwayatRujukanRS", new java.awt.Dimension(200, 90), this::btnCekBPJSRiwayatRujukanRSActionPerformed);
+        btnCekBPJSRiwayatRujukanRS = createMenuButton("/48x48/vclaim.png", "Riwayat Rujukan RS di VClaim", "btnCekBPJSRiwayatRujukanRS", this::btnCekBPJSRiwayatRujukanRSActionPerformed);
 
-        btnCekBPJSTanggalRujukan = createMenuButton("/48x48/vclaim.png", "Tanggal Rujukan di VClaim", "btnCekBPJSTanggalRujukan", new java.awt.Dimension(200, 90), this::btnCekBPJSTanggalRujukanActionPerformed);
+        btnCekBPJSTanggalRujukan = createMenuButton("/48x48/vclaim.png", "Tanggal Rujukan di VClaim", "btnCekBPJSTanggalRujukan", this::btnCekBPJSTanggalRujukanActionPerformed);
 
-        btnPermintaanLab = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab PK", "btnPermintaanLab", new java.awt.Dimension(200, 90), this::btnPermintaanLabActionPerformed);
+        btnPermintaanLab = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab PK", "btnPermintaanLab", this::btnPermintaanLabActionPerformed);
 
-        btnPermintaanRadiologi = createMenuButton("/48x48/if_Thorax_X-Ray_Black_63791.png", "Permintaan Radiologi", "btnPermintaanRadiologi", new java.awt.Dimension(200, 90), this::btnPermintaanRadiologiActionPerformed);
+        btnPermintaanRadiologi = createMenuButton("/48x48/if_Thorax_X-Ray_Black_63791.png", "Permintaan Radiologi", "btnPermintaanRadiologi", this::btnPermintaanRadiologiActionPerformed);
 
-        btnSuratIndeks = createMenuButton("/48x48/if_open-email_264844.png", "Indeks Surat", "btnSuratIndeks", new java.awt.Dimension(200, 90), this::btnSuratIndeksActionPerformed);
+        btnSuratIndeks = createMenuButton("/48x48/if_open-email_264844.png", "Indeks Surat", "btnSuratIndeks", this::btnSuratIndeksActionPerformed);
 
-        btnSuratMap = createMenuButton("/48x48/if_orange-folder-mail_25242.png", "Map Surat", "btnSuratMap", new java.awt.Dimension(200, 90), this::btnSuratMapActionPerformed);
+        btnSuratMap = createMenuButton("/48x48/if_orange-folder-mail_25242.png", "Map Surat", "btnSuratMap", this::btnSuratMapActionPerformed);
 
-        btnSuratAlmari = createMenuButton("/48x48/if_cabinet_49336.png", "Almari Surat", "btnSuratAlmari", new java.awt.Dimension(200, 90), this::btnSuratAlmariActionPerformed);
+        btnSuratAlmari = createMenuButton("/48x48/if_cabinet_49336.png", "Almari Surat", "btnSuratAlmari", this::btnSuratAlmariActionPerformed);
 
-        btnSuratRak = createMenuButton("/48x48/if_shelf_104409.png", "Rak Surat", "btnSuratRak", new java.awt.Dimension(200, 90), this::btnSuratRakActionPerformed);
+        btnSuratRak = createMenuButton("/48x48/if_shelf_104409.png", "Rak Surat", "btnSuratRak", this::btnSuratRakActionPerformed);
 
-        btnSuratRuang = createMenuButton("/48x48/if_kfm_home_18010.png", "Ruang Surat", "btnSuratRuang", new java.awt.Dimension(200, 90), this::btnSuratRuangActionPerformed);
+        btnSuratRuang = createMenuButton("/48x48/if_kfm_home_18010.png", "Ruang Surat", "btnSuratRuang", this::btnSuratRuangActionPerformed);
 
-        btnSuratKlasifikasi = createMenuButton("/48x48/if_kontact_8762.png", "Klasifikasi Surat", "btnSuratKlasifikasi", new java.awt.Dimension(200, 90), this::btnSuratKlasifikasiActionPerformed);
+        btnSuratKlasifikasi = createMenuButton("/48x48/if_kontact_8762.png", "Klasifikasi Surat", "btnSuratKlasifikasi", this::btnSuratKlasifikasiActionPerformed);
 
-        btnSuratStatus = createMenuButton("/48x48/if_26-Mail_34317.png", "Status Surat", "btnSuratStatus", new java.awt.Dimension(200, 90), this::btnSuratStatusActionPerformed);
+        btnSuratStatus = createMenuButton("/48x48/if_26-Mail_34317.png", "Status Surat", "btnSuratStatus", this::btnSuratStatusActionPerformed);
 
-        btnSuratSifat = createMenuButton("/48x48/if_private_mail_44691.png", "Sifat Surat", "btnSuratSifat", new java.awt.Dimension(200, 90), this::btnSuratSifatActionPerformed);
+        btnSuratSifat = createMenuButton("/48x48/if_private_mail_44691.png", "Sifat Surat", "btnSuratSifat", this::btnSuratSifatActionPerformed);
 
-        btnSuratBalas = createMenuButton("/48x48/if_mail-reply-all_118782.png", "Stts Balas Surat", "btnSuratBalas", new java.awt.Dimension(200, 90), this::btnSuratBalasActionPerformed);
+        btnSuratBalas = createMenuButton("/48x48/if_mail-reply-all_118782.png", "Stts Balas Surat", "btnSuratBalas", this::btnSuratBalasActionPerformed);
 
-        btnSuratMasuk = createMenuButton("/48x48/if_e-mail2 _36619.png", "Surat Masuk", "btnSuratMasuk", new java.awt.Dimension(200, 90), this::btnSuratMasukActionPerformed);
+        btnSuratMasuk = createMenuButton("/48x48/if_e-mail2 _36619.png", "Surat Masuk", "btnSuratMasuk", this::btnSuratMasukActionPerformed);
 
-        btnPCareReferensiDokter = createMenuButton("/48x48/pcare.png", "Referensi Dokter PCare", "btnPCareReferensiDokter", new java.awt.Dimension(200, 90), this::btnPCareReferensiDokterActionPerformed);
+        btnPCareReferensiDokter = createMenuButton("/48x48/pcare.png", "Referensi Dokter PCare", "btnPCareReferensiDokter", this::btnPCareReferensiDokterActionPerformed);
 
-        btnPCareReferensiPoli = createMenuButton("/48x48/pcare.png", "Referensi Poli PCare", "btnPCareReferensiPoli", new java.awt.Dimension(200, 90), this::btnPCareReferensiPoliActionPerformed);
+        btnPCareReferensiPoli = createMenuButton("/48x48/pcare.png", "Referensi Poli PCare", "btnPCareReferensiPoli", this::btnPCareReferensiPoliActionPerformed);
 
-        btnPCareReferensiProvider = createMenuButton("/48x48/pcare.png", "Referensi Provider PCare", "btnPCareReferensiProvider", new java.awt.Dimension(200, 90), this::btnPCareReferensiProviderActionPerformed);
+        btnPCareReferensiProvider = createMenuButton("/48x48/pcare.png", "Referensi Provider PCare", "btnPCareReferensiProvider", this::btnPCareReferensiProviderActionPerformed);
 
-        btnPCareReferensiStatusPulang = createMenuButton("/48x48/pcare.png", "Referensi Stts Pulang PCare", "btnPCareReferensiStatusPulang", new java.awt.Dimension(200, 90), this::btnPCareReferensiStatusPulangActionPerformed);
+        btnPCareReferensiStatusPulang = createMenuButton("/48x48/pcare.png", "Referensi Stts Pulang PCare", "btnPCareReferensiStatusPulang", this::btnPCareReferensiStatusPulangActionPerformed);
 
-        btnPCareReferensiSpesialis = createMenuButton("/48x48/pcare.png", "Referensi Spesialis PCare", "btnPCareReferensiSpesialis", new java.awt.Dimension(200, 90), this::btnPCareReferensiSpesialisActionPerformed);
+        btnPCareReferensiSpesialis = createMenuButton("/48x48/pcare.png", "Referensi Spesialis PCare", "btnPCareReferensiSpesialis", this::btnPCareReferensiSpesialisActionPerformed);
 
-        btnPCareReferensiSubspesialis = createMenuButton("/48x48/pcare.png", "Referensi Subspesialis PCare", "btnPCareReferensiSubspesialis", new java.awt.Dimension(200, 90), this::btnPCareReferensiSubspesialisActionPerformed);
+        btnPCareReferensiSubspesialis = createMenuButton("/48x48/pcare.png", "Referensi Subspesialis PCare", "btnPCareReferensiSubspesialis", this::btnPCareReferensiSubspesialisActionPerformed);
 
-        btnPCareReferensiSarana = createMenuButton("/48x48/pcare.png", "Referensi Sarana PCare", "btnPCareReferensiSarana", new java.awt.Dimension(200, 90), this::btnPCareReferensiSaranaActionPerformed);
+        btnPCareReferensiSarana = createMenuButton("/48x48/pcare.png", "Referensi Sarana PCare", "btnPCareReferensiSarana", this::btnPCareReferensiSaranaActionPerformed);
 
-        btnPCareReferensiKhusus = createMenuButton("/48x48/pcare.png", "Referensi Khusus PCare", "btnPCareReferensiKhusus", new java.awt.Dimension(200, 90), this::btnPCareReferensiKhususActionPerformed);
+        btnPCareReferensiKhusus = createMenuButton("/48x48/pcare.png", "Referensi Khusus PCare", "btnPCareReferensiKhusus", this::btnPCareReferensiKhususActionPerformed);
 
-        btnPCareReferensiObat = createMenuButton("/48x48/pcare.png", "Referensi Obat PCare", "btnPCareReferensiObat", new java.awt.Dimension(200, 90), this::btnPCareReferensiObatActionPerformed);
+        btnPCareReferensiObat = createMenuButton("/48x48/pcare.png", "Referensi Obat PCare", "btnPCareReferensiObat", this::btnPCareReferensiObatActionPerformed);
 
-        btnPCareReferensiTindakan = createMenuButton("/48x48/pcare.png", "Referensi Tindakan PCare", "btnPCareReferensiTindakan", new java.awt.Dimension(200, 90), this::btnPCareReferensiTindakanActionPerformed);
+        btnPCareReferensiTindakan = createMenuButton("/48x48/pcare.png", "Referensi Tindakan PCare", "btnPCareReferensiTindakan", this::btnPCareReferensiTindakanActionPerformed);
 
-        btnPCareFaskesSubspesialis = createMenuButton("/48x48/pcare.png", "Faskes Subspesialis PCare", "btnPCareFaskesSubspesialis", new java.awt.Dimension(200, 90), this::btnPCareFaskesSubspesialisActionPerformed);
+        btnPCareFaskesSubspesialis = createMenuButton("/48x48/pcare.png", "Faskes Subspesialis PCare", "btnPCareFaskesSubspesialis", this::btnPCareFaskesSubspesialisActionPerformed);
 
-        btnPCareFaskesAlihRawat = createMenuButton("/48x48/pcare.png", "Faskes Alih Rawat PCare", "btnPCareFaskesAlihRawat", new java.awt.Dimension(200, 90), this::btnPCareFaskesAlihRawatActionPerformed);
+        btnPCareFaskesAlihRawat = createMenuButton("/48x48/pcare.png", "Faskes Alih Rawat PCare", "btnPCareFaskesAlihRawat", this::btnPCareFaskesAlihRawatActionPerformed);
 
-        btnPCareFaskesThalasemia = createMenuButton("/48x48/pcare.png", "Faskes Thalasemia & Hemofili PCare", "btnPCareFaskesThalasemia", new java.awt.Dimension(200, 90), this::btnPCareFaskesThalasemiaActionPerformed);
+        btnPCareFaskesThalasemia = createMenuButton("/48x48/pcare.png", "Faskes Thalasemia & Hemofili PCare", "btnPCareFaskesThalasemia", this::btnPCareFaskesThalasemiaActionPerformed);
 
-        btnPCareMapingObat = createMenuButton("/48x48/pcare.png", "Mapping Obat PCare", "btnPCareMapingObat", new java.awt.Dimension(200, 90), this::btnPCareMapingObatActionPerformed);
+        btnPCareMapingObat = createMenuButton("/48x48/pcare.png", "Mapping Obat PCare", "btnPCareMapingObat", this::btnPCareMapingObatActionPerformed);
 
-        btnPCareMapingTindakan = createMenuButton("/48x48/pcare.png", "Tarif Ralan PCare", "btnPCareMapingTindakan", new java.awt.Dimension(200, 90), this::btnPCareMapingTindakanActionPerformed);
+        btnPCareMapingTindakan = createMenuButton("/48x48/pcare.png", "Tarif Ralan PCare", "btnPCareMapingTindakan", this::btnPCareMapingTindakanActionPerformed);
 
-        btnPCareClubProlanis = createMenuButton("/48x48/pcare.png", "Club Prolanis PCare", "btnPCareClubProlanis", new java.awt.Dimension(200, 90), this::btnPCareClubProlanisActionPerformed);
+        btnPCareClubProlanis = createMenuButton("/48x48/pcare.png", "Club Prolanis PCare", "btnPCareClubProlanis", this::btnPCareClubProlanisActionPerformed);
 
-        btnPCareMapingPoli = createMenuButton("/48x48/pcare.png", "Mapping Poli PCare", "btnPCareMapingPoli", new java.awt.Dimension(200, 90), this::btnPCareMapingPoliActionPerformed);
+        btnPCareMapingPoli = createMenuButton("/48x48/pcare.png", "Mapping Poli PCare", "btnPCareMapingPoli", this::btnPCareMapingPoliActionPerformed);
 
-        btnPCareKegiatanKelompok = createMenuButton("/48x48/pcare.png", "Kegiatan Kelompok PCare", "btnPCareKegiatanKelompok", new java.awt.Dimension(200, 90), this::btnPCareKegiatanKelompokActionPerformed);
+        btnPCareKegiatanKelompok = createMenuButton("/48x48/pcare.png", "Kegiatan Kelompok PCare", "btnPCareKegiatanKelompok", this::btnPCareKegiatanKelompokActionPerformed);
 
-        btnPCareMapingTindakanRanap = createMenuButton("/48x48/pcare.png", "Tarif Ranap PCare", "btnPCareMapingTindakanRanap", new java.awt.Dimension(200, 90), this::btnPCareMapingTindakanRanapActionPerformed);
+        btnPCareMapingTindakanRanap = createMenuButton("/48x48/pcare.png", "Tarif Ranap PCare", "btnPCareMapingTindakanRanap", this::btnPCareMapingTindakanRanapActionPerformed);
 
-        btnPCarePesertaKegiatanKelompok = createMenuButton("/48x48/pcare.png", "Peserta Keg Kelompok PCare", "btnPCarePesertaKegiatanKelompok", new java.awt.Dimension(200, 90), this::btnPCarePesertaKegiatanKelompokActionPerformed);
+        btnPCarePesertaKegiatanKelompok = createMenuButton("/48x48/pcare.png", "Peserta Keg Kelompok PCare", "btnPCarePesertaKegiatanKelompok", this::btnPCarePesertaKegiatanKelompokActionPerformed);
 
-        btnSirkulasi3 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 3", "btnSirkulasi3", new java.awt.Dimension(200, 90), this::btnSirkulasi3ActionPerformed);
+        btnSirkulasi3 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 3", "btnSirkulasi3", this::btnSirkulasi3ActionPerformed);
 
-        btnPCarePendaftaran = createMenuButton("/48x48/pcare.png", "Data Pendaftaran PCare", "btnPCarePendaftaran", new java.awt.Dimension(200, 90), this::btnPCarePendaftaranActionPerformed);
+        btnPCarePendaftaran = createMenuButton("/48x48/pcare.png", "Data Pendaftaran PCare", "btnPCarePendaftaran", this::btnPCarePendaftaranActionPerformed);
 
-        btnPCareMapingDokter = createMenuButton("/48x48/pcare.png", "Mapping Dokter PCare", "btnPCareMapingDokter", new java.awt.Dimension(200, 90), this::btnPCareMapingDokterActionPerformed);
+        btnPCareMapingDokter = createMenuButton("/48x48/pcare.png", "Mapping Dokter PCare", "btnPCareMapingDokter", this::btnPCareMapingDokterActionPerformed);
 
-        btnRanapPerRuang = createMenuButton("/48x48/if_House_132045.png", "Ranap Per Ruang", "btnRanapPerRuang", new java.awt.Dimension(200, 90), this::btnRanapPerRuangActionPerformed);
+        btnRanapPerRuang = createMenuButton("/48x48/if_House_132045.png", "Ranap Per Ruang", "btnRanapPerRuang", this::btnRanapPerRuangActionPerformed);
 
-        btnPenyakitRanapCaraBayar = createMenuButton("/48x48/if_24_DNA_2064499.png", "Penyakit Ranap Per Cara Bayar", "btnPenyakitRanapCaraBayar", new java.awt.Dimension(200, 90), this::btnPenyakitRanapCaraBayarActionPerformed);
+        btnPenyakitRanapCaraBayar = createMenuButton("/48x48/if_24_DNA_2064499.png", "Penyakit Ranap Per Cara Bayar", "btnPenyakitRanapCaraBayar", this::btnPenyakitRanapCaraBayarActionPerformed);
 
-        btnAnggotaMiliterDirawat = createMenuButton("/48x48/if_Soldier-3_379419.png", "Anggota TNI Dirawat", "btnAnggotaMiliterDirawat", new java.awt.Dimension(200, 90), this::btnAnggotaMiliterDirawatActionPerformed);
+        btnAnggotaMiliterDirawat = createMenuButton("/48x48/if_Soldier-3_379419.png", "Anggota TNI Dirawat", "btnAnggotaMiliterDirawat", this::btnAnggotaMiliterDirawatActionPerformed);
 
-        btnSetInputParsial = createMenuButton("/48x48/if_Finance_loan_money_1889199.png", "Set Input Parsial", "btnSetInputParsial", new java.awt.Dimension(200, 90), this::btnSetInputParsialActionPerformed);
+        btnSetInputParsial = createMenuButton("/48x48/if_Finance_loan_money_1889199.png", "Set Input Parsial", "btnSetInputParsial", this::btnSetInputParsialActionPerformed);
 
-        btnLamaPelayananRadiologi = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Radiologi", "btnLamaPelayananRadiologi", new java.awt.Dimension(200, 90), this::btnLamaPelayananRadiologiActionPerformed);
+        btnLamaPelayananRadiologi = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Radiologi", "btnLamaPelayananRadiologi", this::btnLamaPelayananRadiologiActionPerformed);
 
-        btnLamaPelayananLab = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab PK", "btnLamaPelayananLab", new java.awt.Dimension(200, 90), this::btnLamaPelayananLabActionPerformed);
+        btnLamaPelayananLab = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab PK", "btnLamaPelayananLab", this::btnLamaPelayananLabActionPerformed);
 
-        btnCekSEP = createMenuButton("/48x48/vclaim.png", "Cek Nomor SEP", "btnCekSEP", new java.awt.Dimension(200, 90), this::btnCekSEPActionPerformed);
+        btnCekSEP = createMenuButton("/48x48/vclaim.png", "Cek Nomor SEP", "btnCekSEP", this::btnCekSEPActionPerformed);
 
-        btnSuratKeluar = createMenuButton("/48x48/if_email_3327.png", "Surat Keluar", "btnSuratKeluar", new java.awt.Dimension(200, 90), this::btnSuratKeluarActionPerformed);
+        btnSuratKeluar = createMenuButton("/48x48/if_email_3327.png", "Surat Keluar", "btnSuratKeluar", this::btnSuratKeluarActionPerformed);
 
-        btnKegiatanFarmasi = createMenuButton("/48x48/if_website_-_address_book_3440827.png", "Kegiatan Farmasi", "btnKegiatanFarmasi", new java.awt.Dimension(200, 90), this::btnKegiatanFarmasiActionPerformed);
+        btnKegiatanFarmasi = createMenuButton("/48x48/if_website_-_address_book_3440827.png", "Kegiatan Farmasi", "btnKegiatanFarmasi", this::btnKegiatanFarmasiActionPerformed);
 
-        btnOpnameIPSRS = createMenuButton("/48x48/ark2.png", "Stok Opname Non Medis", "btnOpnameIPSRS", new java.awt.Dimension(200, 90), this::btnOpnameIPSRSActionPerformed);
+        btnOpnameIPSRS = createMenuButton("/48x48/ark2.png", "Stok Opname Non Medis", "btnOpnameIPSRS", this::btnOpnameIPSRSActionPerformed);
 
-        btnSirkulasiNonMedis = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Non Medis", "btnSirkulasiNonMedis", new java.awt.Dimension(200, 90), this::btnSirkulasiNonMedisActionPerformed);
+        btnSirkulasiNonMedis = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Non Medis", "btnSirkulasiNonMedis", this::btnSirkulasiNonMedisActionPerformed);
 
-        btnRekapLabPerTahun = createMenuButton("/48x48/if_projects_63140.png", "Rekap Lab Per Tahun", "btnRekapLabPerTahun", new java.awt.Dimension(200, 90), this::btnRekapLabPerTahunActionPerformed);
+        btnRekapLabPerTahun = createMenuButton("/48x48/if_projects_63140.png", "Rekap Lab Per Tahun", "btnRekapLabPerTahun", this::btnRekapLabPerTahunActionPerformed);
 
-        btnPerujukLabPerTahun = createMenuButton("/48x48/doctor2.png", "Perujuk Lab Per Tahun", "btnPerujukLabPerTahun", new java.awt.Dimension(200, 90), this::btnPerujukLabPerTahunActionPerformed);
+        btnPerujukLabPerTahun = createMenuButton("/48x48/doctor2.png", "Perujuk Lab Per Tahun", "btnPerujukLabPerTahun", this::btnPerujukLabPerTahunActionPerformed);
 
-        btnRekapRadiologiPerTahun = createMenuButton("/48x48/if_Thorax_X-Ray_Black_63791.png", "Rekap Radiologi Per Tahun", "btnRekapRadiologiPerTahun", new java.awt.Dimension(200, 90), this::btnRekapRadiologiPerTahunActionPerformed);
+        btnRekapRadiologiPerTahun = createMenuButton("/48x48/if_Thorax_X-Ray_Black_63791.png", "Rekap Radiologi Per Tahun", "btnRekapRadiologiPerTahun", this::btnRekapRadiologiPerTahunActionPerformed);
 
-        btnPerujukRadiologiPerTahun = createMenuButton("/48x48/doctor_assistant.png", "Perujuk Radiologi Per Tahun", "btnPerujukRadiologiPerTahun", new java.awt.Dimension(200, 90), this::btnPerujukRadiologiPerTahunActionPerformed);
+        btnPerujukRadiologiPerTahun = createMenuButton("/48x48/doctor_assistant.png", "Perujuk Radiologi Per Tahun", "btnPerujukRadiologiPerTahun", this::btnPerujukRadiologiPerTahunActionPerformed);
 
-        btnJumlahPorsiDiet = createMenuButton("/48x48/iconfinder_bibimbub_3377053.png", "Rekap Bulanan Porsi Diet", "btnJumlahPorsiDiet", new java.awt.Dimension(200, 90), this::btnJumlahPorsiDietActionPerformed);
+        btnJumlahPorsiDiet = createMenuButton("/48x48/iconfinder_bibimbub_3377053.png", "Rekap Bulanan Porsi Diet", "btnJumlahPorsiDiet", this::btnJumlahPorsiDietActionPerformed);
 
-        btnJumlahMacamDiet = createMenuButton("/48x48/iconfinder_ramen_3377055.png", "Rekap Bulanan Macam Diet", "btnJumlahMacamDiet", new java.awt.Dimension(200, 90), this::btnJumlahMacamDietActionPerformed);
+        btnJumlahMacamDiet = createMenuButton("/48x48/iconfinder_ramen_3377055.png", "Rekap Bulanan Macam Diet", "btnJumlahMacamDiet", this::btnJumlahMacamDietActionPerformed);
 
-        btnPaymentPoint2 = createMenuButton("/48x48/coins.png", "Payment Point 2", "btnPaymentPoint2", new java.awt.Dimension(200, 90), this::btnPaymentPoint2ActionPerformed);
+        btnPaymentPoint2 = createMenuButton("/48x48/coins.png", "Payment Point 2", "btnPaymentPoint2", this::btnPaymentPoint2ActionPerformed);
 
-        btnPembayaranAkunBayar2 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 2", "btnPembayaranAkunBayar2", new java.awt.Dimension(200, 90), this::btnPembayaranAkunBayar2ActionPerformed);
+        btnPembayaranAkunBayar2 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 2", "btnPembayaranAkunBayar2", this::btnPembayaranAkunBayar2ActionPerformed);
 
-        btnHAIsBangsal = createMenuButton("/48x48/if_house_shelf_1378832.png", "HAIs Per Kamar/Bangsal", "btnHAIsBangsal", new java.awt.Dimension(200, 90), this::btnHAIsBangsalActionPerformed);
+        btnHAIsBangsal = createMenuButton("/48x48/if_house_shelf_1378832.png", "HAIs Per Kamar/Bangsal", "btnHAIsBangsal", this::btnHAIsBangsalActionPerformed);
 
-        btnPPNObat = createMenuButton("/48x48/if_money_299107.png", "PPN Obat", "btnPPNObat", new java.awt.Dimension(200, 90), this::btnPPNObatActionPerformed);
+        btnPPNObat = createMenuButton("/48x48/if_money_299107.png", "PPN Obat", "btnPPNObat", this::btnPPNObatActionPerformed);
 
-        btnSaldoAkunPerBulan = createMenuButton("/48x48/iconfinder_icons-05_799761.png", "Saldo Akun Per Bulan", "btnSaldoAkunPerBulan", new java.awt.Dimension(200, 90), this::btnSaldoAkunPerBulanActionPerformed);
+        btnSaldoAkunPerBulan = createMenuButton("/48x48/iconfinder_icons-05_799761.png", "Saldo Akun Per Bulan", "btnSaldoAkunPerBulan", this::btnSaldoAkunPerBulanActionPerformed);
 
-        btnDisplayApotek = createMenuButton("/48x48/find.png", "Display Antrian Apotek", "btnDisplayApotek", new java.awt.Dimension(200, 90), this::btnDisplayApotekActionPerformed);
+        btnDisplayApotek = createMenuButton("/48x48/find.png", "Display Antrian Apotek", "btnDisplayApotek", this::btnDisplayApotekActionPerformed);
 
-        btnCekSisruteFaskes = createMenuButton("/48x48/industry.png", "Referensi Faskes Sisrute", "btnCekSisruteFaskes", new java.awt.Dimension(200, 90), this::btnCekSisruteFaskesActionPerformed);
+        btnCekSisruteFaskes = createMenuButton("/48x48/industry.png", "Referensi Faskes Sisrute", "btnCekSisruteFaskes", this::btnCekSisruteFaskesActionPerformed);
 
-        btnCekSisruteAlasanRujuk = createMenuButton("/48x48/if_todo_list_add_17451.png", "Referensi Alasan Rujuk Sisrute", "btnCekSisruteAlasanRujuk", new java.awt.Dimension(200, 90), this::btnCekSisruteAlasanRujukActionPerformed);
+        btnCekSisruteAlasanRujuk = createMenuButton("/48x48/if_todo_list_add_17451.png", "Referensi Alasan Rujuk Sisrute", "btnCekSisruteAlasanRujuk", this::btnCekSisruteAlasanRujukActionPerformed);
 
-        btnCekSisruteDiagnosa = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Referensi Diagnosa Sisrute", "btnCekSisruteDiagnosa", new java.awt.Dimension(200, 90), this::btnCekSisruteDiagnosaActionPerformed);
+        btnCekSisruteDiagnosa = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Referensi Diagnosa Sisrute", "btnCekSisruteDiagnosa", this::btnCekSisruteDiagnosaActionPerformed);
 
-        btnRujukanMasukSisrute = createMenuButton("/48x48/iconfinder_analysis_60159.png", "Rujukan Masuk Sisrute", "btnRujukanMasukSisrute", new java.awt.Dimension(200, 90), this::btnRujukanMasukSisruteActionPerformed);
+        btnRujukanMasukSisrute = createMenuButton("/48x48/iconfinder_analysis_60159.png", "Rujukan Masuk Sisrute", "btnRujukanMasukSisrute", this::btnRujukanMasukSisruteActionPerformed);
 
-        btnRujukanKeluarSisrute = createMenuButton("/48x48/1485357758_Doctor.png", "Rujukan Keluar Sisrute", "btnRujukanKeluarSisrute", new java.awt.Dimension(200, 90), this::btnRujukanKeluarSisruteActionPerformed);
+        btnRujukanKeluarSisrute = createMenuButton("/48x48/1485357758_Doctor.png", "Rujukan Keluar Sisrute", "btnRujukanKeluarSisrute", this::btnRujukanKeluarSisruteActionPerformed);
 
-        btnCekBPJSSKDP = createMenuButton("/48x48/vclaim.png", "Cek SKDP VClaim", "btnCekBPJSSKDP", new java.awt.Dimension(200, 90), this::btnCekBPJSSKDPActionPerformed);
+        btnCekBPJSSKDP = createMenuButton("/48x48/vclaim.png", "Cek SKDP VClaim", "btnCekBPJSSKDP", this::btnCekBPJSSKDPActionPerformed);
 
-        btnDataBatch = createMenuButton("/48x48/1360484263_barcode.png", "Data Batch", "btnDataBatch", new java.awt.Dimension(200, 90), this::btnDataBatchActionPerformed);
+        btnDataBatch = createMenuButton("/48x48/1360484263_barcode.png", "Data Batch", "btnDataBatch", this::btnDataBatchActionPerformed);
 
-        btnKunjunganLabRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Lab Ralan", "btnKunjunganLabRalan", new java.awt.Dimension(200, 90), this::btnKunjunganLabRalanActionPerformed);
+        btnKunjunganLabRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Lab Ralan", "btnKunjunganLabRalan", this::btnKunjunganLabRalanActionPerformed);
 
-        btnKunjunganLabRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Lab Ranap", "btnKunjunganLabRanap", new java.awt.Dimension(200, 90), this::btnKunjunganLabRanapActionPerformed);
+        btnKunjunganLabRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Lab Ranap", "btnKunjunganLabRanap", this::btnKunjunganLabRanapActionPerformed);
 
-        btnKunjunganRadRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Radiologi Ralan", "btnKunjunganRadRalan", new java.awt.Dimension(200, 90), this::btnKunjunganRadRalanActionPerformed);
+        btnKunjunganRadRalan = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Radiologi Ralan", "btnKunjunganRadRalan", this::btnKunjunganRadRalanActionPerformed);
 
-        btnKunjunganRadRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Radiologi Ranap", "btnKunjunganRadRanap", new java.awt.Dimension(200, 90), this::btnKunjunganRadRanapActionPerformed);
+        btnKunjunganRadRanap = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Kunjungan Radiologi Ranap", "btnKunjunganRadRanap", this::btnKunjunganRadRanapActionPerformed);
 
-        btnPCareBeriObat = createMenuButton("/48x48/pcare.png", "Pemberian Obat PCare", "btnPCareBeriObat", new java.awt.Dimension(200, 90), this::btnPCareBeriObatActionPerformed);
+        btnPCareBeriObat = createMenuButton("/48x48/pcare.png", "Pemberian Obat PCare", "btnPCareBeriObat", this::btnPCareBeriObatActionPerformed);
 
-        btnPCareBeriTindakan = createMenuButton("/48x48/pcare.png", "Pemberian Tindakan PCare", "btnPCareBeriTindakan", new java.awt.Dimension(200, 90), this::btnPCareBeriTindakanActionPerformed);
+        btnPCareBeriTindakan = createMenuButton("/48x48/pcare.png", "Pemberian Tindakan PCare", "btnPCareBeriTindakan", this::btnPCareBeriTindakanActionPerformed);
 
-        btnPembayaranAkunBayar3 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 3", "btnPembayaranAkunBayar3", new java.awt.Dimension(200, 90), this::btnPembayaranAkunBayar3ActionPerformed);
+        btnPembayaranAkunBayar3 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 3", "btnPembayaranAkunBayar3", this::btnPembayaranAkunBayar3ActionPerformed);
 
-        btnPasswordAsuransi = createMenuButton("/48x48/1481002113_guard.png", "Password BPJS", "btnPasswordAsuransi", new java.awt.Dimension(200, 90), this::btnPasswordAsuransiActionPerformed);
+        btnPasswordAsuransi = createMenuButton("/48x48/1481002113_guard.png", "Password BPJS", "btnPasswordAsuransi", this::btnPasswordAsuransiActionPerformed);
 
-        btnDataSITT = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Data TB", "btnDataSITT", new java.awt.Dimension(200, 90), this::btnDataSITTActionPerformed);
+        btnDataSITT = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Data TB", "btnDataSITT", this::btnDataSITTActionPerformed);
 
-        btnSiranapKetersediaanKamar = createMenuButton("/48x48/1485357524_Company.png", "Ketersediaan Kamar SIRANAP", "btnSiranapKetersediaanKamar", new java.awt.Dimension(200, 90), this::btnSiranapKetersediaanKamarActionPerformed);
+        btnSiranapKetersediaanKamar = createMenuButton("/48x48/1485357524_Company.png", "Ketersediaan Kamar SIRANAP", "btnSiranapKetersediaanKamar", this::btnSiranapKetersediaanKamarActionPerformed);
 
-        btnGrafikTBLaporanPeriode = createMenuButton("/48x48/1491582015_11.png", "Periode Laporan TB", "btnGrafikTBLaporanPeriode", new java.awt.Dimension(200, 90), this::btnGrafikTBLaporanPeriodeActionPerformed);
+        btnGrafikTBLaporanPeriode = createMenuButton("/48x48/1491582015_11.png", "Periode Laporan TB", "btnGrafikTBLaporanPeriode", this::btnGrafikTBLaporanPeriodeActionPerformed);
 
-        btnGrafikTBRujukan = createMenuButton("/48x48/1491582080_6.png", "Rujukan TB", "btnGrafikTBRujukan", new java.awt.Dimension(200, 90), this::btnGrafikTBRujukanActionPerformed);
+        btnGrafikTBRujukan = createMenuButton("/48x48/1491582080_6.png", "Rujukan TB", "btnGrafikTBRujukan", this::btnGrafikTBRujukanActionPerformed);
 
-        btnGrafikTBRiwayat = createMenuButton("/48x48/1491582015_11.png", "Riwayat TB", "btnGrafikTBRiwayat", new java.awt.Dimension(200, 90), this::btnGrafikTBRiwayatActionPerformed);
+        btnGrafikTBRiwayat = createMenuButton("/48x48/1491582015_11.png", "Riwayat TB", "btnGrafikTBRiwayat", this::btnGrafikTBRiwayatActionPerformed);
 
-        btnGrafikTBTipeDiagnosis = createMenuButton("/48x48/1491582080_6.png", "Tipe Diagnosis TB", "btnGrafikTBTipeDiagnosis", new java.awt.Dimension(200, 90), this::btnGrafikTBTipeDiagnosisActionPerformed);
+        btnGrafikTBTipeDiagnosis = createMenuButton("/48x48/1491582080_6.png", "Tipe Diagnosis TB", "btnGrafikTBTipeDiagnosis", this::btnGrafikTBTipeDiagnosisActionPerformed);
 
-        btnGrafikTBSTatusHIV = createMenuButton("/48x48/1491582015_11.png", "Status HIV TB", "btnGrafikTBSTatusHIV", new java.awt.Dimension(200, 90), this::btnGrafikTBSTatusHIVActionPerformed);
+        btnGrafikTBSTatusHIV = createMenuButton("/48x48/1491582015_11.png", "Status HIV TB", "btnGrafikTBSTatusHIV", this::btnGrafikTBSTatusHIVActionPerformed);
 
-        btnGrafikTBSkoringAnak = createMenuButton("/48x48/1491582080_6.png", "Skoring Anak TB", "btnGrafikTBSkoringAnak", new java.awt.Dimension(200, 90), this::btnGrafikTBSkoringAnakActionPerformed);
+        btnGrafikTBSkoringAnak = createMenuButton("/48x48/1491582080_6.png", "Skoring Anak TB", "btnGrafikTBSkoringAnak", this::btnGrafikTBSkoringAnakActionPerformed);
 
-        btnGrafikTBKonfirmasiSkoring5 = createMenuButton("/48x48/1491582015_11.png", "Konfirmasi Skoring 5 TB", "btnGrafikTBKonfirmasiSkoring5", new java.awt.Dimension(200, 90), this::btnGrafikTBKonfirmasiSkoring5ActionPerformed);
+        btnGrafikTBKonfirmasiSkoring5 = createMenuButton("/48x48/1491582015_11.png", "Konfirmasi Skoring 5 TB", "btnGrafikTBKonfirmasiSkoring5", this::btnGrafikTBKonfirmasiSkoring5ActionPerformed);
 
-        btnGrafikTBKonfirmasiSkoring6 = createMenuButton("/48x48/1491582080_6.png", "Konfirmasi Skoring 6 TB", "btnGrafikTBKonfirmasiSkoring6", new java.awt.Dimension(200, 90), this::btnGrafikTBKonfirmasiSkoring6ActionPerformed);
+        btnGrafikTBKonfirmasiSkoring6 = createMenuButton("/48x48/1491582080_6.png", "Konfirmasi Skoring 6 TB", "btnGrafikTBKonfirmasiSkoring6", this::btnGrafikTBKonfirmasiSkoring6ActionPerformed);
 
-        btnGrafikTBSumberObat = createMenuButton("/48x48/1491582015_11.png", "Sumber Obat TB", "btnGrafikTBSumberObat", new java.awt.Dimension(200, 90), this::btnGrafikTBSumberObatActionPerformed);
+        btnGrafikTBSumberObat = createMenuButton("/48x48/1491582015_11.png", "Sumber Obat TB", "btnGrafikTBSumberObat", this::btnGrafikTBSumberObatActionPerformed);
 
-        btnGrafikTBHasilAkhirPengobatan = createMenuButton("/48x48/1491582080_6.png", "Hasil Akhir Pengobatan TB", "btnGrafikTBHasilAkhirPengobatan", new java.awt.Dimension(200, 90), this::btnGrafikTBHasilAkhirPengobatanActionPerformed);
+        btnGrafikTBHasilAkhirPengobatan = createMenuButton("/48x48/1491582080_6.png", "Hasil Akhir Pengobatan TB", "btnGrafikTBHasilAkhirPengobatan", this::btnGrafikTBHasilAkhirPengobatanActionPerformed);
 
-        btnGrafikTBHasilTesHIV = createMenuButton("/48x48/1491582015_11.png", "Hasil Tes HIV TB", "btnGrafikTBHasilTesHIV", new java.awt.Dimension(200, 90), this::btnGrafikTBHasilTesHIVActionPerformed);
+        btnGrafikTBHasilTesHIV = createMenuButton("/48x48/1491582015_11.png", "Hasil Tes HIV TB", "btnGrafikTBHasilTesHIV", this::btnGrafikTBHasilTesHIVActionPerformed);
 
-        btnKadaluarsaBatch = createMenuButton("/48x48/iconfinder_diagram-11_35581.png", "Kadaluarsa Batch", "btnKadaluarsaBatch", new java.awt.Dimension(200, 90), this::btnKadaluarsaBatchActionPerformed);
+        btnKadaluarsaBatch = createMenuButton("/48x48/iconfinder_diagram-11_35581.png", "Kadaluarsa Batch", "btnKadaluarsaBatch", this::btnKadaluarsaBatchActionPerformed);
 
-        btnSisaStok = createMenuButton("/48x48/iconfinder_icon-62-document-table_314903.png", "Sisa Stok", "btnSisaStok", new java.awt.Dimension(200, 90), this::btnSisaStokActionPerformed);
+        btnSisaStok = createMenuButton("/48x48/iconfinder_icon-62-document-table_314903.png", "Sisa Stok", "btnSisaStok", this::btnSisaStokActionPerformed);
 
-        btnObatPerResep = createMenuButton("/48x48/iconfinder_eccomerce_-_receipt_3440909.png", "Obat Per Resep", "btnObatPerResep", new java.awt.Dimension(200, 90), this::btnObatPerResepActionPerformed);
+        btnObatPerResep = createMenuButton("/48x48/iconfinder_eccomerce_-_receipt_3440909.png", "Obat Per Resep", "btnObatPerResep", this::btnObatPerResepActionPerformed);
 
-        btnPemakaianAirPDAM = createMenuButton("/48x48/iconfinder_Energy_Energy_Oil_Water_Drop_Fuel_3911250.png", "Pemakaian Air PDAM", "btnPemakaianAirPDAM", new java.awt.Dimension(200, 90), this::btnPemakaianAirPDAMActionPerformed);
+        btnPemakaianAirPDAM = createMenuButton("/48x48/iconfinder_Energy_Energy_Oil_Water_Drop_Fuel_3911250.png", "Pemakaian Air PDAM", "btnPemakaianAirPDAM", this::btnPemakaianAirPDAMActionPerformed);
 
-        btnLimbahB3Medis = createMenuButton("/48x48/iconfinder_Bin_ecology_recyclewaste_2992453.png", "Limbah Padat B3 Medis", "btnLimbahB3Medis", new java.awt.Dimension(200, 90), this::btnLimbahB3MedisActionPerformed);
+        btnLimbahB3Medis = createMenuButton("/48x48/iconfinder_Bin_ecology_recyclewaste_2992453.png", "Limbah Padat B3 Medis", "btnLimbahB3Medis", this::btnLimbahB3MedisActionPerformed);
 
-        btnGrafikPemakaianAirPDAMPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Pemakaian Air PDAM Per Tanggal", "btnGrafikPemakaianAirPDAMPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikPemakaianAirPDAMPerTanggalActionPerformed);
+        btnGrafikPemakaianAirPDAMPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Pemakaian Air PDAM Per Tanggal", "btnGrafikPemakaianAirPDAMPerTanggal", this::btnGrafikPemakaianAirPDAMPerTanggalActionPerformed);
 
-        btnGrafikPemakaianAirPDAMPerBulan = createMenuButton("/48x48/1491582015_11.png", "Pemakaian Air PDAM Per Bulan", "btnGrafikPemakaianAirPDAMPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikPemakaianAirPDAMPerBulanActionPerformed);
+        btnGrafikPemakaianAirPDAMPerBulan = createMenuButton("/48x48/1491582015_11.png", "Pemakaian Air PDAM Per Bulan", "btnGrafikPemakaianAirPDAMPerBulan", this::btnGrafikPemakaianAirPDAMPerBulanActionPerformed);
 
-        btnGrafikLimbahB3MedisPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah B3 Medis Per Tanggal", "btnGrafikLimbahB3MedisPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikLimbahB3MedisPerTanggalActionPerformed);
+        btnGrafikLimbahB3MedisPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah B3 Medis Per Tanggal", "btnGrafikLimbahB3MedisPerTanggal", this::btnGrafikLimbahB3MedisPerTanggalActionPerformed);
 
-        btnGrafikLimbahB3MedisPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah B3 Medis Per Bulan", "btnGrafikLimbahB3MedisPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikLimbahB3MedisPerBulanActionPerformed);
+        btnGrafikLimbahB3MedisPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah B3 Medis Per Bulan", "btnGrafikLimbahB3MedisPerBulan", this::btnGrafikLimbahB3MedisPerBulanActionPerformed);
 
-        btnLimbahDomestik = createMenuButton("/48x48/iconfinder_trash red_10554.png", "Limbah Padat Domestik", "btnLimbahDomestik", new java.awt.Dimension(200, 90), this::btnLimbahDomestikActionPerformed);
+        btnLimbahDomestik = createMenuButton("/48x48/iconfinder_trash red_10554.png", "Limbah Padat Domestik", "btnLimbahDomestik", this::btnLimbahDomestikActionPerformed);
 
-        btnGrafikLimbahDomestikPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah Padat Domestik Per Tanggal", "btnGrafikLimbahDomestikPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikLimbahDomestikPerTanggalActionPerformed);
+        btnGrafikLimbahDomestikPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah Padat Domestik Per Tanggal", "btnGrafikLimbahDomestikPerTanggal", this::btnGrafikLimbahDomestikPerTanggalActionPerformed);
 
-        btnLaboratoriumPA = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Periksa Lab PA", "btnLaboratoriumPA", new java.awt.Dimension(200, 90), this::btnLaboratoriumPAActionPerformed);
+        btnLaboratoriumPA = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Periksa Lab PA", "btnLaboratoriumPA", this::btnLaboratoriumPAActionPerformed);
 
-        btnLaboratoriumMB = createMenuButton("/48x48/5728202_coronavirus_medical_microbiology_research_science_icon.png", "Periksa Lab MB", "btnLaboratoriumMB", new java.awt.Dimension(200, 90), this::btnLaboratoriumMBActionPerformed);
+        btnLaboratoriumMB = createMenuButton("/48x48/5728202_coronavirus_medical_microbiology_research_science_icon.png", "Periksa Lab MB", "btnLaboratoriumMB", this::btnLaboratoriumMBActionPerformed);
 
-        btnKategoriPerpustakaan = createMenuButton("/48x48/iconfinder_document-open_118911.png", "Kategori Koleksi", "btnKategoriPerpustakaan", new java.awt.Dimension(200, 90), this::btnKategoriPerpustakaanActionPerformed);
+        btnKategoriPerpustakaan = createMenuButton("/48x48/iconfinder_document-open_118911.png", "Kategori Koleksi", "btnKategoriPerpustakaan", this::btnKategoriPerpustakaanActionPerformed);
 
-        btnJenisPerpustakaan = createMenuButton("/48x48/iconfinder_Untitled-1-02_3775448.png", "Jenis Koleksi", "btnJenisPerpustakaan", new java.awt.Dimension(200, 90), this::btnJenisPerpustakaanActionPerformed);
+        btnJenisPerpustakaan = createMenuButton("/48x48/iconfinder_Untitled-1-02_3775448.png", "Jenis Koleksi", "btnJenisPerpustakaan", this::btnJenisPerpustakaanActionPerformed);
 
-        btnRuangPerpustakaan = createMenuButton("/48x48/iconfinder_City_728922.png", "Ruang Perpustakaan", "btnRuangPerpustakaan", new java.awt.Dimension(200, 90), this::btnRuangPerpustakaanActionPerformed);
+        btnRuangPerpustakaan = createMenuButton("/48x48/iconfinder_City_728922.png", "Ruang Perpustakaan", "btnRuangPerpustakaan", this::btnRuangPerpustakaanActionPerformed);
 
-        btnPengarangPerpustakaan = createMenuButton("/48x48/iconfinder_Teacher_131497.png", "Pengarang/Penulis", "btnPengarangPerpustakaan", new java.awt.Dimension(200, 90), this::btnPengarangPerpustakaanActionPerformed);
+        btnPengarangPerpustakaan = createMenuButton("/48x48/iconfinder_Teacher_131497.png", "Pengarang/Penulis", "btnPengarangPerpustakaan", this::btnPengarangPerpustakaanActionPerformed);
 
-        btnPenerbitPerpustakaan = createMenuButton("/48x48/iconfinder_package_editors_109.png", "Penerbit Koleksi", "btnPenerbitPerpustakaan", new java.awt.Dimension(200, 90), this::btnPenerbitPerpustakaanActionPerformed);
+        btnPenerbitPerpustakaan = createMenuButton("/48x48/iconfinder_package_editors_109.png", "Penerbit Koleksi", "btnPenerbitPerpustakaan", this::btnPenerbitPerpustakaanActionPerformed);
 
-        btnKoleksiPerpustakaan = createMenuButton("/48x48/iconfinder_General_Office_61_3592836.png", "Koleksi Perpustakaan", "btnKoleksiPerpustakaan", new java.awt.Dimension(200, 90), this::btnKoleksiPerpustakaanActionPerformed);
+        btnKoleksiPerpustakaan = createMenuButton("/48x48/iconfinder_General_Office_61_3592836.png", "Koleksi Perpustakaan", "btnKoleksiPerpustakaan", this::btnKoleksiPerpustakaanActionPerformed);
 
-        btnInventarisPerpustakaan = createMenuButton("/48x48/iconfinder_library_47990.png", "Inventaris Perpustakaan", "btnInventarisPerpustakaan", new java.awt.Dimension(200, 90), this::btnInventarisPerpustakaanActionPerformed);
+        btnInventarisPerpustakaan = createMenuButton("/48x48/iconfinder_library_47990.png", "Inventaris Perpustakaan", "btnInventarisPerpustakaan", this::btnInventarisPerpustakaanActionPerformed);
 
-        btnPengaturanPeminjamanPerpustakaan = createMenuButton("/48x48/iconfinder_EditDocument_728933.png", "Pengaturan Peminjaman", "btnPengaturanPeminjamanPerpustakaan", new java.awt.Dimension(200, 90), this::btnPengaturanPeminjamanPerpustakaanActionPerformed);
+        btnPengaturanPeminjamanPerpustakaan = createMenuButton("/48x48/iconfinder_EditDocument_728933.png", "Pengaturan Peminjaman", "btnPengaturanPeminjamanPerpustakaan", this::btnPengaturanPeminjamanPerpustakaanActionPerformed);
 
-        btnDendaPerpustakaan = createMenuButton("/48x48/iconfinder_Wallet_3387286.png", "Denda Perpustakaan", "btnDendaPerpustakaan", new java.awt.Dimension(200, 90), this::btnDendaPerpustakaanActionPerformed);
+        btnDendaPerpustakaan = createMenuButton("/48x48/iconfinder_Wallet_3387286.png", "Denda Perpustakaan", "btnDendaPerpustakaan", this::btnDendaPerpustakaanActionPerformed);
 
-        btnAnggotaPerpustakaan = createMenuButton("/48x48/iconfinder_website_-_male_user_3440844.png", "Anggota Perpustakaan", "btnAnggotaPerpustakaan", new java.awt.Dimension(200, 90), this::btnAnggotaPerpustakaanActionPerformed);
+        btnAnggotaPerpustakaan = createMenuButton("/48x48/iconfinder_website_-_male_user_3440844.png", "Anggota Perpustakaan", "btnAnggotaPerpustakaan", this::btnAnggotaPerpustakaanActionPerformed);
 
-        btnPeminjamanPerpustakaan = createMenuButton("/48x48/if_diagram-07_35577.png", "Peminjaman Koleksi Perpustakaan", "btnPeminjamanPerpustakaan", new java.awt.Dimension(200, 90), this::btnPeminjamanPerpustakaanActionPerformed);
+        btnPeminjamanPerpustakaan = createMenuButton("/48x48/if_diagram-07_35577.png", "Peminjaman Koleksi Perpustakaan", "btnPeminjamanPerpustakaan", this::btnPeminjamanPerpustakaanActionPerformed);
 
-        btnBayarDendaPerpustakaan = createMenuButton("/48x48/iconfinder_wallet_money_sale_shop_4177574.png", "Bayar Denda Perpustakaan", "btnBayarDendaPerpustakaan", new java.awt.Dimension(200, 90), this::btnBayarDendaPerpustakaanActionPerformed);
+        btnBayarDendaPerpustakaan = createMenuButton("/48x48/iconfinder_wallet_money_sale_shop_4177574.png", "Bayar Denda Perpustakaan", "btnBayarDendaPerpustakaan", this::btnBayarDendaPerpustakaanActionPerformed);
 
-        btnPenelitianPerpustakaan = createMenuButton("/48x48/if_research_87460.png", "Koleksi Penelitian", "btnPenelitianPerpustakaan", new java.awt.Dimension(200, 90), this::btnPenelitianPerpustakaanActionPerformed);
+        btnPenelitianPerpustakaan = createMenuButton("/48x48/if_research_87460.png", "Koleksi Penelitian", "btnPenelitianPerpustakaan", this::btnPenelitianPerpustakaanActionPerformed);
 
-        btnEbookPerpustakaan = createMenuButton("/48x48/iconfinder_website_-_bookmark_3440843.png", "Data Koleksi Ebook", "btnEbookPerpustakaan", new java.awt.Dimension(200, 90), this::btnEbookPerpustakaanActionPerformed);
+        btnEbookPerpustakaan = createMenuButton("/48x48/iconfinder_website_-_bookmark_3440843.png", "Data Koleksi Ebook", "btnEbookPerpustakaan", this::btnEbookPerpustakaanActionPerformed);
 
-        btnCariEbook = createMenuButton("/48x48/iconfinder_Book_728912.png", "Cari Koleksi Ebook", "btnCariEbook", new java.awt.Dimension(200, 90), this::btnCariEbookActionPerformed);
+        btnCariEbook = createMenuButton("/48x48/iconfinder_Book_728912.png", "Cari Koleksi Ebook", "btnCariEbook", this::btnCariEbookActionPerformed);
 
-        btnPestControl = createMenuButton("/48x48/iconfinder_world_eco_leaves_2992451.png", "Pest Control", "btnPestControl", new java.awt.Dimension(200, 90), this::btnPestControlActionPerformed);
+        btnPestControl = createMenuButton("/48x48/iconfinder_world_eco_leaves_2992451.png", "Pest Control", "btnPestControl", this::btnPestControlActionPerformed);
 
-        btnMutuAirLimbah = createMenuButton("/48x48/iconfinder_Care_ecology_water_hand_2992434.png", "Mutu Air Limbah", "btnMutuAirLimbah", new java.awt.Dimension(200, 90), this::btnMutuAirLimbahActionPerformed);
+        btnMutuAirLimbah = createMenuButton("/48x48/iconfinder_Care_ecology_water_hand_2992434.png", "Mutu Air Limbah", "btnMutuAirLimbah", this::btnMutuAirLimbahActionPerformed);
 
-        btnCariInventarisPerpustakaan = createMenuButton("/48x48/iconfinder_data_1421637.png", "Cari Inventaris Perpustakaan", "btnCariInventarisPerpustakaan", new java.awt.Dimension(200, 90), this::btnCariInventarisPerpustakaanActionPerformed);
+        btnCariInventarisPerpustakaan = createMenuButton("/48x48/iconfinder_data_1421637.png", "Cari Inventaris Perpustakaan", "btnCariInventarisPerpustakaan", this::btnCariInventarisPerpustakaanActionPerformed);
 
-        btnJenisCideraK3 = createMenuButton("/48x48/ruber.png", "Jenis Cidera K3", "btnJenisCideraK3", new java.awt.Dimension(200, 90), this::btnJenisCideraK3ActionPerformed);
+        btnJenisCideraK3 = createMenuButton("/48x48/ruber.png", "Jenis Cidera K3", "btnJenisCideraK3", this::btnJenisCideraK3ActionPerformed);
 
-        btnPenyebabKecelakaanK3 = createMenuButton("/48x48/iconfinder_sponge_2___331505.png", "Penyebab Kecelakaan K3", "btnPenyebabKecelakaanK3", new java.awt.Dimension(200, 90), this::btnPenyebabKecelakaanK3ActionPerformed);
+        btnPenyebabKecelakaanK3 = createMenuButton("/48x48/iconfinder_sponge_2___331505.png", "Penyebab Kecelakaan K3", "btnPenyebabKecelakaanK3", this::btnPenyebabKecelakaanK3ActionPerformed);
 
-        btnJenisLukaK3 = createMenuButton("/48x48/iconfinder_h3_19725.png", "Jenis Luka K3", "btnJenisLukaK3", new java.awt.Dimension(200, 90), this::btnJenisLukaK3ActionPerformed);
+        btnJenisLukaK3 = createMenuButton("/48x48/iconfinder_h3_19725.png", "Jenis Luka K3", "btnJenisLukaK3", this::btnJenisLukaK3ActionPerformed);
 
-        btnLokasiKejadianK3 = createMenuButton("/48x48/iconfinder_arrows_blue_61552.png", "Lokasi Kejadian K3", "btnLokasiKejadianK3", new java.awt.Dimension(200, 90), this::btnLokasiKejadianK3ActionPerformed);
+        btnLokasiKejadianK3 = createMenuButton("/48x48/iconfinder_arrows_blue_61552.png", "Lokasi Kejadian K3", "btnLokasiKejadianK3", this::btnLokasiKejadianK3ActionPerformed);
 
-        btnDampakCideraK3 = createMenuButton("/48x48/iconfinder_ambulance_45490.png", "Dampak Cidera K3", "btnDampakCideraK3", new java.awt.Dimension(200, 90), this::btnDampakCideraK3ActionPerformed);
+        btnDampakCideraK3 = createMenuButton("/48x48/iconfinder_ambulance_45490.png", "Dampak Cidera K3", "btnDampakCideraK3", this::btnDampakCideraK3ActionPerformed);
 
-        btnGrafikLimbahDomestikPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah Padat Domestik Medis Per Bulan", "btnGrafikLimbahDomestikPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikLimbahDomestikPerBulanActionPerformed);
+        btnGrafikLimbahDomestikPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah Padat Domestik Medis Per Bulan", "btnGrafikLimbahDomestikPerBulan", this::btnGrafikLimbahDomestikPerBulanActionPerformed);
 
-        btnJenisPekerjaanK3 = createMenuButton("/48x48/iconfinder_applications-engineering_8830.png", "Jenis Pekerjaan K3", "btnJenisPekerjaanK3", new java.awt.Dimension(200, 90), this::btnJenisPekerjaanK3ActionPerformed);
+        btnJenisPekerjaanK3 = createMenuButton("/48x48/iconfinder_applications-engineering_8830.png", "Jenis Pekerjaan K3", "btnJenisPekerjaanK3", this::btnJenisPekerjaanK3ActionPerformed);
 
-        btnBagianTubuhK3 = createMenuButton("/48x48/plaster.png", "Bagian Tubuh K3", "btnBagianTubuhK3", new java.awt.Dimension(200, 90), this::btnBagianTubuhK3ActionPerformed);
+        btnBagianTubuhK3 = createMenuButton("/48x48/plaster.png", "Bagian Tubuh K3", "btnBagianTubuhK3", this::btnBagianTubuhK3ActionPerformed);
 
-        btnPeristiwaK3 = createMenuButton("/48x48/iconfinder_Artboard_18_3874677.png", "Peristiwa K3", "btnPeristiwaK3", new java.awt.Dimension(200, 90), this::btnPeristiwaK3ActionPerformed);
+        btnPeristiwaK3 = createMenuButton("/48x48/iconfinder_Artboard_18_3874677.png", "Peristiwa K3", "btnPeristiwaK3", this::btnPeristiwaK3ActionPerformed);
 
-        btnGrafikK3PerTahun = createMenuButton("/48x48/1491582080_6.png", "K3 Per Tahun", "btnGrafikK3PerTahun", new java.awt.Dimension(200, 90), this::btnGrafikK3PerTahunActionPerformed);
+        btnGrafikK3PerTahun = createMenuButton("/48x48/1491582080_6.png", "K3 Per Tahun", "btnGrafikK3PerTahun", this::btnGrafikK3PerTahunActionPerformed);
 
-        btnGrafikK3PerBulan = createMenuButton("/48x48/1491582015_11.png", "K3 Per Bulan", "btnGrafikK3PerBulan", new java.awt.Dimension(200, 90), this::btnGrafikK3PerBulanActionPerformed);
+        btnGrafikK3PerBulan = createMenuButton("/48x48/1491582015_11.png", "K3 Per Bulan", "btnGrafikK3PerBulan", this::btnGrafikK3PerBulanActionPerformed);
 
-        btnGrafikK3PerTanggal = createMenuButton("/48x48/1491582080_6.png", "K3 Per Tanggal", "btnGrafikK3PerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikK3PerTanggalActionPerformed);
+        btnGrafikK3PerTanggal = createMenuButton("/48x48/1491582080_6.png", "K3 Per Tanggal", "btnGrafikK3PerTanggal", this::btnGrafikK3PerTanggalActionPerformed);
 
-        btnGrafikK3PerJenisCidera = createMenuButton("/48x48/1491582015_11.png", "K3 Per Jenis Cidera", "btnGrafikK3PerJenisCidera", new java.awt.Dimension(200, 90), this::btnGrafikK3PerJenisCideraActionPerformed);
+        btnGrafikK3PerJenisCidera = createMenuButton("/48x48/1491582015_11.png", "K3 Per Jenis Cidera", "btnGrafikK3PerJenisCidera", this::btnGrafikK3PerJenisCideraActionPerformed);
 
-        btnGrafikK3PerPenyebab = createMenuButton("/48x48/1491582080_6.png", "K3 Per Penyebab Kecelakaan", "btnGrafikK3PerPenyebab", new java.awt.Dimension(200, 90), this::btnGrafikK3PerPenyebabActionPerformed);
+        btnGrafikK3PerPenyebab = createMenuButton("/48x48/1491582080_6.png", "K3 Per Penyebab Kecelakaan", "btnGrafikK3PerPenyebab", this::btnGrafikK3PerPenyebabActionPerformed);
 
-        btnGrafikK3PerJenisLuka = createMenuButton("/48x48/1491582015_11.png", "K3 Per Jenis Luka", "btnGrafikK3PerJenisLuka", new java.awt.Dimension(200, 90), this::btnGrafikK3PerJenisLukaActionPerformed);
+        btnGrafikK3PerJenisLuka = createMenuButton("/48x48/1491582015_11.png", "K3 Per Jenis Luka", "btnGrafikK3PerJenisLuka", this::btnGrafikK3PerJenisLukaActionPerformed);
 
-        btnGrafikK3PerLokasiKejadian = createMenuButton("/48x48/1491582080_6.png", "K3 Per Lokasi Kejadian", "btnGrafikK3PerLokasiKejadian", new java.awt.Dimension(200, 90), this::btnGrafikK3PerLokasiKejadianActionPerformed);
+        btnGrafikK3PerLokasiKejadian = createMenuButton("/48x48/1491582080_6.png", "K3 Per Lokasi Kejadian", "btnGrafikK3PerLokasiKejadian", this::btnGrafikK3PerLokasiKejadianActionPerformed);
 
-        btnGrafikK3PerDampakCidera = createMenuButton("/48x48/1491582015_11.png", "K3 Per Dampak Cidera", "btnGrafikK3PerDampakCidera", new java.awt.Dimension(200, 90), this::btnGrafikK3PerDampakCideraActionPerformed);
+        btnGrafikK3PerDampakCidera = createMenuButton("/48x48/1491582015_11.png", "K3 Per Dampak Cidera", "btnGrafikK3PerDampakCidera", this::btnGrafikK3PerDampakCideraActionPerformed);
 
-        btnGrafikK3PerJenisPekerjaan = createMenuButton("/48x48/1491582080_6.png", "K3 Per Jenis Pekerjaan", "btnGrafikK3PerJenisPekerjaan", new java.awt.Dimension(200, 90), this::btnGrafikK3PerJenisPekerjaanActionPerformed);
+        btnGrafikK3PerJenisPekerjaan = createMenuButton("/48x48/1491582080_6.png", "K3 Per Jenis Pekerjaan", "btnGrafikK3PerJenisPekerjaan", this::btnGrafikK3PerJenisPekerjaanActionPerformed);
 
-        btnGrafikK3PerBagianTubuh = createMenuButton("/48x48/1491582015_11.png", "K3 Per Bagian Tubuh", "btnGrafikK3PerBagianTubuh", new java.awt.Dimension(200, 90), this::btnGrafikK3PerBagianTubuhActionPerformed);
+        btnGrafikK3PerBagianTubuh = createMenuButton("/48x48/1491582015_11.png", "K3 Per Bagian Tubuh", "btnGrafikK3PerBagianTubuh", this::btnGrafikK3PerBagianTubuhActionPerformed);
 
-        btnJenisCideraK3PerTahun = createMenuButton("/48x48/ruber.png", "Jenis Cidera K3 Per Tahun", "btnJenisCideraK3PerTahun", new java.awt.Dimension(200, 90), this::btnJenisCideraK3PerTahunActionPerformed);
+        btnJenisCideraK3PerTahun = createMenuButton("/48x48/ruber.png", "Jenis Cidera K3 Per Tahun", "btnJenisCideraK3PerTahun", this::btnJenisCideraK3PerTahunActionPerformed);
 
-        btnPenyebabKecelakaanK3PerTahun = createMenuButton("/48x48/iconfinder_sponge_2___331505.png", "Penyebab Kecelakaan K3 Per Tahun", "btnPenyebabKecelakaanK3PerTahun", new java.awt.Dimension(200, 90), this::btnPenyebabKecelakaanK3PerTahunActionPerformed);
+        btnPenyebabKecelakaanK3PerTahun = createMenuButton("/48x48/iconfinder_sponge_2___331505.png", "Penyebab Kecelakaan K3 Per Tahun", "btnPenyebabKecelakaanK3PerTahun", this::btnPenyebabKecelakaanK3PerTahunActionPerformed);
 
-        btnJenisLukaK3PerTahun = createMenuButton("/48x48/iconfinder_h3_19725.png", "Jenis Luka K3 Per Tahun", "btnJenisLukaK3PerTahun", new java.awt.Dimension(200, 90), this::btnJenisLukaK3PerTahunActionPerformed);
+        btnJenisLukaK3PerTahun = createMenuButton("/48x48/iconfinder_h3_19725.png", "Jenis Luka K3 Per Tahun", "btnJenisLukaK3PerTahun", this::btnJenisLukaK3PerTahunActionPerformed);
 
-        btnLokasiKejadianK3PerTahun = createMenuButton("/48x48/iconfinder_arrows_blue_61552.png", "Lokasi Kejadian K3 Per Tahun", "btnLokasiKejadianK3PerTahun", new java.awt.Dimension(200, 90), this::btnLokasiKejadianK3PerTahunActionPerformed);
+        btnLokasiKejadianK3PerTahun = createMenuButton("/48x48/iconfinder_arrows_blue_61552.png", "Lokasi Kejadian K3 Per Tahun", "btnLokasiKejadianK3PerTahun", this::btnLokasiKejadianK3PerTahunActionPerformed);
 
-        btnDampakCideraK3PerTahun = createMenuButton("/48x48/iconfinder_ambulance_45490.png", "Dampak Cidera K3 Per Tahun", "btnDampakCideraK3PerTahun", new java.awt.Dimension(200, 90), this::btnDampakCideraK3PerTahunActionPerformed);
+        btnDampakCideraK3PerTahun = createMenuButton("/48x48/iconfinder_ambulance_45490.png", "Dampak Cidera K3 Per Tahun", "btnDampakCideraK3PerTahun", this::btnDampakCideraK3PerTahunActionPerformed);
 
-        btnJenisPekerjaanK3PerTahun = createMenuButton("/48x48/iconfinder_applications-engineering_8830.png", "Jenis Pekerjaan K3 Per Tahun", "btnJenisPekerjaanK3PerTahun", new java.awt.Dimension(200, 90), this::btnJenisPekerjaanK3PerTahunActionPerformed);
+        btnJenisPekerjaanK3PerTahun = createMenuButton("/48x48/iconfinder_applications-engineering_8830.png", "Jenis Pekerjaan K3 Per Tahun", "btnJenisPekerjaanK3PerTahun", this::btnJenisPekerjaanK3PerTahunActionPerformed);
 
-        btnBagianTubuhK3PerTahun = createMenuButton("/48x48/plaster.png", "Bagian Tubuh K3 Per Tahun", "btnBagianTubuhK3PerTahun", new java.awt.Dimension(200, 90), this::btnBagianTubuhK3PerTahunActionPerformed);
+        btnBagianTubuhK3PerTahun = createMenuButton("/48x48/plaster.png", "Bagian Tubuh K3 Per Tahun", "btnBagianTubuhK3PerTahun", this::btnBagianTubuhK3PerTahunActionPerformed);
 
-        btnSkriningRawatJalan = createMenuButton("/48x48/IconSkriningRalan.png", "Skrining Rawat Jalan", "btnSkriningRawatJalan", new java.awt.Dimension(200, 90), this::btnSkriningRawatJalanActionPerformed);
+        btnSkriningRawatJalan = createMenuButton("/48x48/IconSkriningRalan.png", "Skrining Rawat Jalan", "btnSkriningRawatJalan", this::btnSkriningRawatJalanActionPerformed);
 
-        btnBPJSHistoriPelayanan = createMenuButton("/48x48/vclaim.png", "Histori Pelayanan BPJS", "btnBPJSHistoriPelayanan", new java.awt.Dimension(200, 90), this::btnBPJSHistoriPelayananActionPerformed);
+        btnBPJSHistoriPelayanan = createMenuButton("/48x48/vclaim.png", "Histori Pelayanan BPJS", "btnBPJSHistoriPelayanan", this::btnBPJSHistoriPelayananActionPerformed);
 
-        btnRekapMutasiBerkas = createMenuButton("/48x48/iconfinder_group_data_45163.png", "Rekap Mutasi Berkas", "btnRekapMutasiBerkas", new java.awt.Dimension(200, 90), this::btnRekapMutasiBerkasActionPerformed);
+        btnRekapMutasiBerkas = createMenuButton("/48x48/iconfinder_group_data_45163.png", "Rekap Mutasi Berkas", "btnRekapMutasiBerkas", this::btnRekapMutasiBerkasActionPerformed);
 
-        btnSkriningRalanPernapasanPerTahun = createMenuButton("/48x48/skrining.png", "Skrining Pernapasan Ralan Per Tahun", "btnSkriningRalanPernapasanPerTahun", new java.awt.Dimension(200, 90), this::btnSkriningRalanPernapasanPerTahunActionPerformed);
+        btnSkriningRalanPernapasanPerTahun = createMenuButton("/48x48/skrining.png", "Skrining Pernapasan Ralan Per Tahun", "btnSkriningRalanPernapasanPerTahun", this::btnSkriningRalanPernapasanPerTahunActionPerformed);
 
-        btnPengajuanBarangMedis = createMenuButton("/48x48/iconfinder_ordering_49597.png", "Pengajuan Obat & BHP", "btnPengajuanBarangMedis", new java.awt.Dimension(200, 90), this::btnPengajuanBarangMedisActionPerformed);
+        btnPengajuanBarangMedis = createMenuButton("/48x48/iconfinder_ordering_49597.png", "Pengajuan Obat & BHP", "btnPengajuanBarangMedis", this::btnPengajuanBarangMedisActionPerformed);
 
-        btnPengajuanBarangNonMedis = createMenuButton("/48x48/iconfinder_distributor-report_49583.png", "Pengajuan Barang Non Medis", "btnPengajuanBarangNonMedis", new java.awt.Dimension(200, 90), this::btnPengajuanBarangNonMedisActionPerformed);
+        btnPengajuanBarangNonMedis = createMenuButton("/48x48/iconfinder_distributor-report_49583.png", "Pengajuan Barang Non Medis", "btnPengajuanBarangNonMedis", this::btnPengajuanBarangNonMedisActionPerformed);
 
-        btnGrafikKunjunganRanapBulan = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Ranap Per Bulan", "btnGrafikKunjunganRanapBulan", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganRanapBulanActionPerformed);
+        btnGrafikKunjunganRanapBulan = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Ranap Per Bulan", "btnGrafikKunjunganRanapBulan", this::btnGrafikKunjunganRanapBulanActionPerformed);
 
-        btnGrafikKunjunganRanapTanggal = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Ranap Per Tanggal", "btnGrafikKunjunganRanapTanggal", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganRanapTanggalActionPerformed);
+        btnGrafikKunjunganRanapTanggal = createMenuButton("/48x48/1491582015_11.png", "Kunjungan Ranap Per Tanggal", "btnGrafikKunjunganRanapTanggal", this::btnGrafikKunjunganRanapTanggalActionPerformed);
 
-        btnGrafikKunjunganRanapRuang = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Ranap Per Ruang", "btnGrafikKunjunganRanapRuang", new java.awt.Dimension(200, 90), this::btnGrafikKunjunganRanapRuangActionPerformed);
+        btnGrafikKunjunganRanapRuang = createMenuButton("/48x48/1491582080_6.png", "Kunjungan Ranap Per Ruang", "btnGrafikKunjunganRanapRuang", this::btnGrafikKunjunganRanapRuangActionPerformed);
 
-        btnKunjunganBangsalTahun = createMenuButton("/48x48/if_Company_132030.png", "Masuk Ruang Per Tahun", "btnKunjunganBangsalTahun", new java.awt.Dimension(200, 90), this::btnKunjunganBangsalTahunActionPerformed);
+        btnKunjunganBangsalTahun = createMenuButton("/48x48/if_Company_132030.png", "Masuk Ruang Per Tahun", "btnKunjunganBangsalTahun", this::btnKunjunganBangsalTahunActionPerformed);
 
-        btnGrafikJenjangJabatanPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Jenjang Jabatan", "btnGrafikJenjangJabatanPegawai", new java.awt.Dimension(200, 90), this::btnGrafikJenjangJabatanPegawaiActionPerformed);
+        btnGrafikJenjangJabatanPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Jenjang Jabatan", "btnGrafikJenjangJabatanPegawai", this::btnGrafikJenjangJabatanPegawaiActionPerformed);
 
-        btnGrafikBidangPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Bidang/Bagian", "btnGrafikBidangPegawai", new java.awt.Dimension(200, 90), this::btnGrafikBidangPegawaiActionPerformed);
+        btnGrafikBidangPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Bidang/Bagian", "btnGrafikBidangPegawai", this::btnGrafikBidangPegawaiActionPerformed);
 
-        btnGrafikDepartemenPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Departemen", "btnGrafikDepartemenPegawai", new java.awt.Dimension(200, 90), this::btnGrafikDepartemenPegawaiActionPerformed);
+        btnGrafikDepartemenPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Departemen", "btnGrafikDepartemenPegawai", this::btnGrafikDepartemenPegawaiActionPerformed);
 
-        btnGrafikPendidikanPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Pendidikan", "btnGrafikPendidikanPegawai", new java.awt.Dimension(200, 90), this::btnGrafikPendidikanPegawaiActionPerformed);
+        btnGrafikPendidikanPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Pendidikan", "btnGrafikPendidikanPegawai", this::btnGrafikPendidikanPegawaiActionPerformed);
 
-        btnGrafikStatusWPPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Status WP", "btnGrafikStatusWPPegawai", new java.awt.Dimension(200, 90), this::btnGrafikStatusWPPegawaiActionPerformed);
+        btnGrafikStatusWPPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Status WP", "btnGrafikStatusWPPegawai", this::btnGrafikStatusWPPegawaiActionPerformed);
 
-        btnGrafikStatusKerjaPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Status Kerja", "btnGrafikStatusKerjaPegawai", new java.awt.Dimension(200, 90), this::btnGrafikStatusKerjaPegawaiActionPerformed);
+        btnGrafikStatusKerjaPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Status Kerja", "btnGrafikStatusKerjaPegawai", this::btnGrafikStatusKerjaPegawaiActionPerformed);
 
-        btnGrafikStatusPulangRanap = createMenuButton("/48x48/1491582015_11.png", "Status Pulang Ranap", "btnGrafikStatusPulangRanap", new java.awt.Dimension(200, 90), this::btnGrafikStatusPulangRanapActionPerformed);
+        btnGrafikStatusPulangRanap = createMenuButton("/48x48/1491582015_11.png", "Status Pulang Ranap", "btnGrafikStatusPulangRanap", this::btnGrafikStatusPulangRanapActionPerformed);
 
-        btnKIPPasienRanap = createMenuButton("/48x48/iconfinder_reports_49615.png", "KIP Pasien Ranap", "btnKIPPasienRanap", new java.awt.Dimension(200, 90), this::btnKIPPasienRanapActionPerformed);
+        btnKIPPasienRanap = createMenuButton("/48x48/iconfinder_reports_49615.png", "KIP Pasien Ranap", "btnKIPPasienRanap", this::btnKIPPasienRanapActionPerformed);
 
-        btnKIPPasienRalan = createMenuButton("/48x48/iconfinder_reports_49615.png", "KIP Pasien Ralan", "btnKIPPasienRalan", new java.awt.Dimension(200, 90), this::btnKIPPasienRalanActionPerformed);
+        btnKIPPasienRalan = createMenuButton("/48x48/iconfinder_reports_49615.png", "KIP Pasien Ralan", "btnKIPPasienRalan", this::btnKIPPasienRalanActionPerformed);
 
-        btnMappingDokterDPJPVClaim = createMenuButton("/48x48/vclaim.png", "Mapping Dokter DPJP VClaim", "btnMappingDokterDPJPVClaim", new java.awt.Dimension(200, 90), this::btnMappingDokterDPJPVClaimActionPerformed);
+        btnMappingDokterDPJPVClaim = createMenuButton("/48x48/vclaim.png", "Mapping Dokter DPJP VClaim", "btnMappingDokterDPJPVClaim", this::btnMappingDokterDPJPVClaimActionPerformed);
 
-        btnMasterTriaseSkala1 = createMenuButton("/48x48/cpr.png", "Master Triase Skala 1", "btnMasterTriaseSkala1", new java.awt.Dimension(200, 90), this::btnMasterTriaseSkala1ActionPerformed);
+        btnMasterTriaseSkala1 = createMenuButton("/48x48/cpr.png", "Master Triase Skala 1", "btnMasterTriaseSkala1", this::btnMasterTriaseSkala1ActionPerformed);
 
-        btnMasterTriaseSkala2 = createMenuButton("/48x48/iconfinder_emergency_45491.png", "Master Triase Skala 2", "btnMasterTriaseSkala2", new java.awt.Dimension(200, 90), this::btnMasterTriaseSkala2ActionPerformed);
+        btnMasterTriaseSkala2 = createMenuButton("/48x48/iconfinder_emergency_45491.png", "Master Triase Skala 2", "btnMasterTriaseSkala2", this::btnMasterTriaseSkala2ActionPerformed);
 
-        btnMasterTriaseSkala3 = createMenuButton("/48x48/iconfinder_dialog-warning_118940.png", "Master Triase Skala 3", "btnMasterTriaseSkala3", new java.awt.Dimension(200, 90), this::btnMasterTriaseSkala3ActionPerformed);
+        btnMasterTriaseSkala3 = createMenuButton("/48x48/iconfinder_dialog-warning_118940.png", "Master Triase Skala 3", "btnMasterTriaseSkala3", this::btnMasterTriaseSkala3ActionPerformed);
 
-        btnMasterTriaseSkala4 = createMenuButton("/48x48/iconfinder_Male-User-Warning_49595.png", "Master Triase Skala 4", "btnMasterTriaseSkala4", new java.awt.Dimension(200, 90), this::btnMasterTriaseSkala4ActionPerformed);
+        btnMasterTriaseSkala4 = createMenuButton("/48x48/iconfinder_Male-User-Warning_49595.png", "Master Triase Skala 4", "btnMasterTriaseSkala4", this::btnMasterTriaseSkala4ActionPerformed);
 
-        btnMasterTriaseSkala5 = createMenuButton("/48x48/user-group-new.png", "Master Triase Skala 5", "btnMasterTriaseSkala5", new java.awt.Dimension(200, 90), this::btnMasterTriaseSkala5ActionPerformed);
+        btnMasterTriaseSkala5 = createMenuButton("/48x48/user-group-new.png", "Master Triase Skala 5", "btnMasterTriaseSkala5", this::btnMasterTriaseSkala5ActionPerformed);
 
-        btnMasterTriasePemeriksaan = createMenuButton("/48x48/iconfinder_stethoscope_38717.png", "Master Triase Pemeriksaan", "btnMasterTriasePemeriksaan", new java.awt.Dimension(200, 90), this::btnMasterTriasePemeriksaanActionPerformed);
+        btnMasterTriasePemeriksaan = createMenuButton("/48x48/iconfinder_stethoscope_38717.png", "Master Triase Pemeriksaan", "btnMasterTriasePemeriksaan", this::btnMasterTriasePemeriksaanActionPerformed);
 
-        btnMasterTriaseMacamKasus = createMenuButton("/48x48/iconfinder_briefcase_45523.png", "Master Triase Macam Kasus", "btnMasterTriaseMacamKasus", new java.awt.Dimension(200, 90), this::btnMasterTriaseMacamKasusActionPerformed);
+        btnMasterTriaseMacamKasus = createMenuButton("/48x48/iconfinder_briefcase_45523.png", "Master Triase Macam Kasus", "btnMasterTriaseMacamKasus", this::btnMasterTriaseMacamKasusActionPerformed);
 
-        btnDataTriaseIGD = createMenuButton("/48x48/iconfinder_h2_19724.png", "Data Triase IGD", "btnDataTriaseIGD", new java.awt.Dimension(200, 90), this::btnDataTriaseIGDActionPerformed);
+        btnDataTriaseIGD = createMenuButton("/48x48/iconfinder_h2_19724.png", "Data Triase IGD", "btnDataTriaseIGD", this::btnDataTriaseIGDActionPerformed);
 
-        btnRekapPermintaanDiet = createMenuButton("/48x48/iconfinder_fried_rice_3377056.png", "Rekap Permintaan Diet", "btnRekapPermintaanDiet", new java.awt.Dimension(200, 90), this::btnRekapPermintaanDietActionPerformed);
+        btnRekapPermintaanDiet = createMenuButton("/48x48/iconfinder_fried_rice_3377056.png", "Rekap Permintaan Diet", "btnRekapPermintaanDiet", this::btnRekapPermintaanDietActionPerformed);
 
-        btnDaftarPasienRanap = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap", "btnDaftarPasienRanap", new java.awt.Dimension(200, 90), this::btnDaftarPasienRanapActionPerformed);
+        btnDaftarPasienRanap = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap", "btnDaftarPasienRanap", this::btnDaftarPasienRanapActionPerformed);
 
-        btnDaftarPasienRanapTNI = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap TNI", "btnDaftarPasienRanapTNI", new java.awt.Dimension(200, 90), this::btnDaftarPasienRanapTNIActionPerformed);
+        btnDaftarPasienRanapTNI = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap TNI", "btnDaftarPasienRanapTNI", this::btnDaftarPasienRanapTNIActionPerformed);
 
-        btnfee_visit_dokter = createMenuButton("/48x48/1360485865_schedule.png", "Fee Visit Dokter", "btnfee_visit_dokter", new java.awt.Dimension(200, 90), this::btnfee_visit_dokterActionPerformed);
+        btnfee_visit_dokter = createMenuButton("/48x48/1360485865_schedule.png", "Fee Visit Dokter", "btnfee_visit_dokter", this::btnfee_visit_dokterActionPerformed);
 
-        btnUser = createMenuButton("/48x48/1360484978_application-pgp-signature.png", "Set User", "btnUser", new java.awt.Dimension(200, 90), this::btnUserActionPerformed);
+        btnUser = createMenuButton("/48x48/1360484978_application-pgp-signature.png", "Set User", "btnUser", this::btnUserActionPerformed);
 
-        btnPengajuanAsetInventaris = createMenuButton("/48x48/iconfinder_reports_49615.png", "Pengajuan Aset/Inventaris", "btnPengajuanAsetInventaris", new java.awt.Dimension(200, 90), this::btnPengajuanAsetInventarisActionPerformed);
+        btnPengajuanAsetInventaris = createMenuButton("/48x48/iconfinder_reports_49615.png", "Pengajuan Aset/Inventaris", "btnPengajuanAsetInventaris", this::btnPengajuanAsetInventarisActionPerformed);
 
-        btnGrafikItemApotekPerJenis = createMenuButton("/48x48/1491582080_6.png", "Item Apotek Per Jenis", "btnGrafikItemApotekPerJenis", new java.awt.Dimension(200, 90), this::btnGrafikItemApotekPerJenisActionPerformed);
+        btnGrafikItemApotekPerJenis = createMenuButton("/48x48/1491582080_6.png", "Item Apotek Per Jenis", "btnGrafikItemApotekPerJenis", this::btnGrafikItemApotekPerJenisActionPerformed);
 
-        btnGrafikItemApotekPerKategori = createMenuButton("/48x48/1491582015_11.png", "Item Apotek Per Kategori", "btnGrafikItemApotekPerKategori", new java.awt.Dimension(200, 90), this::btnGrafikItemApotekPerKategoriActionPerformed);
+        btnGrafikItemApotekPerKategori = createMenuButton("/48x48/1491582015_11.png", "Item Apotek Per Kategori", "btnGrafikItemApotekPerKategori", this::btnGrafikItemApotekPerKategoriActionPerformed);
 
-        btnGrafikItemApotekPerGolongan = createMenuButton("/48x48/1491582080_6.png", "Item Apotek Per Golongan", "btnGrafikItemApotekPerGolongan", new java.awt.Dimension(200, 90), this::btnGrafikItemApotekPerGolonganActionPerformed);
+        btnGrafikItemApotekPerGolongan = createMenuButton("/48x48/1491582080_6.png", "Item Apotek Per Golongan", "btnGrafikItemApotekPerGolongan", this::btnGrafikItemApotekPerGolonganActionPerformed);
 
-        btnGrafikItemApotekPerIndustriFarmasi = createMenuButton("/48x48/1491582015_11.png", "Item Apotek Per Industri Farmasi", "btnGrafikItemApotekPerIndustriFarmasi", new java.awt.Dimension(200, 90), this::btnGrafikItemApotekPerIndustriFarmasiActionPerformed);
+        btnGrafikItemApotekPerIndustriFarmasi = createMenuButton("/48x48/1491582015_11.png", "Item Apotek Per Industri Farmasi", "btnGrafikItemApotekPerIndustriFarmasi", this::btnGrafikItemApotekPerIndustriFarmasiActionPerformed);
 
-        btn10BesarObatPoli = createMenuButton("/48x48/if_07_Note_Book_2064482.png", "10 Obat Terbanyak Poli", "btn10BesarObatPoli", new java.awt.Dimension(200, 90), this::btn10BesarObatPoliActionPerformed);
+        btn10BesarObatPoli = createMenuButton("/48x48/if_07_Note_Book_2064482.png", "10 Obat Terbanyak Poli", "btn10BesarObatPoli", this::btn10BesarObatPoliActionPerformed);
 
-        btnGrafikPengajuanAsetUrgensi = createMenuButton("/48x48/1491582080_6.png", "Pengajuan Aset Per Urgensi", "btnGrafikPengajuanAsetUrgensi", new java.awt.Dimension(200, 90), this::btnGrafikPengajuanAsetUrgensiActionPerformed);
+        btnGrafikPengajuanAsetUrgensi = createMenuButton("/48x48/1491582080_6.png", "Pengajuan Aset Per Urgensi", "btnGrafikPengajuanAsetUrgensi", this::btnGrafikPengajuanAsetUrgensiActionPerformed);
 
-        btnGrafikPengajuanAsetStatus = createMenuButton("/48x48/1491582015_11.png", "Pengajuan Aset Per Status", "btnGrafikPengajuanAsetStatus", new java.awt.Dimension(200, 90), this::btnGrafikPengajuanAsetStatusActionPerformed);
+        btnGrafikPengajuanAsetStatus = createMenuButton("/48x48/1491582015_11.png", "Pengajuan Aset Per Status", "btnGrafikPengajuanAsetStatus", this::btnGrafikPengajuanAsetStatusActionPerformed);
 
-        btnGrafikPengajuanAsetDepartemen = createMenuButton("/48x48/1491582080_6.png", "Pengajuan Aset Per Departemen", "btnGrafikPengajuanAsetDepartemen", new java.awt.Dimension(200, 90), this::btnGrafikPengajuanAsetDepartemenActionPerformed);
+        btnGrafikPengajuanAsetDepartemen = createMenuButton("/48x48/1491582080_6.png", "Pengajuan Aset Per Departemen", "btnGrafikPengajuanAsetDepartemen", this::btnGrafikPengajuanAsetDepartemenActionPerformed);
 
-        btnRekapPengajuanAsetDepartemen = createMenuButton("/48x48/if_x-office-document-template_25011.png", "Rekap Pengajuan Aset Departemen", "btnRekapPengajuanAsetDepartemen", new java.awt.Dimension(200, 90), this::btnRekapPengajuanAsetDepartemenActionPerformed);
+        btnRekapPengajuanAsetDepartemen = createMenuButton("/48x48/if_x-office-document-template_25011.png", "Rekap Pengajuan Aset Departemen", "btnRekapPengajuanAsetDepartemen", this::btnRekapPengajuanAsetDepartemenActionPerformed);
 
-        btnGrafikKelompokJabatanPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Kelompok Jabatan", "btnGrafikKelompokJabatanPegawai", new java.awt.Dimension(200, 90), this::btnGrafikKelompokJabatanPegawaiActionPerformed);
+        btnGrafikKelompokJabatanPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Kelompok Jabatan", "btnGrafikKelompokJabatanPegawai", this::btnGrafikKelompokJabatanPegawaiActionPerformed);
 
-        btnGrafikRisikoKerjaPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Risiko Kerja", "btnGrafikRisikoKerjaPegawai", new java.awt.Dimension(200, 90), this::btnGrafikRisikoKerjaPegawaiActionPerformed);
+        btnGrafikRisikoKerjaPegawai = createMenuButton("/48x48/1491582080_6.png", "Pegawai Per Risiko Kerja", "btnGrafikRisikoKerjaPegawai", this::btnGrafikRisikoKerjaPegawaiActionPerformed);
 
-        btnGrafikEmergencyIndexPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Emergency Index", "btnGrafikEmergencyIndexPegawai", new java.awt.Dimension(200, 90), this::btnGrafikEmergencyIndexPegawaiActionPerformed);
+        btnGrafikEmergencyIndexPegawai = createMenuButton("/48x48/1491582015_11.png", "Pegawai Per Emergency Index", "btnGrafikEmergencyIndexPegawai", this::btnGrafikEmergencyIndexPegawaiActionPerformed);
 
-        btnGrafikInventarisRuang = createMenuButton("/48x48/1491582080_6.png", "Jumlah Inventaris Per Ruang", "btnGrafikInventarisRuang", new java.awt.Dimension(200, 90), this::btnGrafikInventarisRuangActionPerformed);
+        btnGrafikInventarisRuang = createMenuButton("/48x48/1491582080_6.png", "Jumlah Inventaris Per Ruang", "btnGrafikInventarisRuang", this::btnGrafikInventarisRuangActionPerformed);
 
-        btnHarianHAIs2 = createMenuButton("/48x48/if_house_shelf_1378832.png", "Harian HAIs 2", "btnHarianHAIs2", new java.awt.Dimension(200, 90), this::btnHarianHAIs2ActionPerformed);
+        btnHarianHAIs2 = createMenuButton("/48x48/if_house_shelf_1378832.png", "Harian HAIs 2", "btnHarianHAIs2", this::btnHarianHAIs2ActionPerformed);
 
-        btnGrafikInventarisJenis = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Jenis", "btnGrafikInventarisJenis", new java.awt.Dimension(200, 90), this::btnGrafikInventarisJenisActionPerformed);
+        btnGrafikInventarisJenis = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Jenis", "btnGrafikInventarisJenis", this::btnGrafikInventarisJenisActionPerformed);
 
-        btnResumePasien = createMenuButton("/48x48/iconfinder_icon-56-document-text_314896.png", "Resume Pasien Ralan", "btnResumePasien", new java.awt.Dimension(200, 90), this::btnResumePasienActionPerformed);
+        btnResumePasien = createMenuButton("/48x48/iconfinder_icon-56-document-text_314896.png", "Resume Pasien Ralan", "btnResumePasien", this::btnResumePasienActionPerformed);
 
-        btnResumePasienRanap = createMenuButton("/48x48/iconfinder_icon-56-document-text_314896.png", "Resume Pasien Ranap", "btnResumePasienRanap", new java.awt.Dimension(200, 90), this::btnResumePasienRanapActionPerformed);
+        btnResumePasienRanap = createMenuButton("/48x48/iconfinder_icon-56-document-text_314896.png", "Resume Pasien Ranap", "btnResumePasienRanap", this::btnResumePasienRanapActionPerformed);
 
-        btnPerkiraanBiayaRanap = createMenuButton("/48x48/if_Rank-History_49609.png", "Perkiraan Biaya Ranap", "btnPerkiraanBiayaRanap", new java.awt.Dimension(200, 90), this::btnPerkiraanBiayaRanapActionPerformed);
+        btnPerkiraanBiayaRanap = createMenuButton("/48x48/if_Rank-History_49609.png", "Perkiraan Biaya Ranap", "btnPerkiraanBiayaRanap", this::btnPerkiraanBiayaRanapActionPerformed);
 
-        btnRekapObatPoli = createMenuButton("/48x48/1360815855_laboratory.png", "Rekap Obat Per Poli", "btnRekapObatPoli", new java.awt.Dimension(200, 90), this::btnRekapObatPoliActionPerformed);
+        btnRekapObatPoli = createMenuButton("/48x48/1360815855_laboratory.png", "Rekap Obat Per Poli", "btnRekapObatPoli", this::btnRekapObatPoliActionPerformed);
 
-        btnRekapObatPasien = createMenuButton("/48x48/1360815855_laboratory.png", "Rekap Obat Per Pasien", "btnRekapObatPasien", new java.awt.Dimension(200, 90), this::btnRekapObatPasienActionPerformed);
+        btnRekapObatPasien = createMenuButton("/48x48/1360815855_laboratory.png", "Rekap Obat Per Pasien", "btnRekapObatPasien", this::btnRekapObatPasienActionPerformed);
 
-        btnGrafikHAIsPasienRuang = createMenuButton("/48x48/1491582080_6.png", "Pasien HAIs Per Ruang", "btnGrafikHAIsPasienRuang", new java.awt.Dimension(200, 90), this::btnGrafikHAIsPasienRuangActionPerformed);
+        btnGrafikHAIsPasienRuang = createMenuButton("/48x48/1491582080_6.png", "Pasien HAIs Per Ruang", "btnGrafikHAIsPasienRuang", this::btnGrafikHAIsPasienRuangActionPerformed);
 
-        btnGrafikHAIsPasienBulan = createMenuButton("/48x48/1491582015_11.png", "Pasien HAIs Per Bulan", "btnGrafikHAIsPasienBulan", new java.awt.Dimension(200, 90), this::btnGrafikHAIsPasienBulanActionPerformed);
+        btnGrafikHAIsPasienBulan = createMenuButton("/48x48/1491582015_11.png", "Pasien HAIs Per Bulan", "btnGrafikHAIsPasienBulan", this::btnGrafikHAIsPasienBulanActionPerformed);
 
-        btnPermintaanPerbaikanInventaris = createMenuButton("/48x48/iconfinder_ordering_49597.png", "Permintaan Perbaikan Inventaris", "btnPermintaanPerbaikanInventaris", new java.awt.Dimension(200, 90), this::btnPermintaanPerbaikanInventarisActionPerformed);
+        btnPermintaanPerbaikanInventaris = createMenuButton("/48x48/iconfinder_ordering_49597.png", "Permintaan Perbaikan Inventaris", "btnPermintaanPerbaikanInventaris", this::btnPermintaanPerbaikanInventarisActionPerformed);
 
-        btnGrafikHAIsLajuVAP = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs VAP Per Ruang", "btnGrafikHAIsLajuVAP", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuVAPActionPerformed);
+        btnGrafikHAIsLajuVAP = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs VAP Per Ruang", "btnGrafikHAIsLajuVAP", this::btnGrafikHAIsLajuVAPActionPerformed);
 
-        btnGrafikHAIsLajuIAD = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs IAD Per Ruang", "btnGrafikHAIsLajuIAD", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuIADActionPerformed);
+        btnGrafikHAIsLajuIAD = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs IAD Per Ruang", "btnGrafikHAIsLajuIAD", this::btnGrafikHAIsLajuIADActionPerformed);
 
-        btnGrafikHAIsLajuPleb = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs Plebitis Per Ruang", "btnGrafikHAIsLajuPleb", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuPlebActionPerformed);
+        btnGrafikHAIsLajuPleb = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs Plebitis Per Ruang", "btnGrafikHAIsLajuPleb", this::btnGrafikHAIsLajuPlebActionPerformed);
 
-        btnGrafikHAIsLajuISK = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs ISK Per Ruang", "btnGrafikHAIsLajuISK", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuISKActionPerformed);
+        btnGrafikHAIsLajuISK = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs ISK Per Ruang", "btnGrafikHAIsLajuISK", this::btnGrafikHAIsLajuISKActionPerformed);
 
-        btnGrafikHAIsLajuILO = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs ILO Per Ruang", "btnGrafikHAIsLajuILO", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuILOActionPerformed);
+        btnGrafikHAIsLajuILO = createMenuButton("/48x48/1491582080_6.png", "Laju HAIs ILO Per Ruang", "btnGrafikHAIsLajuILO", this::btnGrafikHAIsLajuILOActionPerformed);
 
-        btnGrafikHAIsLajuHAP = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs HAP Per Ruang", "btnGrafikHAIsLajuHAP", new java.awt.Dimension(200, 90), this::btnGrafikHAIsLajuHAPActionPerformed);
+        btnGrafikHAIsLajuHAP = createMenuButton("/48x48/1491582015_11.png", "Laju HAIs HAP Per Ruang", "btnGrafikHAIsLajuHAP", this::btnGrafikHAIsLajuHAPActionPerformed);
 
-        btnMappingPoliInhealth = createMenuButton("/48x48/inhealth.png", "Mapping Poli Inhealth", "btnMappingPoliInhealth", new java.awt.Dimension(200, 90), this::btnMappingPoliInhealthActionPerformed);
+        btnMappingPoliInhealth = createMenuButton("/48x48/inhealth.png", "Mapping Poli Inhealth", "btnMappingPoliInhealth", this::btnMappingPoliInhealthActionPerformed);
 
-        btnMappingDokterInhealth = createMenuButton("/48x48/inhealth.png", "Mapping Dokter Inhealth", "btnMappingDokterInhealth", new java.awt.Dimension(200, 90), this::btnMappingDokterInhealthActionPerformed);
+        btnMappingDokterInhealth = createMenuButton("/48x48/inhealth.png", "Mapping Dokter Inhealth", "btnMappingDokterInhealth", this::btnMappingDokterInhealthActionPerformed);
 
-        btnMappingTindakanRalanInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Ralan Inhealth", "btnMappingTindakanRalanInhealth", new java.awt.Dimension(200, 90), this::btnMappingTindakanRalanInhealthActionPerformed);
+        btnMappingTindakanRalanInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Ralan Inhealth", "btnMappingTindakanRalanInhealth", this::btnMappingTindakanRalanInhealthActionPerformed);
 
-        btnMappingTindakanRanapInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Ranap Inhealth", "btnMappingTindakanRanapInhealth", new java.awt.Dimension(200, 90), this::btnMappingTindakanRanapInhealthActionPerformed);
+        btnMappingTindakanRanapInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Ranap Inhealth", "btnMappingTindakanRanapInhealth", this::btnMappingTindakanRanapInhealthActionPerformed);
 
-        btnMappingTindakanRadiologiInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Radiologi Inhealth", "btnMappingTindakanRadiologiInhealth", new java.awt.Dimension(200, 90), this::btnMappingTindakanRadiologiInhealthActionPerformed);
+        btnMappingTindakanRadiologiInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Radiologi Inhealth", "btnMappingTindakanRadiologiInhealth", this::btnMappingTindakanRadiologiInhealthActionPerformed);
 
-        btnMappingTindakanLaboratInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Laborat Inhealth", "btnMappingTindakanLaboratInhealth", new java.awt.Dimension(200, 90), this::btnMappingTindakanLaboratInhealthActionPerformed);
+        btnMappingTindakanLaboratInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Laborat Inhealth", "btnMappingTindakanLaboratInhealth", this::btnMappingTindakanLaboratInhealthActionPerformed);
 
-        btnMappingTindakanOperasiInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Operasi Inhealth", "btnMappingTindakanOperasiInhealth", new java.awt.Dimension(200, 90), this::btnMappingTindakanOperasiInhealthActionPerformed);
+        btnMappingTindakanOperasiInhealth = createMenuButton("/48x48/inhealth.png", "Tarif Operasi Inhealth", "btnMappingTindakanOperasiInhealth", this::btnMappingTindakanOperasiInhealthActionPerformed);
 
-        btnHibahObatBHP = createMenuButton("/48x48/if_Address_Book_Alt_blue_86952.png", "Hibah Obat & BHP", "btnHibahObatBHP", new java.awt.Dimension(200, 90), this::btnHibahObatBHPActionPerformed);
+        btnHibahObatBHP = createMenuButton("/48x48/if_Address_Book_Alt_blue_86952.png", "Hibah Obat & BHP", "btnHibahObatBHP", this::btnHibahObatBHPActionPerformed);
 
-        btnAsalHibah = createMenuButton("/48x48/if_filing_cabinet_search-g_86207.png", "Asal Hibah", "btnAsalHibah", new java.awt.Dimension(200, 90), this::btnAsalHibahActionPerformed);
+        btnAsalHibah = createMenuButton("/48x48/if_filing_cabinet_search-g_86207.png", "Asal Hibah", "btnAsalHibah", this::btnAsalHibahActionPerformed);
 
-        btnAsuhanGizi = createMenuButton("/48x48/iconfinder_cake_3_61139.png", "Asuhan Gizi", "btnAsuhanGizi", new java.awt.Dimension(200, 90), this::btnAsuhanGiziActionPerformed);
+        btnAsuhanGizi = createMenuButton("/48x48/iconfinder_cake_3_61139.png", "Asuhan Gizi", "btnAsuhanGizi", this::btnAsuhanGiziActionPerformed);
 
-        btnKirimTagihanInheath = createMenuButton("/48x48/inhealth.png", "Tagihan Inhealth", "btnKirimTagihanInheath", new java.awt.Dimension(200, 90), this::btnKirimTagihanInheathActionPerformed);
+        btnKirimTagihanInheath = createMenuButton("/48x48/inhealth.png", "Tagihan Inhealth", "btnKirimTagihanInheath", this::btnKirimTagihanInheathActionPerformed);
 
-        btnSirkulasiObat4 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 4", "btnSirkulasiObat4", new java.awt.Dimension(200, 90), this::btnSirkulasiObat4ActionPerformed);
+        btnSirkulasiObat4 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 4", "btnSirkulasiObat4", this::btnSirkulasiObat4ActionPerformed);
 
-        btnSirkulasiObat5 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 5", "btnSirkulasiObat5", new java.awt.Dimension(200, 90), this::btnSirkulasiObat5ActionPerformed);
+        btnSirkulasiObat5 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 5", "btnSirkulasiObat5", this::btnSirkulasiObat5ActionPerformed);
 
-        btnSirkulasiObat6 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 6", "btnSirkulasiObat6", new java.awt.Dimension(200, 90), this::btnSirkulasiObat6ActionPerformed);
+        btnSirkulasiObat6 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Obat, Alkes & BHP 6", "btnSirkulasiObat6", this::btnSirkulasiObat6ActionPerformed);
 
-        btnSirkulasiNonMedis2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Non Medis 2", "btnSirkulasiNonMedis2", new java.awt.Dimension(200, 90), this::btnSirkulasiNonMedis2ActionPerformed);
+        btnSirkulasiNonMedis2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Non Medis 2", "btnSirkulasiNonMedis2", this::btnSirkulasiNonMedis2ActionPerformed);
 
-        btnMonitoringAsuhanGizi = createMenuButton("/48x48/iconfinder_constr_account_statements_1267308.png", "Monitoring Asuhan Gizi", "btnMonitoringAsuhanGizi", new java.awt.Dimension(200, 90), this::btnMonitoringAsuhanGiziActionPerformed);
+        btnMonitoringAsuhanGizi = createMenuButton("/48x48/iconfinder_constr_account_statements_1267308.png", "Monitoring Asuhan Gizi", "btnMonitoringAsuhanGizi", this::btnMonitoringAsuhanGiziActionPerformed);
 
-        btnGrafikPenerimaanObatPerBulan = createMenuButton("/48x48/1491582080_6.png", "Penerimaan Obat, Alkes & BHP Per Bulan", "btnGrafikPenerimaanObatPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikPenerimaanObatPerBulanActionPerformed);
+        btnGrafikPenerimaanObatPerBulan = createMenuButton("/48x48/1491582080_6.png", "Penerimaan Obat, Alkes & BHP Per Bulan", "btnGrafikPenerimaanObatPerBulan", this::btnGrafikPenerimaanObatPerBulanActionPerformed);
 
-        btnRekapKunjungan = createMenuButton("/48x48/iconfinder_Calendar_27835.png", "Rekap Kunjungan", "btnRekapKunjungan", new java.awt.Dimension(200, 90), this::btnRekapKunjunganActionPerformed);
+        btnRekapKunjungan = createMenuButton("/48x48/iconfinder_Calendar_27835.png", "Rekap Kunjungan", "btnRekapKunjungan", this::btnRekapKunjunganActionPerformed);
 
-        btnSuratSakit = createMenuButton("/48x48/iconfinder_order-history_49596.png", "Surat Keterangan Sakit", "btnSuratSakit", new java.awt.Dimension(200, 90), this::btnSuratSakitActionPerformed);
+        btnSuratSakit = createMenuButton("/48x48/iconfinder_order-history_49596.png", "Surat Keterangan Sakit", "btnSuratSakit", this::btnSuratSakitActionPerformed);
 
-        btnPenilaianAwalKeperawatanRalan = createMenuButton("/48x48/iconfinder_report-clipboard-medical-checklist-healthcare_5859123.png", "Awal Keperawatan Ralan Umum", "btnPenilaianAwalKeperawatanRalan", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRalanActionPerformed);
+        btnPenilaianAwalKeperawatanRalan = createMenuButton("/48x48/iconfinder_report-clipboard-medical-checklist-healthcare_5859123.png", "Awal Keperawatan Ralan Umum", "btnPenilaianAwalKeperawatanRalan", this::btnPenilaianAwalKeperawatanRalanActionPerformed);
 
-        btnMasterMasalahKeperawatan = createMenuButton("/48x48/iconfinder__bed_rest_sleep_sick_patient_bed_rest_5928511.png", "Master Masalah Keperawatan", "btnMasterMasalahKeperawatan", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanActionPerformed);
+        btnMasterMasalahKeperawatan = createMenuButton("/48x48/iconfinder__bed_rest_sleep_sick_patient_bed_rest_5928511.png", "Master Masalah Keperawatan", "btnMasterMasalahKeperawatan", this::btnMasterMasalahKeperawatanActionPerformed);
 
-        btnPengajuanCuti = createMenuButton("/48x48/iconfinder_reminders_3572.png", "Pengajuan Cuti", "btnPengajuanCuti", new java.awt.Dimension(200, 90), this::btnPengajuanCutiActionPerformed);
+        btnPengajuanCuti = createMenuButton("/48x48/iconfinder_reminders_3572.png", "Pengajuan Cuti", "btnPengajuanCuti", this::btnPengajuanCutiActionPerformed);
 
-        btnKedatanganPasienPerJam = createMenuButton("/48x48/iconfinder_cmyk-04_906567.png", "Kedatangan Pasien Per Jam", "btnKedatanganPasienPerJam", new java.awt.Dimension(200, 90), this::btnKedatanganPasienPerJamActionPerformed);
+        btnKedatanganPasienPerJam = createMenuButton("/48x48/iconfinder_cmyk-04_906567.png", "Kedatangan Pasien Per Jam", "btnKedatanganPasienPerJam", this::btnKedatanganPasienPerJamActionPerformed);
 
-        btnPendonorDarah = createMenuButton("/48x48/iconfinder_623_Love_sharing_heart_wedding_valentine_valentines_day_love_4171308.png", "Pendonor Darah", "btnPendonorDarah", new java.awt.Dimension(200, 90), this::btnPendonorDarahActionPerformed);
+        btnPendonorDarah = createMenuButton("/48x48/iconfinder_623_Love_sharing_heart_wedding_valentine_valentines_day_love_4171308.png", "Pendonor Darah", "btnPendonorDarah", this::btnPendonorDarahActionPerformed);
 
-        btnSuplierToko = createMenuButton("/48x48/if_kde-folder-public_25193.png", "Suplier Toko", "btnSuplierToko", new java.awt.Dimension(200, 90), this::btnSuplierTokoActionPerformed);
+        btnSuplierToko = createMenuButton("/48x48/if_kde-folder-public_25193.png", "Suplier Toko", "btnSuplierToko", this::btnSuplierTokoActionPerformed);
 
-        btnJenisToko = createMenuButton("/48x48/cabinet.png", "Jenis Barang Toko", "btnJenisToko", new java.awt.Dimension(200, 90), this::btnJenisTokoActionPerformed);
+        btnJenisToko = createMenuButton("/48x48/cabinet.png", "Jenis Barang Toko", "btnJenisToko", this::btnJenisTokoActionPerformed);
 
-        btnSetHargaToko = createMenuButton("/48x48/iconfinder_Sales-by-Payment-Method-rep_49616.png", "Set Harga Toko", "btnSetHargaToko", new java.awt.Dimension(200, 90), this::btnSetHargaTokoActionPerformed);
+        btnSetHargaToko = createMenuButton("/48x48/iconfinder_Sales-by-Payment-Method-rep_49616.png", "Set Harga Toko", "btnSetHargaToko", this::btnSetHargaTokoActionPerformed);
 
-        btnBarangToko = createMenuButton("/48x48/iconfinder_eccomerce_-_shopping_cart_3440920.png", "Barang Toko", "btnBarangToko", new java.awt.Dimension(200, 90), this::btnBarangTokoActionPerformed);
+        btnBarangToko = createMenuButton("/48x48/iconfinder_eccomerce_-_shopping_cart_3440920.png", "Barang Toko", "btnBarangToko", this::btnBarangTokoActionPerformed);
 
-        btnPenagihanPiutangPasien = createMenuButton("/48x48/checklist_pencil-o.png", "Penagihan Piutang Pasien", "btnPenagihanPiutangPasien", new java.awt.Dimension(200, 90), this::btnPenagihanPiutangPasienActionPerformed);
+        btnPenagihanPiutangPasien = createMenuButton("/48x48/checklist_pencil-o.png", "Penagihan Piutang Pasien", "btnPenagihanPiutangPasien", this::btnPenagihanPiutangPasienActionPerformed);
 
-        btnAkunPenagihanPiutang = createMenuButton("/48x48/1485357487_Business.png", "Akun Penagihan Piutang", "btnAkunPenagihanPiutang", new java.awt.Dimension(200, 90), this::btnAkunPenagihanPiutangActionPerformed);
+        btnAkunPenagihanPiutang = createMenuButton("/48x48/1485357487_Business.png", "Akun Penagihan Piutang", "btnAkunPenagihanPiutang", this::btnAkunPenagihanPiutangActionPerformed);
 
-        btnStokOpnameToko = createMenuButton("/48x48/ark2.png", "Stok Opname Toko", "btnStokOpnameToko", new java.awt.Dimension(200, 90), this::btnStokOpnameTokoActionPerformed);
+        btnStokOpnameToko = createMenuButton("/48x48/ark2.png", "Stok Opname Toko", "btnStokOpnameToko", this::btnStokOpnameTokoActionPerformed);
 
-        btnRiwayatBarangToko = createMenuButton("/48x48/iconfinder_ecommerce-21_4707177.png", "Riwayat Barang Toko", "btnRiwayatBarangToko", new java.awt.Dimension(200, 90), this::btnRiwayatBarangTokoActionPerformed);
+        btnRiwayatBarangToko = createMenuButton("/48x48/iconfinder_ecommerce-21_4707177.png", "Riwayat Barang Toko", "btnRiwayatBarangToko", this::btnRiwayatBarangTokoActionPerformed);
 
-        btnSuratPemesananToko = createMenuButton("/48x48/if_internet-mail_118808.png", "Surat Pemesanan Toko", "btnSuratPemesananToko", new java.awt.Dimension(200, 90), this::btnSuratPemesananTokoActionPerformed);
+        btnSuratPemesananToko = createMenuButton("/48x48/if_internet-mail_118808.png", "Surat Pemesanan Toko", "btnSuratPemesananToko", this::btnSuratPemesananTokoActionPerformed);
 
-        btnPengajuanBarangToko = createMenuButton("/48x48/iconfinder_icon-45-note-list_315263.png", "Pengajuan Barang Toko", "btnPengajuanBarangToko", new java.awt.Dimension(200, 90), this::btnPengajuanBarangTokoActionPerformed);
+        btnPengajuanBarangToko = createMenuButton("/48x48/iconfinder_icon-45-note-list_315263.png", "Pengajuan Barang Toko", "btnPengajuanBarangToko", this::btnPengajuanBarangTokoActionPerformed);
 
-        btnPenerimaanBarangToko = createMenuButton("/48x48/iconfinder_gifts_sale_shop_4177581.png", "Penerimaan Barang Toko", "btnPenerimaanBarangToko", new java.awt.Dimension(200, 90), this::btnPenerimaanBarangTokoActionPerformed);
+        btnPenerimaanBarangToko = createMenuButton("/48x48/iconfinder_gifts_sale_shop_4177581.png", "Penerimaan Barang Toko", "btnPenerimaanBarangToko", this::btnPenerimaanBarangTokoActionPerformed);
 
-        btnPengadaanBarangToko = createMenuButton("/48x48/iconfinder_Notebook_3387299.png", "Pengadaan Barang Toko", "btnPengadaanBarangToko", new java.awt.Dimension(200, 90), this::btnPengadaanBarangTokoActionPerformed);
+        btnPengadaanBarangToko = createMenuButton("/48x48/iconfinder_Notebook_3387299.png", "Pengadaan Barang Toko", "btnPengadaanBarangToko", this::btnPengadaanBarangTokoActionPerformed);
 
-        btnHutangToko = createMenuButton("/48x48/iconfinder_checkout_47678.png", "Hutang Toko", "btnHutangToko", new java.awt.Dimension(200, 90), this::btnHutangTokoActionPerformed);
+        btnHutangToko = createMenuButton("/48x48/iconfinder_checkout_47678.png", "Hutang Toko", "btnHutangToko", this::btnHutangTokoActionPerformed);
 
-        btnBayarPesanToko = createMenuButton("/48x48/iconfinder_checkout_47678.png", "Bayar Pesan Toko", "btnBayarPesanToko", new java.awt.Dimension(200, 90), this::btnBayarPesanTokoActionPerformed);
+        btnBayarPesanToko = createMenuButton("/48x48/iconfinder_checkout_47678.png", "Bayar Pesan Toko", "btnBayarPesanToko", this::btnBayarPesanTokoActionPerformed);
 
-        btnMemberToko = createMenuButton("/48x48/iconfinder_meeting_45536.png", "Member Toko", "btnMemberToko", new java.awt.Dimension(200, 90), this::btnMemberTokoActionPerformed);
+        btnMemberToko = createMenuButton("/48x48/iconfinder_meeting_45536.png", "Member Toko", "btnMemberToko", this::btnMemberTokoActionPerformed);
 
-        btnPenjualanToko = createMenuButton("/48x48/iconfinder_lock__payment__pay__security_2542006.png", "Penjualan Toko", "btnPenjualanToko", new java.awt.Dimension(200, 90), this::btnPenjualanTokoActionPerformed);
+        btnPenjualanToko = createMenuButton("/48x48/iconfinder_lock__payment__pay__security_2542006.png", "Penjualan Toko", "btnPenjualanToko", this::btnPenjualanTokoActionPerformed);
 
-        btnRegistrasiPoliPerTanggal = createMenuButton("/48x48/iconfinder_News_728959.png", "Registrasi Poli Per Tanggal", "btnRegistrasiPoliPerTanggal", new java.awt.Dimension(200, 90), this::btnRegistrasiPoliPerTanggalActionPerformed);
+        btnRegistrasiPoliPerTanggal = createMenuButton("/48x48/iconfinder_News_728959.png", "Registrasi Poli Per Tanggal", "btnRegistrasiPoliPerTanggal", this::btnRegistrasiPoliPerTanggalActionPerformed);
 
-        btnPiutangToko = createMenuButton("/48x48/1485357584_Calculator.png", "Piutang Toko", "btnPiutangToko", new java.awt.Dimension(200, 90), this::btnPiutangTokoActionPerformed);
+        btnPiutangToko = createMenuButton("/48x48/1485357584_Calculator.png", "Piutang Toko", "btnPiutangToko", this::btnPiutangTokoActionPerformed);
 
-        btnReturKeSuplierToko = createMenuButton("/48x48/iconfinder_Package__Package_Delivery_Truck_Shipping_Transport_Box-30_4072100.png", "Retur Ke Suplier Toko", "btnReturKeSuplierToko", new java.awt.Dimension(200, 90), this::btnReturKeSuplierTokoActionPerformed);
+        btnReturKeSuplierToko = createMenuButton("/48x48/iconfinder_Package__Package_Delivery_Truck_Shipping_Transport_Box-30_4072100.png", "Retur Ke Suplier Toko", "btnReturKeSuplierToko", this::btnReturKeSuplierTokoActionPerformed);
 
-        btnReturBarangNonMedis = createMenuButton("/48x48/iconfinder_eccomerce_-_carton_box_return_3440901.png", "Retur Ke Suplier Non Medis", "btnReturBarangNonMedis", new java.awt.Dimension(200, 90), this::btnReturBarangNonMedisActionPerformed);
+        btnReturBarangNonMedis = createMenuButton("/48x48/iconfinder_eccomerce_-_carton_box_return_3440901.png", "Retur Ke Suplier Non Medis", "btnReturBarangNonMedis", this::btnReturBarangNonMedisActionPerformed);
 
-        btnRiwayatBarangNonMedis = createMenuButton("/48x48/iconfinder_accessories-text-editor_23663.png", "Riwayat Barang Non Medis", "btnRiwayatBarangNonMedis", new java.awt.Dimension(200, 90), this::btnRiwayatBarangNonMedisActionPerformed);
+        btnRiwayatBarangNonMedis = createMenuButton("/48x48/iconfinder_accessories-text-editor_23663.png", "Riwayat Barang Non Medis", "btnRiwayatBarangNonMedis", this::btnRiwayatBarangNonMedisActionPerformed);
 
-        btnPasienCorona = createMenuButton("/48x48/iconfinder_fever-illness-sick-temperature-thermomete_5994873.png", "Pasien Corona", "btnPasienCorona", new java.awt.Dimension(200, 90), this::btnPasienCoronaActionPerformed);
+        btnPasienCorona = createMenuButton("/48x48/iconfinder_fever-illness-sick-temperature-thermomete_5994873.png", "Pasien Corona", "btnPasienCorona", this::btnPasienCoronaActionPerformed);
 
-        btnPendapatanHarianToko = createMenuButton("/48x48/iconfinder_eccomerce_-_calculator_3440925.png", "Pendapatan Harian Toko", "btnPendapatanHarianToko", new java.awt.Dimension(200, 90), this::btnPendapatanHarianTokoActionPerformed);
+        btnPendapatanHarianToko = createMenuButton("/48x48/iconfinder_eccomerce_-_calculator_3440925.png", "Pendapatan Harian Toko", "btnPendapatanHarianToko", this::btnPendapatanHarianTokoActionPerformed);
 
-        btnDiagnosaPasienCorona = createMenuButton("/48x48/iconfinder_Dna-genetics-genomic-strand-virus_5994869.png", "Diagnosa Pasien Corona", "btnDiagnosaPasienCorona", new java.awt.Dimension(200, 90), this::btnDiagnosaPasienCoronaActionPerformed);
+        btnDiagnosaPasienCorona = createMenuButton("/48x48/iconfinder_Dna-genetics-genomic-strand-virus_5994869.png", "Diagnosa Pasien Corona", "btnDiagnosaPasienCorona", this::btnDiagnosaPasienCoronaActionPerformed);
 
-        btnPerawatanPasienCorona = createMenuButton("/48x48/iconfinder_Night-sleep-sleeping-health_5994844.png", "Perawatan Pasien Corona", "btnPerawatanPasienCorona", new java.awt.Dimension(200, 90), this::btnPerawatanPasienCoronaActionPerformed);
+        btnPerawatanPasienCorona = createMenuButton("/48x48/iconfinder_Night-sleep-sleeping-health_5994844.png", "Perawatan Pasien Corona", "btnPerawatanPasienCorona", this::btnPerawatanPasienCoronaActionPerformed);
 
-        btnPenilaianAwalKeperawatanGigi = createMenuButton("/48x48/iconfinder_09-report_5980350.png", "Awal Keperawatan Gigi", "btnPenilaianAwalKeperawatanGigi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanGigiActionPerformed);
+        btnPenilaianAwalKeperawatanGigi = createMenuButton("/48x48/iconfinder_09-report_5980350.png", "Awal Keperawatan Gigi", "btnPenilaianAwalKeperawatanGigi", this::btnPenilaianAwalKeperawatanGigiActionPerformed);
 
-        btnMasterMasalahKeperawatanGigi = createMenuButton("/48x48/iconfinder_healthcare_and_medical-hygienic-tooth_paste-toothpaste-toothbrush-health_care_4394831.png", "Master Masalah Keperawatan Gigi", "btnMasterMasalahKeperawatanGigi", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanGigiActionPerformed);
+        btnMasterMasalahKeperawatanGigi = createMenuButton("/48x48/iconfinder_healthcare_and_medical-hygienic-tooth_paste-toothpaste-toothbrush-health_care_4394831.png", "Master Masalah Keperawatan Gigi", "btnMasterMasalahKeperawatanGigi", this::btnMasterMasalahKeperawatanGigiActionPerformed);
 
-        btnBayarPiutangToko = createMenuButton("/48x48/iconfinder_vector_65_04_473782.png", "Bayar Piutang Toko", "btnBayarPiutangToko", new java.awt.Dimension(200, 90), this::btnBayarPiutangTokoActionPerformed);
+        btnBayarPiutangToko = createMenuButton("/48x48/iconfinder_vector_65_04_473782.png", "Bayar Piutang Toko", "btnBayarPiutangToko", this::btnBayarPiutangTokoActionPerformed);
 
-        btnPiutangHarianToko = createMenuButton("/48x48/iconfinder_News_5947117.png", "Piutang Harian Toko", "btnPiutangHarianToko", new java.awt.Dimension(200, 90), this::btnPiutangHarianTokoActionPerformed);
+        btnPiutangHarianToko = createMenuButton("/48x48/iconfinder_News_5947117.png", "Piutang Harian Toko", "btnPiutangHarianToko", this::btnPiutangHarianTokoActionPerformed);
 
-        btnPenjualanHarianToko = createMenuButton("/48x48/iconfinder_edit-copy_118918.png", "Penjualan Harian Toko", "btnPenjualanHarianToko", new java.awt.Dimension(200, 90), this::btnPenjualanHarianTokoActionPerformed);
+        btnPenjualanHarianToko = createMenuButton("/48x48/iconfinder_edit-copy_118918.png", "Penjualan Harian Toko", "btnPenjualanHarianToko", this::btnPenjualanHarianTokoActionPerformed);
 
-        btnDeteksiDiniCorona = createMenuButton("/48x48/iconfinder_Medical_Result-Health-Document-Virus-Medical_5958965.png", "Deteksi Dini Corona", "btnDeteksiDiniCorona", new java.awt.Dimension(200, 90), this::btnDeteksiDiniCoronaActionPerformed);
+        btnDeteksiDiniCorona = createMenuButton("/48x48/iconfinder_Medical_Result-Health-Document-Virus-Medical_5958965.png", "Deteksi Dini Corona", "btnDeteksiDiniCorona", this::btnDeteksiDiniCoronaActionPerformed);
 
-        btnPenilaianAwalKeperawatanKebidanan = createMenuButton("/48x48/iconfinder_209-pregnant-woman-2_3099532.png", "Awal Keperawatan Ralan Kebidanan", "btnPenilaianAwalKeperawatanKebidanan", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanKebidananActionPerformed);
+        btnPenilaianAwalKeperawatanKebidanan = createMenuButton("/48x48/iconfinder_209-pregnant-woman-2_3099532.png", "Awal Keperawatan Ralan Kebidanan", "btnPenilaianAwalKeperawatanKebidanan", this::btnPenilaianAwalKeperawatanKebidananActionPerformed);
 
-        btnPengumumanEPasien = createMenuButton("/48x48/iconfinder_email-laptop_4417124.png", "Pengumuman E-Pasien", "btnPengumumanEPasien", new java.awt.Dimension(200, 90), this::btnPengumumanEPasienActionPerformed);
+        btnPengumumanEPasien = createMenuButton("/48x48/iconfinder_email-laptop_4417124.png", "Pengumuman E-Pasien", "btnPengumumanEPasien", this::btnPengumumanEPasienActionPerformed);
 
-        btnSuratHamil = createMenuButton("/48x48/iconfinder_4_375262.png", "Surat Hamil", "btnSuratHamil", new java.awt.Dimension(200, 90), this::btnSuratHamilActionPerformed);
+        btnSuratHamil = createMenuButton("/48x48/iconfinder_4_375262.png", "Surat Hamil", "btnSuratHamil", this::btnSuratHamilActionPerformed);
 
-        btnSetTarifOnline = createMenuButton("/48x48/iconfinder_Non-Service_Specific_copy_Client_259291.png", "Set Tarif Online", "btnSetTarifOnline", new java.awt.Dimension(200, 90), this::btnSetTarifOnlineActionPerformed);
+        btnSetTarifOnline = createMenuButton("/48x48/iconfinder_Non-Service_Specific_copy_Client_259291.png", "Set Tarif Online", "btnSetTarifOnline", this::btnSetTarifOnlineActionPerformed);
 
-        btnBookingPeriksa = createMenuButton("/48x48/if_addressbook_32380.png", "Booking Periksa", "btnBookingPeriksa", new java.awt.Dimension(200, 90), this::btnBookingPeriksaActionPerformed);
+        btnBookingPeriksa = createMenuButton("/48x48/if_addressbook_32380.png", "Booking Periksa", "btnBookingPeriksa", this::btnBookingPeriksaActionPerformed);
 
-        btnSirkulasiBarangToko = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Toko", "btnSirkulasiBarangToko", new java.awt.Dimension(200, 90), this::btnSirkulasiBarangTokoActionPerformed);
+        btnSirkulasiBarangToko = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Toko", "btnSirkulasiBarangToko", this::btnSirkulasiBarangTokoActionPerformed);
 
-        btnReturJualToko = createMenuButton("/48x48/1360486142_shopping_cart.png", "Retur Jual Toko", "btnReturJualToko", new java.awt.Dimension(200, 90), this::btnReturJualTokoActionPerformed);
+        btnReturJualToko = createMenuButton("/48x48/1360486142_shopping_cart.png", "Retur Jual Toko", "btnReturJualToko", this::btnReturJualTokoActionPerformed);
 
-        btnReturPiutangToko = createMenuButton("/48x48/custom-reports.png", "Retur Piutang Toko", "btnReturPiutangToko", new java.awt.Dimension(200, 90), this::btnReturPiutangTokoActionPerformed);
+        btnReturPiutangToko = createMenuButton("/48x48/custom-reports.png", "Retur Piutang Toko", "btnReturPiutangToko", this::btnReturPiutangTokoActionPerformed);
 
-        btnSirkulasiBarangToko2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Toko 2", "btnSirkulasiBarangToko2", new java.awt.Dimension(200, 90), this::btnSirkulasiBarangToko2ActionPerformed);
+        btnSirkulasiBarangToko2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Toko 2", "btnSirkulasiBarangToko2", this::btnSirkulasiBarangToko2ActionPerformed);
 
-        btnKeuntunganBarangToko = createMenuButton("/48x48/coins.png", "Keuntungan Barang Toko", "btnKeuntunganBarangToko", new java.awt.Dimension(200, 90), this::btnKeuntunganBarangTokoActionPerformed);
+        btnKeuntunganBarangToko = createMenuButton("/48x48/coins.png", "Keuntungan Barang Toko", "btnKeuntunganBarangToko", this::btnKeuntunganBarangTokoActionPerformed);
 
-        btnZISPengeluaranPenerimaDankes = createMenuButton("/48x48/iconfinder_vector_65_04_473782.png", "Ket Pengeluaran Penerima Dankes", "btnZISPengeluaranPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISPengeluaranPenerimaDankesActionPerformed);
+        btnZISPengeluaranPenerimaDankes = createMenuButton("/48x48/iconfinder_vector_65_04_473782.png", "Ket Pengeluaran Penerima Dankes", "btnZISPengeluaranPenerimaDankes", this::btnZISPengeluaranPenerimaDankesActionPerformed);
 
-        btnZISPenghasilanPenerimaDankes = createMenuButton("/48x48/iconfinder_phonebook_17015.png", "Ket Penghasilan Penerima Dankes", "btnZISPenghasilanPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISPenghasilanPenerimaDankesActionPerformed);
+        btnZISPenghasilanPenerimaDankes = createMenuButton("/48x48/iconfinder_phonebook_17015.png", "Ket Penghasilan Penerima Dankes", "btnZISPenghasilanPenerimaDankes", this::btnZISPenghasilanPenerimaDankesActionPerformed);
 
-        btnZISUkuranRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_Home_34226.png", "Ukuran Rumah Penerima Dankes", "btnZISUkuranRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISUkuranRumahPenerimaDankesActionPerformed);
+        btnZISUkuranRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_Home_34226.png", "Ukuran Rumah Penerima Dankes", "btnZISUkuranRumahPenerimaDankes", this::btnZISUkuranRumahPenerimaDankesActionPerformed);
 
-        btnZISDindingRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_building_17020.png", "Dinding Rumah Penerima Dankes", "btnZISDindingRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISDindingRumahPenerimaDankesActionPerformed);
+        btnZISDindingRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_building_17020.png", "Dinding Rumah Penerima Dankes", "btnZISDindingRumahPenerimaDankes", this::btnZISDindingRumahPenerimaDankesActionPerformed);
 
-        btnZISLantaiRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_fence-picket-garden-yard-farm-barrier-wooden_2189586.png", "Lantai Rumah Penerima Dankes", "btnZISLantaiRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISLantaiRumahPenerimaDankesActionPerformed);
+        btnZISLantaiRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_fence-picket-garden-yard-farm-barrier-wooden_2189586.png", "Lantai Rumah Penerima Dankes", "btnZISLantaiRumahPenerimaDankes", this::btnZISLantaiRumahPenerimaDankesActionPerformed);
 
-        btnZISAtapRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_home_17008.png", "Atap Rumah Penerima Dankes", "btnZISAtapRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISAtapRumahPenerimaDankesActionPerformed);
+        btnZISAtapRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_home_17008.png", "Atap Rumah Penerima Dankes", "btnZISAtapRumahPenerimaDankes", this::btnZISAtapRumahPenerimaDankesActionPerformed);
 
-        btnZISKepemilikanRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_Locked_Cell_Door_128415.png", "Kepemilikan Rumah Penerima Dankes", "btnZISKepemilikanRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISKepemilikanRumahPenerimaDankesActionPerformed);
+        btnZISKepemilikanRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_Locked_Cell_Door_128415.png", "Kepemilikan Rumah Penerima Dankes", "btnZISKepemilikanRumahPenerimaDankes", this::btnZISKepemilikanRumahPenerimaDankesActionPerformed);
 
-        btnZISKamarMandiPenerimaDankes = createMenuButton("/48x48/iconfinder_13-Shower_6027796.png", "Kamar Mandi Penerima Dankes", "btnZISKamarMandiPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISKamarMandiPenerimaDankesActionPerformed);
+        btnZISKamarMandiPenerimaDankes = createMenuButton("/48x48/iconfinder_13-Shower_6027796.png", "Kamar Mandi Penerima Dankes", "btnZISKamarMandiPenerimaDankes", this::btnZISKamarMandiPenerimaDankesActionPerformed);
 
-        btnZISDapurRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_25-Hot_cooking_5929219.png", "Dapur Rumah Penerima Dankes", "btnZISDapurRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISDapurRumahPenerimaDankesActionPerformed);
+        btnZISDapurRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_25-Hot_cooking_5929219.png", "Dapur Rumah Penerima Dankes", "btnZISDapurRumahPenerimaDankes", this::btnZISDapurRumahPenerimaDankesActionPerformed);
 
-        btnZISKursiRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_education-school-chair-seat-computer-study-office_5854055.png", "Kursi Rumah Penerima Dankes", "btnZISKursiRumahPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISKursiRumahPenerimaDankesActionPerformed);
+        btnZISKursiRumahPenerimaDankes = createMenuButton("/48x48/iconfinder_education-school-chair-seat-computer-study-office_5854055.png", "Kursi Rumah Penerima Dankes", "btnZISKursiRumahPenerimaDankes", this::btnZISKursiRumahPenerimaDankesActionPerformed);
 
-        btnZISKategoriPHBSPenerimaDankes = createMenuButton("/48x48/iconfinder_house_sink_1378831.png", "Kategori PHBS Penerima Dankes", "btnZISKategoriPHBSPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISKategoriPHBSPenerimaDankesActionPerformed);
+        btnZISKategoriPHBSPenerimaDankes = createMenuButton("/48x48/iconfinder_house_sink_1378831.png", "Kategori PHBS Penerima Dankes", "btnZISKategoriPHBSPenerimaDankes", this::btnZISKategoriPHBSPenerimaDankesActionPerformed);
 
-        btnZISElektronikPenerimaDankes = createMenuButton("/48x48/iconfinder_Eco_bulb_energy_light_2992437.png", "Elektronik Penerima Dankes", "btnZISElektronikPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISElektronikPenerimaDankesActionPerformed);
+        btnZISElektronikPenerimaDankes = createMenuButton("/48x48/iconfinder_Eco_bulb_energy_light_2992437.png", "Elektronik Penerima Dankes", "btnZISElektronikPenerimaDankes", this::btnZISElektronikPenerimaDankesActionPerformed);
 
-        btnZISTernakPenerimaDankes = createMenuButton("/48x48/iconfinder_chicken-chickling-easter-egg-shell-spring_2189581.png", "Ternak Penerima Dankes", "btnZISTernakPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISTernakPenerimaDankesActionPerformed);
+        btnZISTernakPenerimaDankes = createMenuButton("/48x48/iconfinder_chicken-chickling-easter-egg-shell-spring_2189581.png", "Ternak Penerima Dankes", "btnZISTernakPenerimaDankes", this::btnZISTernakPenerimaDankesActionPerformed);
 
-        btnZISJenisSimpananPenerimaDankes = createMenuButton("/48x48/iconfinder_gold_61617.png", "Jenis Simpanan Penerima Dankes", "btnZISJenisSimpananPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISJenisSimpananPenerimaDankesActionPerformed);
+        btnZISJenisSimpananPenerimaDankes = createMenuButton("/48x48/iconfinder_gold_61617.png", "Jenis Simpanan Penerima Dankes", "btnZISJenisSimpananPenerimaDankes", this::btnZISJenisSimpananPenerimaDankesActionPerformed);
 
-        btnPenilaianAwalRalanBayi = createMenuButton("/48x48/baby-cot.png", "Awal Keperawatan Ralan Bayi/Anak", "btnPenilaianAwalRalanBayi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalRalanBayiActionPerformed);
+        btnPenilaianAwalRalanBayi = createMenuButton("/48x48/baby-cot.png", "Awal Keperawatan Ralan Bayi/Anak", "btnPenilaianAwalRalanBayi", this::btnPenilaianAwalRalanBayiActionPerformed);
 
-        btnPenilaianAwalKeperawatanRanapBayiAnak = createMenuButton("/48x48/baby-cot.png", "Awal Keperawatan Ranap Bayi/Anak", "btnPenilaianAwalKeperawatanRanapBayiAnak", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRanapBayiAnakActionPerformed);
+        btnPenilaianAwalKeperawatanRanapBayiAnak = createMenuButton("/48x48/baby-cot.png", "Awal Keperawatan Ranap Bayi/Anak", "btnPenilaianAwalKeperawatanRanapBayiAnak", this::btnPenilaianAwalKeperawatanRanapBayiAnakActionPerformed);
 
-        btnZISKategoriAsnafPenerimaDankes = createMenuButton("/48x48/iconfinder_4_2716419.png", "Kategori Asnaf Penerima Dankes", "btnZISKategoriAsnafPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISKategoriAsnafPenerimaDankesActionPerformed);
+        btnZISKategoriAsnafPenerimaDankes = createMenuButton("/48x48/iconfinder_4_2716419.png", "Kategori Asnaf Penerima Dankes", "btnZISKategoriAsnafPenerimaDankes", this::btnZISKategoriAsnafPenerimaDankesActionPerformed);
 
-        btnMasterMasalahKeperawatanAnak = createMenuButton("/48x48/baby-boy.png", "Master Masalah Keperawatan Bayi/Anak", "btnMasterMasalahKeperawatanAnak", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanAnakActionPerformed);
+        btnMasterMasalahKeperawatanAnak = createMenuButton("/48x48/baby-boy.png", "Master Masalah Keperawatan Bayi/Anak", "btnMasterMasalahKeperawatanAnak", this::btnMasterMasalahKeperawatanAnakActionPerformed);
 
-        btnMasterImunisasi = createMenuButton("/48x48/iconfinder_19-tube_5980344.png", "Master Imunisasi", "btnMasterImunisasi", new java.awt.Dimension(200, 90), this::btnMasterImunisasiActionPerformed);
+        btnMasterImunisasi = createMenuButton("/48x48/iconfinder_19-tube_5980344.png", "Master Imunisasi", "btnMasterImunisasi", this::btnMasterImunisasiActionPerformed);
 
-        btnZISPatologisPenerimaDankes = createMenuButton("/48x48/iconfinder_smoke-healthcare_and_medical-no_smoking-warming-signaling-cigarette-prohibition-forbidden-security_4394848.png", "Patologis Penerima Dankes", "btnZISPatologisPenerimaDankes", new java.awt.Dimension(200, 90), this::btnZISPatologisPenerimaDankesActionPerformed);
+        btnZISPatologisPenerimaDankes = createMenuButton("/48x48/iconfinder_smoke-healthcare_and_medical-no_smoking-warming-signaling-cigarette-prohibition-forbidden-security_4394848.png", "Patologis Penerima Dankes", "btnZISPatologisPenerimaDankes", this::btnZISPatologisPenerimaDankesActionPerformed);
 
-        btnPCareCekKartu = createMenuButton("/48x48/pcare.png", "Cek No.Kartu PCare", "btnPCareCekKartu", new java.awt.Dimension(200, 90), this::btnPCareCekKartuActionPerformed);
+        btnPCareCekKartu = createMenuButton("/48x48/pcare.png", "Cek No.Kartu PCare", "btnPCareCekKartu", this::btnPCareCekKartuActionPerformed);
 
-        btnSuratBebasNarkoba = createMenuButton("/48x48/iconfinder_Capsule-drug-medicine-pill-tablet_5994864.png", "Surat Bebas Narkoba", "btnSuratBebasNarkoba", new java.awt.Dimension(200, 90), this::btnSuratBebasNarkobaActionPerformed);
+        btnSuratBebasNarkoba = createMenuButton("/48x48/iconfinder_Capsule-drug-medicine-pill-tablet_5994864.png", "Surat Bebas Narkoba", "btnSuratBebasNarkoba", this::btnSuratBebasNarkobaActionPerformed);
 
-        btnSuratKeteranganCovid = createMenuButton("/48x48/iconfinder_Microscope-Scientific-Laboratory-Test-Chemistry_5958964.png", "Surat Keterangan Covid", "btnSuratKeteranganCovid", new java.awt.Dimension(200, 90), this::btnSuratKeteranganCovidActionPerformed);
+        btnSuratKeteranganCovid = createMenuButton("/48x48/iconfinder_Microscope-Scientific-Laboratory-Test-Chemistry_5958964.png", "Surat Keterangan Covid", "btnSuratKeteranganCovid", this::btnSuratKeteranganCovidActionPerformed);
 
-        btnPemakaianAirTanah = createMenuButton("/48x48/iconfinder_Ecology_tap_water_2992443.png", "Pemakaian Air Tanah", "btnPemakaianAirTanah", new java.awt.Dimension(200, 90), this::btnPemakaianAirTanahActionPerformed);
+        btnPemakaianAirTanah = createMenuButton("/48x48/iconfinder_Ecology_tap_water_2992443.png", "Pemakaian Air Tanah", "btnPemakaianAirTanah", this::btnPemakaianAirTanahActionPerformed);
 
-        btnGrafikPemakaianAirTanahPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Pemakaian Air Tanah Per Tanggal", "btnGrafikPemakaianAirTanahPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikPemakaianAirTanahPerTanggalActionPerformed);
+        btnGrafikPemakaianAirTanahPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Pemakaian Air Tanah Per Tanggal", "btnGrafikPemakaianAirTanahPerTanggal", this::btnGrafikPemakaianAirTanahPerTanggalActionPerformed);
 
-        btnGrafikPemakaianAirTanahPerBulan = createMenuButton("/48x48/1491582015_11.png", "Pemakaian Air Tanah Per Bulan", "btnGrafikPemakaianAirTanahPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikPemakaianAirTanahPerBulanActionPerformed);
+        btnGrafikPemakaianAirTanahPerBulan = createMenuButton("/48x48/1491582015_11.png", "Pemakaian Air Tanah Per Bulan", "btnGrafikPemakaianAirTanahPerBulan", this::btnGrafikPemakaianAirTanahPerBulanActionPerformed);
 
-        btnLamaPelayananPoli = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Poli", "btnLamaPelayananPoli", new java.awt.Dimension(200, 90), this::btnLamaPelayananPoliActionPerformed);
+        btnLamaPelayananPoli = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Poli", "btnLamaPelayananPoli", this::btnLamaPelayananPoliActionPerformed);
 
-        btnLamaPelayananCSSD = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan CSSD", "btnLamaPelayananCSSD", new java.awt.Dimension(200, 90), this::btnLamaPelayananCSSDActionPerformed);
+        btnLamaPelayananCSSD = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan CSSD", "btnLamaPelayananCSSD", this::btnLamaPelayananCSSDActionPerformed);
 
-        btnHemodialisa = createMenuButton("/48x48/iconfinder_32_Disease_infected_infection_kidney_6088186.png", "Hemodialisa", "btnHemodialisa", new java.awt.Dimension(200, 90), this::btnHemodialisaActionPerformed);
+        btnHemodialisa = createMenuButton("/48x48/iconfinder_32_Disease_infected_infection_kidney_6088186.png", "Hemodialisa", "btnHemodialisa", this::btnHemodialisaActionPerformed);
 
-        btnGrafikHemodialisaPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Hemodialisa Per Tanggal", "btnGrafikHemodialisaPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikHemodialisaPerTanggalActionPerformed);
+        btnGrafikHemodialisaPerTanggal = createMenuButton("/48x48/1491582015_11.png", "Hemodialisa Per Tanggal", "btnGrafikHemodialisaPerTanggal", this::btnGrafikHemodialisaPerTanggalActionPerformed);
 
-        btnGrafikHemodialisaPerBulan = createMenuButton("/48x48/1491582080_6.png", "Hemodialisa Per Bulan", "btnGrafikHemodialisaPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikHemodialisaPerBulanActionPerformed);
+        btnGrafikHemodialisaPerBulan = createMenuButton("/48x48/1491582080_6.png", "Hemodialisa Per Bulan", "btnGrafikHemodialisaPerBulan", this::btnGrafikHemodialisaPerBulanActionPerformed);
 
-        btnGrafikHemodialisaPerTahun = createMenuButton("/48x48/1491582015_11.png", "Hemodialisa Per Tahun", "btnGrafikHemodialisaPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikHemodialisaPerTahunActionPerformed);
+        btnGrafikHemodialisaPerTahun = createMenuButton("/48x48/1491582015_11.png", "Hemodialisa Per Tahun", "btnGrafikHemodialisaPerTahun", this::btnGrafikHemodialisaPerTahunActionPerformed);
 
-        btnGrafikMeninggalPerBulan = createMenuButton("/48x48/1491582080_6.png", "Pasien Meninggal Per Bulan", "btnGrafikMeninggalPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikMeninggalPerBulanActionPerformed);
+        btnGrafikMeninggalPerBulan = createMenuButton("/48x48/1491582080_6.png", "Pasien Meninggal Per Bulan", "btnGrafikMeninggalPerBulan", this::btnGrafikMeninggalPerBulanActionPerformed);
 
-        btnLaporanTahunanIRJ = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Tahunan IRJ", "btnLaporanTahunanIRJ", new java.awt.Dimension(200, 90), this::btnLaporanTahunanIRJActionPerformed);
+        btnLaporanTahunanIRJ = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Tahunan IRJ", "btnLaporanTahunanIRJ", this::btnLaporanTahunanIRJActionPerformed);
 
-        btnPerbaikanInventaris = createMenuButton("/48x48/if_package_utilities_3557.png", "Perbaikan Inventaris", "btnPerbaikanInventaris", new java.awt.Dimension(200, 90), this::btnPerbaikanInventarisActionPerformed);
+        btnPerbaikanInventaris = createMenuButton("/48x48/if_package_utilities_3557.png", "Perbaikan Inventaris", "btnPerbaikanInventaris", this::btnPerbaikanInventarisActionPerformed);
 
-        btnSuratCutiHamil = createMenuButton("/48x48/iconfinder_contact_37110.png", "Surat Cuti Hamil", "btnSuratCutiHamil", new java.awt.Dimension(200, 90), this::btnSuratCutiHamilActionPerformed);
+        btnSuratCutiHamil = createMenuButton("/48x48/iconfinder_contact_37110.png", "Surat Cuti Hamil", "btnSuratCutiHamil", this::btnSuratCutiHamilActionPerformed);
 
-        btnPermintaanStokObatPasien = createMenuButton("/48x48/IconPermintaanStokObatPasien.png", "Permintaan Stok Obat Pasien", "btnPermintaanStokObatPasien", new java.awt.Dimension(200, 90), this::btnPermintaanStokObatPasienActionPerformed);
+        btnPermintaanStokObatPasien = createMenuButton("/48x48/IconPermintaanStokObatPasien.png", "Permintaan Stok Obat Pasien", "btnPermintaanStokObatPasien", this::btnPermintaanStokObatPasienActionPerformed);
 
-        btnPemeliharaanInventaris = createMenuButton("/48x48/iconfinder_preferences_6586102.png", "Pemeliharaan Inventaris", "btnPemeliharaanInventaris", new java.awt.Dimension(200, 90), this::btnPemeliharaanInventarisActionPerformed);
+        btnPemeliharaanInventaris = createMenuButton("/48x48/iconfinder_preferences_6586102.png", "Pemeliharaan Inventaris", "btnPemeliharaanInventaris", this::btnPemeliharaanInventarisActionPerformed);
 
-        btnKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_clipboard_6586111.png", "Klasifikasi Pasien Ranap", "btnKlasifikasiPasienRanap", new java.awt.Dimension(200, 90), this::btnKlasifikasiPasienRanapActionPerformed);
+        btnKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_clipboard_6586111.png", "Klasifikasi Pasien Ranap", "btnKlasifikasiPasienRanap", this::btnKlasifikasiPasienRanapActionPerformed);
 
-        btnBulananKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Bulanan Klasifikasi Pasien Ranap", "btnBulananKlasifikasiPasienRanap", new java.awt.Dimension(200, 90), this::btnBulananKlasifikasiPasienRanapActionPerformed);
+        btnBulananKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Bulanan Klasifikasi Pasien Ranap", "btnBulananKlasifikasiPasienRanap", this::btnBulananKlasifikasiPasienRanapActionPerformed);
 
-        btnHarianKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Harian Klasifikasi Pasien Ranap", "btnHarianKlasifikasiPasienRanap", new java.awt.Dimension(200, 90), this::btnHarianKlasifikasiPasienRanapActionPerformed);
+        btnHarianKlasifikasiPasienRanap = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Harian Klasifikasi Pasien Ranap", "btnHarianKlasifikasiPasienRanap", this::btnHarianKlasifikasiPasienRanapActionPerformed);
 
-        btnKlasifikasiPasienPerRuang = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Klasifikasi Pasien Per Ruang", "btnKlasifikasiPasienPerRuang", new java.awt.Dimension(200, 90), this::btnKlasifikasiPasienPerRuangActionPerformed);
+        btnKlasifikasiPasienPerRuang = createMenuButton("/48x48/iconfinder_Letter_Printing_Paper_Sizes_1977178.png", "Klasifikasi Pasien Per Ruang", "btnKlasifikasiPasienPerRuang", this::btnKlasifikasiPasienPerRuangActionPerformed);
 
-        btnSOAPPerawatan = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Perawatan", "btnSOAPPerawatan", new java.awt.Dimension(200, 90), this::btnSOAPPerawatanActionPerformed);
+        btnSOAPPerawatan = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Perawatan", "btnSOAPPerawatan", this::btnSOAPPerawatanActionPerformed);
 
-        btnKlaimRawatJalan = createMenuButton("/48x48/iconfinder_PriorityTasks-task-document-paper-descending_6071856.png", "Klaim Rawat Jalan", "btnKlaimRawatJalan", new java.awt.Dimension(200, 90), this::btnKlaimRawatJalanActionPerformed);
+        btnKlaimRawatJalan = createMenuButton("/48x48/iconfinder_PriorityTasks-task-document-paper-descending_6071856.png", "Klaim Rawat Jalan", "btnKlaimRawatJalan", this::btnKlaimRawatJalanActionPerformed);
 
-        btnSkriningGiziLanjut = createMenuButton("/48x48/iconfinder_green_curry_3377058.png", "Skrining Gizi Lanjut", "btnSkriningGiziLanjut", new java.awt.Dimension(200, 90), this::btnSkriningGiziLanjutActionPerformed);
+        btnSkriningGiziLanjut = createMenuButton("/48x48/iconfinder_green_curry_3377058.png", "Skrining Gizi Lanjut", "btnSkriningGiziLanjut", this::btnSkriningGiziLanjutActionPerformed);
 
-        btnLamaPenyiapanRM = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Penyiapan RM", "btnLamaPenyiapanRM", new java.awt.Dimension(200, 90), this::btnLamaPenyiapanRMActionPerformed);
+        btnLamaPenyiapanRM = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Penyiapan RM", "btnLamaPenyiapanRM", this::btnLamaPenyiapanRMActionPerformed);
 
-        btnDosisRadiologi = createMenuButton("/48x48/iconfinder_DocumentManagement-documentation-folder-projectmanagement-filemanagement_6071870.png", "Dosis Radiologi", "btnDosisRadiologi", new java.awt.Dimension(200, 90), this::btnDosisRadiologiActionPerformed);
+        btnDosisRadiologi = createMenuButton("/48x48/iconfinder_DocumentManagement-documentation-folder-projectmanagement-filemanagement_6071870.png", "Dosis Radiologi", "btnDosisRadiologi", this::btnDosisRadiologiActionPerformed);
 
-        btnDemografiUmurKunjungan = createMenuButton("/48x48/custom-reports.png", "Demografi Umur Kunjungan", "btnDemografiUmurKunjungan", new java.awt.Dimension(200, 90), this::btnDemografiUmurKunjunganActionPerformed);
+        btnDemografiUmurKunjungan = createMenuButton("/48x48/custom-reports.png", "Demografi Umur Kunjungan", "btnDemografiUmurKunjungan", this::btnDemografiUmurKunjunganActionPerformed);
 
-        btnJamDietPasien = createMenuButton("/48x48/iconfinder_alarm_32381.png", "Jam Diet Pasien", "btnJamDietPasien", new java.awt.Dimension(200, 90), this::btnJamDietPasienActionPerformed);
+        btnJamDietPasien = createMenuButton("/48x48/iconfinder_alarm_32381.png", "Jam Diet Pasien", "btnJamDietPasien", this::btnJamDietPasienActionPerformed);
 
-        btnRVPPiutangBPJS = createMenuButton("/48x48/iconfinder_wallet_pay_sale_shop_4177573.png", "RVP Piutang BPJS", "btnRVPPiutangBPJS", new java.awt.Dimension(200, 90), this::btnRVPPiutangBPJSActionPerformed);
+        btnRVPPiutangBPJS = createMenuButton("/48x48/iconfinder_wallet_pay_sale_shop_4177573.png", "RVP Piutang BPJS", "btnRVPPiutangBPJS", this::btnRVPPiutangBPJSActionPerformed);
 
-        btnVerifikasiPenerimaanFarmasi = createMenuButton("/48x48/iconfinder_ToDoList-planing-list-planlist-todo_6071846.png", "Verifikasi Penerimaan Obat/Alkes/BHP", "btnVerifikasiPenerimaanFarmasi", new java.awt.Dimension(200, 90), this::btnVerifikasiPenerimaanFarmasiActionPerformed);
+        btnVerifikasiPenerimaanFarmasi = createMenuButton("/48x48/iconfinder_ToDoList-planing-list-planlist-todo_6071846.png", "Verifikasi Penerimaan Obat/Alkes/BHP", "btnVerifikasiPenerimaanFarmasi", this::btnVerifikasiPenerimaanFarmasiActionPerformed);
 
-        btnVerifikasiPenerimaanLogistik = createMenuButton("/48x48/iconfinder_File_Files_Folder_Document_Doc_Confirm-39_3909343.png", "Verifikasi Penerimaan Non Medis", "btnVerifikasiPenerimaanLogistik", new java.awt.Dimension(200, 90), this::btnVerifikasiPenerimaanLogistikActionPerformed);
+        btnVerifikasiPenerimaanLogistik = createMenuButton("/48x48/iconfinder_File_Files_Folder_Document_Doc_Confirm-39_3909343.png", "Verifikasi Penerimaan Non Medis", "btnVerifikasiPenerimaanLogistik", this::btnVerifikasiPenerimaanLogistikActionPerformed);
 
-        btnPermintaanLabPA = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab PA", "btnPermintaanLabPA", new java.awt.Dimension(200, 90), this::btnPermintaanLabPAActionPerformed);
+        btnPermintaanLabPA = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab PA", "btnPermintaanLabPA", this::btnPermintaanLabPAActionPerformed);
 
-        btnPermintaanLabMB = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab MB", "btnPermintaanLabMB", new java.awt.Dimension(200, 90), this::btnPermintaanLabMBActionPerformed);
+        btnPermintaanLabMB = createMenuButton("/48x48/if_laboratory_44676.png", "Permintaan Lab MB", "btnPermintaanLabMB", this::btnPermintaanLabMBActionPerformed);
 
-        btnLamaPelayananLabPA = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab PA", "btnLamaPelayananLabPA", new java.awt.Dimension(200, 90), this::btnLamaPelayananLabPAActionPerformed);
+        btnLamaPelayananLabPA = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab PA", "btnLamaPelayananLabPA", this::btnLamaPelayananLabPAActionPerformed);
 
-        btnLamaPelayananLabMB = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab MB", "btnLamaPelayananLabMB", new java.awt.Dimension(200, 90), this::btnLamaPelayananLabMBActionPerformed);
+        btnLamaPelayananLabMB = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Lab MB", "btnLamaPelayananLabMB", this::btnLamaPelayananLabMBActionPerformed);
 
-        btnRingkasanPengajuanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Obat & BHP", "btnRingkasanPengajuanMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPengajuanMedisActionPerformed);
+        btnRingkasanPengajuanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Obat & BHP", "btnRingkasanPengajuanMedis", this::btnRingkasanPengajuanMedisActionPerformed);
 
-        btnRingkasanPemesananMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Obat & BHP", "btnRingkasanPemesananMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPemesananMedisActionPerformed);
+        btnRingkasanPemesananMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Obat & BHP", "btnRingkasanPemesananMedis", this::btnRingkasanPemesananMedisActionPerformed);
 
-        btnRingkasanPembelianMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Obat & BHP", "btnRingkasanPembelianMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPembelianMedisActionPerformed);
+        btnRingkasanPembelianMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Obat & BHP", "btnRingkasanPembelianMedis", this::btnRingkasanPembelianMedisActionPerformed);
 
-        btnRingkasanPenerimaanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Obat & BHP", "btnRingkasanPenerimaanMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPenerimaanMedisActionPerformed);
+        btnRingkasanPenerimaanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Obat & BHP", "btnRingkasanPenerimaanMedis", this::btnRingkasanPenerimaanMedisActionPerformed);
 
-        btnRingkasanHibahMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Hibah Obat & BHP", "btnRingkasanHibahMedis", new java.awt.Dimension(200, 90), this::btnRingkasanHibahMedisActionPerformed);
+        btnRingkasanHibahMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Hibah Obat & BHP", "btnRingkasanHibahMedis", this::btnRingkasanHibahMedisActionPerformed);
 
-        btnRingkasanPenjualanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penjualan Obat & BHP", "btnRingkasanPenjualanMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPenjualanMedisActionPerformed);
+        btnRingkasanPenjualanMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penjualan Obat & BHP", "btnRingkasanPenjualanMedis", this::btnRingkasanPenjualanMedisActionPerformed);
 
-        btnRingkasanBeriObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Beri Obat & BHP", "btnRingkasanBeriObat", new java.awt.Dimension(200, 90), this::btnRingkasanBeriObatActionPerformed);
+        btnRingkasanBeriObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Beri Obat & BHP", "btnRingkasanBeriObat", this::btnRingkasanBeriObatActionPerformed);
 
-        btnRingkasanPiutangObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Piutang Obat & BHP", "btnRingkasanPiutangObat", new java.awt.Dimension(200, 90), this::btnRingkasanPiutangObatActionPerformed);
+        btnRingkasanPiutangObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Piutang Obat & BHP", "btnRingkasanPiutangObat", this::btnRingkasanPiutangObatActionPerformed);
 
-        btnRingkasanStokKeluarObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Obat & BHP", "btnRingkasanStokKeluarObat", new java.awt.Dimension(200, 90), this::btnRingkasanStokKeluarObatActionPerformed);
+        btnRingkasanStokKeluarObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Obat & BHP", "btnRingkasanStokKeluarObat", this::btnRingkasanStokKeluarObatActionPerformed);
 
-        btnRingkasanReturSuplierObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Obat & BHP", "btnRingkasanReturSuplierObat", new java.awt.Dimension(200, 90), this::btnRingkasanReturSuplierObatActionPerformed);
+        btnRingkasanReturSuplierObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Obat & BHP", "btnRingkasanReturSuplierObat", this::btnRingkasanReturSuplierObatActionPerformed);
 
-        btnRingkasanReturJualObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Pembeli Obat & BHP", "btnRingkasanReturJualObat", new java.awt.Dimension(200, 90), this::btnRingkasanReturJualObatActionPerformed);
+        btnRingkasanReturJualObat = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Pembeli Obat & BHP", "btnRingkasanReturJualObat", this::btnRingkasanReturJualObatActionPerformed);
 
-        btnRingkasanPengajuanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Non Medis", "btnRingkasanPengajuanNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPengajuanNonMedisActionPerformed);
+        btnRingkasanPengajuanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Non Medis", "btnRingkasanPengajuanNonMedis", this::btnRingkasanPengajuanNonMedisActionPerformed);
 
-        btnRingkasanPemesananNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Non Medis", "btnRingkasanPemesananNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPemesananNonMedisActionPerformed);
+        btnRingkasanPemesananNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Non Medis", "btnRingkasanPemesananNonMedis", this::btnRingkasanPemesananNonMedisActionPerformed);
 
-        btnPenilaianAwalKeperawatanKebidananRanap = createMenuButton("/48x48/iconfinder_209-pregnant-woman-2_3099532.png", "Awal Keperawatan Ranap Kebidanan", "btnPenilaianAwalKeperawatanKebidananRanap", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanKebidananRanapActionPerformed);
+        btnPenilaianAwalKeperawatanKebidananRanap = createMenuButton("/48x48/iconfinder_209-pregnant-woman-2_3099532.png", "Awal Keperawatan Ranap Kebidanan", "btnPenilaianAwalKeperawatanKebidananRanap", this::btnPenilaianAwalKeperawatanKebidananRanapActionPerformed);
 
-        btnRingkasanPengadaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Non Medis", "btnRingkasanPengadaanNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPengadaanNonMedisActionPerformed);
+        btnRingkasanPengadaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Non Medis", "btnRingkasanPengadaanNonMedis", this::btnRingkasanPengadaanNonMedisActionPerformed);
 
-        btnRingkasanPenerimaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Non Medis", "btnRingkasanPenerimaanNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanPenerimaanNonMedisActionPerformed);
+        btnRingkasanPenerimaanNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Non Medis", "btnRingkasanPenerimaanNonMedis", this::btnRingkasanPenerimaanNonMedisActionPerformed);
 
-        btnRingkasanStokKeluarNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Non Medis", "btnRingkasanStokKeluarNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanStokKeluarNonMedisActionPerformed);
+        btnRingkasanStokKeluarNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Non Medis", "btnRingkasanStokKeluarNonMedis", this::btnRingkasanStokKeluarNonMedisActionPerformed);
 
-        btnRingkasanReturSuplierNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Non Medis", "btnRingkasanReturSuplierNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanReturSuplierNonMedisActionPerformed);
+        btnRingkasanReturSuplierNonMedis = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Non Medis", "btnRingkasanReturSuplierNonMedis", this::btnRingkasanReturSuplierNonMedisActionPerformed);
 
-        btnOmsetPenerimaan = createMenuButton("/48x48/iconfinder_Finance_saving_1889200.png", "Penerimaan/Omset/Kas Masuk", "btnOmsetPenerimaan", new java.awt.Dimension(200, 90), this::btnOmsetPenerimaanActionPerformed);
+        btnOmsetPenerimaan = createMenuButton("/48x48/iconfinder_Finance_saving_1889200.png", "Penerimaan/Omset/Kas Masuk", "btnOmsetPenerimaan", this::btnOmsetPenerimaanActionPerformed);
 
-        btnValidasiPenagihanPiutang = createMenuButton("/48x48/iconfinder_50_3319638.png", "Validasi Penagihan Piutang", "btnValidasiPenagihanPiutang", new java.awt.Dimension(200, 90), this::btnValidasiPenagihanPiutangActionPerformed);
+        btnValidasiPenagihanPiutang = createMenuButton("/48x48/iconfinder_50_3319638.png", "Validasi Penagihan Piutang", "btnValidasiPenagihanPiutang", this::btnValidasiPenagihanPiutangActionPerformed);
 
-        btnPermintaanRanap = createMenuButton("/48x48/iconfinder_Register_6083883.png", "Permintaan Rawat Inap", "btnPermintaanRanap", new java.awt.Dimension(200, 90), this::btnPermintaanRanapActionPerformed);
+        btnPermintaanRanap = createMenuButton("/48x48/iconfinder_Register_6083883.png", "Permintaan Rawat Inap", "btnPermintaanRanap", this::btnPermintaanRanapActionPerformed);
 
-        btnBPJSReferensiDiagnosaPRB = createMenuButton("/48x48/vclaim.png", "Referensi Diagnosa PRB VClaim", "btnBPJSReferensiDiagnosaPRB", new java.awt.Dimension(200, 90), this::btnBPJSReferensiDiagnosaPRBActionPerformed);
+        btnBPJSReferensiDiagnosaPRB = createMenuButton("/48x48/vclaim.png", "Referensi Diagnosa PRB VClaim", "btnBPJSReferensiDiagnosaPRB", this::btnBPJSReferensiDiagnosaPRBActionPerformed);
 
-        btnBPJSReferensiObatPRB = createMenuButton("/48x48/vclaim.png", "Referensi Obat PRB VClaim", "btnBPJSReferensiObatPRB", new java.awt.Dimension(200, 90), this::btnBPJSReferensiObatPRBActionPerformed);
+        btnBPJSReferensiObatPRB = createMenuButton("/48x48/vclaim.png", "Referensi Obat PRB VClaim", "btnBPJSReferensiObatPRB", this::btnBPJSReferensiObatPRBActionPerformed);
 
-        btnBPJSSuratKontrol = createMenuButton("/48x48/vclaim.png", "Surat Kontrol VClaim", "btnBPJSSuratKontrol", new java.awt.Dimension(200, 90), this::btnBPJSSuratKontrolActionPerformed);
+        btnBPJSSuratKontrol = createMenuButton("/48x48/vclaim.png", "Surat Kontrol VClaim", "btnBPJSSuratKontrol", this::btnBPJSSuratKontrolActionPerformed);
 
-        btnPenggunaanBHPOK = createMenuButton("/48x48/iconfinder_ecommerce-14_4707170.png", "Penggunaan BHP OK/VK", "btnPenggunaanBHPOK", new java.awt.Dimension(200, 90), this::btnPenggunaanBHPOKActionPerformed);
+        btnPenggunaanBHPOK = createMenuButton("/48x48/iconfinder_ecommerce-14_4707170.png", "Penggunaan BHP OK/VK", "btnPenggunaanBHPOK", this::btnPenggunaanBHPOKActionPerformed);
 
-        btnSuratKeteranganRawatInap = createMenuButton("/48x48/iconfinder_File_Files_Folder_Document_Check_Confirm_3909334.png", "Surat Keterangan Rawat Inap", "btnSuratKeteranganRawatInap", new java.awt.Dimension(200, 90), this::btnSuratKeteranganRawatInapActionPerformed);
+        btnSuratKeteranganRawatInap = createMenuButton("/48x48/iconfinder_File_Files_Folder_Document_Check_Confirm_3909334.png", "Surat Keterangan Rawat Inap", "btnSuratKeteranganRawatInap", this::btnSuratKeteranganRawatInapActionPerformed);
 
-        btnSuratKeteranganSehat = createMenuButton("/48x48/if_Documents_Black_63760.png", "Surat Keterangan Sehat", "btnSuratKeteranganSehat", new java.awt.Dimension(200, 90), this::btnSuratKeteranganSehatActionPerformed);
+        btnSuratKeteranganSehat = createMenuButton("/48x48/if_Documents_Black_63760.png", "Surat Keterangan Sehat", "btnSuratKeteranganSehat", this::btnSuratKeteranganSehatActionPerformed);
 
-        btnPendapatanPerCaraBayar = createMenuButton("/48x48/iconfinder_eccomerce_-_money_3440907.png", "Pendapatan Per Cara Bayar", "btnPendapatanPerCaraBayar", new java.awt.Dimension(200, 90), this::btnPendapatanPerCaraBayarActionPerformed);
+        btnPendapatanPerCaraBayar = createMenuButton("/48x48/iconfinder_eccomerce_-_money_3440907.png", "Pendapatan Per Cara Bayar", "btnPendapatanPerCaraBayar", this::btnPendapatanPerCaraBayarActionPerformed);
 
-        btnAkunRekeningHtHBankJateng = createMenuButton("/48x48/bankjateng.png", "Host To Host Bank Jateng", "btnAkunRekeningHtHBankJateng", new java.awt.Dimension(200, 90), this::btnAkunRekeningHtHBankJatengActionPerformed);
+        btnAkunRekeningHtHBankJateng = createMenuButton("/48x48/bankjateng.png", "Host To Host Bank Jateng", "btnAkunRekeningHtHBankJateng", this::btnAkunRekeningHtHBankJatengActionPerformed);
 
-        btnPembayaranBankJateng = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Jateng", "btnPembayaranBankJateng", new java.awt.Dimension(200, 90), this::btnPembayaranBankJatengActionPerformed);
+        btnPembayaranBankJateng = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Jateng", "btnPembayaranBankJateng", this::btnPembayaranBankJatengActionPerformed);
 
-        btnBPJSSuratPRI = createMenuButton("/48x48/vclaim.png", "Surat PRI VClaim", "btnBPJSSuratPRI", new java.awt.Dimension(200, 90), this::btnBPJSSuratPRIActionPerformed);
+        btnBPJSSuratPRI = createMenuButton("/48x48/vclaim.png", "Surat PRI VClaim", "btnBPJSSuratPRI", this::btnBPJSSuratPRIActionPerformed);
 
-        btnRingkasanTindakanRalan = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Tindakan", "btnRingkasanTindakanRalan", new java.awt.Dimension(200, 90), this::btnRingkasanTindakanRalanActionPerformed);
+        btnRingkasanTindakanRalan = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Tindakan", "btnRingkasanTindakanRalan", this::btnRingkasanTindakanRalanActionPerformed);
 
-        btnLamaPelayananPasien = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Pasien", "btnLamaPelayananPasien", new java.awt.Dimension(200, 90), this::btnLamaPelayananPasienActionPerformed);
+        btnLamaPelayananPasien = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Pelayanan Pasien", "btnLamaPelayananPasien", this::btnLamaPelayananPasienActionPerformed);
 
-        btnSuratSakitPihak2 = createMenuButton("/48x48/iconfinder_order-history_49596.png", "Surat Keterangan Sakit Pihak 2", "btnSuratSakitPihak2", new java.awt.Dimension(200, 90), this::btnSuratSakitPihak2ActionPerformed);
+        btnSuratSakitPihak2 = createMenuButton("/48x48/iconfinder_order-history_49596.png", "Surat Keterangan Sakit Pihak 2", "btnSuratSakitPihak2", this::btnSuratSakitPihak2ActionPerformed);
 
-        btnReferensiPendaftaranMobileJKN = createMenuButton("/48x48/iconfinder_Hospital_5947112.png", "Referensi Pendaftaran Mobile JKN", "btnReferensiPendaftaranMobileJKN", new java.awt.Dimension(200, 90), this::btnReferensiPendaftaranMobileJKNActionPerformed);
+        btnReferensiPendaftaranMobileJKN = createMenuButton("/48x48/iconfinder_Hospital_5947112.png", "Referensi Pendaftaran Mobile JKN", "btnReferensiPendaftaranMobileJKN", this::btnReferensiPendaftaranMobileJKNActionPerformed);
 
-        btnBatalPendaftaranMobileJKN = createMenuButton("/48x48/iconfinder_Analysis-Case-Document-Virus-History_5958953.png", "Batal Pendaftaran Mobile JKN", "btnBatalPendaftaranMobileJKN", new java.awt.Dimension(200, 90), this::btnBatalPendaftaranMobileJKNActionPerformed);
+        btnBatalPendaftaranMobileJKN = createMenuButton("/48x48/iconfinder_Analysis-Case-Document-Virus-History_5958953.png", "Batal Pendaftaran Mobile JKN", "btnBatalPendaftaranMobileJKN", this::btnBatalPendaftaranMobileJKNActionPerformed);
 
-        btnTagihanHutangObat = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Obat & BHP", "btnTagihanHutangObat", new java.awt.Dimension(200, 90), this::btnTagihanHutangObatActionPerformed);
+        btnTagihanHutangObat = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Obat & BHP", "btnTagihanHutangObat", this::btnTagihanHutangObatActionPerformed);
 
-        btnLamaOperasi = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Operasi", "btnLamaOperasi", new java.awt.Dimension(200, 90), this::btnLamaOperasiActionPerformed);
+        btnLamaOperasi = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "Lama Operasi", "btnLamaOperasi", this::btnLamaOperasiActionPerformed);
 
-        btnGrafikInventarisKategori = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Kategori", "btnGrafikInventarisKategori", new java.awt.Dimension(200, 90), this::btnGrafikInventarisKategoriActionPerformed);
+        btnGrafikInventarisKategori = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Kategori", "btnGrafikInventarisKategori", this::btnGrafikInventarisKategoriActionPerformed);
 
-        btnGrafikInventarisMerk = createMenuButton("/48x48/1491582080_6.png", "Jumlah Inventaris Per Merk", "btnGrafikInventarisMerk", new java.awt.Dimension(200, 90), this::btnGrafikInventarisMerkActionPerformed);
+        btnGrafikInventarisMerk = createMenuButton("/48x48/1491582080_6.png", "Jumlah Inventaris Per Merk", "btnGrafikInventarisMerk", this::btnGrafikInventarisMerkActionPerformed);
 
-        btnGrafikInventarisProdusen = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Produsen", "btnGrafikInventarisProdusen", new java.awt.Dimension(200, 90), this::btnGrafikInventarisProdusenActionPerformed);
+        btnGrafikInventarisProdusen = createMenuButton("/48x48/1491582015_11.png", "Jumlah Inventaris Per Produsen", "btnGrafikInventarisProdusen", this::btnGrafikInventarisProdusenActionPerformed);
 
-        btnPengembalianDepositPasien = createMenuButton("/48x48/iconfinder_11006_coin_money_purse_icon_48px.png", "Pengembalian Deposit Pasien", "btnPengembalianDepositPasien", new java.awt.Dimension(200, 90), this::btnPengembalianDepositPasienActionPerformed);
+        btnPengembalianDepositPasien = createMenuButton("/48x48/iconfinder_11006_coin_money_purse_icon_48px.png", "Pengembalian Deposit Pasien", "btnPengembalianDepositPasien", this::btnPengembalianDepositPasienActionPerformed);
 
-        btnValidasiTagihanObatBHP = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Obat & BHP", "btnValidasiTagihanObatBHP", new java.awt.Dimension(200, 90), this::btnValidasiTagihanObatBHPActionPerformed);
+        btnValidasiTagihanObatBHP = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Obat & BHP", "btnValidasiTagihanObatBHP", this::btnValidasiTagihanObatBHPActionPerformed);
 
-        btnPiutangObatBelumLunas = createMenuButton("/48x48/17219_cash_cashbox_machine_payment_register_icon.png", "Piutang Obat & BHP Belum Lunas", "btnPiutangObatBelumLunas", new java.awt.Dimension(200, 90), this::btnPiutangObatBelumLunasActionPerformed);
+        btnPiutangObatBelumLunas = createMenuButton("/48x48/17219_cash_cashbox_machine_payment_register_icon.png", "Piutang Obat & BHP Belum Lunas", "btnPiutangObatBelumLunas", this::btnPiutangObatBelumLunasActionPerformed);
 
-        btnIntegrasiBRIApi = createMenuButton("/48x48/briapi.png", "Integrasi BRI API", "btnIntegrasiBRIApi", new java.awt.Dimension(200, 90), this::btnIntegrasiBRIApiActionPerformed);
+        btnIntegrasiBRIApi = createMenuButton("/48x48/briapi.png", "Integrasi BRI API", "btnIntegrasiBRIApi", this::btnIntegrasiBRIApiActionPerformed);
 
-        btnAkunAsetInventaris = createMenuButton("/48x48/iconfinder_50842_money_safe_vault_keep_icon_48px.png", "Akun Jenis Aset/Inventaris", "btnAkunAsetInventaris", new java.awt.Dimension(200, 90), this::btnAkunAsetInventarisActionPerformed);
+        btnAkunAsetInventaris = createMenuButton("/48x48/iconfinder_50842_money_safe_vault_keep_icon_48px.png", "Akun Jenis Aset/Inventaris", "btnAkunAsetInventaris", this::btnAkunAsetInventarisActionPerformed);
 
-        btnPengadaanAset = createMenuButton("/48x48/10999_bag_cash_coin_money_icon.png", "Pengadaan Aset/Inventaris", "btnPengadaanAset", new java.awt.Dimension(200, 90), this::btnPengadaanAsetActionPerformed);
+        btnPengadaanAset = createMenuButton("/48x48/10999_bag_cash_coin_money_icon.png", "Pengadaan Aset/Inventaris", "btnPengadaanAset", this::btnPengadaanAsetActionPerformed);
 
-        btnSuplierInventaris = createMenuButton("/48x48/1988878_front_lorry_truck_vehicle_icon.png", "Suplier Aset/Inventaris", "btnSuplierInventaris", new java.awt.Dimension(200, 90), this::btnSuplierInventarisActionPerformed);
+        btnSuplierInventaris = createMenuButton("/48x48/1988878_front_lorry_truck_vehicle_icon.png", "Suplier Aset/Inventaris", "btnSuplierInventaris", this::btnSuplierInventarisActionPerformed);
 
-        btnPenerimaanAset = createMenuButton("/48x48/49599_add_package_icon.png", "Penerimaan Aset/Inventaris", "btnPenerimaanAset", new java.awt.Dimension(200, 90), this::btnPenerimaanAsetActionPerformed);
+        btnPenerimaanAset = createMenuButton("/48x48/49599_add_package_icon.png", "Penerimaan Aset/Inventaris", "btnPenerimaanAset", this::btnPenerimaanAsetActionPerformed);
 
-        btnBayarPemesananInventaris = createMenuButton("/48x48/iconfinder_10998_cash_money_icon_48px.png", "Bayar Pesan Aset/Inventaris", "btnBayarPemesananInventaris", new java.awt.Dimension(200, 90), this::btnBayarPemesananInventarisActionPerformed);
+        btnBayarPemesananInventaris = createMenuButton("/48x48/iconfinder_10998_cash_money_icon_48px.png", "Bayar Pesan Aset/Inventaris", "btnBayarPemesananInventaris", this::btnBayarPemesananInventarisActionPerformed);
 
-        btnHutangAsetInventaris = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Hutang Aset/Inventaris", "btnHutangAsetInventaris", new java.awt.Dimension(200, 90), this::btnHutangAsetInventarisActionPerformed);
+        btnHutangAsetInventaris = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Hutang Aset/Inventaris", "btnHutangAsetInventaris", this::btnHutangAsetInventarisActionPerformed);
 
-        btnHibahAsetInventaris = createMenuButton("/48x48/if_Workstation_by_Artdesigner_60887.png", "Hibah Aset/Inventaris", "btnHibahAsetInventaris", new java.awt.Dimension(200, 90), this::btnHibahAsetInventarisActionPerformed);
+        btnHibahAsetInventaris = createMenuButton("/48x48/if_Workstation_by_Artdesigner_60887.png", "Hibah Aset/Inventaris", "btnHibahAsetInventaris", this::btnHibahAsetInventarisActionPerformed);
 
-        btnTagihanHutangNonMedis = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Non Medis", "btnTagihanHutangNonMedis", new java.awt.Dimension(200, 90), this::btnTagihanHutangNonMedisActionPerformed);
+        btnTagihanHutangNonMedis = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Non Medis", "btnTagihanHutangNonMedis", this::btnTagihanHutangNonMedisActionPerformed);
 
-        btnValidasiTagihanNonMedis = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Non Medis", "btnValidasiTagihanNonMedis", new java.awt.Dimension(200, 90), this::btnValidasiTagihanNonMedisActionPerformed);
+        btnValidasiTagihanNonMedis = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Non Medis", "btnValidasiTagihanNonMedis", this::btnValidasiTagihanNonMedisActionPerformed);
 
-        btnTagihanHutangAset = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Aset/Inventaris", "btnTagihanHutangAset", new java.awt.Dimension(200, 90), this::btnTagihanHutangAsetActionPerformed);
+        btnTagihanHutangAset = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Aset/Inventaris", "btnTagihanHutangAset", this::btnTagihanHutangAsetActionPerformed);
 
-        btnValidasiTagihanAset = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Aset/Inventaris", "btnValidasiTagihanAset", new java.awt.Dimension(200, 90), this::btnValidasiTagihanAsetActionPerformed);
+        btnValidasiTagihanAset = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Aset/Inventaris", "btnValidasiTagihanAset", this::btnValidasiTagihanAsetActionPerformed);
 
-        btnHibahNonMedis = createMenuButton("/48x48/307356_box_brown_cardboard_package_icon.png", "Hibah Non Medis", "btnHibahNonMedis", new java.awt.Dimension(200, 90), this::btnHibahNonMedisActionPerformed);
+        btnHibahNonMedis = createMenuButton("/48x48/307356_box_brown_cardboard_package_icon.png", "Hibah Non Medis", "btnHibahNonMedis", this::btnHibahNonMedisActionPerformed);
 
-        btnCekPCareTACC = createMenuButton("/48x48/pcare.png", "Referensi TACC PCare", "btnCekPCareTACC", new java.awt.Dimension(200, 90), this::btnCekPCareTACCActionPerformed);
+        btnCekPCareTACC = createMenuButton("/48x48/pcare.png", "Referensi TACC PCare", "btnCekPCareTACC", this::btnCekPCareTACCActionPerformed);
 
-        btnResepLuar = createMenuButton("/48x48/5994864_capsule_drug_medicine_pill_tablet_icon.png", "Resep Luar", "btnResepLuar", new java.awt.Dimension(200, 90), this::btnResepLuarActionPerformed);
+        btnResepLuar = createMenuButton("/48x48/5994864_capsule_drug_medicine_pill_tablet_icon.png", "Resep Luar", "btnResepLuar", this::btnResepLuarActionPerformed);
 
-        btnSuratBebasTBC = createMenuButton("/48x48/6088716_clean_lungs_protect_icon.png", "Surat Bebas TBC", "btnSuratBebasTBC", new java.awt.Dimension(200, 90), this::btnSuratBebasTBCActionPerformed);
+        btnSuratBebasTBC = createMenuButton("/48x48/6088716_clean_lungs_protect_icon.png", "Surat Bebas TBC", "btnSuratBebasTBC", this::btnSuratBebasTBCActionPerformed);
 
-        btnSuratButaWarna = createMenuButton("/48x48/1994549_cmyk_color_color chart_colour_design_icon.png", "Surat Keterangan Buta Warna", "btnSuratButaWarna", new java.awt.Dimension(200, 90), this::btnSuratButaWarnaActionPerformed);
+        btnSuratButaWarna = createMenuButton("/48x48/1994549_cmyk_color_color chart_colour_design_icon.png", "Surat Keterangan Buta Warna", "btnSuratButaWarna", this::btnSuratButaWarnaActionPerformed);
 
-        btnSuratBebasTato = createMenuButton("/48x48/24675_art_brush_color_drawing_paint_icon.png", "Surat Bebas Tato", "btnSuratBebasTato", new java.awt.Dimension(200, 90), this::btnSuratBebasTatoActionPerformed);
+        btnSuratBebasTato = createMenuButton("/48x48/24675_art_brush_color_drawing_paint_icon.png", "Surat Bebas Tato", "btnSuratBebasTato", this::btnSuratBebasTatoActionPerformed);
 
-        btnSuratKewaspadaanKesehatan = createMenuButton("/48x48/5929237_avatar_fever_man_sick_coronavirus_icon.png", "Surat Kewaspadaan Kesehatan", "btnSuratKewaspadaanKesehatan", new java.awt.Dimension(200, 90), this::btnSuratKewaspadaanKesehatanActionPerformed);
+        btnSuratKewaspadaanKesehatan = createMenuButton("/48x48/5929237_avatar_fever_man_sick_coronavirus_icon.png", "Surat Kewaspadaan Kesehatan", "btnSuratKewaspadaanKesehatan", this::btnSuratKewaspadaanKesehatanActionPerformed);
 
-        btnGrafikPorsiDietPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Porsi Diet Per Tanggal", "btnGrafikPorsiDietPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikPorsiDietPerTanggalActionPerformed);
+        btnGrafikPorsiDietPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Porsi Diet Per Tanggal", "btnGrafikPorsiDietPerTanggal", this::btnGrafikPorsiDietPerTanggalActionPerformed);
 
-        btnGrafikPorsiDietPerBulan = createMenuButton("/48x48/1491582015_11.png", "Porsi Diet Per Bulan", "btnGrafikPorsiDietPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikPorsiDietPerBulanActionPerformed);
+        btnGrafikPorsiDietPerBulan = createMenuButton("/48x48/1491582015_11.png", "Porsi Diet Per Bulan", "btnGrafikPorsiDietPerBulan", this::btnGrafikPorsiDietPerBulanActionPerformed);
 
-        btnGrafikPorsiDietPerTahun = createMenuButton("/48x48/1491582080_6.png", "Porsi Diet Per Tahun", "btnGrafikPorsiDietPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikPorsiDietPerTahunActionPerformed);
+        btnGrafikPorsiDietPerTahun = createMenuButton("/48x48/1491582080_6.png", "Porsi Diet Per Tahun", "btnGrafikPorsiDietPerTahun", this::btnGrafikPorsiDietPerTahunActionPerformed);
 
-        btnGrafikPorsiDietPerRuang = createMenuButton("/48x48/1491582015_11.png", "Porsi Diet Per Ruang", "btnGrafikPorsiDietPerRuang", new java.awt.Dimension(200, 90), this::btnGrafikPorsiDietPerRuangActionPerformed);
+        btnGrafikPorsiDietPerRuang = createMenuButton("/48x48/1491582015_11.png", "Porsi Diet Per Ruang", "btnGrafikPorsiDietPerRuang", this::btnGrafikPorsiDietPerRuangActionPerformed);
 
-        btnMasterMasalahKeperawatanMata = createMenuButton("/48x48/85364_eye_icon.png", "Master Masalah Keperawatan Mata", "btnMasterMasalahKeperawatanMata", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanMataActionPerformed);
+        btnMasterMasalahKeperawatanMata = createMenuButton("/48x48/85364_eye_icon.png", "Master Masalah Keperawatan Mata", "btnMasterMasalahKeperawatanMata", this::btnMasterMasalahKeperawatanMataActionPerformed);
 
-        btnPenilaianAwalMedisRalan = createMenuButton("/48x48/5898992_bed_fever_ill_sick_temperature_icon.png", "Awal Medis Ralan Umum", "btnPenilaianAwalMedisRalan", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanActionPerformed);
+        btnPenilaianAwalMedisRalan = createMenuButton("/48x48/5898992_bed_fever_ill_sick_temperature_icon.png", "Awal Medis Ralan Umum", "btnPenilaianAwalMedisRalan", this::btnPenilaianAwalMedisRalanActionPerformed);
 
-        btnPenilaianAwalMedisRanap = createMenuButton("/48x48/5898992_bed_fever_ill_sick_temperature_icon.png", "Awal Medis Ranap Umum", "btnPenilaianAwalMedisRanap", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRanapActionPerformed);
+        btnPenilaianAwalMedisRanap = createMenuButton("/48x48/5898992_bed_fever_ill_sick_temperature_icon.png", "Awal Medis Ranap Umum", "btnPenilaianAwalMedisRanap", this::btnPenilaianAwalMedisRanapActionPerformed);
 
-        btnPenilaianAwalMedisRanapNeonatus = createMenuButton("/48x48/4043239_baby_child_kid_toddler_icon.png", "Awal Medis Ranap Neonatus", "btnPenilaianAwalMedisRanapNeonatus", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRanapNeonatusActionPerformed);
+        btnPenilaianAwalMedisRanapNeonatus = createMenuButton("/48x48/4043239_baby_child_kid_toddler_icon.png", "Awal Medis Ranap Neonatus", "btnPenilaianAwalMedisRanapNeonatus", this::btnPenilaianAwalMedisRanapNeonatusActionPerformed);
 
-        btnPenilaianBayiBaruLahir = createMenuButton("/48x48/7717231_baby_kid_pushchair_buggy_pram_icon.png", "Pengkajian Bayi Baru Lahir", "btnPenilaianBayiBaruLahir", new java.awt.Dimension(200, 90), this::btnPenilaianBayiBaruLahirActionPerformed);
+        btnPenilaianBayiBaruLahir = createMenuButton("/48x48/7717231_baby_kid_pushchair_buggy_pram_icon.png", "Pengkajian Bayi Baru Lahir", "btnPenilaianBayiBaruLahir", this::btnPenilaianBayiBaruLahirActionPerformed);
 
-        btnPenilaianAwalMedisRanapKandungan = createMenuButton("/48x48/7717224_pregnant_woman_pregnancy_baby_gestation_icon.png", "Awal Medis Ranap Kandungan", "btnPenilaianAwalMedisRanapKandungan", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRanapKandunganActionPerformed);
+        btnPenilaianAwalMedisRanapKandungan = createMenuButton("/48x48/7717224_pregnant_woman_pregnancy_baby_gestation_icon.png", "Awal Medis Ranap Kandungan", "btnPenilaianAwalMedisRanapKandungan", this::btnPenilaianAwalMedisRanapKandunganActionPerformed);
 
-        btnPenilaianAwalMedisRalanKandungan = createMenuButton("/48x48/7717224_pregnant_woman_pregnancy_baby_gestation_icon.png", "Awal Medis Ralan Kandungan", "btnPenilaianAwalMedisRalanKandungan", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanKandunganActionPerformed);
+        btnPenilaianAwalMedisRalanKandungan = createMenuButton("/48x48/7717224_pregnant_woman_pregnancy_baby_gestation_icon.png", "Awal Medis Ralan Kandungan", "btnPenilaianAwalMedisRalanKandungan", this::btnPenilaianAwalMedisRalanKandunganActionPerformed);
 
-        btnPenilaianAwalMedisIGD = createMenuButton("/48x48/5929223_avatar_fever_man_measure_sick_icon.png", "Awal Medis IGD", "btnPenilaianAwalMedisIGD", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisIGDActionPerformed);
+        btnPenilaianAwalMedisIGD = createMenuButton("/48x48/5929223_avatar_fever_man_measure_sick_icon.png", "Awal Medis IGD", "btnPenilaianAwalMedisIGD", this::btnPenilaianAwalMedisIGDActionPerformed);
 
-        btnPenilaianAwalMedisRalanBayi = createMenuButton("/48x48/7717226_baby_kid_people_maternity_human_icon.png", "Awal Medis Ralan Bayi/Anak", "btnPenilaianAwalMedisRalanBayi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanBayiActionPerformed);
+        btnPenilaianAwalMedisRalanBayi = createMenuButton("/48x48/7717226_baby_kid_people_maternity_human_icon.png", "Awal Medis Ralan Bayi/Anak", "btnPenilaianAwalMedisRalanBayi", this::btnPenilaianAwalMedisRalanBayiActionPerformed);
 
-        btnBPJSReferensiPoliHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Poli HFIS", "btnBPJSReferensiPoliHFIS", new java.awt.Dimension(200, 90), this::btnBPJSReferensiPoliHFISActionPerformed);
+        btnBPJSReferensiPoliHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Poli HFIS", "btnBPJSReferensiPoliHFIS", this::btnBPJSReferensiPoliHFISActionPerformed);
 
-        btnBPJSReferensiDokterHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter HFIS", "btnBPJSReferensiDokterHFIS", new java.awt.Dimension(200, 90), this::btnBPJSReferensiDokterHFISActionPerformed);
+        btnBPJSReferensiDokterHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Dokter HFIS", "btnBPJSReferensiDokterHFIS", this::btnBPJSReferensiDokterHFISActionPerformed);
 
-        btnBPJSReferensiJadwalHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Jadwal HFIS", "btnBPJSReferensiJadwalHFIS", new java.awt.Dimension(200, 90), this::btnBPJSReferensiJadwalHFISActionPerformed);
+        btnBPJSReferensiJadwalHFIS = createMenuButton("/48x48/vclaim.png", "Referensi Jadwal HFIS", "btnBPJSReferensiJadwalHFIS", this::btnBPJSReferensiJadwalHFISActionPerformed);
 
-        btnFisioterapi = createMenuButton("/48x48/6009609_corona_coronavirus_covid19_crowd_huddle_icon.png", "Awal Fisioterapi", "btnFisioterapi", new java.awt.Dimension(200, 90), this::btnFisioterapiActionPerformed);
+        btnFisioterapi = createMenuButton("/48x48/6009609_corona_coronavirus_covid19_crowd_huddle_icon.png", "Awal Fisioterapi", "btnFisioterapi", this::btnFisioterapiActionPerformed);
 
-        btnBPJSProgramPRB = createMenuButton("/48x48/vclaim.png", "Program PRB di VClaim", "btnBPJSProgramPRB", new java.awt.Dimension(200, 90), this::btnBPJSProgramPRBActionPerformed);
+        btnBPJSProgramPRB = createMenuButton("/48x48/vclaim.png", "Program PRB di VClaim", "btnBPJSProgramPRB", this::btnBPJSProgramPRBActionPerformed);
 
-        btnBPJSSuplesiJasaRaharja = createMenuButton("/48x48/vclaim.png", "Suplesi Jasa Raharja di VClaim", "btnBPJSSuplesiJasaRaharja", new java.awt.Dimension(200, 90), this::btnBPJSSuplesiJasaRaharjaActionPerformed);
+        btnBPJSSuplesiJasaRaharja = createMenuButton("/48x48/vclaim.png", "Suplesi Jasa Raharja di VClaim", "btnBPJSSuplesiJasaRaharja", this::btnBPJSSuplesiJasaRaharjaActionPerformed);
 
-        btnBPJSDataIndukKecelakaan = createMenuButton("/48x48/vclaim.png", "Data Induk Kecelakaan VClaim", "btnBPJSDataIndukKecelakaan", new java.awt.Dimension(200, 90), this::btnBPJSDataIndukKecelakaanActionPerformed);
+        btnBPJSDataIndukKecelakaan = createMenuButton("/48x48/vclaim.png", "Data Induk Kecelakaan VClaim", "btnBPJSDataIndukKecelakaan", this::btnBPJSDataIndukKecelakaanActionPerformed);
 
-        btnBPJSDataSEPInternal = createMenuButton("/48x48/vclaim.png", "Data SEP Internal VClaim", "btnBPJSDataSEPInternal", new java.awt.Dimension(200, 90), this::btnBPJSDataSEPInternalActionPerformed);
+        btnBPJSDataSEPInternal = createMenuButton("/48x48/vclaim.png", "Data SEP Internal VClaim", "btnBPJSDataSEPInternal", this::btnBPJSDataSEPInternalActionPerformed);
 
-        btnBPJSKlaimJasaRaharja = createMenuButton("/48x48/vclaim.png", "Klaim Jaminan Jasa Raharja VClaim", "btnBPJSKlaimJasaRaharja", new java.awt.Dimension(200, 90), this::btnBPJSKlaimJasaRaharjaActionPerformed);
+        btnBPJSKlaimJasaRaharja = createMenuButton("/48x48/vclaim.png", "Klaim Jaminan Jasa Raharja VClaim", "btnBPJSKlaimJasaRaharja", this::btnBPJSKlaimJasaRaharjaActionPerformed);
 
-        btnBPJSPasienFinger = createMenuButton("/48x48/vclaim.png", "Pasien Finger Print VClaim", "btnBPJSPasienFinger", new java.awt.Dimension(200, 90), this::btnBPJSPasienFingerActionPerformed);
+        btnBPJSPasienFinger = createMenuButton("/48x48/vclaim.png", "Pasien Finger Print VClaim", "btnBPJSPasienFinger", this::btnBPJSPasienFingerActionPerformed);
 
-        btnBPJSRujukanKhusus = createMenuButton("/48x48/vclaim.png", "Rujukan Khusus VClaim", "btnBPJSRujukanKhusus", new java.awt.Dimension(200, 90), this::btnBPJSRujukanKhususActionPerformed);
+        btnBPJSRujukanKhusus = createMenuButton("/48x48/vclaim.png", "Rujukan Khusus VClaim", "btnBPJSRujukanKhusus", this::btnBPJSRujukanKhususActionPerformed);
 
-        btnPemeliharaanGedung = createMenuButton("/48x48/if_back_house_window-home_2222745.png", "Pemeliharaan Gedung", "btnPemeliharaanGedung", new java.awt.Dimension(200, 90), this::btnPemeliharaanGedungActionPerformed);
+        btnPemeliharaanGedung = createMenuButton("/48x48/if_back_house_window-home_2222745.png", "Pemeliharaan Gedung", "btnPemeliharaanGedung", this::btnPemeliharaanGedungActionPerformed);
 
-        btnGrafikPerbaikanInventarisPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Perbaikan Inventaris Per Tanggal", "btnGrafikPerbaikanInventarisPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikPerbaikanInventarisPerTanggalActionPerformed);
+        btnGrafikPerbaikanInventarisPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Perbaikan Inventaris Per Tanggal", "btnGrafikPerbaikanInventarisPerTanggal", this::btnGrafikPerbaikanInventarisPerTanggalActionPerformed);
 
-        btnGrafikPerbaikanInventarisPerBulan = createMenuButton("/48x48/1491582015_11.png", "Perbaikan Inventaris Per Bulan", "btnGrafikPerbaikanInventarisPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikPerbaikanInventarisPerBulanActionPerformed);
+        btnGrafikPerbaikanInventarisPerBulan = createMenuButton("/48x48/1491582015_11.png", "Perbaikan Inventaris Per Bulan", "btnGrafikPerbaikanInventarisPerBulan", this::btnGrafikPerbaikanInventarisPerBulanActionPerformed);
 
-        btnGrafikPerbaikanInventarisPerTahun = createMenuButton("/48x48/1491582080_6.png", "Perbaikan Inventaris Per Tahun", "btnGrafikPerbaikanInventarisPerTahun", new java.awt.Dimension(200, 90), this::btnGrafikPerbaikanInventarisPerTahunActionPerformed);
+        btnGrafikPerbaikanInventarisPerTahun = createMenuButton("/48x48/1491582080_6.png", "Perbaikan Inventaris Per Tahun", "btnGrafikPerbaikanInventarisPerTahun", this::btnGrafikPerbaikanInventarisPerTahunActionPerformed);
 
-        btnGrafikPerbaikanInventarisPerPelaksanaStatus = createMenuButton("/48x48/1491582015_11.png", "Perbaikan Inventaris Per Pelaksana & Status", "btnGrafikPerbaikanInventarisPerPelaksanaStatus", new java.awt.Dimension(200, 90), this::btnGrafikPerbaikanInventarisPerPelaksanaStatusActionPerformed);
+        btnGrafikPerbaikanInventarisPerPelaksanaStatus = createMenuButton("/48x48/1491582015_11.png", "Perbaikan Inventaris Per Pelaksana & Status", "btnGrafikPerbaikanInventarisPerPelaksanaStatus", this::btnGrafikPerbaikanInventarisPerPelaksanaStatusActionPerformed);
 
-        btnPenilaianMCU = createMenuButton("/48x48/4852556_doctor_files_medical_record_icon.png", "Pengkajian MCU", "btnPenilaianMCU", new java.awt.Dimension(200, 90), this::btnPenilaianMCUActionPerformed);
+        btnPenilaianMCU = createMenuButton("/48x48/4852556_doctor_files_medical_record_icon.png", "Pengkajian MCU", "btnPenilaianMCU", this::btnPenilaianMCUActionPerformed);
 
-        btnMasterKesimpulanAnjuranMCU = createMenuButton("/48x48/5854057_education_memo_notes_pad_reminder_icon.png", "Master Kesimpulan & Anjuran MCU", "btnMasterKesimpulanAnjuranMCU", new java.awt.Dimension(200, 90), this::btnMasterKesimpulanAnjuranMCUActionPerformed);
+        btnMasterKesimpulanAnjuranMCU = createMenuButton("/48x48/5854057_education_memo_notes_pad_reminder_icon.png", "Master Kesimpulan & Anjuran MCU", "btnMasterKesimpulanAnjuranMCU", this::btnMasterKesimpulanAnjuranMCUActionPerformed);
 
-        btnCaraBayar = createMenuButton("/48x48/4171274_day_heart_love_time_valentine_icon.png", "Asuransi/Askes/Jenis Bayar", "btnCaraBayar", new java.awt.Dimension(200, 90), this::btnCaraBayarActionPerformed);
+        btnCaraBayar = createMenuButton("/48x48/4171274_day_heart_love_time_valentine_icon.png", "Asuransi/Askes/Jenis Bayar", "btnCaraBayar", this::btnCaraBayarActionPerformed);
 
-        btnPeminjamPiutang = createMenuButton("/48x48/if_Teachers-24_103847.png", "Peminjam Piutang", "btnPeminjamPiutang", new java.awt.Dimension(200, 90), this::btnPeminjamPiutangActionPerformed);
+        btnPeminjamPiutang = createMenuButton("/48x48/if_Teachers-24_103847.png", "Peminjam Piutang", "btnPeminjamPiutang", this::btnPeminjamPiutangActionPerformed);
 
-        btnPiutangLainLain = createMenuButton("/48x48/iconfinder_11001_cash_coins_money_pig_piggy bank_icon_48px.png", "Piutang Peminjaman Uang", "btnPiutangLainLain", new java.awt.Dimension(200, 90), this::btnPiutangLainLainActionPerformed);
+        btnPiutangLainLain = createMenuButton("/48x48/iconfinder_11001_cash_coins_money_pig_piggy bank_icon_48px.png", "Piutang Peminjaman Uang", "btnPiutangLainLain", this::btnPiutangLainLainActionPerformed);
 
-        btnBPJSTaskIDMobileJKN = createMenuButton("/48x48/vclaim.png", "Task ID Mobile JKN", "btnBPJSTaskIDMobileJKN", new java.awt.Dimension(200, 90), this::btnBPJSTaskIDMobileJKNActionPerformed);
+        btnBPJSTaskIDMobileJKN = createMenuButton("/48x48/vclaim.png", "Task ID Mobile JKN", "btnBPJSTaskIDMobileJKN", this::btnBPJSTaskIDMobileJKNActionPerformed);
 
-        btnBayarPiutangLainLain = createMenuButton("/48x48/47679_card_credit_payment_icon.png", "Bayar Piutang Peminjaman Uang", "btnBayarPiutangLainLain", new java.awt.Dimension(200, 90), this::btnBayarPiutangLainLainActionPerformed);
+        btnBayarPiutangLainLain = createMenuButton("/48x48/47679_card_credit_payment_icon.png", "Bayar Piutang Peminjaman Uang", "btnBayarPiutangLainLain", this::btnBayarPiutangLainLainActionPerformed);
 
-        btnPembayaranAkunBayar4 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 4", "btnPembayaranAkunBayar4", new java.awt.Dimension(200, 90), this::btnPembayaranAkunBayar4ActionPerformed);
+        btnPembayaranAkunBayar4 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 4", "btnPembayaranAkunBayar4", this::btnPembayaranAkunBayar4ActionPerformed);
 
-        btnStokAkhirFarmasiPerTanggal = createMenuButton("/48x48/iconfinder_bag_icons-15_1075431.png", "Stok Akhir Farmasi Per Tanggal", "btnStokAkhirFarmasiPerTanggal", new java.awt.Dimension(200, 90), this::btnStokAkhirFarmasiPerTanggalActionPerformed);
+        btnStokAkhirFarmasiPerTanggal = createMenuButton("/48x48/iconfinder_bag_icons-15_1075431.png", "Stok Akhir Farmasi Per Tanggal", "btnStokAkhirFarmasiPerTanggal", this::btnStokAkhirFarmasiPerTanggalActionPerformed);
 
-        btnRiwayatKamarPasien = createMenuButton("/48x48/iconfinder_Coronavirus-covid19-case-patient-hospital-treatment_6009596.png", "Riwayat Kamar Pasien", "btnRiwayatKamarPasien", new java.awt.Dimension(200, 90), this::btnRiwayatKamarPasienActionPerformed);
+        btnRiwayatKamarPasien = createMenuButton("/48x48/iconfinder_Coronavirus-covid19-case-patient-hospital-treatment_6009596.png", "Riwayat Kamar Pasien", "btnRiwayatKamarPasien", this::btnRiwayatKamarPasienActionPerformed);
 
-        btnAuditKepatuhanAPD = createMenuButton("/48x48/5986179_admit_hospital_insurance_medical_medicine_icon.png", "Audit Kepatuhan APD", "btnAuditKepatuhanAPD", new java.awt.Dimension(200, 90), this::btnAuditKepatuhanAPDActionPerformed);
+        btnAuditKepatuhanAPD = createMenuButton("/48x48/5986179_admit_hospital_insurance_medical_medicine_icon.png", "Audit Kepatuhan APD", "btnAuditKepatuhanAPD", this::btnAuditKepatuhanAPDActionPerformed);
 
-        btnUjiFungsiKFR = createMenuButton("/48x48/6159284_bicycle_bike_cycling_isometric_mountain bike_icon.png", "Uji Fungsi/Prosedur KFR", "btnUjiFungsiKFR", new java.awt.Dimension(200, 90), this::btnUjiFungsiKFRActionPerformed);
+        btnUjiFungsiKFR = createMenuButton("/48x48/6159284_bicycle_bike_cycling_isometric_mountain bike_icon.png", "Uji Fungsi/Prosedur KFR", "btnUjiFungsiKFR", this::btnUjiFungsiKFRActionPerformed);
 
-        btnKategoriPengeluaranHarian = createMenuButton("/48x48/299058_tag_icon.png", "Kategori Pengeluaran Harian", "btnKategoriPengeluaranHarian", new java.awt.Dimension(200, 90), this::btnKategoriPengeluaranHarianActionPerformed);
+        btnKategoriPengeluaranHarian = createMenuButton("/48x48/299058_tag_icon.png", "Kategori Pengeluaran Harian", "btnKategoriPengeluaranHarian", this::btnKategoriPengeluaranHarianActionPerformed);
 
-        btnKategoriPemasukanLian = createMenuButton("/48x48/3440908_ecommerce_label_price_shop_shopping_icon.png", "Kategori Pemasukan Lain-lain", "btnKategoriPemasukanLian", new java.awt.Dimension(200, 90), this::btnKategoriPemasukanLianActionPerformed);
+        btnKategoriPemasukanLian = createMenuButton("/48x48/3440908_ecommerce_label_price_shop_shopping_icon.png", "Kategori Pemasukan Lain-lain", "btnKategoriPemasukanLian", this::btnKategoriPemasukanLianActionPerformed);
 
-        btnPembayaranAkunBayar5 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 5", "btnPembayaranAkunBayar5", new java.awt.Dimension(200, 90), this::btnPembayaranAkunBayar5ActionPerformed);
+        btnPembayaranAkunBayar5 = createMenuButton("/48x48/1404046811_money.png", "Pembayaran Per Akun Bayar 5", "btnPembayaranAkunBayar5", this::btnPembayaranAkunBayar5ActionPerformed);
 
-        btnRuangOperasi = createMenuButton("/48x48/5898980_doctor_emergency_health_healthcare_healthy_icon.png", "Ruang Operasi", "btnRuangOperasi", new java.awt.Dimension(200, 90), this::btnRuangOperasiActionPerformed);
+        btnRuangOperasi = createMenuButton("/48x48/5898980_doctor_emergency_health_healthcare_healthy_icon.png", "Ruang Operasi", "btnRuangOperasi", this::btnRuangOperasiActionPerformed);
 
-        btnJasaTindakanPasien = createMenuButton("/48x48/5859106_avatar_doctor_job_surgeon_user_icon.png", "Jasa Tindakan Pasien", "btnJasaTindakanPasien", new java.awt.Dimension(200, 90), this::btnJasaTindakanPasienActionPerformed);
+        btnJasaTindakanPasien = createMenuButton("/48x48/5859106_avatar_doctor_job_surgeon_user_icon.png", "Jasa Tindakan Pasien", "btnJasaTindakanPasien", this::btnJasaTindakanPasienActionPerformed);
 
-        btnRingkasanJasaTindakanPasien = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Jasa Tindakan Pasien", "btnRingkasanJasaTindakanPasien", new java.awt.Dimension(200, 90), this::btnRingkasanJasaTindakanPasienActionPerformed);
+        btnRingkasanJasaTindakanPasien = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Jasa Tindakan Pasien", "btnRingkasanJasaTindakanPasien", this::btnRingkasanJasaTindakanPasienActionPerformed);
 
-        btnTelaahResep = createMenuButton("/48x48/5868989_coronavirus_drug_medic_medical_medicine_icon.png", "Telaah Resep & Obat", "btnTelaahResep", new java.awt.Dimension(200, 90), this::btnTelaahResepActionPerformed);
+        btnTelaahResep = createMenuButton("/48x48/5868989_coronavirus_drug_medic_medical_medicine_icon.png", "Telaah Resep & Obat", "btnTelaahResep", this::btnTelaahResepActionPerformed);
 
-        btnPermintaanResepPulang = createMenuButton("/48x48/iconfinder_paper_pencil-lb_86334.png", "Permintaan Resep Pulang", "btnPermintaanResepPulang", new java.awt.Dimension(200, 90), this::btnPermintaanResepPulangActionPerformed);
+        btnPermintaanResepPulang = createMenuButton("/48x48/iconfinder_paper_pencil-lb_86334.png", "Permintaan Resep Pulang", "btnPermintaanResepPulang", this::btnPermintaanResepPulangActionPerformed);
 
-        btnRekapJasaDokter = createMenuButton("/48x48/address-book.png", "Rekap JM Dokter", "btnRekapJasaDokter", new java.awt.Dimension(200, 90), this::btnRekapJasaDokterActionPerformed);
+        btnRekapJasaDokter = createMenuButton("/48x48/address-book.png", "Rekap JM Dokter", "btnRekapJasaDokter", this::btnRekapJasaDokterActionPerformed);
 
-        btnStatusDataRM = createMenuButton("/48x48/4852569_chat_chatting_conversation_files_message_icon.png", "Status Data RM", "btnStatusDataRM", new java.awt.Dimension(200, 90), this::btnStatusDataRMActionPerformed);
+        btnStatusDataRM = createMenuButton("/48x48/4852569_chat_chatting_conversation_files_message_icon.png", "Status Data RM", "btnStatusDataRM", this::btnStatusDataRMActionPerformed);
 
-        btnRingkasanBiayaObatPasienPerTanggal = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Biaya Obat Pasien Per Tanggal", "btnRingkasanBiayaObatPasienPerTanggal", new java.awt.Dimension(200, 90), this::btnRingkasanBiayaObatPasienPerTanggalActionPerformed);
+        btnRingkasanBiayaObatPasienPerTanggal = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Biaya Obat Pasien Per Tanggal", "btnRingkasanBiayaObatPasienPerTanggal", this::btnRingkasanBiayaObatPasienPerTanggalActionPerformed);
 
-        btnMasterMasalahKeperawatanIGD = createMenuButton("/48x48/iconfinder_30-Doctor_5929214.png", "Master Masalah Keperawatan IGD", "btnMasterMasalahKeperawatanIGD", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanIGDActionPerformed);
+        btnMasterMasalahKeperawatanIGD = createMenuButton("/48x48/iconfinder_30-Doctor_5929214.png", "Master Masalah Keperawatan IGD", "btnMasterMasalahKeperawatanIGD", this::btnMasterMasalahKeperawatanIGDActionPerformed);
 
-        btnPenilaianAwalKeperawatanIGD = createMenuButton("/48x48/iconfinder_AMBULANCE-transport-health_care-transportation-urgency_6007988.png", "Awal Keperawatan IGD", "btnPenilaianAwalKeperawatanIGD", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanIGDActionPerformed);
+        btnPenilaianAwalKeperawatanIGD = createMenuButton("/48x48/iconfinder_AMBULANCE-transport-health_care-transportation-urgency_6007988.png", "Awal Keperawatan IGD", "btnPenilaianAwalKeperawatanIGD", this::btnPenilaianAwalKeperawatanIGDActionPerformed);
 
-        btnBPJSReferensiDPHOApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi DPHO Apotek BPJS", "btnBPJSReferensiDPHOApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiDPHOApotekActionPerformed);
+        btnBPJSReferensiDPHOApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi DPHO Apotek BPJS", "btnBPJSReferensiDPHOApotek", this::btnBPJSReferensiDPHOApotekActionPerformed);
 
-        btnBPJSReferensiPoliApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Poli Apotek BPJS", "btnBPJSReferensiPoliApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiPoliApotekActionPerformed);
+        btnBPJSReferensiPoliApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Poli Apotek BPJS", "btnBPJSReferensiPoliApotek", this::btnBPJSReferensiPoliApotekActionPerformed);
 
-        btnBayarJMDokter = createMenuButton("/48x48/4852541_doc_docx_files_odt_rtf_icon.png", "Bayar JM Dokter", "btnBayarJMDokter", new java.awt.Dimension(200, 90), this::btnBayarJMDokterActionPerformed);
+        btnBayarJMDokter = createMenuButton("/48x48/4852541_doc_docx_files_odt_rtf_icon.png", "Bayar JM Dokter", "btnBayarJMDokter", this::btnBayarJMDokterActionPerformed);
 
-        btnBPJSReferensiFaskesApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Faskes Apotek BPJS", "btnBPJSReferensiFaskesApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiFaskesApotekActionPerformed);
+        btnBPJSReferensiFaskesApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Faskes Apotek BPJS", "btnBPJSReferensiFaskesApotek", this::btnBPJSReferensiFaskesApotekActionPerformed);
 
-        btnBPJSReferensiSpesialistikApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Spesialistik Apotek BPJS", "btnBPJSReferensiSpesialistikApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiSpesialistikApotekActionPerformed);
+        btnBPJSReferensiSpesialistikApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Spesialistik Apotek BPJS", "btnBPJSReferensiSpesialistikApotek", this::btnBPJSReferensiSpesialistikApotekActionPerformed);
 
-        btnPembayaranBRIVA = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran BRIVA", "btnPembayaranBRIVA", new java.awt.Dimension(200, 90), this::btnPembayaranBRIVAActionPerformed);
+        btnPembayaranBRIVA = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran BRIVA", "btnPembayaranBRIVA", this::btnPembayaranBRIVAActionPerformed);
 
-        btnPenilaianAwalKeperawatanRanap = createMenuButton("/48x48/iconfinder_report-clipboard-medical-checklist-healthcare_5859123.png", "Awal Keperawatan Ranap Umum", "btnPenilaianAwalKeperawatanRanap", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRanapActionPerformed);
+        btnPenilaianAwalKeperawatanRanap = createMenuButton("/48x48/iconfinder_report-clipboard-medical-checklist-healthcare_5859123.png", "Awal Keperawatan Ranap Umum", "btnPenilaianAwalKeperawatanRanap", this::btnPenilaianAwalKeperawatanRanapActionPerformed);
 
-        btnAkunBayarHutang = createMenuButton("/48x48/87482_wallet_icon.png", "Akun Bayar Hutang", "btnAkunBayarHutang", new java.awt.Dimension(200, 90), this::btnAkunBayarHutangActionPerformed);
+        btnAkunBayarHutang = createMenuButton("/48x48/87482_wallet_icon.png", "Akun Bayar Hutang", "btnAkunBayarHutang", this::btnAkunBayarHutangActionPerformed);
 
-        btnNilaiPenerimaanVendorFarmasiPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Farmasi Per Bulan", "btnNilaiPenerimaanVendorFarmasiPerBulan", new java.awt.Dimension(200, 90), this::btnNilaiPenerimaanVendorFarmasiPerBulanActionPerformed);
+        btnNilaiPenerimaanVendorFarmasiPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Farmasi Per Bulan", "btnNilaiPenerimaanVendorFarmasiPerBulan", this::btnNilaiPenerimaanVendorFarmasiPerBulanActionPerformed);
 
-        btnMasterRencanaKeperawatan = createMenuButton("/48x48/iconfinder__bed_rest_sleep_sick_patient_bed_rest_5928511.png", "Master Rencana Keperawatan", "btnMasterRencanaKeperawatan", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanActionPerformed);
+        btnMasterRencanaKeperawatan = createMenuButton("/48x48/iconfinder__bed_rest_sleep_sick_patient_bed_rest_5928511.png", "Master Rencana Keperawatan", "btnMasterRencanaKeperawatan", this::btnMasterRencanaKeperawatanActionPerformed);
 
-        btnLaporanTahunanIGD = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Tahunan IGD", "btnLaporanTahunanIGD", new java.awt.Dimension(200, 90), this::btnLaporanTahunanIGDActionPerformed);
+        btnLaporanTahunanIGD = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Tahunan IGD", "btnLaporanTahunanIGD", this::btnLaporanTahunanIGDActionPerformed);
 
-        btnObatBHPTidakBergerak = createMenuButton("/48x48/iconfinder_preferences-system-time_8810.png", "Obat/Alkes/BHP Tidak Bergerak", "btnObatBHPTidakBergerak", new java.awt.Dimension(200, 90), this::btnObatBHPTidakBergerakActionPerformed);
+        btnObatBHPTidakBergerak = createMenuButton("/48x48/iconfinder_preferences-system-time_8810.png", "Obat/Alkes/BHP Tidak Bergerak", "btnObatBHPTidakBergerak", this::btnObatBHPTidakBergerakActionPerformed);
 
-        btnRingkasanHutangVendorFarmasi = createMenuButton("/48x48/if_mail-message-new_23443.png", "Ringkasan Hutang Vendor Farmasi", "btnRingkasanHutangVendorFarmasi", new java.awt.Dimension(200, 90), this::btnRingkasanHutangVendorFarmasiActionPerformed);
+        btnRingkasanHutangVendorFarmasi = createMenuButton("/48x48/if_mail-message-new_23443.png", "Ringkasan Hutang Vendor Farmasi", "btnRingkasanHutangVendorFarmasi", this::btnRingkasanHutangVendorFarmasiActionPerformed);
 
-        btnNilaiPenerimaanVendorNonMedisPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Non Medis Per Bulan", "btnNilaiPenerimaanVendorNonMedisPerBulan", new java.awt.Dimension(200, 90), this::btnNilaiPenerimaanVendorNonMedisPerBulanActionPerformed);
+        btnNilaiPenerimaanVendorNonMedisPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Non Medis Per Bulan", "btnNilaiPenerimaanVendorNonMedisPerBulan", this::btnNilaiPenerimaanVendorNonMedisPerBulanActionPerformed);
 
-        btnRingkasanHutangVendorBarangNonMedis = createMenuButton("/48x48/iconfinder_filetype_-_download_3440881.png", "Ringkasan Hutang Vendor Non Medis", "btnRingkasanHutangVendorBarangNonMedis", new java.awt.Dimension(200, 90), this::btnRingkasanHutangVendorBarangNonMedisActionPerformed);
+        btnRingkasanHutangVendorBarangNonMedis = createMenuButton("/48x48/iconfinder_filetype_-_download_3440881.png", "Ringkasan Hutang Vendor Non Medis", "btnRingkasanHutangVendorBarangNonMedis", this::btnRingkasanHutangVendorBarangNonMedisActionPerformed);
 
-        btnAnggotaPolriDirawat = createMenuButton("/48x48/131492_policeman_police_police officer_police-officer_guard_icon.png", "Anggota POLRI Dirawat", "btnAnggotaPolriDirawat", new java.awt.Dimension(200, 90), this::btnAnggotaPolriDirawatActionPerformed);
+        btnAnggotaPolriDirawat = createMenuButton("/48x48/131492_policeman_police_police officer_police-officer_guard_icon.png", "Anggota POLRI Dirawat", "btnAnggotaPolriDirawat", this::btnAnggotaPolriDirawatActionPerformed);
 
-        btnDaftarPasienRanapPolri = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap POLRI", "btnDaftarPasienRanapPolri", new java.awt.Dimension(200, 90), this::btnDaftarPasienRanapPolriActionPerformed);
+        btnDaftarPasienRanapPolri = createMenuButton("/48x48/if_009_95869.png", "Daftar Pasien Ranap POLRI", "btnDaftarPasienRanapPolri", this::btnDaftarPasienRanapPolriActionPerformed);
 
-        btnSOAPRalanAnggotaPolri = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ralan Anggota POLRI", "btnSOAPRalanAnggotaPolri", new java.awt.Dimension(200, 90), this::btnSOAPRalanAnggotaPolriActionPerformed);
+        btnSOAPRalanAnggotaPolri = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ralan Anggota POLRI", "btnSOAPRalanAnggotaPolri", this::btnSOAPRalanAnggotaPolriActionPerformed);
 
-        btnSOAPRanapAnggotaPolri = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ranap Anggota POLRI", "btnSOAPRanapAnggotaPolri", new java.awt.Dimension(200, 90), this::btnSOAPRanapAnggotaPolriActionPerformed);
+        btnSOAPRanapAnggotaPolri = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ranap Anggota POLRI", "btnSOAPRanapAnggotaPolri", this::btnSOAPRanapAnggotaPolriActionPerformed);
 
-        btnLaporanPenyakitPolri = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Laporan Penyakit POLRI", "btnLaporanPenyakitPolri", new java.awt.Dimension(200, 90), this::btnLaporanPenyakitPolriActionPerformed);
+        btnLaporanPenyakitPolri = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Laporan Penyakit POLRI", "btnLaporanPenyakitPolri", this::btnLaporanPenyakitPolriActionPerformed);
 
-        btnMasterRencanaKeperawatanAnak = createMenuButton("/48x48/baby-boy.png", "Master Rencana Keperawatan Bayi/Anak", "btnMasterRencanaKeperawatanAnak", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanAnakActionPerformed);
+        btnMasterRencanaKeperawatanAnak = createMenuButton("/48x48/baby-boy.png", "Master Rencana Keperawatan Bayi/Anak", "btnMasterRencanaKeperawatanAnak", this::btnMasterRencanaKeperawatanAnakActionPerformed);
 
-        btnJumlahPengunjungRalanPolri = createMenuButton("/48x48/5868974_paper_research_corona virus_coronavirus_file_icon.png", "Jumlah Pengunjung Ralan POLRI", "btnJumlahPengunjungRalanPolri", new java.awt.Dimension(200, 90), this::btnJumlahPengunjungRalanPolriActionPerformed);
+        btnJumlahPengunjungRalanPolri = createMenuButton("/48x48/5868974_paper_research_corona virus_coronavirus_file_icon.png", "Jumlah Pengunjung Ralan POLRI", "btnJumlahPengunjungRalanPolri", this::btnJumlahPengunjungRalanPolriActionPerformed);
 
-        btnCatatanObservasiIGD = createMenuButton("/48x48/85380_note_icon.png", "Catatan Observasi IGD", "btnCatatanObservasiIGD", new java.awt.Dimension(200, 90), this::btnCatatanObservasiIGDActionPerformed);
+        btnCatatanObservasiIGD = createMenuButton("/48x48/85380_note_icon.png", "Catatan Observasi IGD", "btnCatatanObservasiIGD", this::btnCatatanObservasiIGDActionPerformed);
 
-        btnCatatanObservasiRanap = createMenuButton("/48x48/4852555_business_files_management_icon.png", "Catatan Observasi Ranap", "btnCatatanObservasiRanap", new java.awt.Dimension(200, 90), this::btnCatatanObservasiRanapActionPerformed);
+        btnCatatanObservasiRanap = createMenuButton("/48x48/4852555_business_files_management_icon.png", "Catatan Observasi Ranap", "btnCatatanObservasiRanap", this::btnCatatanObservasiRanapActionPerformed);
 
-        btnCatatanObservasiRanapKebidanan = createMenuButton("/48x48/4852562_education_files_school_icon.png", "Catatan Observasi Ranap Kebidanan", "btnCatatanObservasiRanapKebidanan", new java.awt.Dimension(200, 90), this::btnCatatanObservasiRanapKebidananActionPerformed);
+        btnCatatanObservasiRanapKebidanan = createMenuButton("/48x48/4852562_education_files_school_icon.png", "Catatan Observasi Ranap Kebidanan", "btnCatatanObservasiRanapKebidanan", this::btnCatatanObservasiRanapKebidananActionPerformed);
 
-        btnCatatanObservasiRanapPostPartum = createMenuButton("/48x48/4852546_documents_files_folder_icon.png", "Catatan Observasi Ranap Post Partum", "btnCatatanObservasiRanapPostPartum", new java.awt.Dimension(200, 90), this::btnCatatanObservasiRanapPostPartumActionPerformed);
+        btnCatatanObservasiRanapPostPartum = createMenuButton("/48x48/4852546_documents_files_folder_icon.png", "Catatan Observasi Ranap Post Partum", "btnCatatanObservasiRanapPostPartum", this::btnCatatanObservasiRanapPostPartumActionPerformed);
 
-        btnCatatanObservasiBayi = createMenuButton("/48x48/1312866_signature_analysis_business_finance_office_icon.png", "Catatan Observasi Bayi", "btnCatatanObservasiBayi", new java.awt.Dimension(200, 90), this::btnCatatanObservasiBayiActionPerformed);
+        btnCatatanObservasiBayi = createMenuButton("/48x48/1312866_signature_analysis_business_finance_office_icon.png", "Catatan Observasi Bayi", "btnCatatanObservasiBayi", this::btnCatatanObservasiBayiActionPerformed);
 
-        btnPenilaianAwalMedisRalanTHT = createMenuButton("/48x48/5868953_coronavirus_covid-19_nose_secretion_snot_icon.png", "Awal Medis Ralan THT", "btnPenilaianAwalMedisRalanTHT", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanTHTActionPerformed);
+        btnPenilaianAwalMedisRalanTHT = createMenuButton("/48x48/5868953_coronavirus_covid-19_nose_secretion_snot_icon.png", "Awal Medis Ralan THT", "btnPenilaianAwalMedisRalanTHT", this::btnPenilaianAwalMedisRalanTHTActionPerformed);
 
-        btnAuditCuciTanganMedis = createMenuButton("/48x48/5929226_clean_cleaning_hands_wash_washing_icon.png", "Audit Cuci Tangan Medis", "btnAuditCuciTanganMedis", new java.awt.Dimension(200, 90), this::btnAuditCuciTanganMedisActionPerformed);
+        btnAuditCuciTanganMedis = createMenuButton("/48x48/5929226_clean_cleaning_hands_wash_washing_icon.png", "Audit Cuci Tangan Medis", "btnAuditCuciTanganMedis", this::btnAuditCuciTanganMedisActionPerformed);
 
-        btnPenilaianPsikologi = createMenuButton("/48x48/2890565_ai_artificial intelligence_automaton_brain_electronics_icon.png", "Pengkajian Psikologi", "btnPenilaianPsikologi", new java.awt.Dimension(200, 90), this::btnPenilaianPsikologiActionPerformed);
+        btnPenilaianPsikologi = createMenuButton("/48x48/2890565_ai_artificial intelligence_automaton_brain_electronics_icon.png", "Pengkajian Psikologi", "btnPenilaianPsikologi", this::btnPenilaianPsikologiActionPerformed);
 
-        btnPenilaianPsikologiKlinis = createMenuButton("/48x48/9320236_wifi_mind_interaction_untact_icon.png", "Pengkajian Psikologi Klinis", "btnPenilaianPsikologiKlinis", new java.awt.Dimension(200, 90), this::btnPenilaianPsikologiKlinisActionPerformed);
+        btnPenilaianPsikologiKlinis = createMenuButton("/48x48/9320236_wifi_mind_interaction_untact_icon.png", "Pengkajian Psikologi Klinis", "btnPenilaianPsikologiKlinis", this::btnPenilaianPsikologiKlinisActionPerformed);
 
-        btnRuangAuditKepatuhan = createMenuButton("/48x48/8961095_home_monitoring_electricity_thermal_humidity_icon.png", "Ruang/Unit Audit Kepatuhan", "btnRuangAuditKepatuhan", new java.awt.Dimension(200, 90), this::btnRuangAuditKepatuhanActionPerformed);
+        btnRuangAuditKepatuhan = createMenuButton("/48x48/8961095_home_monitoring_electricity_thermal_humidity_icon.png", "Ruang/Unit Audit Kepatuhan", "btnRuangAuditKepatuhan", this::btnRuangAuditKepatuhanActionPerformed);
 
-        btnAuditPembuanganLimbah = createMenuButton("/48x48/8956796_trash_can_bin_delete_rubbish_icon.png", "Audit Pembuangan Limbah", "btnAuditPembuanganLimbah", new java.awt.Dimension(200, 90), this::btnAuditPembuanganLimbahActionPerformed);
+        btnAuditPembuanganLimbah = createMenuButton("/48x48/8956796_trash_can_bin_delete_rubbish_icon.png", "Audit Pembuangan Limbah", "btnAuditPembuanganLimbah", this::btnAuditPembuanganLimbahActionPerformed);
 
-        btnAuditPembuanganBendaTajam = createMenuButton("/48x48/8960649_syringes_syringe_vaccine_vaccination_vaccines_icon.png", "Audit Pembuangan Benda Tajam & Jarum", "btnAuditPembuanganBendaTajam", new java.awt.Dimension(200, 90), this::btnAuditPembuanganBendaTajamActionPerformed);
+        btnAuditPembuanganBendaTajam = createMenuButton("/48x48/8960649_syringes_syringe_vaccine_vaccination_vaccines_icon.png", "Audit Pembuangan Benda Tajam & Jarum", "btnAuditPembuanganBendaTajam", this::btnAuditPembuanganBendaTajamActionPerformed);
 
-        btnAuditPenangananDarah = createMenuButton("/48x48/8960610_blood_drop_blood test_hand_transfusion_icon.png", "Audit Penanganan Darah", "btnAuditPenangananDarah", new java.awt.Dimension(200, 90), this::btnAuditPenangananDarahActionPerformed);
+        btnAuditPenangananDarah = createMenuButton("/48x48/8960610_blood_drop_blood test_hand_transfusion_icon.png", "Audit Penanganan Darah", "btnAuditPenangananDarah", this::btnAuditPenangananDarahActionPerformed);
 
-        btnAuditPengelolaanLinenKotor = createMenuButton("/48x48/7150138_washing_machine_clean_wash_technology_icon.png", "Audit Pengelolaan Linen Kotor", "btnAuditPengelolaanLinenKotor", new java.awt.Dimension(200, 90), this::btnAuditPengelolaanLinenKotorActionPerformed);
+        btnAuditPengelolaanLinenKotor = createMenuButton("/48x48/7150138_washing_machine_clean_wash_technology_icon.png", "Audit Pengelolaan Linen Kotor", "btnAuditPengelolaanLinenKotor", this::btnAuditPengelolaanLinenKotorActionPerformed);
 
-        btnAuditPenempatanPasien = createMenuButton("/48x48/6088155_head_headache_infection_pain_sick_icon.png", "Audit Penempatan Pasien", "btnAuditPenempatanPasien", new java.awt.Dimension(200, 90), this::btnAuditPenempatanPasienActionPerformed);
+        btnAuditPenempatanPasien = createMenuButton("/48x48/6088155_head_headache_infection_pain_sick_icon.png", "Audit Penempatan Pasien", "btnAuditPenempatanPasien", this::btnAuditPenempatanPasienActionPerformed);
 
-        btnAuditKamarJenazah = createMenuButton("/48x48/kerandajenazah.png", "Audit Kamar Jenazah", "btnAuditKamarJenazah", new java.awt.Dimension(200, 90), this::btnAuditKamarJenazahActionPerformed);
+        btnAuditKamarJenazah = createMenuButton("/48x48/kerandajenazah.png", "Audit Kamar Jenazah", "btnAuditKamarJenazah", this::btnAuditKamarJenazahActionPerformed);
 
-        btnAuditBundleIADP = createMenuButton("/48x48/5856663_blood_laboratory_medical_research_science_icon.png", "Audit Bundle IADP", "btnAuditBundleIADP", new java.awt.Dimension(200, 90), this::btnAuditBundleIADPActionPerformed);
+        btnAuditBundleIADP = createMenuButton("/48x48/5856663_blood_laboratory_medical_research_science_icon.png", "Audit Bundle IADP", "btnAuditBundleIADP", this::btnAuditBundleIADPActionPerformed);
 
-        btnAuditBundleIDO = createMenuButton("/48x48/6123156_avatar_doctor_frontliner_medical staff_surgeon_icon.png", "Audit Bundle IDO", "btnAuditBundleIDO", new java.awt.Dimension(200, 90), this::btnAuditBundleIDOActionPerformed);
+        btnAuditBundleIDO = createMenuButton("/48x48/6123156_avatar_doctor_frontliner_medical staff_surgeon_icon.png", "Audit Bundle IDO", "btnAuditBundleIDO", this::btnAuditBundleIDOActionPerformed);
 
-        btnAuditFasilitasKebersihanTangan = createMenuButton("/48x48/5932586_hands_soap_wash_coronavirus_covid19_icon.png", "Audit Fasilitas Kebersihan Tangan", "btnAuditFasilitasKebersihanTangan", new java.awt.Dimension(200, 90), this::btnAuditFasilitasKebersihanTanganActionPerformed);
+        btnAuditFasilitasKebersihanTangan = createMenuButton("/48x48/5932586_hands_soap_wash_coronavirus_covid19_icon.png", "Audit Fasilitas Kebersihan Tangan", "btnAuditFasilitasKebersihanTangan", this::btnAuditFasilitasKebersihanTanganActionPerformed);
 
-        btnAuditFasilitasAPD = createMenuButton("/48x48/1626354_apron_home_kitchen_restaurant_room_icon.png", "Audit Fasilitas APD", "btnAuditFasilitasAPD", new java.awt.Dimension(200, 90), this::btnAuditFasilitasAPDActionPerformed);
+        btnAuditFasilitasAPD = createMenuButton("/48x48/1626354_apron_home_kitchen_restaurant_room_icon.png", "Audit Fasilitas APD", "btnAuditFasilitasAPD", this::btnAuditFasilitasAPDActionPerformed);
 
-        btnAuditPembuanganLimbahCairInfeksius = createMenuButton("/48x48/5972292_blood_disease_fluid_infection_transmission_icon.png", "Audit Pembuangan Limbah Cair Infeksius", "btnAuditPembuanganLimbahCairInfeksius", new java.awt.Dimension(200, 90), this::btnAuditPembuanganLimbahCairInfeksiusActionPerformed);
+        btnAuditPembuanganLimbahCairInfeksius = createMenuButton("/48x48/5972292_blood_disease_fluid_infection_transmission_icon.png", "Audit Pembuangan Limbah Cair Infeksius", "btnAuditPembuanganLimbahCairInfeksius", this::btnAuditPembuanganLimbahCairInfeksiusActionPerformed);
 
-        btnAuditSterilisasiAlat = createMenuButton("/48x48/8960613_iv_iv pole_blood_transfusion_infusion_icon.png", "Audit Sterilisasi Alat", "btnAuditSterilisasiAlat", new java.awt.Dimension(200, 90), this::btnAuditSterilisasiAlatActionPerformed);
+        btnAuditSterilisasiAlat = createMenuButton("/48x48/8960613_iv_iv pole_blood_transfusion_infusion_icon.png", "Audit Sterilisasi Alat", "btnAuditSterilisasiAlat", this::btnAuditSterilisasiAlatActionPerformed);
 
-        btnPersetujuanPenolakanTindakan = createMenuButton("/48x48/6771569_education_learning_pencil_school_signature_icon.png", "Persetujuan/Penolakan Tindakan", "btnPersetujuanPenolakanTindakan", new java.awt.Dimension(200, 90), this::btnPersetujuanPenolakanTindakanActionPerformed);
+        btnPersetujuanPenolakanTindakan = createMenuButton("/48x48/6771569_education_learning_pencil_school_signature_icon.png", "Persetujuan/Penolakan Tindakan", "btnPersetujuanPenolakanTindakan", this::btnPersetujuanPenolakanTindakanActionPerformed);
 
-        btnSuratPernyataanMemilihDPJP = createMenuButton("/48x48/5898997_avatar_doctor_man_mask_user_icon.png", "Surat Pernyataan Memilih DPJP", "btnSuratPernyataanMemilihDPJP", new java.awt.Dimension(200, 90), this::btnSuratPernyataanMemilihDPJPActionPerformed);
+        btnSuratPernyataanMemilihDPJP = createMenuButton("/48x48/5898997_avatar_doctor_man_mask_user_icon.png", "Surat Pernyataan Memilih DPJP", "btnSuratPernyataanMemilihDPJP", this::btnSuratPernyataanMemilihDPJPActionPerformed);
 
-        btnPenilaianAwalMedisRalanPsikiatri = createMenuButton("/48x48/5856674_bacteria_brain_disease_encephalitis_healthy_icon.png", "Awal Medis Ralan Psikiatri", "btnPenilaianAwalMedisRalanPsikiatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanPsikiatriActionPerformed);
+        btnPenilaianAwalMedisRalanPsikiatri = createMenuButton("/48x48/5856674_bacteria_brain_disease_encephalitis_healthy_icon.png", "Awal Medis Ralan Psikiatri", "btnPenilaianAwalMedisRalanPsikiatri", this::btnPenilaianAwalMedisRalanPsikiatriActionPerformed);
 
-        btnPenilaianAwalMedisRanapPsikiatri = createMenuButton("/48x48/5856674_bacteria_brain_disease_encephalitis_healthy_icon.png", "Awal Medis Ranap Psikiatri", "btnPenilaianAwalMedisRanapPsikiatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRanapPsikiatriActionPerformed);
+        btnPenilaianAwalMedisRanapPsikiatri = createMenuButton("/48x48/5856674_bacteria_brain_disease_encephalitis_healthy_icon.png", "Awal Medis Ranap Psikiatri", "btnPenilaianAwalMedisRanapPsikiatri", this::btnPenilaianAwalMedisRanapPsikiatriActionPerformed);
 
-        btnAuditBundleISK = createMenuButton("/48x48/5958327_clipboard virus_disease_epidemic_file data_infection_icon.png", "Audit Bundle ISK", "btnAuditBundleISK", new java.awt.Dimension(200, 90), this::btnAuditBundleISKActionPerformed);
+        btnAuditBundleISK = createMenuButton("/48x48/5958327_clipboard virus_disease_epidemic_file data_infection_icon.png", "Audit Bundle ISK", "btnAuditBundleISK", this::btnAuditBundleISKActionPerformed);
 
-        btnAuditBundlePLABSI = createMenuButton("/48x48/5875848_blood_cell_disease_infect_lab_icon.png", "Audit Bundle PLABSI", "btnAuditBundlePLABSI", new java.awt.Dimension(200, 90), this::btnAuditBundlePLABSIActionPerformed);
+        btnAuditBundlePLABSI = createMenuButton("/48x48/5875848_blood_cell_disease_infect_lab_icon.png", "Audit Bundle PLABSI", "btnAuditBundlePLABSI", this::btnAuditBundlePLABSIActionPerformed);
 
-        btnAuditBundleVAP = createMenuButton("/48x48/5856684_disease_lung_outbreak_pneumonia_virus_icon.png", "Audit Bundle VAP", "btnAuditBundleVAP", new java.awt.Dimension(200, 90), this::btnAuditBundleVAPActionPerformed);
+        btnAuditBundleVAP = createMenuButton("/48x48/5856684_disease_lung_outbreak_pneumonia_virus_icon.png", "Audit Bundle VAP", "btnAuditBundleVAP", this::btnAuditBundleVAPActionPerformed);
 
-        btnAkunRekeningHtHBankPapua = createMenuButton("/48x48/bankpapua.jpg", "Host To Host Bank Papua", "btnAkunRekeningHtHBankPapua", new java.awt.Dimension(200, 90), this::btnAkunRekeningHtHBankPapuaActionPerformed);
+        btnAkunRekeningHtHBankPapua = createMenuButton("/48x48/bankpapua.jpg", "Host To Host Bank Papua", "btnAkunRekeningHtHBankPapua", this::btnAkunRekeningHtHBankPapuaActionPerformed);
 
-        btnPembayaranBankPapua = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Papua", "btnPembayaranBankPapua", new java.awt.Dimension(200, 90), this::btnPembayaranBankPapuaActionPerformed);
+        btnPembayaranBankPapua = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Papua", "btnPembayaranBankPapua", this::btnPembayaranBankPapuaActionPerformed);
 
-        btnPenilaianAwalMedisRalanPenyakitDalam = createMenuButton("/48x48/5972291_ailment_disease_germ_illness_pathogen_icon.png", "Awal Medis Ralan Penyakit Dalam", "btnPenilaianAwalMedisRalanPenyakitDalam", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanPenyakitDalamActionPerformed);
+        btnPenilaianAwalMedisRalanPenyakitDalam = createMenuButton("/48x48/5972291_ailment_disease_germ_illness_pathogen_icon.png", "Awal Medis Ralan Penyakit Dalam", "btnPenilaianAwalMedisRalanPenyakitDalam", this::btnPenilaianAwalMedisRalanPenyakitDalamActionPerformed);
 
-        btnPenilaianAwalMedisRalanMata = createMenuButton("/48x48/1459441_eye_holidays_anatomy_halloween_icon.png", "Awal Medis Ralan Mata", "btnPenilaianAwalMedisRalanMata", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanMataActionPerformed);
+        btnPenilaianAwalMedisRalanMata = createMenuButton("/48x48/1459441_eye_holidays_anatomy_halloween_icon.png", "Awal Medis Ralan Mata", "btnPenilaianAwalMedisRalanMata", this::btnPenilaianAwalMedisRalanMataActionPerformed);
 
-        btnPenilaianAwalMedisRalanNeurologi = createMenuButton("/48x48/2730389_brain_divide_inkcontober_sains_icon.png", "Awal Medis Ralan Neurologi", "btnPenilaianAwalMedisRalanNeurologi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanNeurologiActionPerformed);
+        btnPenilaianAwalMedisRalanNeurologi = createMenuButton("/48x48/2730389_brain_divide_inkcontober_sains_icon.png", "Awal Medis Ralan Neurologi", "btnPenilaianAwalMedisRalanNeurologi", this::btnPenilaianAwalMedisRalanNeurologiActionPerformed);
 
-        btnPenilaianAwalMedisRalanOrthopedi = createMenuButton("/48x48/5859952_accident_injury_knee_leg_medical_icon.png", "Awal Medis Ralan Orthopedi", "btnPenilaianAwalMedisRalanOrthopedi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanOrthopediActionPerformed);
+        btnPenilaianAwalMedisRalanOrthopedi = createMenuButton("/48x48/5859952_accident_injury_knee_leg_medical_icon.png", "Awal Medis Ralan Orthopedi", "btnPenilaianAwalMedisRalanOrthopedi", this::btnPenilaianAwalMedisRalanOrthopediActionPerformed);
 
-        btnPenilaianAwalMedisRalanBedah = createMenuButton("/48x48/8008238_knife_cut_cutlery_cutting_tools_icon.png", "Awal Medis Ralan Bedah", "btnPenilaianAwalMedisRalanBedah", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanBedahActionPerformed);
+        btnPenilaianAwalMedisRalanBedah = createMenuButton("/48x48/8008238_knife_cut_cutlery_cutting_tools_icon.png", "Awal Medis Ralan Bedah", "btnPenilaianAwalMedisRalanBedah", this::btnPenilaianAwalMedisRalanBedahActionPerformed);
 
-        btnSOAPRalanAnggotaTNI = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ralan Anggota TNI", "btnSOAPRalanAnggotaTNI", new java.awt.Dimension(200, 90), this::btnSOAPRalanAnggotaTNIActionPerformed);
+        btnSOAPRalanAnggotaTNI = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ralan Anggota TNI", "btnSOAPRalanAnggotaTNI", this::btnSOAPRalanAnggotaTNIActionPerformed);
 
-        btnSOAPRanapAnggotaTNI = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ranap Anggota TNI", "btnSOAPRanapAnggotaTNI", new java.awt.Dimension(200, 90), this::btnSOAPRanapAnggotaTNIActionPerformed);
+        btnSOAPRanapAnggotaTNI = createMenuButton("/48x48/iconfinder_patient-health_report-graph-coronavirus_6000116.png", "SOAP Ranap Anggota TNI", "btnSOAPRanapAnggotaTNI", this::btnSOAPRanapAnggotaTNIActionPerformed);
 
-        btnJumlahPengunjungRalanTNI = createMenuButton("/48x48/5868974_paper_research_corona virus_coronavirus_file_icon.png", "Jumlah Pengunjung Ralan TNI", "btnJumlahPengunjungRalanTNI", new java.awt.Dimension(200, 90), this::btnJumlahPengunjungRalanTNIActionPerformed);
+        btnJumlahPengunjungRalanTNI = createMenuButton("/48x48/5868974_paper_research_corona virus_coronavirus_file_icon.png", "Jumlah Pengunjung Ralan TNI", "btnJumlahPengunjungRalanTNI", this::btnJumlahPengunjungRalanTNIActionPerformed);
 
-        btnLaporanPenyakitTNI = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Laporan Penyakit TNI", "btnLaporanPenyakitTNI", new java.awt.Dimension(200, 90), this::btnLaporanPenyakitTNIActionPerformed);
+        btnLaporanPenyakitTNI = createMenuButton("/48x48/6008661_bacteria_coronavirus_covid_laboratory_microscope_icon.png", "Laporan Penyakit TNI", "btnLaporanPenyakitTNI", this::btnLaporanPenyakitTNIActionPerformed);
 
-        btnCatatanKeperawatanRanap = createMenuButton("/48x48/6123164_avatar_frontliner_male_medical staff_nurse_icon.png", "Catatan Keperawatan Ranap", "btnCatatanKeperawatanRanap", new java.awt.Dimension(200, 90), this::btnCatatanKeperawatanRanapActionPerformed);
+        btnCatatanKeperawatanRanap = createMenuButton("/48x48/6123164_avatar_frontliner_male_medical staff_nurse_icon.png", "Catatan Keperawatan Ranap", "btnCatatanKeperawatanRanap", this::btnCatatanKeperawatanRanapActionPerformed);
 
-        btnMasterRencanaKeperawatanGigi = createMenuButton("/48x48/iconfinder_healthcare_and_medical-hygienic-tooth_paste-toothpaste-toothbrush-health_care_4394831.png", "Master Rencana Keperawatan Gigi", "btnMasterRencanaKeperawatanGigi", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanGigiActionPerformed);
+        btnMasterRencanaKeperawatanGigi = createMenuButton("/48x48/iconfinder_healthcare_and_medical-hygienic-tooth_paste-toothpaste-toothbrush-health_care_4394831.png", "Master Rencana Keperawatan Gigi", "btnMasterRencanaKeperawatanGigi", this::btnMasterRencanaKeperawatanGigiActionPerformed);
 
-        btnMasterRencanaKeperawatanMata = createMenuButton("/48x48/85364_eye_icon.png", "Master Rencana Keperawatan Mata", "btnMasterRencanaKeperawatanMata", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanMataActionPerformed);
+        btnMasterRencanaKeperawatanMata = createMenuButton("/48x48/85364_eye_icon.png", "Master Rencana Keperawatan Mata", "btnMasterRencanaKeperawatanMata", this::btnMasterRencanaKeperawatanMataActionPerformed);
 
-        btnMasterRencanaKeperawatanIGD = createMenuButton("/48x48/iconfinder_30-Doctor_5929214.png", "Master Rencana Keperawatan IGD", "btnMasterRencanaKeperawatanIGD", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanIGDActionPerformed);
+        btnMasterRencanaKeperawatanIGD = createMenuButton("/48x48/iconfinder_30-Doctor_5929214.png", "Master Rencana Keperawatan IGD", "btnMasterRencanaKeperawatanIGD", this::btnMasterRencanaKeperawatanIGDActionPerformed);
 
-        btnMasterMasalahKeperawatanPsikiatri = createMenuButton("/48x48/3380376_analytical_brain_creative_intelligence_mindset_icon.png", "Master Masalah Keperawatan Psikiatri", "btnMasterMasalahKeperawatanPsikiatri", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanPsikiatriActionPerformed);
+        btnMasterMasalahKeperawatanPsikiatri = createMenuButton("/48x48/3380376_analytical_brain_creative_intelligence_mindset_icon.png", "Master Masalah Keperawatan Psikiatri", "btnMasterMasalahKeperawatanPsikiatri", this::btnMasterMasalahKeperawatanPsikiatriActionPerformed);
 
-        btnMasterRencanaKeperawatanPsikiatri = createMenuButton("/48x48/3380376_analytical_brain_creative_intelligence_mindset_icon.png", "Master Rencana Keperawatan Psikiatri", "btnMasterRencanaKeperawatanPsikiatri", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanPsikiatriActionPerformed);
+        btnMasterRencanaKeperawatanPsikiatri = createMenuButton("/48x48/3380376_analytical_brain_creative_intelligence_mindset_icon.png", "Master Rencana Keperawatan Psikiatri", "btnMasterRencanaKeperawatanPsikiatri", this::btnMasterRencanaKeperawatanPsikiatriActionPerformed);
 
-        btnPenilaianAwalKeperawatanRalanPsikiatri = createMenuButton("/48x48/5898990_blood_clipboard_lab_report_test_icon.png", "Awal Keperawatan Ralan Psikiatri", "btnPenilaianAwalKeperawatanRalanPsikiatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRalanPsikiatriActionPerformed);
+        btnPenilaianAwalKeperawatanRalanPsikiatri = createMenuButton("/48x48/5898990_blood_clipboard_lab_report_test_icon.png", "Awal Keperawatan Ralan Psikiatri", "btnPenilaianAwalKeperawatanRalanPsikiatri", this::btnPenilaianAwalKeperawatanRalanPsikiatriActionPerformed);
 
-        btnPemantauanPEWSAnak = createMenuButton("/48x48/7744788_mom_children_mothers day_mother_love_icon.png", "Pemantauan PEWS Pasien Anak", "btnPemantauanPEWSAnak", new java.awt.Dimension(200, 90), this::btnPemantauanPEWSAnakActionPerformed);
+        btnPemantauanPEWSAnak = createMenuButton("/48x48/7744788_mom_children_mothers day_mother_love_icon.png", "Pemantauan PEWS Pasien Anak", "btnPemantauanPEWSAnak", this::btnPemantauanPEWSAnakActionPerformed);
 
-        btnMasterTemplateHasilRadiologi = createMenuButton("/48x48/6771602_book shelf_books_education_learning_school_icon.png", "Master Template Hasil Radiologi", "btnMasterTemplateHasilRadiologi", new java.awt.Dimension(200, 90), this::btnMasterTemplateHasilRadiologiActionPerformed);
+        btnMasterTemplateHasilRadiologi = createMenuButton("/48x48/6771602_book shelf_books_education_learning_school_icon.png", "Master Template Hasil Radiologi", "btnMasterTemplateHasilRadiologi", this::btnMasterTemplateHasilRadiologiActionPerformed);
 
-        btnLaporanBulananIRJ = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Bulanan IRJ", "btnLaporanBulananIRJ", new java.awt.Dimension(200, 90), this::btnLaporanBulananIRJActionPerformed);
+        btnLaporanBulananIRJ = createMenuButton("/48x48/laporantahunanIRJ.png", "Laporan Bulanan IRJ", "btnLaporanBulananIRJ", this::btnLaporanBulananIRJActionPerformed);
 
-        btnMasterTemplatePemeriksaanDokter = createMenuButton("/48x48/templatepemeriksaan.png", "Master Template Pemeriksaan", "btnMasterTemplatePemeriksaanDokter", new java.awt.Dimension(200, 90), this::btnMasterTemplatePemeriksaanDokterActionPerformed);
+        btnMasterTemplatePemeriksaanDokter = createMenuButton("/48x48/templatepemeriksaan.png", "Master Template Pemeriksaan", "btnMasterTemplatePemeriksaanDokter", this::btnMasterTemplatePemeriksaanDokterActionPerformed);
 
-        btnPenilaianPreOperasi = createMenuButton("/48x48/6088726_bed_hospital_icu_medical_treatment_icon.png", "Pengkajian Pre Operasi", "btnPenilaianPreOperasi", new java.awt.Dimension(200, 90), this::btnPenilaianPreOperasiActionPerformed);
+        btnPenilaianPreOperasi = createMenuButton("/48x48/6088726_bed_hospital_icu_medical_treatment_icon.png", "Pengkajian Pre Operasi", "btnPenilaianPreOperasi", this::btnPenilaianPreOperasiActionPerformed);
 
-        btnPenilaianPreAnastesi = createMenuButton("/48x48/6141465_bed_rest_sleep_sleeping_get enough rest_icon.png", "Pengkajian Pre Anestesi", "btnPenilaianPreAnastesi", new java.awt.Dimension(200, 90), this::btnPenilaianPreAnastesiActionPerformed);
+        btnPenilaianPreAnastesi = createMenuButton("/48x48/6141465_bed_rest_sleep_sleeping_get enough rest_icon.png", "Pengkajian Pre Anestesi", "btnPenilaianPreAnastesi", this::btnPenilaianPreAnastesiActionPerformed);
 
-        btnCatatanAnastesiSedasi = createMenuButton("/48x48/2620508_employee_job_notes_seeker_unemployee_icon.png", "Catatan Anestesi-Sedasi", "btnCatatanAnastesiSedasi", new java.awt.Dimension(200, 90), this::btnCatatanAnastesiSedasiActionPerformed);
+        btnCatatanAnastesiSedasi = createMenuButton("/48x48/2620508_employee_job_notes_seeker_unemployee_icon.png", "Catatan Anestesi-Sedasi", "btnCatatanAnastesiSedasi", this::btnCatatanAnastesiSedasiActionPerformed);
 
-        btnPersetujuanPulangAtasPermintanSendiri = createMenuButton("/48x48/5947112_clinic_doctor_healthcare_hospital_medical_icon.png", "Pulang Atas Permintaan Sendiri", "btnPersetujuanPulangAtasPermintanSendiri", new java.awt.Dimension(200, 90), this::btnPersetujuanPulangAtasPermintanSendiriActionPerformed);
+        btnPersetujuanPulangAtasPermintanSendiri = createMenuButton("/48x48/5947112_clinic_doctor_healthcare_hospital_medical_icon.png", "Pulang Atas Permintaan Sendiri", "btnPersetujuanPulangAtasPermintanSendiri", this::btnPersetujuanPulangAtasPermintanSendiriActionPerformed);
 
-        btnPerencanaanPemulangan = createMenuButton("/48x48/6141469_coronavirus_covid_covid19_hospital_infected_icon.png", "Perencanaan Pemulangan", "btnPerencanaanPemulangan", new java.awt.Dimension(200, 90), this::btnPerencanaanPemulanganActionPerformed);
+        btnPerencanaanPemulangan = createMenuButton("/48x48/6141469_coronavirus_covid_covid19_hospital_infected_icon.png", "Perencanaan Pemulangan", "btnPerencanaanPemulangan", this::btnPerencanaanPemulanganActionPerformed);
 
-        btnPenilaianRisikoJatuhDewasa = createMenuButton("/48x48/5859949_accident_foot_injury_leg_pain_icon.png", "Pengkajian Lanjutan Risiko Jatuh Dewasa", "btnPenilaianRisikoJatuhDewasa", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhDewasaActionPerformed);
+        btnPenilaianRisikoJatuhDewasa = createMenuButton("/48x48/5859949_accident_foot_injury_leg_pain_icon.png", "Pengkajian Lanjutan Risiko Jatuh Dewasa", "btnPenilaianRisikoJatuhDewasa", this::btnPenilaianRisikoJatuhDewasaActionPerformed);
 
-        btnPenilaianRisikoJatuhAnak = createMenuButton("/48x48/5986162_disease_health_injury_medical_numb_icon.png", "Pengkajian Lanjutan Risiko Jatuh Anak", "btnPenilaianRisikoJatuhAnak", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhAnakActionPerformed);
+        btnPenilaianRisikoJatuhAnak = createMenuButton("/48x48/5986162_disease_health_injury_medical_numb_icon.png", "Pengkajian Lanjutan Risiko Jatuh Anak", "btnPenilaianRisikoJatuhAnak", this::btnPenilaianRisikoJatuhAnakActionPerformed);
 
-        btnPenilaianAwalMedisRalanGeriatri = createMenuButton("/48x48/5964799_ill_old man_patient_sick_sore throat_icon.png", "Awal Medis Ralan Geriatri", "btnPenilaianAwalMedisRalanGeriatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanGeriatriActionPerformed);
+        btnPenilaianAwalMedisRalanGeriatri = createMenuButton("/48x48/5964799_ill_old man_patient_sick_sore throat_icon.png", "Awal Medis Ralan Geriatri", "btnPenilaianAwalMedisRalanGeriatri", this::btnPenilaianAwalMedisRalanGeriatriActionPerformed);
 
-        btnPenilaianRisikoJatuhLansia = createMenuButton("/48x48/131480_spectacles_retired_retiree_father_grandfather_icon.png", "Pengkajian Lanjutan Risiko Jatuh Lansia", "btnPenilaianRisikoJatuhLansia", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhLansiaActionPerformed);
+        btnPenilaianRisikoJatuhLansia = createMenuButton("/48x48/131480_spectacles_retired_retiree_father_grandfather_icon.png", "Pengkajian Lanjutan Risiko Jatuh Lansia", "btnPenilaianRisikoJatuhLansia", this::btnPenilaianRisikoJatuhLansiaActionPerformed);
 
-        btnPenilaianTambahanGeriatri = createMenuButton("/48x48/6141440_boy_man_old_people_elderly and kid_icon.png", "Pengkajian Tambahan Pasien Geriatri", "btnPenilaianTambahanGeriatri", new java.awt.Dimension(200, 90), this::btnPenilaianTambahanGeriatriActionPerformed);
+        btnPenilaianTambahanGeriatri = createMenuButton("/48x48/6141440_boy_man_old_people_elderly and kid_icon.png", "Pengkajian Tambahan Pasien Geriatri", "btnPenilaianTambahanGeriatri", this::btnPenilaianTambahanGeriatriActionPerformed);
 
-        btnSkriningNutrisiDewasa = createMenuButton("/48x48/5980339_eat_food_fruit_healthy_meal_icon.png", "Skrining Nutrisi Pasien Dewasa", "btnSkriningNutrisiDewasa", new java.awt.Dimension(200, 90), this::btnSkriningNutrisiDewasaActionPerformed);
+        btnSkriningNutrisiDewasa = createMenuButton("/48x48/5980339_eat_food_fruit_healthy_meal_icon.png", "Skrining Nutrisi Pasien Dewasa", "btnSkriningNutrisiDewasa", this::btnSkriningNutrisiDewasaActionPerformed);
 
-        btnHasilPemeriksaanUSG = createMenuButton("/48x48/375263_scan_scans_ultra sound_ultrasound_icon.png", "Hasil USG Kandungan", "btnHasilPemeriksaanUSG", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanUSGActionPerformed);
+        btnHasilPemeriksaanUSG = createMenuButton("/48x48/375263_scan_scans_ultra sound_ultrasound_icon.png", "Hasil USG Kandungan", "btnHasilPemeriksaanUSG", this::btnHasilPemeriksaanUSGActionPerformed);
 
-        btnSkriningNutrisiLansia = createMenuButton("/48x48/5994849_food_health_hot_meal_restaurant_icon.png", "Skrining Nutrisi Pasien Lansia", "btnSkriningNutrisiLansia", new java.awt.Dimension(200, 90), this::btnSkriningNutrisiLansiaActionPerformed);
+        btnSkriningNutrisiLansia = createMenuButton("/48x48/5994849_food_health_hot_meal_restaurant_icon.png", "Skrining Nutrisi Pasien Lansia", "btnSkriningNutrisiLansia", this::btnSkriningNutrisiLansiaActionPerformed);
 
-        btnSkriningNutrisiAnak = createMenuButton("/48x48/6141442_covid19_food_health_eat hot food and use serving spoon_virus transmission_icon.png", "Skrining Nutrisi Pasien Anak", "btnSkriningNutrisiAnak", new java.awt.Dimension(200, 90), this::btnSkriningNutrisiAnakActionPerformed);
+        btnSkriningNutrisiAnak = createMenuButton("/48x48/6141442_covid19_food_health_eat hot food and use serving spoon_virus transmission_icon.png", "Skrining Nutrisi Pasien Anak", "btnSkriningNutrisiAnak", this::btnSkriningNutrisiAnakActionPerformed);
 
-        btnAkunRekeningHtHBankJabar = createMenuButton("/48x48/bankbjb.png", "Host To Host Bank Jabar", "btnAkunRekeningHtHBankJabar", new java.awt.Dimension(200, 90), this::btnAkunRekeningHtHBankJabarActionPerformed);
+        btnAkunRekeningHtHBankJabar = createMenuButton("/48x48/bankbjb.png", "Host To Host Bank Jabar", "btnAkunRekeningHtHBankJabar", this::btnAkunRekeningHtHBankJabarActionPerformed);
 
-        btnPembayaranBankJabar = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Jabar", "btnPembayaranBankJabar", new java.awt.Dimension(200, 90), this::btnPembayaranBankJabarActionPerformed);
+        btnPembayaranBankJabar = createMenuButton("/48x48/iconfinder_eccomerce_-_wallet_3440917.png", "Pembayaran Bank Jabar", "btnPembayaranBankJabar", this::btnPembayaranBankJabarActionPerformed);
 
-        btnPernyataanPasienUmum = createMenuButton("/48x48/Edit-Male-User.png", "Pernyataan Pasien Umum", "btnPernyataanPasienUmum", new java.awt.Dimension(200, 90), this::btnPernyataanPasienUmumActionPerformed);
+        btnPernyataanPasienUmum = createMenuButton("/48x48/Edit-Male-User.png", "Pernyataan Pasien Umum", "btnPernyataanPasienUmum", this::btnPernyataanPasienUmumActionPerformed);
 
-        btnKonselingFarmasi = createMenuButton("/48x48/6771587_diary_education_learning_pencil_school_icon.png", "Konseling Farmasi", "btnKonselingFarmasi", new java.awt.Dimension(200, 90), this::btnKonselingFarmasiActionPerformed);
+        btnKonselingFarmasi = createMenuButton("/48x48/6771587_diary_education_learning_pencil_school_icon.png", "Konseling Farmasi", "btnKonselingFarmasi", this::btnKonselingFarmasiActionPerformed);
 
-        btnPelayananInformasiObat = createMenuButton("/48x48/8960614_medicines_medicine_drug_pill_tablet_icon.png", "Pelayanan Informasi Obat", "btnPelayananInformasiObat", new java.awt.Dimension(200, 90), this::btnPelayananInformasiObatActionPerformed);
+        btnPelayananInformasiObat = createMenuButton("/48x48/8960614_medicines_medicine_drug_pill_tablet_icon.png", "Pelayanan Informasi Obat", "btnPelayananInformasiObat", this::btnPelayananInformasiObatActionPerformed);
 
-        btnPersetujuanUmum = createMenuButton("/48x48/5868931_architecture_building_coronavirus_hospital_corona_icon.png", "Persetujuan Umum", "btnPersetujuanUmum", new java.awt.Dimension(200, 90), this::btnPersetujuanUmumActionPerformed);
+        btnPersetujuanUmum = createMenuButton("/48x48/5868931_architecture_building_coronavirus_hospital_corona_icon.png", "Persetujuan Umum", "btnPersetujuanUmum", this::btnPersetujuanUmumActionPerformed);
 
-        btnTransferPasienAntarRuang = createMenuButton("/48x48/6009596_case_coronavirus_covid19_hospital_patient_icon.png", "Transfer Pasien Antar Ruang", "btnTransferPasienAntarRuang", new java.awt.Dimension(200, 90), this::btnTransferPasienAntarRuangActionPerformed);
+        btnTransferPasienAntarRuang = createMenuButton("/48x48/6009596_case_coronavirus_covid19_hospital_patient_icon.png", "Transfer Pasien Antar Ruang", "btnTransferPasienAntarRuang", this::btnTransferPasienAntarRuangActionPerformed);
 
-        btnReferensiDokterSatuSehat = createMenuButton("/48x48/satusehat.png", "Referensi Praktisi Satu Sehat", "btnReferensiDokterSatuSehat", new java.awt.Dimension(200, 90), this::btnReferensiDokterSatuSehatActionPerformed);
+        btnReferensiDokterSatuSehat = createMenuButton("/48x48/satusehat.png", "Referensi Praktisi Satu Sehat", "btnReferensiDokterSatuSehat", this::btnReferensiDokterSatuSehatActionPerformed);
 
-        btnReferensiPasienSatuSehat = createMenuButton("/48x48/satusehat.png", "Referensi Pasien Satu Sehat", "btnReferensiPasienSatuSehat", new java.awt.Dimension(200, 90), this::btnReferensiPasienSatuSehatActionPerformed);
+        btnReferensiPasienSatuSehat = createMenuButton("/48x48/satusehat.png", "Referensi Pasien Satu Sehat", "btnReferensiPasienSatuSehat", this::btnReferensiPasienSatuSehatActionPerformed);
 
-        btnMappingOrganisasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Organisasi Satu Sehat", "btnMappingOrganisasiSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingOrganisasiSatuSehatActionPerformed);
+        btnMappingOrganisasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Organisasi Satu Sehat", "btnMappingOrganisasiSatuSehat", this::btnMappingOrganisasiSatuSehatActionPerformed);
 
-        btnMappingLokasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Lokasi Satu Sehat", "btnMappingLokasiSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingLokasiSatuSehatActionPerformed);
+        btnMappingLokasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Lokasi Satu Sehat", "btnMappingLokasiSatuSehat", this::btnMappingLokasiSatuSehatActionPerformed);
 
-        btnKirimEncounterSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Encounter Satu Sehat", "btnKirimEncounterSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEncounterSatuSehatActionPerformed);
+        btnKirimEncounterSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Encounter Satu Sehat", "btnKirimEncounterSatuSehat", this::btnKirimEncounterSatuSehatActionPerformed);
 
-        btnKirimEpisodeOfCareSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Episode of Care Satu Sehat", "btnKirimEpisodeOfCareSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimEpisodeOfCareSatuSehatActionPerformed);
+        btnKirimEpisodeOfCareSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Episode of Care Satu Sehat", "btnKirimEpisodeOfCareSatuSehat", this::btnKirimEpisodeOfCareSatuSehatActionPerformed);
 
-        btnCatatanCekGDS = createMenuButton("/48x48/6427847_information_note_notebook_sheet_icon.png", "Catatan Cek GDS", "btnCatatanCekGDS", new java.awt.Dimension(200, 90), this::btnCatatanCekGDSActionPerformed);
+        btnCatatanCekGDS = createMenuButton("/48x48/6427847_information_note_notebook_sheet_icon.png", "Catatan Cek GDS", "btnCatatanCekGDS", this::btnCatatanCekGDSActionPerformed);
 
-        btnKirimConditionSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Condition Satu Sehat", "btnKirimConditionSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimConditionSatuSehatActionPerformed);
+        btnKirimConditionSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Condition Satu Sehat", "btnKirimConditionSatuSehat", this::btnKirimConditionSatuSehatActionPerformed);
 
-        btnChecklistPreOperasi = createMenuButton("/48x48/7638087_writing_education_learning_pencil_note_icon.png", "Check List Pre Operasi", "btnChecklistPreOperasi", new java.awt.Dimension(200, 90), this::btnChecklistPreOperasiActionPerformed);
+        btnChecklistPreOperasi = createMenuButton("/48x48/7638087_writing_education_learning_pencil_note_icon.png", "Check List Pre Operasi", "btnChecklistPreOperasi", this::btnChecklistPreOperasiActionPerformed);
 
-        btnKirimObservationTTVSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation-TTV Satu Sehat", "btnKirimObservationTTVSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimObservationTTVSatuSehatActionPerformed);
+        btnKirimObservationTTVSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation-TTV Satu Sehat", "btnKirimObservationTTVSatuSehat", this::btnKirimObservationTTVSatuSehatActionPerformed);
 
-        btnSignInSebelumAnestesi = createMenuButton("/48x48/6012901_diagnosis_document_medical_paper_records_icon.png", "Sign-In Sebelum Anestesi", "btnSignInSebelumAnestesi", new java.awt.Dimension(200, 90), this::btnSignInSebelumAnestesiActionPerformed);
+        btnSignInSebelumAnestesi = createMenuButton("/48x48/6012901_diagnosis_document_medical_paper_records_icon.png", "Sign-In Sebelum Anestesi", "btnSignInSebelumAnestesi", this::btnSignInSebelumAnestesiActionPerformed);
 
-        btnKirimProcedureSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Procedure Satu Sehat", "btnKirimProcedureSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimProcedureSatuSehatActionPerformed);
+        btnKirimProcedureSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Procedure Satu Sehat", "btnKirimProcedureSatuSehat", this::btnKirimProcedureSatuSehatActionPerformed);
 
-        btnOperasiPerBulan = createMenuButton("/48x48/9554573_calendar_note_date_schedule_event_icon.png", "Operasi Per Bulan", "btnOperasiPerBulan", new java.awt.Dimension(200, 90), this::btnOperasiPerBulanActionPerformed);
+        btnOperasiPerBulan = createMenuButton("/48x48/9554573_calendar_note_date_schedule_event_icon.png", "Operasi Per Bulan", "btnOperasiPerBulan", this::btnOperasiPerBulanActionPerformed);
 
-        btnTimeOutSebelumInsisi = createMenuButton("/48x48/8168668_notes_paper_document_page_icon.png", "Time-Out Sebelum Insisi", "btnTimeOutSebelumInsisi", new java.awt.Dimension(200, 90), this::btnTimeOutSebelumInsisiActionPerformed);
+        btnTimeOutSebelumInsisi = createMenuButton("/48x48/8168668_notes_paper_document_page_icon.png", "Time-Out Sebelum Insisi", "btnTimeOutSebelumInsisi", this::btnTimeOutSebelumInsisiActionPerformed);
 
-        btnBarangDapur = createMenuButton("/48x48/Barang_Dapur.png", "Barang Dapur", "btnBarangDapur", new java.awt.Dimension(200, 90), this::btnBarangDapurActionPerformed);
+        btnBarangDapur = createMenuButton("/48x48/Barang_Dapur.png", "Barang Dapur", "btnBarangDapur", this::btnBarangDapurActionPerformed);
 
-        btnSignOutSebelumMenutupLuka = createMenuButton("/48x48/7172890_note_book_office_paper_document_icon.png", "Sign-Out Sebelum Menutup Luka", "btnSignOutSebelumMenutupLuka", new java.awt.Dimension(200, 90), this::btnSignOutSebelumMenutupLukaActionPerformed);
+        btnSignOutSebelumMenutupLuka = createMenuButton("/48x48/7172890_note_book_office_paper_document_icon.png", "Sign-Out Sebelum Menutup Luka", "btnSignOutSebelumMenutupLuka", this::btnSignOutSebelumMenutupLukaActionPerformed);
 
-        btnOpnameDapur = createMenuButton("/48x48/Stok_Opname_Barang_Dapur.png", "Stok Opname Barang Dapur", "btnOpnameDapur", new java.awt.Dimension(200, 90), this::btnOpnameDapurActionPerformed);
+        btnOpnameDapur = createMenuButton("/48x48/Stok_Opname_Barang_Dapur.png", "Stok Opname Barang Dapur", "btnOpnameDapur", this::btnOpnameDapurActionPerformed);
 
-        btnSuplierDapur = createMenuButton("/48x48/Suplier_Dapur.png", "Suplier Dapur", "btnSuplierDapur", new java.awt.Dimension(200, 90), this::btnSuplierDapurActionPerformed);
+        btnSuplierDapur = createMenuButton("/48x48/Suplier_Dapur.png", "Suplier Dapur", "btnSuplierDapur", this::btnSuplierDapurActionPerformed);
 
-        btnMappingVaksinSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Vaksin Satu Sehat", "btnMappingVaksinSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingVaksinSatuSehatActionPerformed);
+        btnMappingVaksinSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Vaksin Satu Sehat", "btnMappingVaksinSatuSehat", this::btnMappingVaksinSatuSehatActionPerformed);
 
-        btnKirimVaksinSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Imunisasi Satu Sehat", "btnKirimVaksinSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimVaksinSatuSehatActionPerformed);
+        btnKirimVaksinSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Imunisasi Satu Sehat", "btnKirimVaksinSatuSehat", this::btnKirimVaksinSatuSehatActionPerformed);
 
-        btnPembelianDapur = createMenuButton("/48x48/Pengadaan_Barang_Dapur.png", "Pengadaan Barang Dapur", "btnPembelianDapur", new java.awt.Dimension(200, 90), this::btnPembelianDapurActionPerformed);
+        btnPembelianDapur = createMenuButton("/48x48/Pengadaan_Barang_Dapur.png", "Pengadaan Barang Dapur", "btnPembelianDapur", this::btnPembelianDapurActionPerformed);
 
-        btnChecklistPostOperasi = createMenuButton("/48x48/5859108_book_education_handbook_medical_medicine_icon.png", "Check List Post Operasi", "btnChecklistPostOperasi", new java.awt.Dimension(200, 90), this::btnChecklistPostOperasiActionPerformed);
+        btnChecklistPostOperasi = createMenuButton("/48x48/5859108_book_education_handbook_medical_medicine_icon.png", "Check List Post Operasi", "btnChecklistPostOperasi", this::btnChecklistPostOperasiActionPerformed);
 
-        btnPengeluaranDapur = createMenuButton("/48x48/Stok_Keluar_Dapur.png", "Stok Keluar Dapur", "btnPengeluaranDapur", new java.awt.Dimension(200, 90), this::btnPengeluaranDapurActionPerformed);
+        btnPengeluaranDapur = createMenuButton("/48x48/Stok_Keluar_Dapur.png", "Stok Keluar Dapur", "btnPengeluaranDapur", this::btnPengeluaranDapurActionPerformed);
 
-        btnRiwayatBarangDapur = createMenuButton("/48x48/Riwayat_Barang_Dapur.png", "Riwayat Barang Dapur", "btnRiwayatBarangDapur", new java.awt.Dimension(200, 90), this::btnRiwayatBarangDapurActionPerformed);
+        btnRiwayatBarangDapur = createMenuButton("/48x48/Riwayat_Barang_Dapur.png", "Riwayat Barang Dapur", "btnRiwayatBarangDapur", this::btnRiwayatBarangDapurActionPerformed);
 
-        btnPermintaanDapur = createMenuButton("/48x48/Permintaan_Barang_Dapur.png", "Permintaan Barang Dapur", "btnPermintaanDapur", new java.awt.Dimension(200, 90), this::btnPermintaanDapurActionPerformed);
+        btnPermintaanDapur = createMenuButton("/48x48/Permintaan_Barang_Dapur.png", "Permintaan Barang Dapur", "btnPermintaanDapur", this::btnPermintaanDapurActionPerformed);
 
-        btnRBiayaDapur = createMenuButton("/48x48/Biaya_Pengadaan_Dapur.png", "Biaya Pengadaan Dapur", "btnRBiayaDapur", new java.awt.Dimension(200, 90), this::btnRBiayaDapurActionPerformed);
+        btnRBiayaDapur = createMenuButton("/48x48/Biaya_Pengadaan_Dapur.png", "Biaya Pengadaan Dapur", "btnRBiayaDapur", this::btnRBiayaDapurActionPerformed);
 
-        btnRekapPengadaanDapur = createMenuButton("/48x48/Rekap_Pengadaan_Dapur.png", "Rekap Pengadaan Dapur", "btnRekapPengadaanDapur", new java.awt.Dimension(200, 90), this::btnRekapPengadaanDapurActionPerformed);
+        btnRekapPengadaanDapur = createMenuButton("/48x48/Rekap_Pengadaan_Dapur.png", "Rekap Pengadaan Dapur", "btnRekapPengadaanDapur", this::btnRekapPengadaanDapurActionPerformed);
 
-        btnLimbahB3MedisCair = createMenuButton("/48x48/5958332_disease_drink water_epidemic_hydrate_infection_icon.png", "Limbah Cair B3 Medis", "btnLimbahB3MedisCair", new java.awt.Dimension(200, 90), this::btnLimbahB3MedisCairActionPerformed);
+        btnLimbahB3MedisCair = createMenuButton("/48x48/5958332_disease_drink water_epidemic_hydrate_infection_icon.png", "Limbah Cair B3 Medis", "btnLimbahB3MedisCair", this::btnLimbahB3MedisCairActionPerformed);
 
-        btnGrafikLimbahB3MedisCairPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah B3 Cair Per Tanggal", "btnGrafikLimbahB3MedisCairPerTanggal", new java.awt.Dimension(200, 90), this::btnGrafikLimbahB3MedisCairPerTanggalActionPerformed);
+        btnGrafikLimbahB3MedisCairPerTanggal = createMenuButton("/48x48/1491582080_6.png", "Limbah B3 Cair Per Tanggal", "btnGrafikLimbahB3MedisCairPerTanggal", this::btnGrafikLimbahB3MedisCairPerTanggalActionPerformed);
 
-        btnGrafikLimbahB3MedisCairPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah B3 Cair Per Bulan", "btnGrafikLimbahB3MedisCairPerBulan", new java.awt.Dimension(200, 90), this::btnGrafikLimbahB3MedisCairPerBulanActionPerformed);
+        btnGrafikLimbahB3MedisCairPerBulan = createMenuButton("/48x48/1491582015_11.png", "Limbah B3 Cair Per Bulan", "btnGrafikLimbahB3MedisCairPerBulan", this::btnGrafikLimbahB3MedisCairPerBulanActionPerformed);
 
-        btnRekapBiayaRegistrasi = createMenuButton("/48x48/473796_analytics_chart_computer_graph_laptop_icon.png", "Rekap Biaya Registrasi", "btnRekapBiayaRegistrasi", new java.awt.Dimension(200, 90), this::btnRekapBiayaRegistrasiActionPerformed);
+        btnRekapBiayaRegistrasi = createMenuButton("/48x48/473796_analytics_chart_computer_graph_laptop_icon.png", "Rekap Biaya Registrasi", "btnRekapBiayaRegistrasi", this::btnRekapBiayaRegistrasiActionPerformed);
 
-        btnRekonsiliasiObat = createMenuButton("/48x48/9016848_doctor_examination_covid-19_virus_pandemic_icon.png", "Rekonsiliasi Obat", "btnRekonsiliasiObat", new java.awt.Dimension(200, 90), this::btnRekonsiliasiObatActionPerformed);
+        btnRekonsiliasiObat = createMenuButton("/48x48/9016848_doctor_examination_covid-19_virus_pandemic_icon.png", "Rekonsiliasi Obat", "btnRekonsiliasiObat", this::btnRekonsiliasiObatActionPerformed);
 
-        btnKirimClinicalImpressionSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Clinical Impression Satu Sehat", "btnKirimClinicalImpressionSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimClinicalImpressionSatuSehatActionPerformed);
+        btnKirimClinicalImpressionSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Clinical Impression Satu Sehat", "btnKirimClinicalImpressionSatuSehat", this::btnKirimClinicalImpressionSatuSehatActionPerformed);
 
-        btnPenilaianPasienTerminal = createMenuButton("/48x48/6141428_coronavirus_covid19_isolation_patient_coronavirus isolation_icon.png", "Pengkajian Pasien Terminal", "btnPenilaianPasienTerminal", new java.awt.Dimension(200, 90), this::btnPenilaianPasienTerminalActionPerformed);
+        btnPenilaianPasienTerminal = createMenuButton("/48x48/6141428_coronavirus_covid19_isolation_patient_coronavirus isolation_icon.png", "Pengkajian Pasien Terminal", "btnPenilaianPasienTerminal", this::btnPenilaianPasienTerminalActionPerformed);
 
-        btnPersetujuanRawatInap = createMenuButton("/48x48/5983455_bed_hospital_medical_patient_icon.png", "Persetujuan Rawat Inap", "btnPersetujuanRawatInap", new java.awt.Dimension(200, 90), this::btnPersetujuanRawatInapActionPerformed);
+        btnPersetujuanRawatInap = createMenuButton("/48x48/5983455_bed_hospital_medical_patient_icon.png", "Persetujuan Rawat Inap", "btnPersetujuanRawatInap", this::btnPersetujuanRawatInapActionPerformed);
 
-        btnMonitoringReaksiTranfusi = createMenuButton("/48x48/6088722_blood_bottle_packet_icon.png", "Monitoring Reaksi Tranfusi", "btnMonitoringReaksiTranfusi", new java.awt.Dimension(200, 90), this::btnMonitoringReaksiTranfusiActionPerformed);
+        btnMonitoringReaksiTranfusi = createMenuButton("/48x48/6088722_blood_bottle_packet_icon.png", "Monitoring Reaksi Tranfusi", "btnMonitoringReaksiTranfusi", this::btnMonitoringReaksiTranfusiActionPerformed);
 
-        btnPenilaianKorbanKekerasan = createMenuButton("/48x48/3792054_blood_halloween_knife_murder_icon.png", "Pengkajian Korban Kekerasan", "btnPenilaianKorbanKekerasan", new java.awt.Dimension(200, 90), this::btnPenilaianKorbanKekerasanActionPerformed);
+        btnPenilaianKorbanKekerasan = createMenuButton("/48x48/3792054_blood_halloween_knife_murder_icon.png", "Pengkajian Korban Kekerasan", "btnPenilaianKorbanKekerasan", this::btnPenilaianKorbanKekerasanActionPerformed);
 
-        btnSkriningManagerPelayananPasien = createMenuButton("/48x48/9016855_stay_at_home_covid-19_virus_icon.png", "Skrining Manajer Pelayanan Pasien", "btnSkriningManagerPelayananPasien", new java.awt.Dimension(200, 90), this::btnSkriningManagerPelayananPasienActionPerformed);
+        btnSkriningManagerPelayananPasien = createMenuButton("/48x48/9016855_stay_at_home_covid-19_virus_icon.png", "Skrining Manajer Pelayanan Pasien", "btnSkriningManagerPelayananPasien", this::btnSkriningManagerPelayananPasienActionPerformed);
 
-        btnSkriningMPPFormA = createMenuButton("/48x48/6088113_computer_record_scan_screening_virus_icon.png", "Evaluasi Awal Manajer Pelayanan Pasien", "btnSkriningMPPFormA", new java.awt.Dimension(200, 90), this::btnSkriningMPPFormAActionPerformed);
+        btnSkriningMPPFormA = createMenuButton("/48x48/6088113_computer_record_scan_screening_virus_icon.png", "Evaluasi Awal Manajer Pelayanan Pasien", "btnSkriningMPPFormA", this::btnSkriningMPPFormAActionPerformed);
 
-        btnSkriningMPPFormB = createMenuButton("/48x48/6088152_computer_record_scan_screening_virus_icon.png", "Catatan Implementasi Manajer Pelayanan Pasien", "btnSkriningMPPFormB", new java.awt.Dimension(200, 90), this::btnSkriningMPPFormBActionPerformed);
+        btnSkriningMPPFormB = createMenuButton("/48x48/6088152_computer_record_scan_screening_virus_icon.png", "Catatan Implementasi Manajer Pelayanan Pasien", "btnSkriningMPPFormB", this::btnSkriningMPPFormBActionPerformed);
 
-        btnEdukasiPasienKeluargaRJ = createMenuButton("/48x48/6088164_clipboard_healthcare_medical_medicine_report_icon.png", "Edukasi Pasien & Keluarga Rawat Jalan", "btnEdukasiPasienKeluargaRJ", new java.awt.Dimension(200, 90), this::btnEdukasiPasienKeluargaRJActionPerformed);
+        btnEdukasiPasienKeluargaRJ = createMenuButton("/48x48/6088164_clipboard_healthcare_medical_medicine_report_icon.png", "Edukasi Pasien & Keluarga Rawat Jalan", "btnEdukasiPasienKeluargaRJ", this::btnEdukasiPasienKeluargaRJActionPerformed);
 
-        btnPenilaianPasienPenyakitMenular = createMenuButton("/48x48/5980337_coronavirus_data_disease_information_research_icon.png", "Pengkajian Pasien Penyakit Menular", "btnPenilaianPasienPenyakitMenular", new java.awt.Dimension(200, 90), this::btnPenilaianPasienPenyakitMenularActionPerformed);
+        btnPenilaianPasienPenyakitMenular = createMenuButton("/48x48/5980337_coronavirus_data_disease_information_research_icon.png", "Pengkajian Pasien Penyakit Menular", "btnPenilaianPasienPenyakitMenular", this::btnPenilaianPasienPenyakitMenularActionPerformed);
 
-        btnPemantauanPEWSDewasa = createMenuButton("/48x48/5928521_disease_fever_high_symptom_temperature_icon.png", "Pemantauan EWS Pasien Dewasa", "btnPemantauanPEWSDewasa", new java.awt.Dimension(200, 90), this::btnPemantauanPEWSDewasaActionPerformed);
+        btnPemantauanPEWSDewasa = createMenuButton("/48x48/5928521_disease_fever_high_symptom_temperature_icon.png", "Pemantauan EWS Pasien Dewasa", "btnPemantauanPEWSDewasa", this::btnPemantauanPEWSDewasaActionPerformed);
 
-        btnBPJSAntreanPerTanggalMobileJKN = createMenuButton("/48x48/vclaim.png", "Antrean Per Tanggal Mobile JKN", "btnBPJSAntreanPerTanggalMobileJKN", new java.awt.Dimension(200, 90), this::btnBPJSAntreanPerTanggalMobileJKNActionPerformed);
+        btnBPJSAntreanPerTanggalMobileJKN = createMenuButton("/48x48/vclaim.png", "Antrean Per Tanggal Mobile JKN", "btnBPJSAntreanPerTanggalMobileJKN", this::btnBPJSAntreanPerTanggalMobileJKNActionPerformed);
 
-        btnPenilaianTambahanBunuhDiri = createMenuButton("/48x48/6954610_blood_crime_kill_killer_knife_icon.png", "Pengkajian Tambahan Bunuh Diri", "btnPenilaianTambahanBunuhDiri", new java.awt.Dimension(200, 90), this::btnPenilaianTambahanBunuhDiriActionPerformed);
+        btnPenilaianTambahanBunuhDiri = createMenuButton("/48x48/6954610_blood_crime_kill_killer_knife_icon.png", "Pengkajian Tambahan Bunuh Diri", "btnPenilaianTambahanBunuhDiri", this::btnPenilaianTambahanBunuhDiriActionPerformed);
 
-        btnPenilaianTambahanPerilakuKekerasan = createMenuButton("/48x48/9191525_nonviolence_violence_weapon_criminal_combat_icon.png", "Pengkajian Tambahan Perilaku Kekerasan", "btnPenilaianTambahanPerilakuKekerasan", new java.awt.Dimension(200, 90), this::btnPenilaianTambahanPerilakuKekerasanActionPerformed);
+        btnPenilaianTambahanPerilakuKekerasan = createMenuButton("/48x48/9191525_nonviolence_violence_weapon_criminal_combat_icon.png", "Pengkajian Tambahan Perilaku Kekerasan", "btnPenilaianTambahanPerilakuKekerasan", this::btnPenilaianTambahanPerilakuKekerasanActionPerformed);
 
-        btnPenilaianTambahanMelarikanDiri = createMenuButton("/48x48/6141439_healthcare_marathon_run_running_exercise regularly_icon.png", "Pengkajian Tambahan Melarikan Diri", "btnPenilaianTambahanMelarikanDiri", new java.awt.Dimension(200, 90), this::btnPenilaianTambahanMelarikanDiriActionPerformed);
+        btnPenilaianTambahanMelarikanDiri = createMenuButton("/48x48/6141439_healthcare_marathon_run_running_exercise regularly_icon.png", "Pengkajian Tambahan Melarikan Diri", "btnPenilaianTambahanMelarikanDiri", this::btnPenilaianTambahanMelarikanDiriActionPerformed);
 
-        btnPersetujuanPenundaanPelayanan = createMenuButton("/48x48/9160890_clock_commerce_shopping_online_store_icon.png", "Persetujuan Penundaan Pelayanan", "btnPersetujuanPenundaanPelayanan", new java.awt.Dimension(200, 90), this::btnPersetujuanPenundaanPelayananActionPerformed);
+        btnPersetujuanPenundaanPelayanan = createMenuButton("/48x48/9160890_clock_commerce_shopping_online_store_icon.png", "Persetujuan Penundaan Pelayanan", "btnPersetujuanPenundaanPelayanan", this::btnPersetujuanPenundaanPelayananActionPerformed);
 
-        btnSisaDietPasien = createMenuButton("/48x48/5296685_fish_food_meal_rice_salmon_icon.png", "Sisa Diet Pasien", "btnSisaDietPasien", new java.awt.Dimension(200, 90), this::btnSisaDietPasienActionPerformed);
+        btnSisaDietPasien = createMenuButton("/48x48/5296685_fish_food_meal_rice_salmon_icon.png", "Sisa Diet Pasien", "btnSisaDietPasien", this::btnSisaDietPasienActionPerformed);
 
-        btnPenilaianAwalMedisRalanBedahMulut = createMenuButton("/48x48/5947116_avoid_do not_hand_mouth_touch_icon.png", "Awal Medis Ralan Bedah Mulut", "btnPenilaianAwalMedisRalanBedahMulut", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanBedahMulutActionPerformed);
+        btnPenilaianAwalMedisRalanBedahMulut = createMenuButton("/48x48/5947116_avoid_do not_hand_mouth_touch_icon.png", "Awal Medis Ralan Bedah Mulut", "btnPenilaianAwalMedisRalanBedahMulut", this::btnPenilaianAwalMedisRalanBedahMulutActionPerformed);
 
-        btnPenilaianPasienKeracunan = createMenuButton("/48x48/2730370_inkcontober_mushroom_poison_icon.png", "Pengkajian Pasien Keracunan", "btnPenilaianPasienKeracunan", new java.awt.Dimension(200, 90), this::btnPenilaianPasienKeracunanActionPerformed);
+        btnPenilaianPasienKeracunan = createMenuButton("/48x48/2730370_inkcontober_mushroom_poison_icon.png", "Pengkajian Pasien Keracunan", "btnPenilaianPasienKeracunan", this::btnPenilaianPasienKeracunanActionPerformed);
 
-        btnPemantauanMEOWS = createMenuButton("/48x48/7744777_pregnant_mothers day_mother_mom_love_icon.png", "Pemantauan MEOWS Pasien Obstetri", "btnPemantauanMEOWS", new java.awt.Dimension(200, 90), this::btnPemantauanMEOWSActionPerformed);
+        btnPemantauanMEOWS = createMenuButton("/48x48/7744777_pregnant_mothers day_mother_mom_love_icon.png", "Pemantauan MEOWS Pasien Obstetri", "btnPemantauanMEOWS", this::btnPemantauanMEOWSActionPerformed);
 
-        btnCatatanADIMEGizi = createMenuButton("/48x48/6771580_book_education_learning_school_science_icon.png", "Catatan ADIME Gizi", "btnCatatanADIMEGizi", new java.awt.Dimension(200, 90), this::btnCatatanADIMEGiziActionPerformed);
+        btnCatatanADIMEGizi = createMenuButton("/48x48/6771580_book_education_learning_school_science_icon.png", "Catatan ADIME Gizi", "btnCatatanADIMEGizi", this::btnCatatanADIMEGiziActionPerformed);
 
-        btnMasterMasalahKeperawatanGeriatri = createMenuButton("/48x48/3099440_old_man_icon.png", "Master Masalah Keperawatan Geriatri", "btnMasterMasalahKeperawatanGeriatri", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanGeriatriActionPerformed);
+        btnMasterMasalahKeperawatanGeriatri = createMenuButton("/48x48/3099440_old_man_icon.png", "Master Masalah Keperawatan Geriatri", "btnMasterMasalahKeperawatanGeriatri", this::btnMasterMasalahKeperawatanGeriatriActionPerformed);
 
-        btnMasterRencanaKeperawatanGeriatri = createMenuButton("/48x48/3099440_old_man_icon.png", "Master Rencana Keperawatan Geriatri", "btnMasterRencanaKeperawatanGeriatri", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanGeriatriActionPerformed);
+        btnMasterRencanaKeperawatanGeriatri = createMenuButton("/48x48/3099440_old_man_icon.png", "Master Rencana Keperawatan Geriatri", "btnMasterRencanaKeperawatanGeriatri", this::btnMasterRencanaKeperawatanGeriatriActionPerformed);
 
-        btnPenilaianAwalKeperawatanRalanGeriatri = createMenuButton("/48x48/7717242_grandmother_old_woman_female_avatar_icon.png", "Awal Keperawatan Ralan Geriatri", "btnPenilaianAwalKeperawatanRalanGeriatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRalanGeriatriActionPerformed);
+        btnPenilaianAwalKeperawatanRalanGeriatri = createMenuButton("/48x48/7717242_grandmother_old_woman_female_avatar_icon.png", "Awal Keperawatan Ralan Geriatri", "btnPenilaianAwalKeperawatanRalanGeriatri", this::btnPenilaianAwalKeperawatanRalanGeriatriActionPerformed);
 
-        btnChecklistKriteriaMasukHCU = createMenuButton("/48x48/6088703_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Masuk HCU", "btnChecklistKriteriaMasukHCU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaMasukHCUActionPerformed);
+        btnChecklistKriteriaMasukHCU = createMenuButton("/48x48/6088703_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Masuk HCU", "btnChecklistKriteriaMasukHCU", this::btnChecklistKriteriaMasukHCUActionPerformed);
 
-        btnChecklistKriteriaKeluarHCU = createMenuButton("/48x48/6088703_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Keluar HCU", "btnChecklistKriteriaKeluarHCU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaKeluarHCUActionPerformed);
+        btnChecklistKriteriaKeluarHCU = createMenuButton("/48x48/6088703_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Keluar HCU", "btnChecklistKriteriaKeluarHCU", this::btnChecklistKriteriaKeluarHCUActionPerformed);
 
-        btnChecklistKriteriaMasukNICU = createMenuButton("/48x48/6088517_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Masuk NICU", "btnChecklistKriteriaMasukNICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaMasukNICUActionPerformed);
+        btnChecklistKriteriaMasukNICU = createMenuButton("/48x48/6088517_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Masuk NICU", "btnChecklistKriteriaMasukNICU", this::btnChecklistKriteriaMasukNICUActionPerformed);
 
-        btnChecklistKriteriaMasukPICU = createMenuButton("/48x48/1934246_boy_child_kid_people_playing_icon.png", "Check List Kriteria Masuk PICU", "btnChecklistKriteriaMasukPICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaMasukPICUActionPerformed);
+        btnChecklistKriteriaMasukPICU = createMenuButton("/48x48/1934246_boy_child_kid_people_playing_icon.png", "Check List Kriteria Masuk PICU", "btnChecklistKriteriaMasukPICU", this::btnChecklistKriteriaMasukPICUActionPerformed);
 
-        btnChecklistKriteriaKeluarPICU = createMenuButton("/48x48/1934246_boy_child_kid_people_playing_icon.png", "Check List Kriteria Keluar PICU", "btnChecklistKriteriaKeluarPICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaKeluarPICUActionPerformed);
+        btnChecklistKriteriaKeluarPICU = createMenuButton("/48x48/1934246_boy_child_kid_people_playing_icon.png", "Check List Kriteria Keluar PICU", "btnChecklistKriteriaKeluarPICU", this::btnChecklistKriteriaKeluarPICUActionPerformed);
 
-        btnChecklistKriteriaKeluarNICU = createMenuButton("/48x48/6088517_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Keluar NICU", "btnChecklistKriteriaKeluarNICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaKeluarNICUActionPerformed);
+        btnChecklistKriteriaKeluarNICU = createMenuButton("/48x48/6088517_beat_care_heart_pulse_time_icon.png", "Check List Kriteria Keluar NICU", "btnChecklistKriteriaKeluarNICU", this::btnChecklistKriteriaKeluarNICUActionPerformed);
 
-        btnPenilaianRisikoDekubitus = createMenuButton("/48x48/6090058_bed_rent_room_icon.png", "Pengkajian Risiko Dekubitus", "btnPenilaianRisikoDekubitus", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoDekubitusActionPerformed);
+        btnPenilaianRisikoDekubitus = createMenuButton("/48x48/6090058_bed_rent_room_icon.png", "Pengkajian Risiko Dekubitus", "btnPenilaianRisikoDekubitus", this::btnPenilaianRisikoDekubitusActionPerformed);
 
-        btnMasterMenolakAnjuranMedis = createMenuButton("/48x48/9191497_nonviolence_violence_cruelty_hit_thrash_icon.png", "Master Menolak Anjuran Medis", "btnMasterMenolakAnjuranMedis", new java.awt.Dimension(200, 90), this::btnMasterMenolakAnjuranMedisActionPerformed);
+        btnMasterMenolakAnjuranMedis = createMenuButton("/48x48/9191497_nonviolence_violence_cruelty_hit_thrash_icon.png", "Master Menolak Anjuran Medis", "btnMasterMenolakAnjuranMedis", this::btnMasterMenolakAnjuranMedisActionPerformed);
 
-        btnPenolakanAnjuranMedis = createMenuButton("/48x48/8960611_hospitals_hospital_building_medic_health_icon.png", "Penolakan Anjuran Medis", "btnPenolakanAnjuranMedis", new java.awt.Dimension(200, 90), this::btnPenolakanAnjuranMedisActionPerformed);
+        btnPenolakanAnjuranMedis = createMenuButton("/48x48/8960611_hospitals_hospital_building_medic_health_icon.png", "Penolakan Anjuran Medis", "btnPenolakanAnjuranMedis", this::btnPenolakanAnjuranMedisActionPerformed);
 
-        btnPersetujuanPemeriksaanHIV = createMenuButton("/48x48/6217201_corona_coronavirus_test_tube_virus_icon.png", "Persetujuan Pemeriksaan HIV", "btnPersetujuanPemeriksaanHIV", new java.awt.Dimension(200, 90), this::btnPersetujuanPemeriksaanHIVActionPerformed);
+        btnPersetujuanPemeriksaanHIV = createMenuButton("/48x48/6217201_corona_coronavirus_test_tube_virus_icon.png", "Persetujuan Pemeriksaan HIV", "btnPersetujuanPemeriksaanHIV", this::btnPersetujuanPemeriksaanHIVActionPerformed);
 
-        btnLaporanTahunanPenolakanAnjuranMedis = createMenuButton("/48x48/9929050_analysis_graph_growth_report_statistics_icon.png", "Laporan Tahunan Penolakan Anjuran Medis", "btnLaporanTahunanPenolakanAnjuranMedis", new java.awt.Dimension(200, 90), this::btnLaporanTahunanPenolakanAnjuranMedisActionPerformed);
+        btnLaporanTahunanPenolakanAnjuranMedis = createMenuButton("/48x48/9929050_analysis_graph_growth_report_statistics_icon.png", "Laporan Tahunan Penolakan Anjuran Medis", "btnLaporanTahunanPenolakanAnjuranMedis", this::btnLaporanTahunanPenolakanAnjuranMedisActionPerformed);
 
-        btnMasterTemplateLaporanOperasi = createMenuButton("/48x48/5983459_avatar_coronavirus_covid19_doctor_health_icon.png", "Master Template Laporan Operasi", "btnMasterTemplateLaporanOperasi", new java.awt.Dimension(200, 90), this::btnMasterTemplateLaporanOperasiActionPerformed);
+        btnMasterTemplateLaporanOperasi = createMenuButton("/48x48/5983459_avatar_coronavirus_covid19_doctor_health_icon.png", "Master Template Laporan Operasi", "btnMasterTemplateLaporanOperasi", this::btnMasterTemplateLaporanOperasiActionPerformed);
 
-        btnDokumentasiTindakanESWL = createMenuButton("/48x48/6087984_disease_infected_infection_kidney_icon.png", "Dokumentasi Tindakan ESWL", "btnDokumentasiTindakanESWL", new java.awt.Dimension(200, 90), this::btnDokumentasiTindakanESWLActionPerformed);
+        btnDokumentasiTindakanESWL = createMenuButton("/48x48/6087984_disease_infected_infection_kidney_icon.png", "Dokumentasi Tindakan ESWL", "btnDokumentasiTindakanESWL", this::btnDokumentasiTindakanESWLActionPerformed);
 
-        btnChecklistKriteriaMasukICU = createMenuButton("/48x48/6088168_care_drip_health_recovery_treatment_icon.png", "Check List Kriteria Masuk ICU", "btnChecklistKriteriaMasukICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaMasukICUActionPerformed);
+        btnChecklistKriteriaMasukICU = createMenuButton("/48x48/6088168_care_drip_health_recovery_treatment_icon.png", "Check List Kriteria Masuk ICU", "btnChecklistKriteriaMasukICU", this::btnChecklistKriteriaMasukICUActionPerformed);
 
-        btnChecklistKriteriaKeluarICU = createMenuButton("/48x48/6088168_care_drip_health_recovery_treatment_icon.png", "Check List Kriteria Keluar ICU", "btnChecklistKriteriaKeluarICU", new java.awt.Dimension(200, 90), this::btnChecklistKriteriaKeluarICUActionPerformed);
+        btnChecklistKriteriaKeluarICU = createMenuButton("/48x48/6088168_care_drip_health_recovery_treatment_icon.png", "Check List Kriteria Keluar ICU", "btnChecklistKriteriaKeluarICU", this::btnChecklistKriteriaKeluarICUActionPerformed);
 
-        btnChecklistKesiapanAnestesi = createMenuButton("/48x48/7479646_questionnaire_survey_checklist_list_clipboard_icon.png", "Check List Kesiapan Anestesi", "btnChecklistKesiapanAnestesi", new java.awt.Dimension(200, 90), this::btnChecklistKesiapanAnestesiActionPerformed);
+        btnChecklistKesiapanAnestesi = createMenuButton("/48x48/7479646_questionnaire_survey_checklist_list_clipboard_icon.png", "Check List Kesiapan Anestesi", "btnChecklistKesiapanAnestesi", this::btnChecklistKesiapanAnestesiActionPerformed);
 
-        btnDataFollowUpDBD = createMenuButton("/48x48/5972298_carrier_insect_mosquito_transmission_virus_icon.png", "Follow Up DBD", "btnDataFollowUpDBD", new java.awt.Dimension(200, 90), this::btnDataFollowUpDBDActionPerformed);
+        btnDataFollowUpDBD = createMenuButton("/48x48/5972298_carrier_insect_mosquito_transmission_virus_icon.png", "Follow Up DBD", "btnDataFollowUpDBD", this::btnDataFollowUpDBDActionPerformed);
 
-        btnPengajuanBiayaKuangan = createMenuButton("/48x48/7013431_file_document_finance_business_laptop_icon.png", "Pengajuan Biaya", "btnPengajuanBiayaKuangan", new java.awt.Dimension(200, 90), this::btnPengajuanBiayaKuanganActionPerformed);
+        btnPengajuanBiayaKuangan = createMenuButton("/48x48/7013431_file_document_finance_business_laptop_icon.png", "Pengajuan Biaya", "btnPengajuanBiayaKuangan", this::btnPengajuanBiayaKuanganActionPerformed);
 
-        btnPenilaianRisikoJatuhNeonatus = createMenuButton("/48x48/7717236_hand_baby_kid_motherhood_mothers_icon.png", "Pengkajian Lanjutan Risiko Jatuh Neonatus", "btnPenilaianRisikoJatuhNeonatus", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhNeonatusActionPerformed);
+        btnPenilaianRisikoJatuhNeonatus = createMenuButton("/48x48/7717236_hand_baby_kid_motherhood_mothers_icon.png", "Pengkajian Lanjutan Risiko Jatuh Neonatus", "btnPenilaianRisikoJatuhNeonatus", this::btnPenilaianRisikoJatuhNeonatusActionPerformed);
 
-        btnPemeriksaanFisikRalanPerPenyakit = createMenuButton("/48x48/9161307_graph_user_chart_statistics_business_icon.png", "Pemeriksaan Fisik Ralan Per Penyakit", "btnPemeriksaanFisikRalanPerPenyakit", new java.awt.Dimension(200, 90), this::btnPemeriksaanFisikRalanPerPenyakitActionPerformed);
+        btnPemeriksaanFisikRalanPerPenyakit = createMenuButton("/48x48/9161307_graph_user_chart_statistics_business_icon.png", "Pemeriksaan Fisik Ralan Per Penyakit", "btnPemeriksaanFisikRalanPerPenyakit", this::btnPemeriksaanFisikRalanPerPenyakitActionPerformed);
 
-        btnPenilaianRisikoJatuhGeriatri = createMenuButton("/48x48/5958966_mask_medical_pollution_security_icon.png", "Pengkajian Lanjutan Risiko Jatuh Geriatri", "btnPenilaianRisikoJatuhGeriatri", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhGeriatriActionPerformed);
+        btnPenilaianRisikoJatuhGeriatri = createMenuButton("/48x48/5958966_mask_medical_pollution_security_icon.png", "Pengkajian Lanjutan Risiko Jatuh Geriatri", "btnPenilaianRisikoJatuhGeriatri", this::btnPenilaianRisikoJatuhGeriatriActionPerformed);
 
-        btnPersetujuanPengajuanBiaya = createMenuButton("/48x48/7013438_office_briefcase_business_bag_finance_icon.png", "Persetujuan Pengajuan Biaya", "btnPersetujuanPengajuanBiaya", new java.awt.Dimension(200, 90), this::btnPersetujuanPengajuanBiayaActionPerformed);
+        btnPersetujuanPengajuanBiaya = createMenuButton("/48x48/7013438_office_briefcase_business_bag_finance_icon.png", "Persetujuan Pengajuan Biaya", "btnPersetujuanPengajuanBiaya", this::btnPersetujuanPengajuanBiayaActionPerformed);
 
-        btnPemantauanEWSNeonatus = createMenuButton("/48x48/7717229_mom_family_baby_kid_child_icon.png", "Pemantauan EWS Pasien Neonatus", "btnPemantauanEWSNeonatus", new java.awt.Dimension(200, 90), this::btnPemantauanEWSNeonatusActionPerformed);
+        btnPemantauanEWSNeonatus = createMenuButton("/48x48/7717229_mom_family_baby_kid_child_icon.png", "Pemantauan EWS Pasien Neonatus", "btnPemantauanEWSNeonatus", this::btnPemantauanEWSNeonatusActionPerformed);
 
-        btnValidasiPersetujuanPengajuanBiaya = createMenuButton("/48x48/7013442_finance_business_money_payment_inflation_icon.png", "Validasi Persetujuan Pengajuan Biaya", "btnValidasiPersetujuanPengajuanBiaya", new java.awt.Dimension(200, 90), this::btnValidasiPersetujuanPengajuanBiayaActionPerformed);
+        btnValidasiPersetujuanPengajuanBiaya = createMenuButton("/48x48/7013442_finance_business_money_payment_inflation_icon.png", "Validasi Persetujuan Pengajuan Biaya", "btnValidasiPersetujuanPengajuanBiaya", this::btnValidasiPersetujuanPengajuanBiayaActionPerformed);
 
-        btnRiwayatPerawatanICare = createMenuButton("/48x48/bpjs.png", "Riwayat Perawatan ICare BPJS", "btnRiwayatPerawatanICare", new java.awt.Dimension(200, 90), this::btnRiwayatPerawatanICareActionPerformed);
+        btnRiwayatPerawatanICare = createMenuButton("/48x48/bpjs.png", "Riwayat Perawatan ICare BPJS", "btnRiwayatPerawatanICare", this::btnRiwayatPerawatanICareActionPerformed);
 
-        btnRekapPengajuanBiaya = createMenuButton("/48x48/1901528_business_chart_infographic_icon.png", "Rekap Pengajuan Biaya", "btnRekapPengajuanBiaya", new java.awt.Dimension(200, 90), this::btnRekapPengajuanBiayaActionPerformed);
+        btnRekapPengajuanBiaya = createMenuButton("/48x48/1901528_business_chart_infographic_icon.png", "Rekap Pengajuan Biaya", "btnRekapPengajuanBiaya", this::btnRekapPengajuanBiayaActionPerformed);
 
-        btnPenilaianAwalMedisRalanKulitKelamin = createMenuButton("/48x48/1343433_sex_penis_dildo_icon.png", "Awal Medis Ralan Kulit & Kelamin", "btnPenilaianAwalMedisRalanKulitKelamin", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanKulitKelaminActionPerformed);
+        btnPenilaianAwalMedisRalanKulitKelamin = createMenuButton("/48x48/1343433_sex_penis_dildo_icon.png", "Awal Medis Ralan Kulit & Kelamin", "btnPenilaianAwalMedisRalanKulitKelamin", this::btnPenilaianAwalMedisRalanKulitKelaminActionPerformed);
 
-        btnHostToHostBankMandiri = createMenuButton("/48x48/mandiri.png", "Host To Host Bank Mandiri", "btnHostToHostBankMandiri", new java.awt.Dimension(200, 90), this::btnHostToHostBankMandiriActionPerformed);
+        btnHostToHostBankMandiri = createMenuButton("/48x48/mandiri.png", "Host To Host Bank Mandiri", "btnHostToHostBankMandiri", this::btnHostToHostBankMandiriActionPerformed);
 
-        btnPenilaianLevelKecemasanRanapAnak = createMenuButton("/48x48/8468129_dead_death_fear_grim_horror_icon.png", "Pengkajian Level Kecemasan Ranap Anak", "btnPenilaianLevelKecemasanRanapAnak", new java.awt.Dimension(200, 90), this::btnPenilaianLevelKecemasanRanapAnakActionPerformed);
+        btnPenilaianLevelKecemasanRanapAnak = createMenuButton("/48x48/8468129_dead_death_fear_grim_horror_icon.png", "Pengkajian Level Kecemasan Ranap Anak", "btnPenilaianLevelKecemasanRanapAnak", this::btnPenilaianLevelKecemasanRanapAnakActionPerformed);
 
-        btnPenilaianAwalMedisHemodialisa = createMenuButton("/48x48/6087984_disease_infected_infection_kidney_icon.png", "Awal Medis Pasien Hemodialisa", "btnPenilaianAwalMedisHemodialisa", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisHemodialisaActionPerformed);
+        btnPenilaianAwalMedisHemodialisa = createMenuButton("/48x48/6087984_disease_infected_infection_kidney_icon.png", "Awal Medis Pasien Hemodialisa", "btnPenilaianAwalMedisHemodialisa", this::btnPenilaianAwalMedisHemodialisaActionPerformed);
 
-        btnPenilaianRisikoJatuhPsikiatri = createMenuButton("/48x48/9803221_man_fall_holiday_autumn_tradition_icon.png", "Pengkajian Lanjutan Risiko Jatuh Psikiatri", "btnPenilaianRisikoJatuhPsikiatri", new java.awt.Dimension(200, 90), this::btnPenilaianRisikoJatuhPsikiatriActionPerformed);
+        btnPenilaianRisikoJatuhPsikiatri = createMenuButton("/48x48/9803221_man_fall_holiday_autumn_tradition_icon.png", "Pengkajian Lanjutan Risiko Jatuh Psikiatri", "btnPenilaianRisikoJatuhPsikiatri", this::btnPenilaianRisikoJatuhPsikiatriActionPerformed);
 
-        btnPenilaianLanjutanSkriningFungsional = createMenuButton("/48x48/6000610_covid19_people_scan_tempurature_virus_icon.png", "Pengkajian Lanjutan Skrining Fungsional", "btnPenilaianLanjutanSkriningFungsional", new java.awt.Dimension(200, 90), this::btnPenilaianLanjutanSkriningFungsionalActionPerformed);
+        btnPenilaianLanjutanSkriningFungsional = createMenuButton("/48x48/6000610_covid19_people_scan_tempurature_virus_icon.png", "Pengkajian Lanjutan Skrining Fungsional", "btnPenilaianLanjutanSkriningFungsional", this::btnPenilaianLanjutanSkriningFungsionalActionPerformed);
 
-        btnPenilaianAwalMedisRalanRehabMedik = createMenuButton("/48x48/6141446_convalescence_covid19_recovered_recuperate_rehabilitation_icon.png", "Awal Medis Ralan Fisik & Rehabilitasi", "btnPenilaianAwalMedisRalanRehabMedik", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanRehabMedikActionPerformed);
+        btnPenilaianAwalMedisRalanRehabMedik = createMenuButton("/48x48/6141446_convalescence_covid19_recovered_recuperate_rehabilitation_icon.png", "Awal Medis Ralan Fisik & Rehabilitasi", "btnPenilaianAwalMedisRalanRehabMedik", this::btnPenilaianAwalMedisRalanRehabMedikActionPerformed);
 
-        btnTemplatePersetujuanPenolakanTindakan = createMenuButton("/48x48/5859116_hospital_hygiene_masks_medical_surgery_icon.png", "Template Persetujuan Penolakan Tindakan", "btnTemplatePersetujuanPenolakanTindakan", new java.awt.Dimension(200, 90), this::btnTemplatePersetujuanPenolakanTindakanActionPerformed);
+        btnTemplatePersetujuanPenolakanTindakan = createMenuButton("/48x48/5859116_hospital_hygiene_masks_medical_surgery_icon.png", "Template Persetujuan Penolakan Tindakan", "btnTemplatePersetujuanPenolakanTindakan", this::btnTemplatePersetujuanPenolakanTindakanActionPerformed);
 
-        btnPenilaianAwalMedisRalanIGDPsikiatri = createMenuButton("/48x48/6141467_covid19_health_problem_tired_hard breathing_icon.png", "Awal Medis IGD Psikiatri", "btnPenilaianAwalMedisRalanIGDPsikiatri", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanIGDPsikiatriActionPerformed);
+        btnPenilaianAwalMedisRalanIGDPsikiatri = createMenuButton("/48x48/6141467_covid19_health_problem_tired_hard breathing_icon.png", "Awal Medis IGD Psikiatri", "btnPenilaianAwalMedisRalanIGDPsikiatri", this::btnPenilaianAwalMedisRalanIGDPsikiatriActionPerformed);
 
-        btnBPJSReferensiSettingPPKApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Setting PPK Apotek BPJS", "btnBPJSReferensiSettingPPKApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiSettingPPKApotekActionPerformed);
+        btnBPJSReferensiSettingPPKApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Setting PPK Apotek BPJS", "btnBPJSReferensiSettingPPKApotek", this::btnBPJSReferensiSettingPPKApotekActionPerformed);
 
-        btnBPJSReferensiObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Obat Apotek BPJS", "btnBPJSReferensiObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSReferensiObatApotekActionPerformed);
+        btnBPJSReferensiObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Referensi Obat Apotek BPJS", "btnBPJSReferensiObatApotek", this::btnBPJSReferensiObatApotekActionPerformed);
 
-        btnPembayaranBankMandiri = createMenuButton("/48x48/mandiri.png", "Pembayaran Bank Mandiri", "btnPembayaranBankMandiri", new java.awt.Dimension(200, 90), this::btnPembayaranBankMandiriActionPerformed);
+        btnPembayaranBankMandiri = createMenuButton("/48x48/mandiri.png", "Pembayaran Bank Mandiri", "btnPembayaranBankMandiri", this::btnPembayaranBankMandiriActionPerformed);
 
-        btnBPJSMapingObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Mapping Obat Apotek BPJS", "btnBPJSMapingObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSMapingObatApotekActionPerformed);
+        btnBPJSMapingObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Mapping Obat Apotek BPJS", "btnBPJSMapingObatApotek", this::btnBPJSMapingObatApotekActionPerformed);
 
-        btnPenilaianUlangNyeri = createMenuButton("/48x48/5725022_head_headache_migraine_pain_severe_icon.png", "Pengkajian Ulang Nyeri", "btnPenilaianUlangNyeri", new java.awt.Dimension(200, 90), this::btnPenilaianUlangNyeriActionPerformed);
+        btnPenilaianUlangNyeri = createMenuButton("/48x48/5725022_head_headache_migraine_pain_severe_icon.png", "Pengkajian Ulang Nyeri", "btnPenilaianUlangNyeri", this::btnPenilaianUlangNyeriActionPerformed);
 
-        btnPenilaianTerapiWicara = createMenuButton("/48x48/2185069_dental_dentist_halitosis_human_mouth_icon.png", "Pengkajian Terapi Wicara", "btnPenilaianTerapiWicara", new java.awt.Dimension(200, 90), this::btnPenilaianTerapiWicaraActionPerformed);
+        btnPenilaianTerapiWicara = createMenuButton("/48x48/2185069_dental_dentist_halitosis_human_mouth_icon.png", "Pengkajian Terapi Wicara", "btnPenilaianTerapiWicara", this::btnPenilaianTerapiWicaraActionPerformed);
 
-        btnPengkajianRestrain = createMenuButton("/48x48/3841816_chain_hyperlink_interface_link_multimedia_icon.png", "Pengkajian Restrain", "btnPengkajianRestrain", new java.awt.Dimension(200, 90), this::btnPengkajianRestrainActionPerformed);
+        btnPengkajianRestrain = createMenuButton("/48x48/3841816_chain_hyperlink_interface_link_multimedia_icon.png", "Pengkajian Restrain", "btnPengkajianRestrain", this::btnPengkajianRestrainActionPerformed);
 
-        btnBPJSKunjunganSEPApotek = createMenuButton("/48x48/bpjs_apotek.png", "Pencarian SEP Apotek BPJS", "btnBPJSKunjunganSEPApotek", new java.awt.Dimension(200, 90), this::btnBPJSKunjunganSEPApotekActionPerformed);
+        btnBPJSKunjunganSEPApotek = createMenuButton("/48x48/bpjs_apotek.png", "Pencarian SEP Apotek BPJS", "btnBPJSKunjunganSEPApotek", this::btnBPJSKunjunganSEPApotekActionPerformed);
 
-        btnBPJSMonitoringKlaimApotek = createMenuButton("/48x48/bpjs_apotek.png", "Monitoring Klaim Apotek BPJS", "btnBPJSMonitoringKlaimApotek", new java.awt.Dimension(200, 90), this::btnBPJSMonitoringKlaimApotekActionPerformed);
+        btnBPJSMonitoringKlaimApotek = createMenuButton("/48x48/bpjs_apotek.png", "Monitoring Klaim Apotek BPJS", "btnBPJSMonitoringKlaimApotek", this::btnBPJSMonitoringKlaimApotekActionPerformed);
 
-        btnPenilaianAwalMedisRalanParu = createMenuButton("/48x48/6217209_anatomy_human_lung_medical_organ_icon.png", "Awal Medis Ralan Paru", "btnPenilaianAwalMedisRalanParu", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanParuActionPerformed);
+        btnPenilaianAwalMedisRalanParu = createMenuButton("/48x48/6217209_anatomy_human_lung_medical_organ_icon.png", "Awal Medis Ralan Paru", "btnPenilaianAwalMedisRalanParu", this::btnPenilaianAwalMedisRalanParuActionPerformed);
 
-        btnBPJSDaftarPelayananObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Daftar Pelayanan Obat Apotek BPJS", "btnBPJSDaftarPelayananObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSDaftarPelayananObatApotekActionPerformed);
+        btnBPJSDaftarPelayananObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Daftar Pelayanan Obat Apotek BPJS", "btnBPJSDaftarPelayananObatApotek", this::btnBPJSDaftarPelayananObatApotekActionPerformed);
 
-        btnCatatanKeperawatanRalan = createMenuButton("/48x48/6123164_avatar_frontliner_male_medical staff_nurse_icon.png", "Catatan Keperawatan Ralan", "btnCatatanKeperawatanRalan", new java.awt.Dimension(200, 90), this::btnCatatanKeperawatanRalanActionPerformed);
+        btnCatatanKeperawatanRalan = createMenuButton("/48x48/6123164_avatar_frontliner_male_medical staff_nurse_icon.png", "Catatan Keperawatan Ralan", "btnCatatanKeperawatanRalan", this::btnCatatanKeperawatanRalanActionPerformed);
 
-        btnCatatanPersalinan = createMenuButton("/48x48/375264_baby_fetus_pregnancy_icon.png", "Catatan Persalinan", "btnCatatanPersalinan", new java.awt.Dimension(200, 90), this::btnCatatanPersalinanActionPerformed);
+        btnCatatanPersalinan = createMenuButton("/48x48/375264_baby_fetus_pregnancy_icon.png", "Catatan Persalinan", "btnCatatanPersalinan", this::btnCatatanPersalinanActionPerformed);
 
-        btnSkorAldrettePascaAnestesi = createMenuButton("/48x48/8168606_stocks_chart_graph_analytics_icon.png", "Skor Aldrette Pasca Anestesi", "btnSkorAldrettePascaAnestesi", new java.awt.Dimension(200, 90), this::btnSkorAldrettePascaAnestesiActionPerformed);
+        btnSkorAldrettePascaAnestesi = createMenuButton("/48x48/8168606_stocks_chart_graph_analytics_icon.png", "Skor Aldrette Pasca Anestesi", "btnSkorAldrettePascaAnestesi", this::btnSkorAldrettePascaAnestesiActionPerformed);
 
-        btnSkorStewardPascaAnestesi = createMenuButton("/48x48/1688863_chart_graph_seo_icon.png", "Skor Steward Pasca Anestesi", "btnSkorStewardPascaAnestesi", new java.awt.Dimension(200, 90), this::btnSkorStewardPascaAnestesiActionPerformed);
+        btnSkorStewardPascaAnestesi = createMenuButton("/48x48/1688863_chart_graph_seo_icon.png", "Skor Steward Pasca Anestesi", "btnSkorStewardPascaAnestesi", this::btnSkorStewardPascaAnestesiActionPerformed);
 
-        btnSkorBromagePascaAnestesi = createMenuButton("/48x48/282476_analytics_chart_icon.png", "Skor Bromage Pasca Anestesi", "btnSkorBromagePascaAnestesi", new java.awt.Dimension(200, 90), this::btnSkorBromagePascaAnestesiActionPerformed);
+        btnSkorBromagePascaAnestesi = createMenuButton("/48x48/282476_analytics_chart_icon.png", "Skor Bromage Pasca Anestesi", "btnSkorBromagePascaAnestesi", this::btnSkorBromagePascaAnestesiActionPerformed);
 
-        btnPenilaianPreInduksi = createMenuButton("/48x48/6008650_breath_breathing_difficult_healthcare_illness_icon.png", "Pengkajian Pre Induksi", "btnPenilaianPreInduksi", new java.awt.Dimension(200, 90), this::btnPenilaianPreInduksiActionPerformed);
+        btnPenilaianPreInduksi = createMenuButton("/48x48/6008650_breath_breathing_difficult_healthcare_illness_icon.png", "Pengkajian Pre Induksi", "btnPenilaianPreInduksi", this::btnPenilaianPreInduksiActionPerformed);
 
-        btnHasilUSGUrologi = createMenuButton("/48x48/6088090_disease_infected_infection_kidney_icon.png", "Hasil USG Urologi", "btnHasilUSGUrologi", new java.awt.Dimension(200, 90), this::btnHasilUSGUrologiActionPerformed);
+        btnHasilUSGUrologi = createMenuButton("/48x48/6088090_disease_infected_infection_kidney_icon.png", "Hasil USG Urologi", "btnHasilUSGUrologi", this::btnHasilUSGUrologiActionPerformed);
 
-        btnHasilUSGGynecologi = createMenuButton("/48x48/375257_uterus_icon.png", "Hasil USG Gynecologi", "btnHasilUSGGynecologi", new java.awt.Dimension(200, 90), this::btnHasilUSGGynecologiActionPerformed);
+        btnHasilUSGGynecologi = createMenuButton("/48x48/375257_uterus_icon.png", "Hasil USG Gynecologi", "btnHasilUSGGynecologi", this::btnHasilUSGGynecologiActionPerformed);
 
-        btnHasilPemeriksaanEKG = createMenuButton("/48x48/8960620_cardiogram_tape_cardiology_electrocardiography_electrocardiogram_icon.png", "Hasil Pemeriksaan EKG", "btnHasilPemeriksaanEKG", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanEKGActionPerformed);
+        btnHasilPemeriksaanEKG = createMenuButton("/48x48/8960620_cardiogram_tape_cardiology_electrocardiography_electrocardiogram_icon.png", "Hasil Pemeriksaan EKG", "btnHasilPemeriksaanEKG", this::btnHasilPemeriksaanEKGActionPerformed);
 
-        btnHasilPemeriksaanTreadmill = createMenuButton("/48x48/11685378_running_walking_jogging_run_exercise_icon.png", "Hasil Pemeriksaan Treadmill", "btnHasilPemeriksaanTreadmill", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanTreadmillActionPerformed);
+        btnHasilPemeriksaanTreadmill = createMenuButton("/48x48/11685378_running_walking_jogging_run_exercise_icon.png", "Hasil Pemeriksaan Treadmill", "btnHasilPemeriksaanTreadmill", this::btnHasilPemeriksaanTreadmillActionPerformed);
 
-        btnHasilPemeriksaanSlitLamp = createMenuButton("/48x48/5173015_eye_focus_internet_scan_security_icon.png", "Hasil Pemeriksaan Slit Lamp", "btnHasilPemeriksaanSlitLamp", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanSlitLampActionPerformed);
+        btnHasilPemeriksaanSlitLamp = createMenuButton("/48x48/5173015_eye_focus_internet_scan_security_icon.png", "Hasil Pemeriksaan Slit Lamp", "btnHasilPemeriksaanSlitLamp", this::btnHasilPemeriksaanSlitLampActionPerformed);
 
-        btnHasilPemeriksaanOCT = createMenuButton("/48x48/12689641_eye_tracking_target_behavior_vision_icon.png", "Hasil Pemeriksaan OCT", "btnHasilPemeriksaanOCT", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanOCTActionPerformed);
+        btnHasilPemeriksaanOCT = createMenuButton("/48x48/12689641_eye_tracking_target_behavior_vision_icon.png", "Hasil Pemeriksaan OCT", "btnHasilPemeriksaanOCT", this::btnHasilPemeriksaanOCTActionPerformed);
 
-        btnHasilPemeriksaanECHO = createMenuButton("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png", "Hasil Pemeriksaan ECHO", "btnHasilPemeriksaanECHO", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanECHOActionPerformed);
+        btnHasilPemeriksaanECHO = createMenuButton("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png", "Hasil Pemeriksaan ECHO", "btnHasilPemeriksaanECHO", this::btnHasilPemeriksaanECHOActionPerformed);
 
-        btnKirimDietSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diet Satu Sehat", "btnKirimDietSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimDietSatuSehatActionPerformed);
+        btnKirimDietSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diet Satu Sehat", "btnKirimDietSatuSehat", this::btnKirimDietSatuSehatActionPerformed);
 
-        btnMappingObatSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Obat/Alkes/BHP Satu Sehat", "btnMappingObatSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingObatSatuSehatActionPerformed);
+        btnMappingObatSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Obat/Alkes/BHP Satu Sehat", "btnMappingObatSatuSehat", this::btnMappingObatSatuSehatActionPerformed);
 
-        btnRingkasanPengadaanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Dapur", "btnRingkasanPengadaanDapur", new java.awt.Dimension(200, 90), this::btnRingkasanPengadaanDapurActionPerformed);
+        btnRingkasanPengadaanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengadaan Dapur", "btnRingkasanPengadaanDapur", this::btnRingkasanPengadaanDapurActionPerformed);
 
-        btnKirimMedicationSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Satu Sehat", "btnKirimMedicationSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimMedicationSatuSehatActionPerformed);
+        btnKirimMedicationSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Satu Sehat", "btnKirimMedicationSatuSehat", this::btnKirimMedicationSatuSehatActionPerformed);
 
-        btnKirimMedicationRequestSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Request Satu Sehat", "btnKirimMedicationRequestSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimMedicationRequestSatuSehatActionPerformed);
+        btnKirimMedicationRequestSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Request Satu Sehat", "btnKirimMedicationRequestSatuSehat", this::btnKirimMedicationRequestSatuSehatActionPerformed);
 
-        btnPenatalaksanaanTerapiOkupasi = createMenuButton("/48x48/6008649_fatigue_healthcare_illness_sickness_tired_icon.png", "Penatalaksanaan Terapi Okupasi", "btnPenatalaksanaanTerapiOkupasi", new java.awt.Dimension(200, 90), this::btnPenatalaksanaanTerapiOkupasiActionPerformed);
+        btnPenatalaksanaanTerapiOkupasi = createMenuButton("/48x48/6008649_fatigue_healthcare_illness_sickness_tired_icon.png", "Penatalaksanaan Terapi Okupasi", "btnPenatalaksanaanTerapiOkupasi", this::btnPenatalaksanaanTerapiOkupasiActionPerformed);
 
-        btnKirimMedicationDispenseSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Dispense Satu Sehat", "btnKirimMedicationDispenseSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimMedicationDispenseSatuSehatActionPerformed);
+        btnKirimMedicationDispenseSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Dispense Satu Sehat", "btnKirimMedicationDispenseSatuSehat", this::btnKirimMedicationDispenseSatuSehatActionPerformed);
 
-        btnKirimMedicationStatementSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Statement Satu Sehat", "btnKirimMedicationStatementSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimMedicationStatementSatuSehatActionPerformed);
+        btnKirimMedicationStatementSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Medication Statement Satu Sehat", "btnKirimMedicationStatementSatuSehat", this::btnKirimMedicationStatementSatuSehatActionPerformed);
 
-        btnHasilUSGNeonatus = createMenuButton("/48x48/7744782_mom_baby_mom and baby_mothers day_mother_icon.png", "Hasil USG Neonatus", "btnHasilUSGNeonatus", new java.awt.Dimension(200, 90), this::btnHasilUSGNeonatusActionPerformed);
+        btnHasilUSGNeonatus = createMenuButton("/48x48/7744782_mom_baby_mom and baby_mothers day_mother_icon.png", "Hasil USG Neonatus", "btnHasilUSGNeonatus", this::btnHasilUSGNeonatusActionPerformed);
 
-        btnHasilEndoskopiFaringLaring = createMenuButton("/48x48/8725899_ear_icon.png", "Hasil Endoskopi Faring/Laring", "btnHasilEndoskopiFaringLaring", new java.awt.Dimension(200, 90), this::btnHasilEndoskopiFaringLaringActionPerformed);
+        btnHasilEndoskopiFaringLaring = createMenuButton("/48x48/8725899_ear_icon.png", "Hasil Endoskopi Faring/Laring", "btnHasilEndoskopiFaringLaring", this::btnHasilEndoskopiFaringLaringActionPerformed);
 
-        btnMappingRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Radiologi Satu Sehat", "btnMappingRadiologiSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingRadiologiSatuSehatActionPerformed);
+        btnMappingRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Radiologi Satu Sehat", "btnMappingRadiologiSatuSehat", this::btnMappingRadiologiSatuSehatActionPerformed);
 
-        btnMappingLaboratSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Lab PK & MB Satu Sehat", "btnMappingLaboratSatuSehat", new java.awt.Dimension(200, 90), this::btnMappingLaboratSatuSehatActionPerformed);
+        btnMappingLaboratSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Lab PK & MB Satu Sehat", "btnMappingLaboratSatuSehat", this::btnMappingLaboratSatuSehatActionPerformed);
 
-        btnKirimServiceRequestRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Radiologi Satu Sehat", "btnKirimServiceRequestRadiologiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimServiceRequestRadiologiSatuSehatActionPerformed);
+        btnKirimServiceRequestRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Radiologi Satu Sehat", "btnKirimServiceRequestRadiologiSatuSehat", this::btnKirimServiceRequestRadiologiSatuSehatActionPerformed);
 
-        btnKirimServiceRequestLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Lab PK Satu Sehat", "btnKirimServiceRequestLabPKSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimServiceRequestLabPKSatuSehatActionPerformed);
+        btnKirimServiceRequestLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Lab PK Satu Sehat", "btnKirimServiceRequestLabPKSatuSehat", this::btnKirimServiceRequestLabPKSatuSehatActionPerformed);
 
-        btnKirimServiceRequestLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Lab MB Satu Sehat", "btnKirimServiceRequestLabMBSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimServiceRequestLabMBSatuSehatActionPerformed);
+        btnKirimServiceRequestLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Service Request Lab MB Satu Sehat", "btnKirimServiceRequestLabMBSatuSehat", this::btnKirimServiceRequestLabMBSatuSehatActionPerformed);
 
-        btnHasilEndoskopiHidung = createMenuButton("/48x48/6088167_cold_disease_infection_nasal_nose_icon.png", "Hasil Endoskopi Hidung", "btnHasilEndoskopiHidung", new java.awt.Dimension(200, 90), this::btnHasilEndoskopiHidungActionPerformed);
+        btnHasilEndoskopiHidung = createMenuButton("/48x48/6088167_cold_disease_infection_nasal_nose_icon.png", "Hasil Endoskopi Hidung", "btnHasilEndoskopiHidung", this::btnHasilEndoskopiHidungActionPerformed);
 
-        btnKirimSpecimenRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Radiologi Satu Sehat", "btnKirimSpecimenRadiologiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimSpecimenRadiologiSatuSehatActionPerformed);
+        btnKirimSpecimenRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Radiologi Satu Sehat", "btnKirimSpecimenRadiologiSatuSehat", this::btnKirimSpecimenRadiologiSatuSehatActionPerformed);
 
-        btnKirimSpecimenLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Lab PK Satu Sehat", "btnKirimSpecimenLabPKSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimSpecimenLabPKSatuSehatActionPerformed);
+        btnKirimSpecimenLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Lab PK Satu Sehat", "btnKirimSpecimenLabPKSatuSehat", this::btnKirimSpecimenLabPKSatuSehatActionPerformed);
 
-        btnKirimSpecimenLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Lab MB Satu Sehat", "btnKirimSpecimenLabMBSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimSpecimenLabMBSatuSehatActionPerformed);
+        btnKirimSpecimenLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Specimen Lab MB Satu Sehat", "btnKirimSpecimenLabMBSatuSehat", this::btnKirimSpecimenLabMBSatuSehatActionPerformed);
 
-        btnMasterMasalahKeperawatanNeonatus = createMenuButton("/48x48/3231119_baby_cartoon_child_family_kid_icon.png", "Master Masalah Keperawatan Neonatus", "btnMasterMasalahKeperawatanNeonatus", new java.awt.Dimension(200, 90), this::btnMasterMasalahKeperawatanNeonatusActionPerformed);
+        btnMasterMasalahKeperawatanNeonatus = createMenuButton("/48x48/3231119_baby_cartoon_child_family_kid_icon.png", "Master Masalah Keperawatan Neonatus", "btnMasterMasalahKeperawatanNeonatus", this::btnMasterMasalahKeperawatanNeonatusActionPerformed);
 
-        btnMasterRencanaKeperawatanNeonatus = createMenuButton("/48x48/3231119_baby_cartoon_child_family_kid_icon.png", "Master Rencana Keperawatan Neonatus", "btnMasterRencanaKeperawatanNeonatus", new java.awt.Dimension(200, 90), this::btnMasterRencanaKeperawatanNeonatusActionPerformed);
+        btnMasterRencanaKeperawatanNeonatus = createMenuButton("/48x48/3231119_baby_cartoon_child_family_kid_icon.png", "Master Rencana Keperawatan Neonatus", "btnMasterRencanaKeperawatanNeonatus", this::btnMasterRencanaKeperawatanNeonatusActionPerformed);
 
-        btnPenilaianAwalKeperawatanRanapNeonatus = createMenuButton("/48x48/2363103_baby_boy_girl_kid_toy_icon.png", "Awal Keperawatan Ranap Neonatus", "btnPenilaianAwalKeperawatanRanapNeonatus", new java.awt.Dimension(200, 90), this::btnPenilaianAwalKeperawatanRanapNeonatusActionPerformed);
+        btnPenilaianAwalKeperawatanRanapNeonatus = createMenuButton("/48x48/2363103_baby_boy_girl_kid_toy_icon.png", "Awal Keperawatan Ranap Neonatus", "btnPenilaianAwalKeperawatanRanapNeonatus", this::btnPenilaianAwalKeperawatanRanapNeonatusActionPerformed);
 
-        btnKirimObservationRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Radiologi Satu Sehat", "btnKirimObservationRadiologiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimObservationRadiologiSatuSehatActionPerformed);
+        btnKirimObservationRadiologiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Radiologi Satu Sehat", "btnKirimObservationRadiologiSatuSehat", this::btnKirimObservationRadiologiSatuSehatActionPerformed);
 
-        btnKirimObservationLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Lab PK Satu Sehat", "btnKirimObservationLabPKSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimObservationLabPKSatuSehatActionPerformed);
+        btnKirimObservationLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Lab PK Satu Sehat", "btnKirimObservationLabPKSatuSehat", this::btnKirimObservationLabPKSatuSehatActionPerformed);
 
-        btnKirimObservationLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Lab MB Satu Sehat", "btnKirimObservationLabMBSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimObservationLabMBSatuSehatActionPerformed);
+        btnKirimObservationLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Observation Lab MB Satu Sehat", "btnKirimObservationLabMBSatuSehat", this::btnKirimObservationLabMBSatuSehatActionPerformed);
 
-        btnKirimDiagnosticReportSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Radiologi Satu Sehat", "btnKirimDiagnosticReportSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimDiagnosticReportSatuSehatActionPerformed);
+        btnKirimDiagnosticReportSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Radiologi Satu Sehat", "btnKirimDiagnosticReportSatuSehat", this::btnKirimDiagnosticReportSatuSehatActionPerformed);
 
-        btnKirimDiagnosticReportLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Lab PK Satu Sehat", "btnKirimDiagnosticReportLabPKSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimDiagnosticReportLabPKSatuSehatActionPerformed);
+        btnKirimDiagnosticReportLabPKSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Lab PK Satu Sehat", "btnKirimDiagnosticReportLabPKSatuSehat", this::btnKirimDiagnosticReportLabPKSatuSehatActionPerformed);
 
-        btnKirimDiagnosticReportLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Lab MB Satu Sehat", "btnKirimDiagnosticReportLabMBSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimDiagnosticReportLabMBSatuSehatActionPerformed);
+        btnKirimDiagnosticReportLabMBSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diagnostic Report Lab MB Satu Sehat", "btnKirimDiagnosticReportLabMBSatuSehat", this::btnKirimDiagnosticReportLabMBSatuSehatActionPerformed);
 
-        btnHasilEndoskopiTelinga = createMenuButton("/48x48/299079_headphone_icon.png", "Hasil Endoskopi Telinga", "btnHasilEndoskopiTelinga", new java.awt.Dimension(200, 90), this::btnHasilEndoskopiTelingaActionPerformed);
+        btnHasilEndoskopiTelinga = createMenuButton("/48x48/299079_headphone_icon.png", "Hasil Endoskopi Telinga", "btnHasilEndoskopiTelinga", this::btnHasilEndoskopiTelingaActionPerformed);
 
-        btnKepatuhanKelengkapanKeselamatanBedah = createMenuButton("/48x48/6008657_avatar_job_medical_occupation_people_icon.png", "Kepatuhan Kelengkapan Keselamatan Bedah", "btnKepatuhanKelengkapanKeselamatanBedah", new java.awt.Dimension(200, 90), this::btnKepatuhanKelengkapanKeselamatanBedahActionPerformed);
+        btnKepatuhanKelengkapanKeselamatanBedah = createMenuButton("/48x48/6008657_avatar_job_medical_occupation_people_icon.png", "Kepatuhan Kelengkapan Keselamatan Bedah", "btnKepatuhanKelengkapanKeselamatanBedah", this::btnKepatuhanKelengkapanKeselamatanBedahActionPerformed);
 
-        btnNilaiPiutangPerJenisBayarPerBulan = createMenuButton("/48x48/checklist_pencil-o.png", "Nilai Piutang Per Cara Bayar Per Bulan", "btnNilaiPiutangPerJenisBayarPerBulan", new java.awt.Dimension(200, 90), this::btnNilaiPiutangPerJenisBayarPerBulanActionPerformed);
+        btnNilaiPiutangPerJenisBayarPerBulan = createMenuButton("/48x48/checklist_pencil-o.png", "Nilai Piutang Per Cara Bayar Per Bulan", "btnNilaiPiutangPerJenisBayarPerBulan", this::btnNilaiPiutangPerJenisBayarPerBulanActionPerformed);
 
-        btnRingkasanPiutangPerJenisBayar = createMenuButton("/48x48/checklist_pencil-o.png", "Ringkasan Piutang Per Cara Bayar", "btnRingkasanPiutangPerJenisBayar", new java.awt.Dimension(200, 90), this::btnRingkasanPiutangPerJenisBayarActionPerformed);
+        btnRingkasanPiutangPerJenisBayar = createMenuButton("/48x48/checklist_pencil-o.png", "Ringkasan Piutang Per Cara Bayar", "btnRingkasanPiutangPerJenisBayar", this::btnRingkasanPiutangPerJenisBayarActionPerformed);
 
-        btnPenilaianPasienImunitasRendah = createMenuButton("/48x48/5964813_chest_coronavirus_healthcare_medical_pain_icon.png", "Pengkajian Pasien Imunitas Rendah", "btnPenilaianPasienImunitasRendah", new java.awt.Dimension(200, 90), this::btnPenilaianPasienImunitasRendahActionPerformed);
+        btnPenilaianPasienImunitasRendah = createMenuButton("/48x48/5964813_chest_coronavirus_healthcare_medical_pain_icon.png", "Pengkajian Pasien Imunitas Rendah", "btnPenilaianPasienImunitasRendah", this::btnPenilaianPasienImunitasRendahActionPerformed);
 
-        btnPenilaianDerajatDehidrasi = createMenuButton("/48x48/897234_aqua_bottle_drink_water_icon.png", "Pengkajian Derajat Dehidrasi", "btnPenilaianDerajatDehidrasi", new java.awt.Dimension(200, 90), this::btnPenilaianDerajatDehidrasiActionPerformed);
+        btnPenilaianDerajatDehidrasi = createMenuButton("/48x48/897234_aqua_bottle_drink_water_icon.png", "Pengkajian Derajat Dehidrasi", "btnPenilaianDerajatDehidrasi", this::btnPenilaianDerajatDehidrasiActionPerformed);
 
-        btnCatatanKeseimbanganCairan = createMenuButton("/48x48/7150134_water_drink_drop_blue_icon.png", "Keseimbangan Cairan", "btnCatatanKeseimbanganCairan", new java.awt.Dimension(200, 90), this::btnCatatanKeseimbanganCairanActionPerformed);
+        btnCatatanKeseimbanganCairan = createMenuButton("/48x48/7150134_water_drink_drop_blue_icon.png", "Keseimbangan Cairan", "btnCatatanKeseimbanganCairan", this::btnCatatanKeseimbanganCairanActionPerformed);
 
-        btnCatatanObservasiCHBP = createMenuButton("/48x48/4852563_education_files_research_science_icon.png", "Catatan Observasi CHBP", "btnCatatanObservasiCHBP", new java.awt.Dimension(200, 90), this::btnCatatanObservasiCHBPActionPerformed);
+        btnCatatanObservasiCHBP = createMenuButton("/48x48/4852563_education_files_research_science_icon.png", "Catatan Observasi CHBP", "btnCatatanObservasiCHBP", this::btnCatatanObservasiCHBPActionPerformed);
 
-        btnCatatanObservasiInduksiPersalinan = createMenuButton("/48x48/3298612_document_paper_sign_signing_icon.png", "Catatan Observasi Induksi Persalinan", "btnCatatanObservasiInduksiPersalinan", new java.awt.Dimension(200, 90), this::btnCatatanObservasiInduksiPersalinanActionPerformed);
+        btnCatatanObservasiInduksiPersalinan = createMenuButton("/48x48/3298612_document_paper_sign_signing_icon.png", "Catatan Observasi Induksi Persalinan", "btnCatatanObservasiInduksiPersalinan", this::btnCatatanObservasiInduksiPersalinanActionPerformed);
 
-        btnCatatanObservasiRestrainNonFramakologi = createMenuButton("/48x48/10447_chain_link_web_icon.png", "Catatan Observasi Restrain Nonfarmakologi", "btnCatatanObservasiRestrainNonFramakologi", new java.awt.Dimension(200, 90), this::btnCatatanObservasiRestrainNonFramakologiActionPerformed);
+        btnCatatanObservasiRestrainNonFramakologi = createMenuButton("/48x48/10447_chain_link_web_icon.png", "Catatan Observasi Restrain Nonfarmakologi", "btnCatatanObservasiRestrainNonFramakologi", this::btnCatatanObservasiRestrainNonFramakologiActionPerformed);
 
-        btnCatatanObservasiVentilator = createMenuButton("/48x48/6088631_bed_hospital_icu_medical_treatment_icon.png", "Catatan Observasi Ventilator", "btnCatatanObservasiVentilator", new java.awt.Dimension(200, 90), this::btnCatatanObservasiVentilatorActionPerformed);
+        btnCatatanObservasiVentilator = createMenuButton("/48x48/6088631_bed_hospital_icu_medical_treatment_icon.png", "Catatan Observasi Ventilator", "btnCatatanObservasiVentilator", this::btnCatatanObservasiVentilatorActionPerformed);
 
-        btnCatatanObservasiHemodialisa = createMenuButton("/48x48/4757453_checklist_document_file_list_paper_icon.png", "Catatan Observasi Hemodialisa", "btnCatatanObservasiHemodialisa", new java.awt.Dimension(200, 90), this::btnCatatanObservasiHemodialisaActionPerformed);
+        btnCatatanObservasiHemodialisa = createMenuButton("/48x48/4757453_checklist_document_file_list_paper_icon.png", "Catatan Observasi Hemodialisa", "btnCatatanObservasiHemodialisa", this::btnCatatanObservasiHemodialisaActionPerformed);
 
-        btnCatatanCairanHemodialisa = createMenuButton("/48x48/1059390_document_clip_page_paper_text_icon.png", "Catatan Cairan Hemodialisa", "btnCatatanCairanHemodialisa", new java.awt.Dimension(200, 90), this::btnCatatanCairanHemodialisaActionPerformed);
+        btnCatatanCairanHemodialisa = createMenuButton("/48x48/1059390_document_clip_page_paper_text_icon.png", "Catatan Cairan Hemodialisa", "btnCatatanCairanHemodialisa", this::btnCatatanCairanHemodialisaActionPerformed);
 
-        btnSKPKategoriPenilaian = createMenuButton("/48x48/5986210_clothing_equipment_protection_protective_safety_icon.png", "Kategori Pengkajian SKP", "btnSKPKategoriPenilaian", new java.awt.Dimension(200, 90), this::btnSKPKategoriPenilaianActionPerformed);
+        btnSKPKategoriPenilaian = createMenuButton("/48x48/5986210_clothing_equipment_protection_protective_safety_icon.png", "Kategori Pengkajian SKP", "btnSKPKategoriPenilaian", this::btnSKPKategoriPenilaianActionPerformed);
 
-        btnSKPKriteriaPenilaian = createMenuButton("/48x48/9016856_safety_suit_virus_glove_covid-19_icon.png", "Kriteria Pengkajian SKP", "btnSKPKriteriaPenilaian", new java.awt.Dimension(200, 90), this::btnSKPKriteriaPenilaianActionPerformed);
+        btnSKPKriteriaPenilaian = createMenuButton("/48x48/9016856_safety_suit_virus_glove_covid-19_icon.png", "Kriteria Pengkajian SKP", "btnSKPKriteriaPenilaian", this::btnSKPKriteriaPenilaianActionPerformed);
 
-        btnReferensiPoliMobileJKNFKTP = createMenuButton("/48x48/5994859_building_clinic_health_hospital_medical_icon.png", "Referensi Poli Mobile JKN FKTP", "btnReferensiPoliMobileJKNFKTP", new java.awt.Dimension(200, 90), this::btnReferensiPoliMobileJKNFKTPActionPerformed);
+        btnReferensiPoliMobileJKNFKTP = createMenuButton("/48x48/5994859_building_clinic_health_hospital_medical_icon.png", "Referensi Poli Mobile JKN FKTP", "btnReferensiPoliMobileJKNFKTP", this::btnReferensiPoliMobileJKNFKTPActionPerformed);
 
-        btnReferensiDokterMobileJKNFKTP = createMenuButton("/48x48/5958331_disease_doctor_epidemic_hospital_infection_icon.png", "Referensi Dokter Mobile JKN FKTP", "btnReferensiDokterMobileJKNFKTP", new java.awt.Dimension(200, 90), this::btnReferensiDokterMobileJKNFKTPActionPerformed);
+        btnReferensiDokterMobileJKNFKTP = createMenuButton("/48x48/5958331_disease_doctor_epidemic_hospital_infection_icon.png", "Referensi Dokter Mobile JKN FKTP", "btnReferensiDokterMobileJKNFKTP", this::btnReferensiDokterMobileJKNFKTPActionPerformed);
 
-        btnSKPPenilaianPegawai = createMenuButton("/48x48/6088187_gloves_hand_safety_secure_icon.png", "Pengkajian SKP Petugas/Dokter", "btnSKPPenilaianPegawai", new java.awt.Dimension(200, 90), this::btnSKPPenilaianPegawaiActionPerformed);
+        btnSKPPenilaianPegawai = createMenuButton("/48x48/6088187_gloves_hand_safety_secure_icon.png", "Pengkajian SKP Petugas/Dokter", "btnSKPPenilaianPegawai", this::btnSKPPenilaianPegawaiActionPerformed);
 
-        btnMandiriMetodePembayaran = createMenuButton("/48x48/mandiri.png", "Metode Pembayaran Bank Mandiri", "btnMandiriMetodePembayaran", new java.awt.Dimension(200, 90), this::btnMandiriMetodePembayaranActionPerformed);
+        btnMandiriMetodePembayaran = createMenuButton("/48x48/mandiri.png", "Metode Pembayaran Bank Mandiri", "btnMandiriMetodePembayaran", this::btnMandiriMetodePembayaranActionPerformed);
 
-        btnMandiriBankTujuanTRansfer = createMenuButton("/48x48/mandiri.png", "Bank Tujuan Transfer Bank Mandiri", "btnMandiriBankTujuanTRansfer", new java.awt.Dimension(200, 90), this::btnMandiriBankTujuanTRansferActionPerformed);
+        btnMandiriBankTujuanTRansfer = createMenuButton("/48x48/mandiri.png", "Bank Tujuan Transfer Bank Mandiri", "btnMandiriBankTujuanTRansfer", this::btnMandiriBankTujuanTRansferActionPerformed);
 
-        btnPembayaranPihakKe3BankMandiri = createMenuButton("/48x48/mandiri.png", "Pembayaran Pihak Ke 3 Bank Mandiri", "btnPembayaranPihakKe3BankMandiri", new java.awt.Dimension(200, 90), this::btnPembayaranPihakKe3BankMandiriActionPerformed);
+        btnPembayaranPihakKe3BankMandiri = createMenuButton("/48x48/mandiri.png", "Pembayaran Pihak Ke 3 Bank Mandiri", "btnPembayaranPihakKe3BankMandiri", this::btnPembayaranPihakKe3BankMandiriActionPerformed);
 
-        btnMandiriKodeTransaksiTujuanTRansfer = createMenuButton("/48x48/mandiri.png", "Kode Transaksi Tujuan Transfer Bank Mandiri", "btnMandiriKodeTransaksiTujuanTRansfer", new java.awt.Dimension(200, 90), this::btnMandiriKodeTransaksiTujuanTRansferActionPerformed);
+        btnMandiriKodeTransaksiTujuanTRansfer = createMenuButton("/48x48/mandiri.png", "Kode Transaksi Tujuan Transfer Bank Mandiri", "btnMandiriKodeTransaksiTujuanTRansfer", this::btnMandiriKodeTransaksiTujuanTRansferActionPerformed);
 
-        btnSKPRekapitulasiPenilaian = createMenuButton("/48x48/5958329_crowd patient_disease_epidemic_hospital_infection_icon.png", "Rekapitulasi Pengkajian SKP", "btnSKPRekapitulasiPenilaian", new java.awt.Dimension(200, 90), this::btnSKPRekapitulasiPenilaianActionPerformed);
+        btnSKPRekapitulasiPenilaian = createMenuButton("/48x48/5958329_crowd patient_disease_epidemic_hospital_infection_icon.png", "Rekapitulasi Pengkajian SKP", "btnSKPRekapitulasiPenilaian", this::btnSKPRekapitulasiPenilaianActionPerformed);
 
-        btnPCareReferensiAlergi = createMenuButton("/48x48/pcare.png", "Referensi Alergi PCare", "btnPCareReferensiAlergi", new java.awt.Dimension(200, 90), this::btnPCareReferensiAlergiActionPerformed);
+        btnPCareReferensiAlergi = createMenuButton("/48x48/pcare.png", "Referensi Alergi PCare", "btnPCareReferensiAlergi", this::btnPCareReferensiAlergiActionPerformed);
 
-        btnPCareReferensiPrognosa = createMenuButton("/48x48/pcare.png", "Referensi Prognosa PCare", "btnPCareReferensiPrognosa", new java.awt.Dimension(200, 90), this::btnPCareReferensiPrognosaActionPerformed);
+        btnPCareReferensiPrognosa = createMenuButton("/48x48/pcare.png", "Referensi Prognosa PCare", "btnPCareReferensiPrognosa", this::btnPCareReferensiPrognosaActionPerformed);
 
-        btnKonsultasiMedik = createMenuButton("/48x48/6071860_freelance_freelancer_job_occupation_worker_icon.png", "Konsultasi Medik", "btnKonsultasiMedik", new java.awt.Dimension(200, 90), this::btnKonsultasiMedikActionPerformed);
+        btnKonsultasiMedik = createMenuButton("/48x48/6071860_freelance_freelancer_job_occupation_worker_icon.png", "Konsultasi Medik", "btnKonsultasiMedik", this::btnKonsultasiMedikActionPerformed);
 
-        btnDataSasaranUsiaProduktif = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Data Sasaran Usia Produktif", "btnDataSasaranUsiaProduktif", new java.awt.Dimension(200, 90), this::btnDataSasaranUsiaProduktifActionPerformed);
+        btnDataSasaranUsiaProduktif = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Data Sasaran Usia Produktif", "btnDataSasaranUsiaProduktif", this::btnDataSasaranUsiaProduktifActionPerformed);
 
-        btnDataSasaranUsiaLansia = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Data Sasaran Usia Lansia", "btnDataSasaranUsiaLansia", new java.awt.Dimension(200, 90), this::btnDataSasaranUsiaLansiaActionPerformed);
+        btnDataSasaranUsiaLansia = createMenuButton("/48x48/49607_product_report_sales_icon.png", "Data Sasaran Usia Lansia", "btnDataSasaranUsiaLansia", this::btnDataSasaranUsiaLansiaActionPerformed);
 
-        btnSkriningMerokokUsiaSekolah = createMenuButton("/48x48/3017868_day_patrick_pipe_smoke_st_icon.png", "Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah", new java.awt.Dimension(200, 90), this::btnSkriningMerokokUsiaSekolahActionPerformed);
+        btnSkriningMerokokUsiaSekolah = createMenuButton("/48x48/3017868_day_patrick_pipe_smoke_st_icon.png", "Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah", this::btnSkriningMerokokUsiaSekolahActionPerformed);
 
-        btnSkriningKekerasanPadaPerempuan = createMenuButton("/48x48/9191520_nonviolence_violence_hit_thrash_conflict_icon.png", "Skrining Kekerasan Pada Perempuan", "btnSkriningKekerasanPadaPerempuan", new java.awt.Dimension(200, 90), this::btnSkriningKekerasanPadaPerempuanActionPerformed);
+        btnSkriningKekerasanPadaPerempuan = createMenuButton("/48x48/9191520_nonviolence_violence_hit_thrash_conflict_icon.png", "Skrining Kekerasan Pada Perempuan", "btnSkriningKekerasanPadaPerempuan", this::btnSkriningKekerasanPadaPerempuanActionPerformed);
 
-        btnSkriningObesitas = createMenuButton("/48x48/5859965_body_fat_health_obesity_overweight_icon.png", "Skrining Obesitas", "btnSkriningObesitas", new java.awt.Dimension(200, 90), this::btnSkriningObesitasActionPerformed);
+        btnSkriningObesitas = createMenuButton("/48x48/5859965_body_fat_health_obesity_overweight_icon.png", "Skrining Obesitas", "btnSkriningObesitas", this::btnSkriningObesitasActionPerformed);
 
-        btnSkriningDiabetesMelitus = createMenuButton("/48x48/6954606_candy_candy shop_dessert_food and restaurant_sugar_icon.png", "Skrining Diabetes Melitus", "btnSkriningDiabetesMelitus", new java.awt.Dimension(200, 90), this::btnSkriningDiabetesMelitusActionPerformed);
+        btnSkriningDiabetesMelitus = createMenuButton("/48x48/6954606_candy_candy shop_dessert_food and restaurant_sugar_icon.png", "Skrining Diabetes Melitus", "btnSkriningDiabetesMelitus", this::btnSkriningDiabetesMelitusActionPerformed);
 
-        btnSkriningFrailtySyndrome = createMenuButton("/48x48/6217215_bacteria_people_virus_woman_icon.png", "Skrining Frailty Syndrome", "btnSkriningFrailtySyndrome", new java.awt.Dimension(200, 90), this::btnSkriningFrailtySyndromeActionPerformed);
+        btnSkriningFrailtySyndrome = createMenuButton("/48x48/6217215_bacteria_people_virus_woman_icon.png", "Skrining Frailty Syndrome", "btnSkriningFrailtySyndrome", this::btnSkriningFrailtySyndromeActionPerformed);
 
-        btnLaporanTindakan = createMenuButton("/48x48/5929215_avatar_doctor_health_hospital_man_icon.png", "Laporan Tindakan Medis", "btnLaporanTindakan", new java.awt.Dimension(200, 90), this::btnLaporanTindakanActionPerformed);
+        btnLaporanTindakan = createMenuButton("/48x48/5929215_avatar_doctor_health_hospital_man_icon.png", "Laporan Tindakan Medis", "btnLaporanTindakan", this::btnLaporanTindakanActionPerformed);
 
-        btnPelaksanaanInformasiEdukasi = createMenuButton("/48x48/11211449_book_library_learning_knowledge_education_icon.png", "Pelaksanaan Informasi & Edukasi", "btnPelaksanaanInformasiEdukasi", new java.awt.Dimension(200, 90), this::btnPelaksanaanInformasiEdukasiActionPerformed);
+        btnPelaksanaanInformasiEdukasi = createMenuButton("/48x48/11211449_book_library_learning_knowledge_education_icon.png", "Pelaksanaan Informasi & Edukasi", "btnPelaksanaanInformasiEdukasi", this::btnPelaksanaanInformasiEdukasiActionPerformed);
 
-        btnSkriningRisikoKankerPayudara = createMenuButton("/48x48/6715353_breast_danger_emoji_freak_nipple_icon.png", "Skrining Risiko Kanker Payudara", "btnSkriningRisikoKankerPayudara", new java.awt.Dimension(200, 90), this::btnSkriningRisikoKankerPayudaraActionPerformed);
+        btnSkriningRisikoKankerPayudara = createMenuButton("/48x48/6715353_breast_danger_emoji_freak_nipple_icon.png", "Skrining Risiko Kanker Payudara", "btnSkriningRisikoKankerPayudara", this::btnSkriningRisikoKankerPayudaraActionPerformed);
 
-        btnSkriningRisikoKankerParu = createMenuButton("/48x48/5862576_covid-19_infection_inspect_lung_virus_icon.png", "Skrining Risiko Kanker Paru", "btnSkriningRisikoKankerParu", new java.awt.Dimension(200, 90), this::btnSkriningRisikoKankerParuActionPerformed);
+        btnSkriningRisikoKankerParu = createMenuButton("/48x48/5862576_covid-19_infection_inspect_lung_virus_icon.png", "Skrining Risiko Kanker Paru", "btnSkriningRisikoKankerParu", this::btnSkriningRisikoKankerParuActionPerformed);
 
-        btnSkriningRisikoKankerServiks = createMenuButton("/48x48/10716890_summer_swimsuit_beach_swimwear_bikini_icon.png", "Skrining Risiko Kanker Serviks", "btnSkriningRisikoKankerServiks", new java.awt.Dimension(200, 90), this::btnSkriningRisikoKankerServiksActionPerformed);
+        btnSkriningRisikoKankerServiks = createMenuButton("/48x48/10716890_summer_swimsuit_beach_swimwear_bikini_icon.png", "Skrining Risiko Kanker Serviks", "btnSkriningRisikoKankerServiks", this::btnSkriningRisikoKankerServiksActionPerformed);
 
-        btnSkriningKesehatanGigiMulutRemaja = createMenuButton("/48x48/2185081_dental_dentist_dentistry_loose tooth_medical_icon.png", "Skrining Kesehatan Gigi Mulut Remaja", "btnSkriningKesehatanGigiMulutRemaja", new java.awt.Dimension(200, 90), this::btnSkriningKesehatanGigiMulutRemajaActionPerformed);
+        btnSkriningKesehatanGigiMulutRemaja = createMenuButton("/48x48/2185081_dental_dentist_dentistry_loose tooth_medical_icon.png", "Skrining Kesehatan Gigi Mulut Remaja", "btnSkriningKesehatanGigiMulutRemaja", this::btnSkriningKesehatanGigiMulutRemajaActionPerformed);
 
-        btnSkriningKesehatanGigiMulutBalita = createMenuButton("/48x48/2185086_bright_clean_dental_dentist_tooth_icon.png", "Skrining Kesehatan Gigi Mulut Balita", "btnSkriningKesehatanGigiMulutBalita", new java.awt.Dimension(200, 90), this::btnSkriningKesehatanGigiMulutBalitaActionPerformed);
+        btnSkriningKesehatanGigiMulutBalita = createMenuButton("/48x48/2185086_bright_clean_dental_dentist_tooth_icon.png", "Skrining Kesehatan Gigi Mulut Balita", "btnSkriningKesehatanGigiMulutBalita", this::btnSkriningKesehatanGigiMulutBalitaActionPerformed);
 
-        btnSkriningKesehatanGigiMulutLansia = createMenuButton("/48x48/2185054_dental_dental veneers_dentist_dentistry_medical_icon.png", "Skrining Kesehatan Gigi Mulut Lansia", "btnSkriningKesehatanGigiMulutLansia", new java.awt.Dimension(200, 90), this::btnSkriningKesehatanGigiMulutLansiaActionPerformed);
+        btnSkriningKesehatanGigiMulutLansia = createMenuButton("/48x48/2185054_dental_dental veneers_dentist_dentistry_medical_icon.png", "Skrining Kesehatan Gigi Mulut Lansia", "btnSkriningKesehatanGigiMulutLansia", this::btnSkriningKesehatanGigiMulutLansiaActionPerformed);
 
-        btnSkriningKesehatanGigiMulutDewasa = createMenuButton("/48x48/2185055_dental_dental checking_dentist_dentistry_oral hygiene_icon.png", "Skrining Kesehatan Gigi Mulut Dewasa", "btnSkriningKesehatanGigiMulutDewasa", new java.awt.Dimension(200, 90), this::btnSkriningKesehatanGigiMulutDewasaActionPerformed);
+        btnSkriningKesehatanGigiMulutDewasa = createMenuButton("/48x48/2185055_dental_dental checking_dentist_dentistry_oral hygiene_icon.png", "Skrining Kesehatan Gigi Mulut Dewasa", "btnSkriningKesehatanGigiMulutDewasa", this::btnSkriningKesehatanGigiMulutDewasaActionPerformed);
 
-        btnSkriningAnemia = createMenuButton("/48x48/8960655_blood_negative blood_negative_medical_donation_icon.png", "Skrining Anemia", "btnSkriningAnemia", new java.awt.Dimension(200, 90), this::btnSkriningAnemiaActionPerformed);
+        btnSkriningAnemia = createMenuButton("/48x48/8960655_blood_negative blood_negative_medical_donation_icon.png", "Skrining Anemia", "btnSkriningAnemia", this::btnSkriningAnemiaActionPerformed);
 
-        btnSkriningHipertensi = createMenuButton("/48x48/5859959_blood_health_heart_hypertension_medical_icon.png", "Skrining Hipertensi", "btnSkriningHipertensi", new java.awt.Dimension(200, 90), this::btnSkriningHipertensiActionPerformed);
+        btnSkriningHipertensi = createMenuButton("/48x48/5859959_blood_health_heart_hypertension_medical_icon.png", "Skrining Hipertensi", "btnSkriningHipertensi", this::btnSkriningHipertensiActionPerformed);
 
-        btnSkriningKesehatanPenglihatan = createMenuButton("/48x48/5947108_avoid_do not_eye_hand_touch_icon.png", "Skrining Kesehatan Penglihatan", "btnSkriningKesehatanPenglihatan", new java.awt.Dimension(200, 90), this::btnSkriningKesehatanPenglihatanActionPerformed);
+        btnSkriningKesehatanPenglihatan = createMenuButton("/48x48/5947108_avoid_do not_eye_hand_touch_icon.png", "Skrining Kesehatan Penglihatan", "btnSkriningKesehatanPenglihatan", this::btnSkriningKesehatanPenglihatanActionPerformed);
 
-        btnSkriningIndraPendengaran = createMenuButton("/48x48/9534119_ear_plugs_beats_headphones_headphone_icon.png", "Skrining Indra Pendengaran", "btnSkriningIndraPendengaran", new java.awt.Dimension(200, 90), this::btnSkriningIndraPendengaranActionPerformed);
+        btnSkriningIndraPendengaran = createMenuButton("/48x48/9534119_ear_plugs_beats_headphones_headphone_icon.png", "Skrining Indra Pendengaran", "btnSkriningIndraPendengaran", this::btnSkriningIndraPendengaranActionPerformed);
 
-        btnSkriningTBC = createMenuButton("/48x48/infected_lungs_virus transmission_virus_bacteria_icon.png", "Skrining TBC", "btnSkriningTBC", new java.awt.Dimension(200, 90), this::btnSkriningTBCActionPerformed);
+        btnSkriningTBC = createMenuButton("/48x48/infected_lungs_virus transmission_virus_bacteria_icon.png", "Skrining TBC", "btnSkriningTBC", this::btnSkriningTBCActionPerformed);
 
-        btnSkriningPUMA = createMenuButton("/48x48/6067589_coronavirus_covid-19_lungs_pneumonia_icon.png", "Skrining PUMA", "btnSkriningPUMA", new java.awt.Dimension(200, 90), this::btnSkriningPUMAActionPerformed);
+        btnSkriningPUMA = createMenuButton("/48x48/6067589_coronavirus_covid-19_lungs_pneumonia_icon.png", "Skrining PUMA", "btnSkriningPUMA", this::btnSkriningPUMAActionPerformed);
 
-        btnSkriningAdiksiNikotin = createMenuButton("/48x48/6230216_cigar_cigaret_cigarette_tobacco_icon.png", "Skrining Adiksi Nikotin", "btnSkriningAdiksiNikotin", new java.awt.Dimension(200, 90), this::btnSkriningAdiksiNikotinActionPerformed);
+        btnSkriningAdiksiNikotin = createMenuButton("/48x48/6230216_cigar_cigaret_cigarette_tobacco_icon.png", "Skrining Adiksi Nikotin", "btnSkriningAdiksiNikotin", this::btnSkriningAdiksiNikotinActionPerformed);
 
-        btnSkriningThalassemia = createMenuButton("/48x48/6088744_blood_lab_research_sample_test_icon.png", "Skrining Thalassemia", "btnSkriningThalassemia", new java.awt.Dimension(200, 90), this::btnSkriningThalassemiaActionPerformed);
+        btnSkriningThalassemia = createMenuButton("/48x48/6088744_blood_lab_research_sample_test_icon.png", "Skrining Thalassemia", "btnSkriningThalassemia", this::btnSkriningThalassemiaActionPerformed);
 
-        btnSkriningInstrumenSDQ = createMenuButton("/48x48/8322715_smile_emoji_emoticon_feeling_face_icon.png", "Skrining Instrumen SDQ", "btnSkriningInstrumenSDQ", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenSDQActionPerformed);
+        btnSkriningInstrumenSDQ = createMenuButton("/48x48/8322715_smile_emoji_emoticon_feeling_face_icon.png", "Skrining Instrumen SDQ", "btnSkriningInstrumenSDQ", this::btnSkriningInstrumenSDQActionPerformed);
 
-        btnSkriningInstrumenSRQ = createMenuButton("/48x48/8322725_emoji_emoticon_heart_kiss_icon.png", "Skrining Instrumen SRQ", "btnSkriningInstrumenSRQ", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenSRQActionPerformed);
+        btnSkriningInstrumenSRQ = createMenuButton("/48x48/8322725_emoji_emoticon_heart_kiss_icon.png", "Skrining Instrumen SRQ", "btnSkriningInstrumenSRQ", this::btnSkriningInstrumenSRQActionPerformed);
 
-        btnSkriningKankerKolorektal = createMenuButton("/48x48/5728186_bowel_constipation_diarrhea_irritable_sick_icon.png", "Skrining Kanker Kolorektal", "btnSkriningKankerKolorektal", new java.awt.Dimension(200, 90), this::btnSkriningKankerKolorektalActionPerformed);
+        btnSkriningKankerKolorektal = createMenuButton("/48x48/5728186_bowel_constipation_diarrhea_irritable_sick_icon.png", "Skrining Kanker Kolorektal", "btnSkriningKankerKolorektal", this::btnSkriningKankerKolorektalActionPerformed);
 
-        btnChecklistPemberianFibrinolitik = createMenuButton("/48x48/2620524_cv_employee_job_seeker_unemployee_icon.png", "Check List Pemberian Fibrinolitik", "btnChecklistPemberianFibrinolitik", new java.awt.Dimension(200, 90), this::btnChecklistPemberianFibrinolitikActionPerformed);
+        btnChecklistPemberianFibrinolitik = createMenuButton("/48x48/2620524_cv_employee_job_seeker_unemployee_icon.png", "Check List Pemberian Fibrinolitik", "btnChecklistPemberianFibrinolitik", this::btnChecklistPemberianFibrinolitikActionPerformed);
 
-        btnBookingMCUPerusahaan = createMenuButton("/48x48/6002396_building_coronavirus_covid19_health_hospital_icon.png", "Booking MCU Perusahaan", "btnBookingMCUPerusahaan", new java.awt.Dimension(200, 90), this::btnBookingMCUPerusahaanActionPerformed);
+        btnBookingMCUPerusahaan = createMenuButton("/48x48/6002396_building_coronavirus_covid19_health_hospital_icon.png", "Booking MCU Perusahaan", "btnBookingMCUPerusahaan", this::btnBookingMCUPerusahaanActionPerformed);
 
-        btnKirimCarePlanSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Care Plan Satu Sehat", "btnKirimCarePlanSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimCarePlanSatuSehatActionPerformed);
+        btnKirimCarePlanSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Care Plan Satu Sehat", "btnKirimCarePlanSatuSehat", this::btnKirimCarePlanSatuSehatActionPerformed);
 
-        btnPenerimaanBarangDapur = createMenuButton("/48x48/3377055_bowl_food_noodle_ramen_icon.png", "Penerimaan Barang Dapur", "btnPenerimaanBarangDapur", new java.awt.Dimension(200, 90), this::btnPenerimaanBarangDapurActionPerformed);
+        btnPenerimaanBarangDapur = createMenuButton("/48x48/3377055_bowl_food_noodle_ramen_icon.png", "Penerimaan Barang Dapur", "btnPenerimaanBarangDapur", this::btnPenerimaanBarangDapurActionPerformed);
 
-        btnBayarPesanDapur = createMenuButton("/48x48/2620509_employee_job_note_seeker_unemployee_icon.png", "Bayar Pesan Dapur", "btnBayarPesanDapur", new java.awt.Dimension(200, 90), this::btnBayarPesanDapurActionPerformed);
+        btnBayarPesanDapur = createMenuButton("/48x48/2620509_employee_job_note_seeker_unemployee_icon.png", "Bayar Pesan Dapur", "btnBayarPesanDapur", this::btnBayarPesanDapurActionPerformed);
 
-        btnHutangDapur = createMenuButton("/48x48/2620509_employee_job_note_seeker_unemployee_icon.png", "Hutang Barang Dapur", "btnHutangDapur", new java.awt.Dimension(200, 90), this::btnHutangDapurActionPerformed);
+        btnHutangDapur = createMenuButton("/48x48/2620509_employee_job_note_seeker_unemployee_icon.png", "Hutang Barang Dapur", "btnHutangDapur", this::btnHutangDapurActionPerformed);
 
-        btnTagihanHutangDapur = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Dapur", "btnTagihanHutangDapur", new java.awt.Dimension(200, 90), this::btnTagihanHutangDapurActionPerformed);
+        btnTagihanHutangDapur = createMenuButton("/48x48/iconfinder_3387311_document_money_report_sheet_shopping_icon_48px.png", "Titip Faktur/Tagihan Dapur", "btnTagihanHutangDapur", this::btnTagihanHutangDapurActionPerformed);
 
-        btnValidasiTagihanDapur = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Dapur", "btnValidasiTagihanDapur", new java.awt.Dimension(200, 90), this::btnValidasiTagihanDapurActionPerformed);
+        btnValidasiTagihanDapur = createMenuButton("/48x48/iconfinder_3387295_credit_finance_machine_payment_shopping_icon_48px.png", "Validasi Titip Faktur/Tagihan Dapur", "btnValidasiTagihanDapur", this::btnValidasiTagihanDapurActionPerformed);
 
-        btnSuratPemesananDapur = createMenuButton("/48x48/2570304_business_company_economic_finance_interprise_icon.png", "Surat Pemesanan Barang Dapur", "btnSuratPemesananDapur", new java.awt.Dimension(200, 90), this::btnSuratPemesananDapurActionPerformed);
+        btnSuratPemesananDapur = createMenuButton("/48x48/2570304_business_company_economic_finance_interprise_icon.png", "Surat Pemesanan Barang Dapur", "btnSuratPemesananDapur", this::btnSuratPemesananDapurActionPerformed);
 
-        btnPengajuanBarangDapur = createMenuButton("/48x48/2570321_business_checklist_company_economic_finance_icon.png", "Pengajuan Barang Dapur", "btnPengajuanBarangDapur", new java.awt.Dimension(200, 90), this::btnPengajuanBarangDapurActionPerformed);
+        btnPengajuanBarangDapur = createMenuButton("/48x48/2570321_business_checklist_company_economic_finance_icon.png", "Pengajuan Barang Dapur", "btnPengajuanBarangDapur", this::btnPengajuanBarangDapurActionPerformed);
 
-        btnReturBarangDapur = createMenuButton("/48x48/2570312_business_company_economic_finance_interprise_icon.png", "Retur Ke Suplier Dapur", "btnReturBarangDapur", new java.awt.Dimension(200, 90), this::btnReturBarangDapurActionPerformed);
+        btnReturBarangDapur = createMenuButton("/48x48/2570312_business_company_economic_finance_interprise_icon.png", "Retur Ke Suplier Dapur", "btnReturBarangDapur", this::btnReturBarangDapurActionPerformed);
 
-        btnHibahDapur = createMenuButton("/48x48/3377054_chow_food_mein_noodle_icon.png", "Hibah Barang Dapur", "btnHibahDapur", new java.awt.Dimension(200, 90), this::btnHibahDapurActionPerformed);
+        btnHibahDapur = createMenuButton("/48x48/3377054_chow_food_mein_noodle_icon.png", "Hibah Barang Dapur", "btnHibahDapur", this::btnHibahDapurActionPerformed);
 
-        btnRingkasanPenerimaanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Dapur", "btnRingkasanPenerimaanDapur", new java.awt.Dimension(200, 90), this::btnRingkasanPenerimaanDapurActionPerformed);
+        btnRingkasanPenerimaanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Penerimaan Dapur", "btnRingkasanPenerimaanDapur", this::btnRingkasanPenerimaanDapurActionPerformed);
 
-        btnRingkasanPengajuanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Dapur", "btnRingkasanPengajuanDapur", new java.awt.Dimension(200, 90), this::btnRingkasanPengajuanDapurActionPerformed);
+        btnRingkasanPengajuanDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pengajuan Dapur", "btnRingkasanPengajuanDapur", this::btnRingkasanPengajuanDapurActionPerformed);
 
-        btnRingkasanPemesananDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Dapur", "btnRingkasanPemesananDapur", new java.awt.Dimension(200, 90), this::btnRingkasanPemesananDapurActionPerformed);
+        btnRingkasanPemesananDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Pemesanan Dapur", "btnRingkasanPemesananDapur", this::btnRingkasanPemesananDapurActionPerformed);
 
-        btnRingkasanReturBeliDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Dapur", "btnRingkasanReturBeliDapur", new java.awt.Dimension(200, 90), this::btnRingkasanReturBeliDapurActionPerformed);
+        btnRingkasanReturBeliDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Retur Suplier Dapur", "btnRingkasanReturBeliDapur", this::btnRingkasanReturBeliDapurActionPerformed);
 
-        btnRingkasanStokKeluarDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Dapur", "btnRingkasanStokKeluarDapur", new java.awt.Dimension(200, 90), this::btnRingkasanStokKeluarDapurActionPerformed);
+        btnRingkasanStokKeluarDapur = createMenuButton("/48x48/if_binary-tree_49580.png", "Ringkasan Stok Keluar Dapur", "btnRingkasanStokKeluarDapur", this::btnRingkasanStokKeluarDapurActionPerformed);
 
-        btnStokKeluarDapurPerTanggal = createMenuButton("/48x48/2151696_barbecue_cooking_food_garden_grill_icon.png", "Stok Keluar Dapur Per Tanggal", "btnStokKeluarDapurPerTanggal", new java.awt.Dimension(200, 90), this::btnStokKeluarDapurPerTanggalActionPerformed);
+        btnStokKeluarDapurPerTanggal = createMenuButton("/48x48/2151696_barbecue_cooking_food_garden_grill_icon.png", "Stok Keluar Dapur Per Tanggal", "btnStokKeluarDapurPerTanggal", this::btnStokKeluarDapurPerTanggalActionPerformed);
 
-        btnSirkulasiDapur = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Dapur", "btnSirkulasiDapur", new java.awt.Dimension(200, 90), this::btnSirkulasiDapurActionPerformed);
+        btnSirkulasiDapur = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Dapur", "btnSirkulasiDapur", this::btnSirkulasiDapurActionPerformed);
 
-        btnSirkulasiDapur2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Dapur 2", "btnSirkulasiDapur2", new java.awt.Dimension(200, 90), this::btnSirkulasiDapur2ActionPerformed);
+        btnSirkulasiDapur2 = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi Barang Dapur 2", "btnSirkulasiDapur2", this::btnSirkulasiDapur2ActionPerformed);
 
-        btnVerifikasiPenerimaanDapur = createMenuButton("/48x48/2570299_business_company_economic_finance_interprise_icon.png", "Verifikasi Penerimaan Dapur", "btnVerifikasiPenerimaanDapur", new java.awt.Dimension(200, 90), this::btnVerifikasiPenerimaanDapurActionPerformed);
+        btnVerifikasiPenerimaanDapur = createMenuButton("/48x48/2570299_business_company_economic_finance_interprise_icon.png", "Verifikasi Penerimaan Dapur", "btnVerifikasiPenerimaanDapur", this::btnVerifikasiPenerimaanDapurActionPerformed);
 
-        btnNilaiPenerimaanVendorDapurPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Dapur Per Bulan", "btnNilaiPenerimaanVendorDapurPerBulan", new java.awt.Dimension(200, 90), this::btnNilaiPenerimaanVendorDapurPerBulanActionPerformed);
+        btnNilaiPenerimaanVendorDapurPerBulan = createMenuButton("/48x48/iconfinder_File_Files_Folder_Clipboard_Data_Confirm_3909329.png", "Nilai Penerimaan Vendor Dapur Per Bulan", "btnNilaiPenerimaanVendorDapurPerBulan", this::btnNilaiPenerimaanVendorDapurPerBulanActionPerformed);
 
-        btnRingkasanHutangVendorBarangDapur = createMenuButton("/48x48/2151697_bread_cutting_food_knife_rye_icon.png", "Ringkasan Hutang Vendor Dapur", "btnRingkasanHutangVendorBarangDapur", new java.awt.Dimension(200, 90), this::btnRingkasanHutangVendorBarangDapurActionPerformed);
+        btnRingkasanHutangVendorBarangDapur = createMenuButton("/48x48/2151697_bread_cutting_food_knife_rye_icon.png", "Ringkasan Hutang Vendor Dapur", "btnRingkasanHutangVendorBarangDapur", this::btnRingkasanHutangVendorBarangDapurActionPerformed);
 
-        btnPendapatanPerAkun = createMenuButton("/48x48/1404046811_money.png", "Pendapatan Per Akun Rekening", "btnPendapatanPerAkun", new java.awt.Dimension(200, 90), this::btnPendapatanPerAkunActionPerformed);
+        btnPendapatanPerAkun = createMenuButton("/48x48/1404046811_money.png", "Pendapatan Per Akun Rekening", "btnPendapatanPerAkun", this::btnPendapatanPerAkunActionPerformed);
 
-        btnPendapatanPerAkunClosing = createMenuButton("/48x48/1404046811_money.png", "Pendapatan Per Akun Closing", "btnPendapatanPerAkunClosing", new java.awt.Dimension(200, 90), this::btnPendapatanPerAkunClosingActionPerformed);
+        btnPendapatanPerAkunClosing = createMenuButton("/48x48/1404046811_money.png", "Pendapatan Per Akun Closing", "btnPendapatanPerAkunClosing", this::btnPendapatanPerAkunClosingActionPerformed);
 
-        btnRl13KetersediaanKamar = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 1.3 Ketersediaan Tempat Tidur", "btnRl13KetersediaanKamar", new java.awt.Dimension(200, 90), this::btnRl13KetersediaanKamarActionPerformed);
+        btnRl13KetersediaanKamar = createMenuButton("/48x48/Gnome-X-Office-Address-Book-48.png", "RL 1.3 Ketersediaan Tempat Tidur", "btnRl13KetersediaanKamar", this::btnRl13KetersediaanKamarActionPerformed);
 
-        btnPengeluaranPengeluaran = createMenuButton("/48x48/8822938_money_bag_gold_bars_icon.png", "Pengeluaran-pengeluaran/Kas Keluar", "btnPengeluaranPengeluaran", new java.awt.Dimension(200, 90), this::btnPengeluaranPengeluaranActionPerformed);
+        btnPengeluaranPengeluaran = createMenuButton("/48x48/8822938_money_bag_gold_bars_icon.png", "Pengeluaran-pengeluaran/Kas Keluar", "btnPengeluaranPengeluaran", this::btnPengeluaranPengeluaranActionPerformed);
 
-        btnLayananKedokteranFisikRehabilitasi = createMenuButton("/48x48/4082071_healthcare_hospital_medical_icon.png", "Layanan Kedokteran Fisik & Rehabilitasi", "btnLayananKedokteranFisikRehabilitasi", new java.awt.Dimension(200, 90), this::btnLayananKedokteranFisikRehabilitasiActionPerformed);
+        btnLayananKedokteranFisikRehabilitasi = createMenuButton("/48x48/4082071_healthcare_hospital_medical_icon.png", "Layanan Kedokteran Fisik & Rehabilitasi", "btnLayananKedokteranFisikRehabilitasi", this::btnLayananKedokteranFisikRehabilitasiActionPerformed);
 
-        btnLayananProgramKFR = createMenuButton("/48x48/8960631_crutches_crutch_orthopedic_physiotherapy_rehabilitation_icon.png", "Layanan Program KFR", "btnLayananProgramKFR", new java.awt.Dimension(200, 90), this::btnLayananProgramKFRActionPerformed);
+        btnLayananProgramKFR = createMenuButton("/48x48/8960631_crutches_crutch_orthopedic_physiotherapy_rehabilitation_icon.png", "Layanan Program KFR", "btnLayananProgramKFR", this::btnLayananProgramKFRActionPerformed);
 
-        btnPermintaanLayananProgramKFR = createMenuButton("/48x48/12178185_physiotherapy_physiotherapist_rehabilitation_patient_exercise_icon.png", "Permintaan Layanan Program KFR", "btnPermintaanLayananProgramKFR", new java.awt.Dimension(200, 90), this::btnPermintaanLayananProgramKFRActionPerformed);
+        btnPermintaanLayananProgramKFR = createMenuButton("/48x48/12178185_physiotherapy_physiotherapist_rehabilitation_patient_exercise_icon.png", "Permintaan Layanan Program KFR", "btnPermintaanLayananProgramKFR", this::btnPermintaanLayananProgramKFRActionPerformed);
 
-        btnCatatanPengkajianPaskaOperasi = createMenuButton("/48x48/6141455_covid19_doctor_hospital_medical_medicine_icon.png", "Catatan Pengkajian Paska Operasi", "btnCatatanPengkajianPaskaOperasi", new java.awt.Dimension(200, 90), this::btnCatatanPengkajianPaskaOperasiActionPerformed);
+        btnCatatanPengkajianPaskaOperasi = createMenuButton("/48x48/6141455_covid19_doctor_hospital_medical_medicine_icon.png", "Catatan Pengkajian Paska Operasi", "btnCatatanPengkajianPaskaOperasi", this::btnCatatanPengkajianPaskaOperasiActionPerformed);
 
-        btnSirkulasiInventarisCSSD = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi CSSD", "btnSirkulasiInventarisCSSD", new java.awt.Dimension(200, 90), this::btnSirkulasiInventarisCSSDActionPerformed);
+        btnSirkulasiInventarisCSSD = createMenuButton("/48x48/1360487125_system-restart-panel.png", "Sirkulasi CSSD", "btnSirkulasiInventarisCSSD", this::btnSirkulasiInventarisCSSDActionPerformed);
 
-        btnRiwayatSuratPeringatan = createMenuButton("/48x48/3069185_book_education_learn_school_icon.png", "Riwayat Surat Peringatan", "btnRiwayatSuratPeringatan", new java.awt.Dimension(200, 90), this::btnRiwayatSuratPeringatanActionPerformed);
+        btnRiwayatSuratPeringatan = createMenuButton("/48x48/3069185_book_education_learn_school_icon.png", "Riwayat Surat Peringatan", "btnRiwayatSuratPeringatan", this::btnRiwayatSuratPeringatanActionPerformed);
 
-        btnKategoriPiutangJasaPerusahaan = createMenuButton("/48x48/7013421_marketing_finance_business_money_payment_icon.png", "Kategori Piutang Jasa Perusahaan", "btnKategoriPiutangJasaPerusahaan", new java.awt.Dimension(200, 90), this::btnKategoriPiutangJasaPerusahaanActionPerformed);
+        btnKategoriPiutangJasaPerusahaan = createMenuButton("/48x48/7013421_marketing_finance_business_money_payment_icon.png", "Kategori Piutang Jasa Perusahaan", "btnKategoriPiutangJasaPerusahaan", this::btnKategoriPiutangJasaPerusahaanActionPerformed);
 
-        btnPiutangJasaPerusahaan = createMenuButton("/48x48/5027880_bag_business_currency_dollar_finance_icon.png", "Piutang Jasa Perusahaan", "btnPiutangJasaPerusahaan", new java.awt.Dimension(200, 90), this::btnPiutangJasaPerusahaanActionPerformed);
+        btnPiutangJasaPerusahaan = createMenuButton("/48x48/5027880_bag_business_currency_dollar_finance_icon.png", "Piutang Jasa Perusahaan", "btnPiutangJasaPerusahaan", this::btnPiutangJasaPerusahaanActionPerformed);
 
-        btnBayarPiutangJasaPerusahaan = createMenuButton("/48x48/2570316_business_company_economic_finance_get_icon.png", "Bayar Piutang Jasa Perusahaan", "btnBayarPiutangJasaPerusahaan", new java.awt.Dimension(200, 90), this::btnBayarPiutangJasaPerusahaanActionPerformed);
+        btnBayarPiutangJasaPerusahaan = createMenuButton("/48x48/2570316_business_company_economic_finance_get_icon.png", "Bayar Piutang Jasa Perusahaan", "btnBayarPiutangJasaPerusahaan", this::btnBayarPiutangJasaPerusahaanActionPerformed);
 
-        btnPiutangJasaPerusahaanBelumLunas = createMenuButton("/48x48/9517544_cheque_banking_check_finance_payment_icon.png", "Piutang Jasa Perusahaan Belum Lunas", "btnPiutangJasaPerusahaanBelumLunas", new java.awt.Dimension(200, 90), this::btnPiutangJasaPerusahaanBelumLunasActionPerformed);
+        btnPiutangJasaPerusahaanBelumLunas = createMenuButton("/48x48/9517544_cheque_banking_check_finance_payment_icon.png", "Piutang Jasa Perusahaan Belum Lunas", "btnPiutangJasaPerusahaanBelumLunas", this::btnPiutangJasaPerusahaanBelumLunasActionPerformed);
 
-        btnPiutangPeminjamanUangBelumLunas = createMenuButton("/48x48/9554856_money_finance_business_office_marketing_icon.png", "Piutang Peminjaman Uang Belum Lunas", "btnPiutangPeminjamanUangBelumLunas", new java.awt.Dimension(200, 90), this::btnPiutangPeminjamanUangBelumLunasActionPerformed);
+        btnPiutangPeminjamanUangBelumLunas = createMenuButton("/48x48/9554856_money_finance_business_office_marketing_icon.png", "Piutang Peminjaman Uang Belum Lunas", "btnPiutangPeminjamanUangBelumLunas", this::btnPiutangPeminjamanUangBelumLunasActionPerformed);
 
-        btnPoliAsalPasienRanap = createMenuButton("/48x48/4698575_building_business_finance_office_icon.png", "Poli Asal Pasien Ranap", "btnPoliAsalPasienRanap", new java.awt.Dimension(200, 90), this::btnPoliAsalPasienRanapActionPerformed);
+        btnPoliAsalPasienRanap = createMenuButton("/48x48/4698575_building_business_finance_office_icon.png", "Poli Asal Pasien Ranap", "btnPoliAsalPasienRanap", this::btnPoliAsalPasienRanapActionPerformed);
 
-        btnDokterAsalPasienRanap = createMenuButton("/48x48/4698580_chat_conversation_laptop_message_text_icon.png", "Dokter Asal Pasien Ranap", "btnDokterAsalPasienRanap", new java.awt.Dimension(200, 90), this::btnDokterAsalPasienRanapActionPerformed);
+        btnDokterAsalPasienRanap = createMenuButton("/48x48/4698580_chat_conversation_laptop_message_text_icon.png", "Dokter Asal Pasien Ranap", "btnDokterAsalPasienRanap", this::btnDokterAsalPasienRanapActionPerformed);
 
-        btnPemberiHutangLain = createMenuButton("/48x48/6427817_building_business_corporate_office_icon.png", "Pemberi Hutang Lain", "btnPemberiHutangLain", new java.awt.Dimension(200, 90), this::btnPemberiHutangLainActionPerformed);
+        btnPemberiHutangLain = createMenuButton("/48x48/6427817_building_business_corporate_office_icon.png", "Pemberi Hutang Lain", "btnPemberiHutangLain", this::btnPemberiHutangLainActionPerformed);
 
-        btnBebanHutangLain = createMenuButton("/48x48/9554836_finance_business_marketing_chart_office_icon.png", "Beban Hutang Lain", "btnBebanHutangLain", new java.awt.Dimension(200, 90), this::btnBebanHutangLainActionPerformed);
+        btnBebanHutangLain = createMenuButton("/48x48/9554836_finance_business_marketing_chart_office_icon.png", "Beban Hutang Lain", "btnBebanHutangLain", this::btnBebanHutangLainActionPerformed);
 
-        btnBayarBebanHutangLain = createMenuButton("/48x48/9554841_finance_business_office_marketing_chart_icon.png", "Bayar Beban Hutang Lain", "btnBayarBebanHutangLain", new java.awt.Dimension(200, 90), this::btnBayarBebanHutangLainActionPerformed);
+        btnBayarBebanHutangLain = createMenuButton("/48x48/9554841_finance_business_office_marketing_chart_icon.png", "Bayar Beban Hutang Lain", "btnBayarBebanHutangLain", this::btnBayarBebanHutangLainActionPerformed);
 
-        btnRekapKeluarDutaParking = createMenuButton("/48x48/22989_cabriolet_car_mazda_red_transport_icon.png", "Rekap Keluar Duta Parking", "btnRekapKeluarDutaParking", new java.awt.Dimension(200, 90), this::btnRekapKeluarDutaParkingActionPerformed);
+        btnRekapKeluarDutaParking = createMenuButton("/48x48/22989_cabriolet_car_mazda_red_transport_icon.png", "Rekap Keluar Duta Parking", "btnRekapKeluarDutaParking", this::btnRekapKeluarDutaParkingActionPerformed);
 
-        btnSuratKeteranganLayakTerbang = createMenuButton("/48x48/6088199_plane_prohibit_travel_warning_icon.png", "Surat Keterangan Layak Terbang", "btnSuratKeteranganLayakTerbang", new java.awt.Dimension(200, 90), this::btnSuratKeteranganLayakTerbangActionPerformed);
+        btnSuratKeteranganLayakTerbang = createMenuButton("/48x48/6088199_plane_prohibit_travel_warning_icon.png", "Surat Keterangan Layak Terbang", "btnSuratKeteranganLayakTerbang", this::btnSuratKeteranganLayakTerbangActionPerformed);
 
-        btnSkriningInstrumenACRS = createMenuButton("/48x48/3231124_boy_brother_cartoon_child_family_icon.png", "Skrining Instrumen ACRS", "btnSkriningInstrumenACRS", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenACRSActionPerformed);
+        btnSkriningInstrumenACRS = createMenuButton("/48x48/3231124_boy_brother_cartoon_child_family_icon.png", "Skrining Instrumen ACRS", "btnSkriningInstrumenACRS", this::btnSkriningInstrumenACRSActionPerformed);
 
-        btnSkriningInstrumenMentalEmosional = createMenuButton("/48x48/5859961_depression_disorder_health_mental_psychology_icon.png", "Skrining Instrumen Mental Emosional Anak", "btnSkriningInstrumenMentalEmosional", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenMentalEmosionalActionPerformed);
+        btnSkriningInstrumenMentalEmosional = createMenuButton("/48x48/5859961_depression_disorder_health_mental_psychology_icon.png", "Skrining Instrumen Mental Emosional Anak", "btnSkriningInstrumenMentalEmosional", this::btnSkriningInstrumenMentalEmosionalActionPerformed);
 
-        btnSkriningInstrumenAMT = createMenuButton("/48x48/7717225_woman_mothers_day_avatar_mom_icon.png", "Skrining Instrumen AMT", "btnSkriningInstrumenAMT", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenAMTActionPerformed);
+        btnSkriningInstrumenAMT = createMenuButton("/48x48/7717225_woman_mothers_day_avatar_mom_icon.png", "Skrining Instrumen AMT", "btnSkriningInstrumenAMT", this::btnSkriningInstrumenAMTActionPerformed);
 
-        btnSkriningPneumoniaSeverityIndex = createMenuButton("/48x48/5986203_coronavirus_covid_infection_lung_pneumonia_icon.png", "Skrining Pneumonia Severity Index", "btnSkriningPneumoniaSeverityIndex", new java.awt.Dimension(200, 90), this::btnSkriningPneumoniaSeverityIndexActionPerformed);
+        btnSkriningPneumoniaSeverityIndex = createMenuButton("/48x48/5986203_coronavirus_covid_infection_lung_pneumonia_icon.png", "Skrining Pneumonia Severity Index", "btnSkriningPneumoniaSeverityIndex", this::btnSkriningPneumoniaSeverityIndexActionPerformed);
 
-        btnLabKeslingPelanggan = createMenuButton("/48x48/9554587_school_education_learning_book_science_icon.png", "Pelanggan Lab Kesling", "btnLabKeslingPelanggan", new java.awt.Dimension(200, 90), this::btnLabKeslingPelangganActionPerformed);
+        btnLabKeslingPelanggan = createMenuButton("/48x48/9554587_school_education_learning_book_science_icon.png", "Pelanggan Lab Kesling", "btnLabKeslingPelanggan", this::btnLabKeslingPelangganActionPerformed);
 
-        btnLabKeslingSampelBakuMutu = createMenuButton("/48x48/5856695_laboratory_medical_research_science_test_icon.png", "Master Sampel Lab Kesling", "btnLabKeslingSampelBakuMutu", new java.awt.Dimension(200, 90), this::btnLabKeslingSampelBakuMutuActionPerformed);
+        btnLabKeslingSampelBakuMutu = createMenuButton("/48x48/5856695_laboratory_medical_research_science_test_icon.png", "Master Sampel Lab Kesling", "btnLabKeslingSampelBakuMutu", this::btnLabKeslingSampelBakuMutuActionPerformed);
 
-        btnLabKeslingParameterPengujian = createMenuButton("/48x48/5856688_laboratory_medical_mixer_roll_rotating_icon.png", "Parameter Pengujian Lab Kesling", "btnLabKeslingParameterPengujian", new java.awt.Dimension(200, 90), this::btnLabKeslingParameterPengujianActionPerformed);
+        btnLabKeslingParameterPengujian = createMenuButton("/48x48/5856688_laboratory_medical_mixer_roll_rotating_icon.png", "Parameter Pengujian Lab Kesling", "btnLabKeslingParameterPengujian", this::btnLabKeslingParameterPengujianActionPerformed);
 
-        btnLabKeslingNilaiNormalBakuMutu = createMenuButton("/48x48/8960644_test_test tube_blood_laboratory_lab_icon.png", "Nilai Normal Baku Mutu Lab Kesling", "btnLabKeslingNilaiNormalBakuMutu", new java.awt.Dimension(200, 90), this::btnLabKeslingNilaiNormalBakuMutuActionPerformed);
+        btnLabKeslingNilaiNormalBakuMutu = createMenuButton("/48x48/8960644_test_test tube_blood_laboratory_lab_icon.png", "Nilai Normal Baku Mutu Lab Kesling", "btnLabKeslingNilaiNormalBakuMutu", this::btnLabKeslingNilaiNormalBakuMutuActionPerformed);
 
-        btnPenilaianAwalMedisRalanJantung = createMenuButton("/48x48/6217204_anatomy_heart_human_medical_organ_icon.png", "Awal Medis Ralan Jantung", "btnPenilaianAwalMedisRalanJantung", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanJantungActionPerformed);
+        btnPenilaianAwalMedisRalanJantung = createMenuButton("/48x48/6217204_anatomy_heart_human_medical_organ_icon.png", "Awal Medis Ralan Jantung", "btnPenilaianAwalMedisRalanJantung", this::btnPenilaianAwalMedisRalanJantungActionPerformed);
 
-        btnPenilaianAwalMedisRalanUrologi = createMenuButton("/48x48/12321086_kidney_medical_health_organ_care_icon.png", "Awal Medis Ralan Urologi", "btnPenilaianAwalMedisRalanUrologi", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRalanUrologiActionPerformed);
+        btnPenilaianAwalMedisRalanUrologi = createMenuButton("/48x48/12321086_kidney_medical_health_organ_care_icon.png", "Awal Medis Ralan Urologi", "btnPenilaianAwalMedisRalanUrologi", this::btnPenilaianAwalMedisRalanUrologiActionPerformed);
     }
 
     private void initKhanza2() {
-        btnHasilPemeriksaanECHOPediatrik = createMenuButton("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png", "Hasil Pemeriksaan ECHO Pediatrik", "btnHasilPemeriksaanECHOPediatrik", new java.awt.Dimension(200, 90), this::btnHasilPemeriksaanECHOPediatrikActionPerformed);
+        btnHasilPemeriksaanECHOPediatrik = createMenuButton("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png", "Hasil Pemeriksaan ECHO Pediatrik", "btnHasilPemeriksaanECHOPediatrik", this::btnHasilPemeriksaanECHOPediatrikActionPerformed);
 
-        btnMasterTemplateInformasiEdukasi = createMenuButton("/48x48/11211459_whiteboard_canvas_education_school_classroom_icon.png", "Master Template Informasi & Edukasi", "btnMasterTemplateInformasiEdukasi", new java.awt.Dimension(200, 90), this::btnMasterTemplateInformasiEdukasiActionPerformed);
+        btnMasterTemplateInformasiEdukasi = createMenuButton("/48x48/11211459_whiteboard_canvas_education_school_classroom_icon.png", "Master Template Informasi & Edukasi", "btnMasterTemplateInformasiEdukasi", this::btnMasterTemplateInformasiEdukasiActionPerformed);
 
-        btnSkriningInstrumenESAT = createMenuButton("/48x48/6771568_book_education_learning_puzzle_school_icon.png", "Skrining Instrumen ESAT", "btnSkriningInstrumenESAT", new java.awt.Dimension(200, 90), this::btnSkriningInstrumenESATActionPerformed);
+        btnSkriningInstrumenESAT = createMenuButton("/48x48/6771568_book_education_learning_puzzle_school_icon.png", "Skrining Instrumen ESAT", "btnSkriningInstrumenESAT", this::btnSkriningInstrumenESATActionPerformed);
 
-        btnLabKeslingPermintaanPengujianSampel = createMenuButton("/48x48/5269078_book_calendar_education_library_loan_icon.png", "Permintaan Pengujian Sampel Lab Kesling", "btnLabKeslingPermintaanPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingPermintaanPengujianSampelActionPerformed);
+        btnLabKeslingPermintaanPengujianSampel = createMenuButton("/48x48/5269078_book_calendar_education_library_loan_icon.png", "Permintaan Pengujian Sampel Lab Kesling", "btnLabKeslingPermintaanPengujianSampel", this::btnLabKeslingPermintaanPengujianSampelActionPerformed);
 
-        btnLabKeslingPengujianSampelTidakDapatDilayani = createMenuButton("/48x48/6088713_banned_closed_shop_sign_icon.png", "Sampel Pengujian Lab Kesling Tidak Dapat Dilayani", "btnLabKeslingPengujianSampelTidakDapatDilayani", new java.awt.Dimension(200, 90), this::btnLabKeslingPengujianSampelTidakDapatDilayaniActionPerformed);
+        btnLabKeslingPengujianSampelTidakDapatDilayani = createMenuButton("/48x48/6088713_banned_closed_shop_sign_icon.png", "Sampel Pengujian Lab Kesling Tidak Dapat Dilayani", "btnLabKeslingPengujianSampelTidakDapatDilayani", this::btnLabKeslingPengujianSampelTidakDapatDilayaniActionPerformed);
 
-        btnLabKeslingPengujianSampelDapatDilayani = createMenuButton("/48x48/4059950_and_architecture_book_buildings_business_icon.png", "Sampel Pengujian Lab Kesling Dapat Dilayani", "btnLabKeslingPengujianSampelDapatDilayani", new java.awt.Dimension(200, 90), this::btnLabKeslingPengujianSampelDapatDilayaniActionPerformed);
+        btnLabKeslingPengujianSampelDapatDilayani = createMenuButton("/48x48/4059950_and_architecture_book_buildings_business_icon.png", "Sampel Pengujian Lab Kesling Dapat Dilayani", "btnLabKeslingPengujianSampelDapatDilayani", this::btnLabKeslingPengujianSampelDapatDilayaniActionPerformed);
 
-        btnLabKeslingPenugasanPengujianSampel = createMenuButton("/48x48/7038097_marketing_file_business_clipboard_data_icon.png", "Data Penugasan Pengujian Sampel Lab Kesling", "btnLabKeslingPenugasanPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingPenugasanPengujianSampelActionPerformed);
+        btnLabKeslingPenugasanPengujianSampel = createMenuButton("/48x48/7038097_marketing_file_business_clipboard_data_icon.png", "Data Penugasan Pengujian Sampel Lab Kesling", "btnLabKeslingPenugasanPengujianSampel", this::btnLabKeslingPenugasanPengujianSampelActionPerformed);
 
-        btnLabKeslingHasilPengujianSampel = createMenuButton("/48x48/6725462_archive_data_document_file_page_icon.png", "Data Hasil Pengujian Sampel Lab Kesling", "btnLabKeslingHasilPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingHasilPengujianSampelActionPerformed);
+        btnLabKeslingHasilPengujianSampel = createMenuButton("/48x48/6725462_archive_data_document_file_page_icon.png", "Data Hasil Pengujian Sampel Lab Kesling", "btnLabKeslingHasilPengujianSampel", this::btnLabKeslingHasilPengujianSampelActionPerformed);
 
-        btnLabKeslingVerifikasiPengujianSampel = createMenuButton("/48x48/4698583_document_file_paper_pen_text_icon.png", "Data Verifikasi Pengujian Sampel Lab Kesling", "btnLabKeslingVerifikasiPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingVerifikasiPengujianSampelActionPerformed);
+        btnLabKeslingVerifikasiPengujianSampel = createMenuButton("/48x48/4698583_document_file_paper_pen_text_icon.png", "Data Verifikasi Pengujian Sampel Lab Kesling", "btnLabKeslingVerifikasiPengujianSampel", this::btnLabKeslingVerifikasiPengujianSampelActionPerformed);
 
-        btnLabKeslingValidasiPengujianSampel = createMenuButton("/48x48/paper_9683410.png", "Data Validasi Pengujian Sampel Lab Kesling", "btnLabKeslingValidasiPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingValidasiPengujianSampelActionPerformed);
+        btnLabKeslingValidasiPengujianSampel = createMenuButton("/48x48/paper_9683410.png", "Data Validasi Pengujian Sampel Lab Kesling", "btnLabKeslingValidasiPengujianSampel", this::btnLabKeslingValidasiPengujianSampelActionPerformed);
 
-        btnLabKeslingRekapPelayanan = createMenuButton("/48x48/85334_file_open_icon.png", "Rekap Pelayanan Lab Kesling", "btnLabKeslingRekapPelayanan", new java.awt.Dimension(200, 90), this::btnLabKeslingRekapPelayananActionPerformed);
+        btnLabKeslingRekapPelayanan = createMenuButton("/48x48/85334_file_open_icon.png", "Rekap Pelayanan Lab Kesling", "btnLabKeslingRekapPelayanan", this::btnLabKeslingRekapPelayananActionPerformed);
 
-        btnLabKeslingPembyaranPengujianSampel = createMenuButton("/48x48/money-bag_2953536-2.png", "Pembayaran Pengujian Sampel Lab Kesling", "btnLabKeslingPembyaranPengujianSampel", new java.awt.Dimension(200, 90), this::btnLabKeslingPembyaranPengujianSampelActionPerformed);
+        btnLabKeslingPembyaranPengujianSampel = createMenuButton("/48x48/money-bag_2953536-2.png", "Pembayaran Pengujian Sampel Lab Kesling", "btnLabKeslingPembyaranPengujianSampel", this::btnLabKeslingPembyaranPengujianSampelActionPerformed);
 
-        btnLabKeslingRekapPembayaran = createMenuButton("/48x48/money_536054-2.png", "Rekap Pembayaran Lab Kesling", "btnLabKeslingRekapPembayaran", new java.awt.Dimension(200, 90), this::btnLabKeslingRekapPembayaranActionPerformed);
+        btnLabKeslingRekapPembayaran = createMenuButton("/48x48/money_536054-2.png", "Rekap Pembayaran Lab Kesling", "btnLabKeslingRekapPembayaran", this::btnLabKeslingRekapPembayaranActionPerformed);
 
-        btnPenilaianAwalMedisRanapJantung = createMenuButton("/48x48/6217204_anatomy_heart_human_medical_organ_icon.png", "Awal Medis Ranap Jantung", "btnPenilaianAwalMedisRanapJantung", new java.awt.Dimension(200, 90), this::btnPenilaianAwalMedisRanapJantungActionPerformed);
+        btnPenilaianAwalMedisRanapJantung = createMenuButton("/48x48/6217204_anatomy_heart_human_medical_organ_icon.png", "Awal Medis Ranap Jantung", "btnPenilaianAwalMedisRanapJantung", this::btnPenilaianAwalMedisRanapJantungActionPerformed);
 
-        btnSkriningCURB65 = createMenuButton("/48x48/lungs_2811493.png", "Skrining CURB-65", "btnSkriningCURB65", new java.awt.Dimension(200, 90), this::btnSkriningCURB65ActionPerformed);
+        btnSkriningCURB65 = createMenuButton("/48x48/lungs_2811493.png", "Skrining CURB-65", "btnSkriningCURB65", this::btnSkriningCURB65ActionPerformed);
 
-        btnEEksekutif = createMenuButton("/48x48/2169607_bar_chart_financial_graph_graphic_icon.png", "Set E-Eksekutif", "btnEEksekutif", new java.awt.Dimension(200, 90), this::btnEEksekutifActionPerformed);
+        btnEEksekutif = createMenuButton("/48x48/2169607_bar_chart_financial_graph_graphic_icon.png", "Set E-Eksekutif", "btnEEksekutif", this::btnEEksekutifActionPerformed);
 
-        btnBPJSPotensiPRB = createMenuButton("/48x48/vclaim.png", "Potensi PRB di VClaim", "btnBPJSPotensiPRB", new java.awt.Dimension(200, 90), this::btnBPJSPotensiPRBActionPerformed);
+        btnBPJSPotensiPRB = createMenuButton("/48x48/vclaim.png", "Potensi PRB di VClaim", "btnBPJSPotensiPRB", this::btnBPJSPotensiPRBActionPerformed);
 
-        btnBPJSRiwayatPelayananObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Riwayat Pelayanan Obat Apotek BPJS", "btnBPJSRiwayatPelayananObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSRiwayatPelayananObatApotekActionPerformed);
+        btnBPJSRiwayatPelayananObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Riwayat Pelayanan Obat Apotek BPJS", "btnBPJSRiwayatPelayananObatApotek", this::btnBPJSRiwayatPelayananObatApotekActionPerformed);
 
-        btnBPJSRekapPesertaPRBObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Rekap Peserta PRB Apotek BPJS", "btnBPJSRekapPesertaPRBObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSRekapPesertaPRBObatApotekActionPerformed);
+        btnBPJSRekapPesertaPRBObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Rekap Peserta PRB Apotek BPJS", "btnBPJSRekapPesertaPRBObatApotek", this::btnBPJSRekapPesertaPRBObatApotekActionPerformed);
 
-        btnSkriningGiziKehamilan = createMenuButton("/48x48/meal_4814223.png", "Skrining Gizi Kehamilan", "btnSkriningGiziKehamilan", new java.awt.Dimension(200, 90), this::btnSkriningGiziKehamilanActionPerformed);
+        btnSkriningGiziKehamilan = createMenuButton("/48x48/meal_4814223.png", "Skrining Gizi Kehamilan", "btnSkriningGiziKehamilan", this::btnSkriningGiziKehamilanActionPerformed);
 
-        btnSuratSerahTerimaBarangAnggotaTubuh = createMenuButton("/48x48/file-manager.png", "Serah Terima Anggota Tubuh/Barang", "btnSuratSerahTerimaBarangAnggotaTubuh", new java.awt.Dimension(200, 90), this::btnSuratSerahTerimaBarangAnggotaTubuhActionPerformed);
+        btnSuratSerahTerimaBarangAnggotaTubuh = createMenuButton("/48x48/file-manager.png", "Serah Terima Anggota Tubuh/Barang", "btnSuratSerahTerimaBarangAnggotaTubuh", this::btnSuratSerahTerimaBarangAnggotaTubuhActionPerformed);
 
-        btnSuratPermintaanBinrohtal = createMenuButton("/48x48/mental-health_18376031-2.png", "Persetujuan Bimbingan Rohani & Mental", "btnSuratPermintaanBinrohtal", new java.awt.Dimension(200, 90), this::btnSuratPermintaanBinrohtalActionPerformed);
+        btnSuratPermintaanBinrohtal = createMenuButton("/48x48/mental-health_18376031-2.png", "Persetujuan Bimbingan Rohani & Mental", "btnSuratPermintaanBinrohtal", this::btnSuratPermintaanBinrohtalActionPerformed);
 
-        btnSuratPermintaanPerlindunganDariKekerasan = createMenuButton("/48x48/boxing_2043124.png", "Permintaan Perlindungan Diri Dari Kekerasan", "btnSuratPermintaanPerlindunganDariKekerasan", new java.awt.Dimension(200, 90), this::btnSuratPermintaanPerlindunganDariKekerasanActionPerformed);
+        btnSuratPermintaanPerlindunganDariKekerasan = createMenuButton("/48x48/boxing_2043124.png", "Permintaan Perlindungan Diri Dari Kekerasan", "btnSuratPermintaanPerlindunganDariKekerasan", this::btnSuratPermintaanPerlindunganDariKekerasanActionPerformed);
 
-        btnSuratPermohonanPrivasi = createMenuButton("/48x48/compliant_4252354.png", "Surat Permohonan Privasi", "btnSuratPermohonanPrivasi", new java.awt.Dimension(200, 90), this::btnSuratPermohonanPrivasiActionPerformed);
+        btnSuratPermohonanPrivasi = createMenuButton("/48x48/compliant_4252354.png", "Surat Permohonan Privasi", "btnSuratPermohonanPrivasi", this::btnSuratPermohonanPrivasiActionPerformed);
 
-        btnSuratPermintaanSecondOpinion = createMenuButton("/48x48/conversation_3601377.png", "Surat Permintaan Second Opinion", "btnSuratPermintaanSecondOpinion", new java.awt.Dimension(200, 90), this::btnSuratPermintaanSecondOpinionActionPerformed);
+        btnSuratPermintaanSecondOpinion = createMenuButton("/48x48/conversation_3601377.png", "Surat Permintaan Second Opinion", "btnSuratPermintaanSecondOpinion", this::btnSuratPermintaanSecondOpinionActionPerformed);
 
-        btnSuratPenolakanResusitasi = createMenuButton("/48x48/services_6007742.png", "Surat Penolakan Resusitasi", "btnSuratPenolakanResusitasi", new java.awt.Dimension(200, 90), this::btnSuratPenolakanResusitasiActionPerformed);
+        btnSuratPenolakanResusitasi = createMenuButton("/48x48/services_6007742.png", "Surat Penolakan Resusitasi", "btnSuratPenolakanResusitasi", this::btnSuratPenolakanResusitasiActionPerformed);
 
-        btnPCRAICRAJenisAktivitasProyek = createMenuButton("/48x48/construction_12539761.png", "Jenis Aktivitas Proyek PCRA", "btnPCRAICRAJenisAktivitasProyek", new java.awt.Dimension(200, 90), this::btnPCRAICRAJenisAktivitasProyekActionPerformed);
+        btnPCRAICRAJenisAktivitasProyek = createMenuButton("/48x48/construction_12539761.png", "Jenis Aktivitas Proyek PCRA", "btnPCRAICRAJenisAktivitasProyek", this::btnPCRAICRAJenisAktivitasProyekActionPerformed);
 
-        btnPCRAICRALokasiKelompokRisiko = createMenuButton("/48x48/construction_16675584.png", "Lokasi & Kelompok Risiko Area PCRA", "btnPCRAICRALokasiKelompokRisiko", new java.awt.Dimension(200, 90), this::btnPCRAICRALokasiKelompokRisikoActionPerformed);
+        btnPCRAICRALokasiKelompokRisiko = createMenuButton("/48x48/construction_16675584.png", "Lokasi & Kelompok Risiko Area PCRA", "btnPCRAICRALokasiKelompokRisiko", this::btnPCRAICRALokasiKelompokRisikoActionPerformed);
 
-        btnPCRAICRAKelasRisikoPencegahan = createMenuButton("/48x48/construction_13585266.png", "Kelas Risiko/Kelas Pencegahan PCRA", "btnPCRAICRAKelasRisikoPencegahan", new java.awt.Dimension(200, 90), this::btnPCRAICRAKelasRisikoPencegahanActionPerformed);
+        btnPCRAICRAKelasRisikoPencegahan = createMenuButton("/48x48/construction_13585266.png", "Kelas Risiko/Kelas Pencegahan PCRA", "btnPCRAICRAKelasRisikoPencegahan", this::btnPCRAICRAKelasRisikoPencegahanActionPerformed);
 
-        btnPCRAICRATindakanPengendalian = createMenuButton("/48x48/real-estate_3309891.png", "Tindakan Pengendalian PCRA", "btnPCRAICRATindakanPengendalian", new java.awt.Dimension(200, 90), this::btnPCRAICRATindakanPengendalianActionPerformed);
+        btnPCRAICRATindakanPengendalian = createMenuButton("/48x48/real-estate_3309891.png", "Tindakan Pengendalian PCRA", "btnPCRAICRATindakanPengendalian", this::btnPCRAICRATindakanPengendalianActionPerformed);
 
-        btnPCRAICRAIdentifikasiRisikoInfeksi = createMenuButton("/48x48/virus_3182541.png", "Identifikasi Risiko Infeksi PCRA", "btnPCRAICRAIdentifikasiRisikoInfeksi", new java.awt.Dimension(200, 90), this::btnPCRAICRAIdentifikasiRisikoInfeksiActionPerformed);
+        btnPCRAICRAIdentifikasiRisikoInfeksi = createMenuButton("/48x48/virus_3182541.png", "Identifikasi Risiko Infeksi PCRA", "btnPCRAICRAIdentifikasiRisikoInfeksi", this::btnPCRAICRAIdentifikasiRisikoInfeksiActionPerformed);
 
-        btnPCRAICRAIdentifikasiRisikoKeselamatan = createMenuButton("/48x48/project-management_2422121.png", "Identifikasi Risiko Keselamatan PCRA", "btnPCRAICRAIdentifikasiRisikoKeselamatan", new java.awt.Dimension(200, 90), this::btnPCRAICRAIdentifikasiRisikoKeselamatanActionPerformed);
+        btnPCRAICRAIdentifikasiRisikoKeselamatan = createMenuButton("/48x48/project-management_2422121.png", "Identifikasi Risiko Keselamatan PCRA", "btnPCRAICRAIdentifikasiRisikoKeselamatan", this::btnPCRAICRAIdentifikasiRisikoKeselamatanActionPerformed);
 
-        btnPCRAICRAIdentifikasiRisikoKebakaran = createMenuButton("/48x48/fire_2278480.png", "Identifikasi Risiko Kebakaran PCRA", "btnPCRAICRAIdentifikasiRisikoKebakaran", new java.awt.Dimension(200, 90), this::btnPCRAICRAIdentifikasiRisikoKebakaranActionPerformed);
+        btnPCRAICRAIdentifikasiRisikoKebakaran = createMenuButton("/48x48/fire_2278480.png", "Identifikasi Risiko Kebakaran PCRA", "btnPCRAICRAIdentifikasiRisikoKebakaran", this::btnPCRAICRAIdentifikasiRisikoKebakaranActionPerformed);
 
-        btnPCRAICRAIdentifikasiRisikoUtilitas = createMenuButton("/48x48/repair_3899458.png", "Identifikasi Risiko Utilitas PCRA", "btnPCRAICRAIdentifikasiRisikoUtilitas", new java.awt.Dimension(200, 90), this::btnPCRAICRAIdentifikasiRisikoUtilitasActionPerformed);
+        btnPCRAICRAIdentifikasiRisikoUtilitas = createMenuButton("/48x48/repair_3899458.png", "Identifikasi Risiko Utilitas PCRA", "btnPCRAICRAIdentifikasiRisikoUtilitas", this::btnPCRAICRAIdentifikasiRisikoUtilitasActionPerformed);
 
-        btnBPJSResepObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Resep Obat Apotek BPJS", "btnBPJSResepObatApotek", new java.awt.Dimension(200, 90), this::btnBPJSResepObatApotekActionPerformed);
+        btnBPJSResepObatApotek = createMenuButton("/48x48/bpjs_apotek.png", "Resep Obat Apotek BPJS", "btnBPJSResepObatApotek", this::btnBPJSResepObatApotekActionPerformed);
 
-        btnObatApolApotekBPJS = createMenuButton("/48x48/bpjs_apotek.png", "Obat ApOL Apotek BPJS", "btnObatApolApotekBPJS", new java.awt.Dimension(200, 90), this::btnObatApolApotekBPJSActionPerformed);
+        btnObatApolApotekBPJS = createMenuButton("/48x48/bpjs_apotek.png", "Obat ApOL Apotek BPJS", "btnObatApolApotekBPJS", this::btnObatApolApotekBPJSActionPerformed);
 
-        btnPermintaanResepIterasiApotekBPJS = createMenuButton("/48x48/bpjs_apotek.png", "Permintaan Resep Iterasi Apotek BPJS", "btnPermintaanResepIterasiApotekBPJS", new java.awt.Dimension(200, 90), this::btnPermintaanResepIterasiApotekBPJSActionPerformed);
+        btnPermintaanResepIterasiApotekBPJS = createMenuButton("/48x48/bpjs_apotek.png", "Permintaan Resep Iterasi Apotek BPJS", "btnPermintaanResepIterasiApotekBPJS", this::btnPermintaanResepIterasiApotekBPJSActionPerformed);
 
-        btnMappingProsedurSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Mapping Prosedur Smart Klaim BPJS", "btnMappingProsedurSmartKlaimBPJS", new java.awt.Dimension(200, 90), this::btnMappingProsedurSmartKlaimBPJSActionPerformed);
+        btnMappingProsedurSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Mapping Prosedur Smart Klaim BPJS", "btnMappingProsedurSmartKlaimBPJS", this::btnMappingProsedurSmartKlaimBPJSActionPerformed);
 
-        btnMappingPenyakitSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Mapping Penyakit Smart Klaim BPJS", "btnMappingPenyakitSmartKlaimBPJS", new java.awt.Dimension(200, 90), this::btnMappingPenyakitSmartKlaimBPJSActionPerformed);
+        btnMappingPenyakitSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Mapping Penyakit Smart Klaim BPJS", "btnMappingPenyakitSmartKlaimBPJS", this::btnMappingPenyakitSmartKlaimBPJSActionPerformed);
 
-        btnKirimFHIRSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Kirim FHIR Smart Klaim BPJS", "btnKirimFHIRSmartKlaimBPJS", new java.awt.Dimension(200, 90), this::btnKirimFHIRSmartKlaimBPJSActionPerformed);
+        btnKirimFHIRSmartKlaimBPJS = createMenuButton("/48x48/bpjs.png", "Kirim FHIR Smart Klaim BPJS", "btnKirimFHIRSmartKlaimBPJS", this::btnKirimFHIRSmartKlaimBPJSActionPerformed);
 
-        btnPCRAICRAPengkajianRisikoPraKonstruksi = createMenuButton("/48x48/crane_2515356.png", "Pengkajian Risiko Pra Konstruksi/PCRA", "btnPCRAICRAPengkajianRisikoPraKonstruksi", new java.awt.Dimension(200, 90), this::btnPCRAICRAPengkajianRisikoPraKonstruksiActionPerformed);
+        btnPCRAICRAPengkajianRisikoPraKonstruksi = createMenuButton("/48x48/crane_2515356.png", "Pengkajian Risiko Pra Konstruksi/PCRA", "btnPCRAICRAPengkajianRisikoPraKonstruksi", this::btnPCRAICRAPengkajianRisikoPraKonstruksiActionPerformed);
 
-        btnPCRAICRAPersyaratanHarusDipenuhi = createMenuButton("/48x48/hammer_10279817.png", "Persyaratan Harus Dipenuhi PCRA", "btnPCRAICRAPersyaratanHarusDipenuhi", new java.awt.Dimension(200, 90), this::btnPCRAICRAPersyaratanHarusDipenuhiActionPerformed);
+        btnPCRAICRAPersyaratanHarusDipenuhi = createMenuButton("/48x48/hammer_10279817.png", "Persyaratan Harus Dipenuhi PCRA", "btnPCRAICRAPersyaratanHarusDipenuhi", this::btnPCRAICRAPersyaratanHarusDipenuhiActionPerformed);
 
-        btnKirimQRTelaahFarmasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Q.R. Telaah Farmasi Satu Sehat", "btnKirimQRTelaahFarmasiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimQRTelaahFarmasiSatuSehatActionPerformed);
+        btnKirimQRTelaahFarmasiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Q.R. Telaah Farmasi Satu Sehat", "btnKirimQRTelaahFarmasiSatuSehat", this::btnKirimQRTelaahFarmasiSatuSehatActionPerformed);
 
-        btnKirimAllergiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Allergy Intolerance Satu Sehat", "btnKirimAllergiSatuSehat", new java.awt.Dimension(200, 90), this::btnKirimAllergiSatuSehatActionPerformed);
+        btnKirimAllergiSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Allergy Intolerance Satu Sehat", "btnKirimAllergiSatuSehat", this::btnKirimAllergiSatuSehatActionPerformed);
 
-        btnKonsultasiPerawat = createMenuButton("/48x48/discuss_12922995.png", "Konsultasi Perawat", "btnKonsultasiPerawat", new java.awt.Dimension(200, 90), this::btnKonsultasiPerawatActionPerformed);
+        btnKonsultasiPerawat = createMenuButton("/48x48/discuss_12922995.png", "Konsultasi Perawat", "btnKonsultasiPerawat", this::btnKonsultasiPerawatActionPerformed);
 
-        btnSuratKeteranganBerobat = createMenuButton("/48x48/register_11421976.png", "Surat Keterangan Berobat", "btnSuratKeteranganBerobat", new java.awt.Dimension(200, 90), this::btnSuratKeteranganBerobatActionPerformed);
+        btnSuratKeteranganBerobat = createMenuButton("/48x48/register_11421976.png", "Surat Keterangan Berobat", "btnSuratKeteranganBerobat", this::btnSuratKeteranganBerobatActionPerformed);
+
+        btnCatatanObservasiRuangOperasi = createMenuButton("/48x48/surgery-room_17774320.png", "Catatan Observasi Ruang Operasi", "btnCatatanObservasiRuangOperasi", this::btnCatatanObservasiRuangOperasiActionPerformed);
     }
 }

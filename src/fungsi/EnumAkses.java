@@ -1212,9 +1212,9 @@ public enum EnumAkses {
     surat_permintaan_second_opinion("[P]Surat Permintaan Second Opinion"),
     surat_keterangan_berobat("[P]Surat Keterangan Berobat"),
     surat_penolakan_resusitasi("[P]Surat Penolakan Resusitasi"),
+    catatan_observasi_ruang_ok("[M]Catatan Observasi Ruang Operasi"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
-    satu_sehat_kirim_questionnairerequest("[L]Kirim Questionnaire Response Satu Sehat"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat");
 
     private final String alias;
