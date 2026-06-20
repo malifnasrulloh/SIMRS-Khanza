@@ -1494,12 +1494,16 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     try{
                         ps2.setString(1,rs.getString("no_rawat"));
                         rs2=ps2.executeQuery();
-                        if(rs2.next()){
-                            diag=rs2.getString("kd_penyakit");
-                            perkiraantarif=rs2.getDouble("tarif");
-                            if(perkiraantarif<=Jumlah){
-                                pros="Tidak Aman";  
+                        while(rs2.next()){
+                            if(diag.equals("")){
+                                diag=rs2.getString("kd_penyakit");
+                            }else{
+                                diag=diag+", "+rs2.getString("kd_penyakit");
                             }
+                            perkiraantarif=rs2.getDouble("tarif");
+                        }
+                        if(perkiraantarif<=Jumlah && perkiraantarif>0){
+                            pros="Tidak Aman";  
                         }
                     } catch (Exception e) {
                         System.out.println("Notif : "+e);
