@@ -567,6 +567,48 @@
         echo $msg['metadata']['message']."";
     }
     
+    function SavePerkiraanBiayaRanap($nomor_sep, $penyakit, $cbg) {
+        $konektor = bukakoneksi();
+        $is_multiple_icd = false;
+        $q_pk = mysqli_query($konektor, "
+            SELECT COUNT(*) as pk_count 
+            FROM information_schema.KEY_COLUMN_USAGE 
+            WHERE TABLE_SCHEMA = DATABASE() 
+              AND TABLE_NAME = 'perkiraan_biaya_ranap' 
+              AND CONSTRAINT_NAME = 'PRIMARY'
+        ");
+        if ($q_pk && $r_pk = mysqli_fetch_assoc($q_pk)) {
+            if ((int)$r_pk['pk_count'] > 1) {
+                $is_multiple_icd = true;
+            }
+        }
+
+        if ($is_multiple_icd) {
+            $current_kodes = [];
+            $q_curr = mysqli_query($konektor, "SELECT kd_penyakit FROM perkiraan_biaya_ranap WHERE no_rawat='$nomor_sep'");
+            while ($r_curr = mysqli_fetch_assoc($q_curr)) {
+                $current_kodes[] = $r_curr['kd_penyakit'];
+            }
+            mysqli_close($konektor);
+
+            if (empty($current_kodes)) {
+                $current_kodes[] = $penyakit;
+            } elseif (!in_array($penyakit, $current_kodes)) {
+                array_unshift($current_kodes, $penyakit);
+                $current_kodes = array_unique($current_kodes);
+            }
+
+            Hapus2("perkiraan_biaya_ranap", "no_rawat='".$nomor_sep."'");
+            foreach ($current_kodes as $kd) {
+                InsertData2("perkiraan_biaya_ranap","'$nomor_sep','$kd','$cbg'");
+            }
+        } else {
+            mysqli_close($konektor);
+            Hapus2("perkiraan_biaya_ranap", "no_rawat='".$nomor_sep."'");
+            InsertData2("perkiraan_biaya_ranap","'$nomor_sep','$penyakit','$cbg'");
+        }
+    }
+
      function GroupingStage1($nomor_sep,$penyakit,$coder_nik){	
         $request ='{
                         "metadata": {
@@ -580,9 +622,8 @@
                    }';
         $msg= Request($request);
         if($msg['metadata']['message']=="Ok"){
-            Hapus2("perkiraan_biaya_ranap", "no_rawat='".$nomor_sep."'");
             $cbg = validangka($msg['response_inacbg']['tariff']);
-            InsertData2("perkiraan_biaya_ranap","'$nomor_sep','$penyakit','$cbg'");
+            SavePerkiraanBiayaRanap($nomor_sep, $penyakit, $cbg);
             echo "<meta http-equiv='refresh' content='1;URL=?act=Tampil'>";
         }
     }
@@ -692,7 +733,7 @@
             $sub_acute          = validangka($msg['response']['sub_acute']['tariff']);
             $chronic            = validangka($msg['response']['chronic']['tariff']);
             $add_payment_amt    = validangka($msg['response']['add_payment_amt']);
-            InsertData2("perkiraan_biaya_ranap","'$nomor_sep','$penyakit','".($cbg+$sub_acute+$chronic+$add_payment_amt)."'");
+            SavePerkiraanBiayaRanap($nomor_sep, $penyakit, ($cbg+$sub_acute+$chronic+$add_payment_amt));
         }
     }
     
@@ -714,7 +755,7 @@
             $sub_acute          = validangka($msg['response']['sub_acute']['tariff']);
             $chronic            = validangka($msg['response']['chronic']['tariff']);
             $add_payment_amt    = validangka($msg['response']['add_payment_amt']);
-            InsertData2("perkiraan_biaya_ranap","'$nomor_sep','$penyakit','".($cbg+$sub_acute+$chronic+$add_payment_amt)."'");
+            SavePerkiraanBiayaRanap($nomor_sep, $penyakit, ($cbg+$sub_acute+$chronic+$add_payment_amt));
             FinalisasiKlaim($nomor_sep,$coder_nik);
         }
     }
