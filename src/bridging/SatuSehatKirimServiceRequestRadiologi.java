@@ -1910,7 +1910,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             return "";
         }
 
-        // 2. High-Confidence Matching Engine
+        // Single-Study Fast-Track
+        if (studies.size() == 1) {
+            JsonNode s = studies.get(0);
+            String sId = s.path("ID").asText();
+            if (!sId.isEmpty()) {
+                String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
+                if (!studyAcsn.isEmpty() && !"-".equals(studyAcsn) && !studyAcsn.equals(acsn)) {
+                    System.out.println("Orthanc Match Skip Study " + sId + " karena AccessionNumber '" + studyAcsn + "' tidak cocok");
+                    return "";
+                }
+                System.out.println("Orthanc : Single match study found. ID = " + sId);
+                return sId;
+            }
+        }
+
+        // 2. High-Confidence Matching Engine for Multi-Study
         // Resolve SIMRS exam time
         String jamPermStr = valueAtString(row, COL_JAM_PERMINTAAN);
         if (jamPermStr.isEmpty() || "00:00:00".equals(jamPermStr)) {
@@ -1924,7 +1939,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
         String bestMatchId = "";
         int bestScore = -1;
-        int candidateCount = 0;
+        int runnerUpScore = -1;
 
         for (int i = 0; i < studies.size(); i++) {
             JsonNode s = studies.get(i);
@@ -1940,48 +1955,72 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
             int score = 0;
 
-            // Match 1: Time Proximity (max 60 minutes / 3600 seconds absolute difference)
+            // Match 1: Time Proximity
             String studyTime = s.path("MainDicomTags").path("StudyTime").asText().trim();
             int studySeconds = timeToSeconds(studyTime);
             if (examSeconds >= 0 && studySeconds >= 0) {
                 int diff = Math.abs(studySeconds - examSeconds);
-                if (diff <= 3600) {
+                if (diff <= 1800) {
                     score += 50;
                     System.out.println("Orthanc Match Study " + sId + " cocok waktu: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s) (+50 pts)");
+                } else if (diff <= 3600) {
+                    score += 30;
+                    System.out.println("Orthanc Match Study " + sId + " cocok waktu: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s) (+30 pts)");
+                } else if (diff <= 7200) {
+                    score += 15;
+                    System.out.println("Orthanc Match Study " + sId + " cocok waktu: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s) (+15 pts)");
+                } else if (diff <= 14400) {
+                    score += 5;
+                    System.out.println("Orthanc Match Study " + sId + " cocok waktu: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s) (+5 pts)");
                 } else {
-                    System.out.println("Orthanc Match Study " + sId + " beda waktu terlalu jauh: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s)");
+                    System.out.println("Orthanc Match Study " + sId + " beda waktu jauh: " + studyTime + " vs exam: " + jamPermStr + " (diff: " + diff + "s)");
                 }
             }
 
             // Match 2: Procedure Description
             String studyDesc = s.path("MainDicomTags").path("StudyDescription").asText().trim().toLowerCase();
             if (!studyDesc.isEmpty() && !nmPerawatan.isEmpty()) {
-                if (studyDesc.contains(nmPerawatan) || nmPerawatan.contains(studyDesc)) {
+                if (studyDesc.equals(nmPerawatan)) {
                     score += 50;
-                    System.out.println("Orthanc Match Study " + sId + " cocok deskripsi: '" + studyDesc + "' vs '" + nmPerawatan + "' (+50 pts)");
+                    System.out.println("Orthanc Match Study " + sId + " cocok deskripsi exact: '" + studyDesc + "' vs '" + nmPerawatan + "' (+50 pts)");
+                } else if (studyDesc.contains(nmPerawatan) || nmPerawatan.contains(studyDesc)) {
+                    score += 30;
+                    System.out.println("Orthanc Match Study " + sId + " cocok deskripsi substring: '" + studyDesc + "' vs '" + nmPerawatan + "' (+30 pts)");
+                } else {
+                    String[] studyTokens = studyDesc.split("[\\s\\p{Punct}]+");
+                    String[] simrsTokens = nmPerawatan.split("[\\s\\p{Punct}]+");
+                    int overlapCount = 0;
+                    for (String st : studyTokens) {
+                        if (st.length() < 3) continue;
+                        for (String mt : simrsTokens) {
+                            if (mt.length() < 3) continue;
+                            if (st.equals(mt)) {
+                                overlapCount++;
+                            }
+                        }
+                    }
+                    if (overlapCount > 0) {
+                        score += overlapCount * 10;
+                        System.out.println("Orthanc Match Study " + sId + " cocok deskripsi token overlap count=" + overlapCount + " (+ " + (overlapCount * 10) + " pts)");
+                    }
                 }
             }
 
-            if (score >= 50) {
-                candidateCount++;
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMatchId = sId;
-                } else if (score == bestScore) {
-                    bestMatchId = ""; // Ambiguity
-                }
+            if (score > bestScore) {
+                runnerUpScore = bestScore;
+                bestScore = score;
+                bestMatchId = sId;
+            } else if (score > runnerUpScore) {
+                runnerUpScore = score;
             }
         }
 
-        if (!bestMatchId.isEmpty() && candidateCount == 1) {
-            System.out.println("Orthanc : High-confidence match ditemukan Study ID = " + bestMatchId);
+        if (bestScore > 0 && (bestScore - runnerUpScore) >= 10) {
+            System.out.println("Orthanc : Multi-study match ditemukan dengan score=" + bestScore + ", runner-up=" + runnerUpScore + ", Study ID=" + bestMatchId);
             return bestMatchId;
-        } else if (candidateCount > 1) {
-            System.out.println("Orthanc Skip : Ditemukan lebih dari 1 match atau ambigu.");
-            return "";
         }
 
-        System.out.println("Orthanc Skip : Tidak ada High-confidence match ditemukan di PACS.");
+        System.out.println("Orthanc Skip : Tidak ada High-confidence match (score=" + bestScore + ", runner-up=" + runnerUpScore + ") di PACS.");
         return "";
     }
 
