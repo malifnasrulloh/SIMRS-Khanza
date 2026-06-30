@@ -34,6 +34,9 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -592,7 +595,7 @@ public final class ApotekBPJSInputResepObat extends javax.swing.JDialog {
         FormInput.add(jLabel8);
         jLabel8.setBounds(330, 100, 70, 23);
 
-        TglResep.setEditable(false);
+        TglResep.setEditable(true);
         TglResep.setHighlighter(null);
         TglResep.setName("TglResep"); // NOI18N
         FormInput.add(TglResep);
@@ -705,7 +708,7 @@ public final class ApotekBPJSInputResepObat extends javax.swing.JDialog {
         FormInput.add(jLabel14);
         jLabel14.setBounds(226, 70, 70, 23);
 
-        NoResep.setEditable(false);
+        NoResep.setEditable(true);
         NoResep.setHighlighter(null);
         NoResep.setName("NoResep"); // NOI18N
         FormInput.add(NoResep);
@@ -773,7 +776,7 @@ public final class ApotekBPJSInputResepObat extends javax.swing.JDialog {
         FormInput.add(jLabel3);
         jLabel3.setBounds(0, 10, 80, 23);
 
-        TglSEP.setEditable(false);
+        TglSEP.setEditable(true);
         TglSEP.setHighlighter(null);
         TglSEP.setName("TglSEP"); // NOI18N
         FormInput.add(TglSEP);
@@ -1023,15 +1026,17 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                         requestEntity = new HttpEntity(headers);
                         URL = link + "/sjpresep/v3/insert";
                         System.out.println("URL : "+URL);
+                        LocalDateTime today = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
                         requestJson = "{"+ 
-                                            "\"TGLSJP\":\""+Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+ "\","+ 
+                                            "\"TGLSJP\":\""+today.format(formatter)+"\","+ 
                                             "\"REFASALSJP\":\""+NoSEP.getText()+"\","+ 
                                             "\"POLIRSP\": \""+KdPoli.getText()+"\","+ 
                                             "\"KDJNSOBAT\":\""+JnsObat.getSelectedItem().toString().substring(0, 1)+"\","+ 
                                             "\"NORESEP\":\""+NoResep.getText().substring(NoResep.getText().length()-5)+"\", "+ 
                                             "\"IDUSERSJP\":\""+akses.getkode()+"\","+ 
                                             "\"TGLRSP\":\""+TglResep.getText()+"\","+ 
-                                            "\"TGLPELRSP\":\""+Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+"\","+ 
+                                            "\"TGLPELRSP\":\""+Valid.SetTgl(DTPTgl.getSelectedItem()+"")+" "+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+"\","+
                                             "\"KdDokter\":\""+KdDPJP.getText()+"\","+ 
                                             "\"iterasi\":\""+Iterasi.getSelectedItem().toString().substring(0,1)+ "\""+ 
                                       "}";
@@ -1133,7 +1138,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                         }  
                                     }
                                 }
-                                Sequel.meghapus3("antrianiterasi","no_resep",NoResep.getText());
+                                Sequel.meghapus2("antrianiterasi","no_resep",NoResep.getText());
                             }else{
                                 sukses=false;
                                 JOptionPane.showMessageDialog(rootPane,"Gagal menyimpan data resep apotek BPJS ke server lokal..!!!!!");
@@ -1364,8 +1369,6 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                             iyembuilder=null;
                         } catch (Exception e) {
                             System.out.println("Notifikasi : "+e);
-                        } finally {
-                            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
                         }
                         
                         if (resepiter == null || !resepiter.isDisplayable()) {
@@ -1695,7 +1698,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         TNoRM.setText(norm);
         NmPasien.setText(nama);
         TPasien.setText(norm+" "+nama);
-        TglResep.setText(tanggal+" "+jam);
+        TglResep.setText(tanggal+" "+"00:00:00");
         NoResep.setText(resep);
         NoKartu.setText(no_kartu);
         TglSEP.setText(tglsep+" "+Sequel.cariIsi("select reg_periksa.jam_reg from reg_periksa where no_rawat=?",norwt));
@@ -2156,9 +2159,9 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
                 }else if(ChkJln.isSelected()==false){
-                    nilai_jam =cmbJam.getSelectedIndex();
-                    nilai_menit =cmbMnt.getSelectedIndex();
-                    nilai_detik =cmbDtk.getSelectedIndex();
+                    nilai_jam = 0;
+                    nilai_menit = 0;
+                    nilai_detik = 0 ;
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
