@@ -799,7 +799,7 @@ public enum EnumAkses {
     kategori_pemasukan_lain("[K]Kategori Pemasukan Lain-lain"),
     pembayaran_akun_bayar5("[I]Pembayaran Per Akun Bayar 5"),
     ruang_ok("[U]Ruang Operasi"),
-    telaah_resep("[D]Telaah Resep & Obat"),
+    telaah_resep("[D]Pengkajian Resep & Obat"),
     jasa_tindakan_pasien("[I]Jasa Tindakan Pasien"),
     permintaan_resep_pulang("[D]Permintaan Resep Pulang"),
     rekap_jm_dokter("[I]Rekap JM Dokter"),
@@ -1213,6 +1213,9 @@ public enum EnumAkses {
     surat_keterangan_berobat("[P]Surat Keterangan Berobat"),
     surat_penolakan_resusitasi("[P]Surat Penolakan Resusitasi"),
     catatan_observasi_ruang_ok("[M]Catatan Observasi Ruang Operasi"),
+    hasil_pemeriksaan_usg_abdomen("[M]Hasil USG Abdomen"),
+    intervensi_nyeri_farmakologi("[M]Intervensi Nyeri Farmakologi"),
+    intervensi_nyeri_nonfarmakologi("[M]Intervensi Nyeri Non Farmakologi"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat");

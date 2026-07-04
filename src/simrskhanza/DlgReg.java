@@ -283,7 +283,10 @@ import java.util.List;
 import javax.swing.WindowConstants;
 import permintaan.DlgPermintaanKonsultasiPerawat;
 import rekammedis.RMDataCatatanObservasiRuangOperasi;
+import rekammedis.RMDataIntervensiNyeriFarmakologi;
+import rekammedis.RMDataIntervensiNyeriNonFarmakologi;
 import rekammedis.RMDataSkriningGiziKehamilan;
+import rekammedis.RMHasilPemeriksaanUSGAbdomen;
 import surat.SuratKeteranganBerobat;
 import surat.SuratPenolakanResusitasi;
 import surat.SuratPermintaanBinrohtal;
@@ -16528,6 +16531,72 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         }
     }
     
+    private void MnHasilPemeriksaanUSGAbdomenActionPerformed(java.awt.event.ActionEvent evt) {                                                      
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, data registrasi sudah habis...!!!!");
+            TNoRM.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
+            tbPetugas.requestFocus();
+        }else{
+            if(tbPetugas.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                RMHasilPemeriksaanUSGAbdomen form=new RMHasilPemeriksaanUSGAbdomen(null,false);
+                form.isCek();
+                form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                form.setLocationRelativeTo(internalFrame1);
+                form.setVisible(true);
+                form.emptTeks();
+                form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    } 
+    
+    private void MnIntervensiNyeriFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianUlangNyeriActionPerformed
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, data registrasi sudah habis...!!!!");
+            TNoRM.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
+            tbPetugas.requestFocus();
+        }else{
+            if(tbPetugas.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                RMDataIntervensiNyeriFarmakologi form=new RMDataIntervensiNyeriFarmakologi(null,false);
+                form.isCek();
+                form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                form.setLocationRelativeTo(internalFrame1);
+                form.setVisible(true);
+                form.emptTeks();
+                form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }
+    
+    private void MnIntervensiNyeriNonFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianUlangNyeriActionPerformed
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, data registrasi sudah habis...!!!!");
+            TNoRM.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
+            tbPetugas.requestFocus();
+        }else{
+            if(tbPetugas.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                RMDataIntervensiNyeriNonFarmakologi form=new RMDataIntervensiNyeriNonFarmakologi(null,false);
+                form.isCek();
+                form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                form.setLocationRelativeTo(internalFrame1);
+                form.setVisible(true);
+                form.emptTeks();
+                form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }
+    
     /**
     * @param args the command line arguments
     */
@@ -16970,7 +17039,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             MnCatatanPengkajianPaskaOperasi,MnSkriningFrailtySyndrome,MnCatatanObservasiBayi,MnCheckListKesiapanAnestesi,MnHasilPemeriksaanSlitLamp,MnHasilPemeriksaanOCT,MnCetakSuratKeteranganLayakTerbang,MnPersetujuanPemeriksaanHIV,MnSkriningInstrumenACRS,MnPernyataanMemilihDPJP,
             MnSkriningInstrumenMentalEmosional,MnCheckListKriteriaMasukNICU,MnCheckListKriteriaMasukPICU,MnSkriningInstrumenAMT,MnSkriningPneumoniaSeverityIndex,MnPenilaianAwalMedisRalanJantung,MnPenilaianAwalMedisRalanUrologi,MnHasilPemeriksaanTreadmill,MnHasilPemeriksaanECHOPediatrik,
             MnSkriningInstrumenESAT,MnSkriningCURB65,MnSkriningGiziKehamilan,MnSerahTerimaBarangAnggotaTubuh,MnPermintaanKonsultasiPerawat,MnPersetujuanBimbinganRohani,MnPermintaanPerlindunganDariKekerasan,MnSuratPermohonanPrivasi,MnSuratPermintaanSecondOpinion,MnCetakSuratKeteranganBerobat,
-            MnSuratPenolakanResusitasi,MnCatatanObservasiRuangOperasi;
+            MnSuratPenolakanResusitasi,MnCatatanObservasiRuangOperasi,MnHasilPemeriksaanUSGAbdomen,MnIntervensiNyeriFarmakologi,MnIntervensiNyeriNonFarmakologi;
     private javax.swing.JMenu MnHasilUSG,MnHasilEndoskopi,MnRMSkrining,MnEdukasi,MnRehabMedik,MnRMSkriningRisikoKanker,MnRMSkriningKesehatanGigiMulut,MnSuratPersetujuan,MnSkriningInstrumen,MnSkriningParu;
     
     private void tampil() {
@@ -17632,6 +17701,8 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnPenilaianAwalMedisRalanFisikRehabilitasi.setEnabled(akses.getpenilaian_medis_ralan_rehab_medik());
         MnPenilaianAwalMedisIGDPsikiatri.setEnabled(akses.getpenilaian_medis_ralan_gawat_darurat_psikiatri());
         MnPenilaianUlangNyeri.setEnabled(akses.getpenilaian_ulang_nyeri());
+        MnIntervensiNyeriFarmakologi.setEnabled(akses.getintervensi_nyeri_farmakologi());
+        MnIntervensiNyeriNonFarmakologi.setEnabled(akses.getintervensi_nyeri_nonfarmakologi());
         MnPenilaianTerapiWicara.setEnabled(akses.getpenilaian_terapi_wicara());
         MnPengkajianRestrain.setEnabled(akses.getpengkajian_restrain());
         MnPenilaianAwalMedisRalanParu.setEnabled(akses.getpenilaian_awal_medis_ralan_paru());
@@ -17643,6 +17714,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnPenilaianPreInduksi.setEnabled(akses.getpenilaian_pre_induksi());
         MnHasilPemeriksaanUSGUrologi.setEnabled(akses.gethasil_usg_urologi());
         MnHasilPemeriksaanUSGNeonatus.setEnabled(akses.gethasil_usg_neonatus());
+        MnHasilPemeriksaanUSGAbdomen.setEnabled(akses.gethasil_pemeriksaan_usg_abdomen());
         MnHasilEndoskopiFaringLaring.setEnabled(akses.gethasil_endoskopi_faring_laring());
         MnHasilEndoskopiHidung.setEnabled(akses.gethasil_endoskopi_hidung());
         MnHasilEndoskopiTelinga.setEnabled(akses.gethasil_endoskopi_telinga());
@@ -18184,6 +18256,18 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnHasilPemeriksaanUSGNeonatus.setName("MnHasilPemeriksaanUSGNeonatus");
         MnHasilPemeriksaanUSGNeonatus.setPreferredSize(new java.awt.Dimension(170, 26));
         MnHasilPemeriksaanUSGNeonatus.addActionListener(this::MnHasilPemeriksaanUSGNeonatusActionPerformed);
+        
+        MnHasilPemeriksaanUSGAbdomen = new javax.swing.JMenuItem();
+        MnHasilPemeriksaanUSGAbdomen.setBackground(new java.awt.Color(255, 255, 254));
+        MnHasilPemeriksaanUSGAbdomen.setFont(new java.awt.Font("Tahoma", 0, 11)); 
+        MnHasilPemeriksaanUSGAbdomen.setForeground(new java.awt.Color(50, 50, 50));
+        MnHasilPemeriksaanUSGAbdomen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); 
+        MnHasilPemeriksaanUSGAbdomen.setText("Hasil USG Abdomen");
+        MnHasilPemeriksaanUSGAbdomen.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnHasilPemeriksaanUSGAbdomen.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnHasilPemeriksaanUSGAbdomen.setName("MnHasilPemeriksaanUSGAbdomen");
+        MnHasilPemeriksaanUSGAbdomen.setPreferredSize(new java.awt.Dimension(170, 26));
+        MnHasilPemeriksaanUSGAbdomen.addActionListener(this::MnHasilPemeriksaanUSGAbdomenActionPerformed);
         
         MnHasilPemeriksaanUSGGynecologi = new javax.swing.JMenuItem();
         MnHasilPemeriksaanUSGGynecologi.setBackground(new java.awt.Color(255, 255, 254));
@@ -19097,6 +19181,30 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnPenilaianAwalMedisRalanUrologi.setPreferredSize(new java.awt.Dimension(260, 26));
         MnPenilaianAwalMedisRalanUrologi.addActionListener(this::MnPenilaianAwalMedisRalanUrologiActionPerformed);
         
+        MnIntervensiNyeriFarmakologi = new javax.swing.JMenuItem();
+        MnIntervensiNyeriFarmakologi.setBackground(new java.awt.Color(255, 255, 254));
+        MnIntervensiNyeriFarmakologi.setFont(new java.awt.Font("Tahoma", 0, 11));
+        MnIntervensiNyeriFarmakologi.setForeground(new java.awt.Color(50, 50, 50));
+        MnIntervensiNyeriFarmakologi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); 
+        MnIntervensiNyeriFarmakologi.setText("Intervensi Nyeri Farmakologi");
+        MnIntervensiNyeriFarmakologi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnIntervensiNyeriFarmakologi.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnIntervensiNyeriFarmakologi.setName("MnIntervensiNyeriFarmakologi");
+        MnIntervensiNyeriFarmakologi.setPreferredSize(new java.awt.Dimension(210, 26));
+        MnIntervensiNyeriFarmakologi.addActionListener(this::MnIntervensiNyeriFarmakologiActionPerformed);
+        
+        MnIntervensiNyeriNonFarmakologi = new javax.swing.JMenuItem();
+        MnIntervensiNyeriNonFarmakologi.setBackground(new java.awt.Color(255, 255, 254));
+        MnIntervensiNyeriNonFarmakologi.setFont(new java.awt.Font("Tahoma", 0, 11));
+        MnIntervensiNyeriNonFarmakologi.setForeground(new java.awt.Color(50, 50, 50));
+        MnIntervensiNyeriNonFarmakologi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); 
+        MnIntervensiNyeriNonFarmakologi.setText("Intervensi Nyeri Non Farmakologi");
+        MnIntervensiNyeriNonFarmakologi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnIntervensiNyeriNonFarmakologi.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnIntervensiNyeriNonFarmakologi.setName("MnIntervensiNyeriNonFarmakologi");
+        MnIntervensiNyeriNonFarmakologi.setPreferredSize(new java.awt.Dimension(210, 26));
+        MnIntervensiNyeriNonFarmakologi.addActionListener(this::MnIntervensiNyeriNonFarmakologiActionPerformed);
+        
         MnSkriningGiziKehamilan = new javax.swing.JMenuItem();
         MnSkriningGiziKehamilan.setBackground(new java.awt.Color(255, 255, 254));
         MnSkriningGiziKehamilan.setFont(new java.awt.Font("Tahoma", 0, 11));
@@ -19276,6 +19384,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnHasilUSG.add(MnHasilPemeriksaanUSGUrologi);
         MnHasilUSG.add(MnHasilPemeriksaanUSGGynecologi);
         MnHasilUSG.add(MnHasilPemeriksaanUSGNeonatus);
+        MnHasilUSG.add(MnHasilPemeriksaanUSGAbdomen);
         MnRMRawatJalan.add(MnHasilPemeriksaanEKG);
         MnRMRawatJalan.add(MnHasilPemeriksaanECHO);
         MnRMRawatJalan.add(MnHasilPemeriksaanECHOPediatrik);
@@ -19325,6 +19434,8 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnRMCatatanMonitoring.add(MnCatatanCekGDS);
         MnRMCatatanMonitoring.add(MnMonitoringReaksiTranfusi);
         MnRMCatatanMonitoring.add(MnPenilaianUlangNyeri);
+        MnRMCatatanMonitoring.add(MnIntervensiNyeriFarmakologi);
+        MnRMCatatanMonitoring.add(MnIntervensiNyeriNonFarmakologi);
         MnRMCatatanMonitoring.add(MnCatatanKeperawatan);
         MnRMCatatanMonitoring.add(MnCatatanPersalinan);
         MnRMCatatanMonitoring.add(MnCatatanKeseimbanganCairan);

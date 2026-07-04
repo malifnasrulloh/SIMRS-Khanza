@@ -1354,4 +1354,7 @@ public final class akses {
     public static boolean getsurat_keterangan_berobat(){return hakAkses.get(EnumAkses.surat_keterangan_berobat);}
     public static boolean getsurat_penolakan_resusitasi(){return hakAkses.get(EnumAkses.surat_penolakan_resusitasi);}
     public static boolean getcatatan_observasi_ruang_ok(){return hakAkses.get(EnumAkses.catatan_observasi_ruang_ok);}
+    public static boolean gethasil_pemeriksaan_usg_abdomen(){return hakAkses.get(EnumAkses.hasil_pemeriksaan_usg_abdomen);}
+    public static boolean getintervensi_nyeri_farmakologi(){return hakAkses.get(EnumAkses.intervensi_nyeri_farmakologi);}
+    public static boolean getintervensi_nyeri_nonfarmakologi(){return hakAkses.get(EnumAkses.intervensi_nyeri_nonfarmakologi);}
 }

@@ -8,3 +8,7 @@ MODIFY COLUMN `form_display` varchar(100) CHARACTER SET latin1 COLLATE latin1_sw
 MODIFY COLUMN `numerator_system` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `numerator_code`,
 MODIFY COLUMN `denominator_system` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `denominator_code`,
 MODIFY COLUMN `route_display` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `route_system`;
+
+ALTER TABLE `satu_sehat_mapping_lab` 
+MODIFY COLUMN `display` varchar(1000) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `system`,
+MODIFY COLUMN `sampel_display` varchar(1000) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `sampel_system`;

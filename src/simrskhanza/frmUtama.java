@@ -928,6 +928,8 @@ import rekammedis.RMDataCatatanObservasiRestrainNonFarmakologi;
 import rekammedis.RMDataCatatanObservasiRuangOperasi;
 import rekammedis.RMDataCatatanObservasiVentilator;
 import rekammedis.RMDataFollowUpDBD;
+import rekammedis.RMDataIntervensiNyeriFarmakologi;
+import rekammedis.RMDataIntervensiNyeriNonFarmakologi;
 import rekammedis.RMDataMonitoringAsuhanGizi;
 import rekammedis.RMDataMonitoringReaksiTranfusi;
 import rekammedis.RMDataResumePasien;
@@ -946,6 +948,7 @@ import rekammedis.RMHasilPemeriksaanOCT;
 import rekammedis.RMHasilPemeriksaanSlitLamp;
 import rekammedis.RMHasilPemeriksaanTreadmill;
 import rekammedis.RMHasilPemeriksaanUSG;
+import rekammedis.RMHasilPemeriksaanUSGAbdomen;
 import rekammedis.RMHasilPemeriksaanUSGGynecologi;
 import rekammedis.RMHasilPemeriksaanUSGNeonatus;
 import rekammedis.RMHasilPemeriksaanUSGUrologi;
@@ -17917,6 +17920,46 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
 
+    qprivate void btnHasilUSGAbdomenActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        RMHasilPemeriksaanUSGAbdomen form=new RMHasilPemeriksaanUSGAbdomen(this,false);
+        form.isCek();
+        form.emptTeks();
+        form.setTampil();
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnIntervensiNyeriFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        RMDataIntervensiNyeriFarmakologi aplikasi=new RMDataIntervensiNyeriFarmakologi(this,false);
+        aplikasi.isCek();
+        aplikasi.emptTeks();
+        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        aplikasi.setLocationRelativeTo(PanelUtama);
+        aplikasi.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnIntervensiNyeriNonFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        DlgHome.dispose();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        RMDataIntervensiNyeriNonFarmakologi aplikasi=new RMDataIntervensiNyeriNonFarmakologi(this,false);
+        aplikasi.isCek();
+        aplikasi.emptTeks();
+        aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        aplikasi.setLocationRelativeTo(PanelUtama);
+        aplikasi.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -18174,7 +18217,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPCRAICRALokasiKelompokRisiko, btnPCRAICRAKelasRisikoPencegahan, btnPCRAICRATindakanPengendalian, btnPCRAICRAIdentifikasiRisikoInfeksi, btnPCRAICRAIdentifikasiRisikoKeselamatan,
             btnPCRAICRAIdentifikasiRisikoKebakaran, btnPCRAICRAIdentifikasiRisikoUtilitas, btnBPJSResepObatApotek, btnObatApolApotekBPJS, btnPermintaanResepIterasiApotekBPJS, btnPCRAICRAPengkajianRisikoPraKonstruksi,
             btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
-            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi;
+            btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi,
+            btnHasilUSGAbdomen,btnIntervensiNyeriFarmakologi,btnIntervensiNyeriNonFarmakologi;
 
     public void isWall() {
         try {
@@ -19895,6 +19939,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.gethasil_usg_neonatus(), btnHasilUSGNeonatus);
 
+            addMenu(akses.gethasil_pemeriksaan_usg_abdomen(), btnHasilUSGAbdomen);
+
             addMenu(akses.getpenilaian_awal_medis_ralan_tht(), btnPenilaianAwalMedisRalanTHT);
 
             addMenu(akses.getpenilaian_awal_medis_ralan_psikiatri(), btnPenilaianAwalMedisRalanPsikiatri);
@@ -20080,6 +20126,10 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpenilaian_lanjutan_skrining_fungsional(), btnPenilaianLanjutanSkriningFungsional);
 
             addMenu(akses.getpenilaian_ulang_nyeri(), btnPenilaianUlangNyeri);
+
+            addMenu(akses.getintervensi_nyeri_farmakologi(), btnIntervensiNyeriFarmakologi);
+
+            addMenu(akses.getintervensi_nyeri_nonfarmakologi(), btnIntervensiNyeriNonFarmakologi);
 
             addMenu(akses.getpenilaian_risiko_dekubitus(), btnPenilaianRisikoDekubitus);
 
@@ -23122,5 +23172,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnSuratKeteranganBerobat = createMenuButton("/48x48/register_11421976.png", "Surat Keterangan Berobat", "btnSuratKeteranganBerobat", this::btnSuratKeteranganBerobatActionPerformed);
 
         btnCatatanObservasiRuangOperasi = createMenuButton("/48x48/surgery-room_17774320.png", "Catatan Observasi Ruang Operasi", "btnCatatanObservasiRuangOperasi", this::btnCatatanObservasiRuangOperasiActionPerformed);
+
+        btnHasilUSGAbdomen = createMenuButton("/48x48/abs_3500353.png", "Hasil USG Abdomen", "btnHasilUSGAbdomen", this::btnHasilUSGAbdomenActionPerformed);
+
+        btnIntervensiNyeriFarmakologi = createMenuButton("/48x48/vitamin_17348719.png", "Intervensi Nyeri Farmakologi", "btnIntervensiNyeriFarmakologi", this::btnIntervensiNyeriFarmakologiActionPerformed);
+
+        btnIntervensiNyeriNonFarmakologi = createMenuButton("/48x48/music_9881578.png", "Intervensi Nyeri Non Farmakologi", "btnIntervensiNyeriNonFarmakologi", this::btnIntervensiNyeriNonFarmakologiActionPerformed);
     }
 }
