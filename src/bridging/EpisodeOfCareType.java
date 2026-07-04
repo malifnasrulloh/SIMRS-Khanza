@@ -135,6 +135,9 @@ public enum EpisodeOfCareType {
      * @return SQL fragment with '?' placeholders
      */
     public String buildIcdWhereClause(String column) {
+        if (icdFilters.length == 0) {
+            return "1=0";
+        }
         if (icdFilters.length == 1) {
             return column + " like ?";
         }
@@ -156,16 +159,24 @@ public enum EpisodeOfCareType {
      * @return SQL fragment combining all types' filters with OR
      */
     public static String buildAllTypesWhereClause(String column) {
-        StringBuilder sb = new StringBuilder("(");
+        StringBuilder sb = new StringBuilder();
         EpisodeOfCareType[] types = values();
+        boolean first = true;
         for (int i = 0; i < types.length; i++) {
-            if (i > 0) {
+            if (types[i].icdFilters.length == 0) {
+                continue;
+            }
+            String clause = types[i].buildIcdWhereClause(column);
+            if (!first) {
                 sb.append(" or ");
             }
-            sb.append(types[i].buildIcdWhereClause(column));
+            sb.append(clause);
+            first = false;
         }
-        sb.append(")");
-        return sb.toString();
+        if (sb.length() == 0) {
+            return "1=0";
+        }
+        return "(" + sb.toString() + ")";
     }
 
     /**
