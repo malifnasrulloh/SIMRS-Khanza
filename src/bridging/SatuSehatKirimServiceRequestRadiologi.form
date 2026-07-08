@@ -327,6 +327,39 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnUpdateActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="widget.Button" name="BtnGetIDImagingStudiAuto">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/36.png"/>
+                    </Property>
+                    <Property name="mnemonic" type="int" value="75"/>
+                    <Property name="text" type="java.lang.String" value="Auto Get ID Imaging Study"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Alt+K"/>
+                    <Property name="name" type="java.lang.String" value="BtnGetIDImagingStudiAuto" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[190, 30]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnGetIDImagingStudiAutoActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="widget.Button" name="BtnGetIDImagingStudiManual">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/36.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Manual Get ID Imaging Study"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="name" type="java.lang.String" value="BtnGetIDImagingStudiManual" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[210, 30]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnGetIDImagingStudiManualActionPerformed"/>
+                  </Events>
+                </Component>
                 <Component class="widget.Button" name="BtnPrint">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -395,7 +428,7 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="1">
-                        <StringItem index="0" value="11-06-2026"/>
+                        <StringItem index="0" value="08-07-2026"/>
                       </StringArray>
                     </Property>
                     <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -420,7 +453,7 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="1">
-                        <StringItem index="0" value="11-06-2026"/>
+                        <StringItem index="0" value="08-07-2026"/>
                       </StringArray>
                     </Property>
                     <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -468,37 +501,86 @@
                     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BtnCariKeyPressed"/>
                   </Events>
                 </Component>
-                <Component class="widget.Button" name="BtnGetIDImagingStudiAuto">
+                <Component class="widget.Button" name="BtnKirimOrthanc">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/picture/36.png"/>
+                      <Image iconType="3" name="/picture/inventaris.png"/>
                     </Property>
-                    <Property name="mnemonic" type="int" value="75"/>
-                    <Property name="text" type="java.lang.String" value="Auto Get ID Imaging Study"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Alt+K"/>
-                    <Property name="name" type="java.lang.String" value="BtnGetIDImagingStudiAuto" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="Upload ke Orthanc"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Upload webapps -&gt; konversi DICOM -&gt; simpan ke Orthanc"/>
+                    <Property name="name" type="java.lang.String" value="BtnKirimOrthanc" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[190, 30]"/>
+                      <Dimension value="[170, 30]"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnGetIDImagingStudiAutoActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimOrthancActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="widget.Button" name="BtnGetIDImagingStudiManual">
+                <Component class="widget.Button" name="BtnUpdateACSNOrthanc">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/inventaris.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Update ACSN Orthanc"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Update Accession Number di Orthanc untuk baris yang dipilih"/>
+                    <Property name="visible" type="boolean" value="false"/>
+                    <Property name="name" type="java.lang.String" value="BtnUpdateACSNOrthanc" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 30]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnUpdateACSNOrthancActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="widget.Button" name="BtnKirimDICOMRouter">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/34.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Kirim ke DICOM Router"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Kirim study dari Orthanc ke DICOM Router untuk baris yang dipilih"/>
+                    <Property name="visible" type="boolean" value="false"/>
+                    <Property name="name" type="java.lang.String" value="BtnKirimDICOMRouter" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[180, 30]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnKirimDICOMRouterActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="widget.Button" name="BtnUpdateDanKirim">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/picture/36.png"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Manual Get ID Imaging Study"/>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
-                    <Property name="name" type="java.lang.String" value="BtnGetIDImagingStudiManual" noResource="true"/>
+                    <Property name="text" type="java.lang.String" value="Kirim ke DICOM ROUTER"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Cocokkan studi -&gt; enrich metadata -&gt; kirim ke DICOM Router -&gt; sync Satu Sehat"/>
+                    <Property name="name" type="java.lang.String" value="BtnUpdateDanKirim" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[210, 30]"/>
+                      <Dimension value="[192, 30]"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnGetIDImagingStudiManualActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnUpdateDanKirimActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="widget.Button" name="BtnProses">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" noResource="true" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/picture/36.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Proses Workflow"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Proses otomatis: upload -&gt; match -&gt; enrich -&gt; kirim ke PACS -&gt; sync Satu Sehat"/>
+                    <Property name="name" type="java.lang.String" value="BtnProses" noResource="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[160, 30]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnProsesActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

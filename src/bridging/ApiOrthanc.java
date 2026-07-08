@@ -164,6 +164,41 @@ public class ApiOrthanc {
     }
 
     /**
+     * Fetches ALL studies for a given Patient ID from Orthanc (no date or
+     * modality filter). Used by the multi-signal scoring engine to collect
+     * candidates for existing-data matching when AccessionNumber is not set.
+     *
+     * @param noRM Patient ID (No. RM)
+     * @return JsonNode array of all studies for the patient, or {@code null}
+     */
+    public JsonNode AmbilSemuaStudyPasien(String noRM) {
+        System.out.println("Mengambil Semua Study Pasien : " + noRM);
+        try {
+            headers = new HttpHeaders();
+            headers.add("Authorization", "Basic " + authEncrypt);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            requestJson = "{"
+                    + "\"Level\": \"Study\","
+                    + "\"Expand\": true,"
+                    + "\"Query\": {"
+                    + "\"PatientID\": \"" + noRM + "\""
+                    + "}"
+                    + "}";
+            System.out.println("Request JSON AmbilSemuaStudyPasien : " + requestJson);
+            requestEntity = new HttpEntity(requestJson, headers);
+            requestJson = getRest().exchange(
+                    orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
+            ).getBody();
+            System.out.println("Result JSON AmbilSemuaStudyPasien : " + requestJson);
+            root = mapper.readTree(requestJson);
+        } catch (Exception e) {
+            System.out.println("ApiOrthanc AmbilSemuaStudyPasien error : " + e);
+            root = null;
+        }
+        return root;
+    }
+
+    /**
      * Finds the Orthanc internal study ID by searching for an exact
      * AccessionNumber. Used to re-resolve the study ID after a modify
      * operation, since {@code /studies/{id}/modify} with
@@ -427,6 +462,75 @@ public class ApiOrthanc {
 
     private String dicomConverterSendToOrthancFromUrlsUrl() {
         return dicomConverterUrl("/api/v1/send-to-orthanc-from-urls");
+    }
+
+    // =========================================================================
+    // Go API proxy methods (route Orthanc requests through dicom-converter-api)
+    // =========================================================================
+    private String dicomConverterFindByAcsnUrl() {
+        return dicomConverterUrl("/api/v1/studies/find-by-acsn");
+    }
+
+    private String dicomConverterPatientStudiesUrl(String patientId) {
+        return dicomConverterUrl("/api/v1/patients/" + patientId + "/studies");
+    }
+
+    private String dicomConverterSendToModalityUrl(String studyId, String aeTitle) {
+        return dicomConverterUrl("/api/v1/studies/" + studyId + "/send-to-modality/" + aeTitle);
+    }
+
+    /**
+     * Finds an Orthanc study by AccessionNumber via Go API proxy.
+     * Falls back to direct Orthanc call if Go API is unreachable.
+     *
+     * @param accessionNumber the ACSN to search for
+     * @return Orthanc internal study ID, or empty string on failure
+     */
+    public String findStudyByAccessionProxy(String accessionNumber) {
+        System.out.println("Proxy findStudyByAccession : " + accessionNumber);
+        try {
+            String jsonPayload = "{\"accession_number\":\"" + accessionNumber + "\"}";
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+            requestEntity = new HttpEntity(jsonPayload, headers);
+            ResponseEntity<String> response = getRest().exchange(
+                    dicomConverterFindByAcsnUrl(), HttpMethod.POST, requestEntity, String.class);
+            JsonNode result = mapper.readTree(response.getBody());
+            String studyId = result.path("study_id").asText();
+            return studyId;
+        } catch (Exception e) {
+            System.out.println("Proxy findStudyByAccession error (fallback to direct): " + e);
+            return findStudyByAccession(accessionNumber);
+        }
+    }
+
+    /**
+     * Sends a study to DICOM modality via Go API proxy.
+     * Falls back to direct Orthanc call if Go API is unreachable.
+     */
+    public boolean kirimKeModalityProxy(String studyId, String aeTitle, boolean silent) {
+        System.out.println("Proxy kirimKeModality : Study=" + studyId + " → " + aeTitle);
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+            requestEntity = new HttpEntity(headers);
+            ResponseEntity<String> response = getRest().exchange(
+                    dicomConverterSendToModalityUrl(studyId, aeTitle),
+                    HttpMethod.POST, requestEntity, String.class);
+            JsonNode result = mapper.readTree(response.getBody());
+            if ("success".equalsIgnoreCase(result.path("status").asText())) {
+                if (!silent) {
+                    JOptionPane.showMessageDialog(null, "Proses kirim ke Modality selesai..!!");
+                }
+                return true;
+            }
+            throw new RuntimeException("send-to-modality failed: " + result.toString());
+        } catch (Exception e) {
+            System.out.println("Proxy kirimKeModality error (fallback to direct): " + e);
+            return kirimKeModality(studyId, silent);
+        }
     }
 
     /**
@@ -757,6 +861,18 @@ public class ApiOrthanc {
     /**
      * Modifies study tags in Orthanc using a complete JSON payload.
      *
+     * <p>
+     * Routes through Go API gateway if {@code URLDICOMCONVERTER} is configured
+     * (recommended), otherwise falls back to direct Orthanc REST call.
+     *
+     * <p>
+     * <b>Note:</b> Demographic/clinical tags (PatientName, PatientID,
+     * PatientBirthDate, PatientSex, AccessionNumber, StudyDate, Modality) are
+     * embedded during DICOM conversion — do <i>not</i> include them in the
+     * modify payload. The payload should contain only metadata tags such as
+     * InstitutionName, ReferrringPhysicianName, ScheduledProcedureStepSequence,
+     * etc.
+     *
      * @param studyId Orthanc internal study ID to modify
      * @param modifyJson JSON string specifying tags to replace/remove
      * @param silent if {@code true}, suppresses the error dialog on failure
@@ -764,10 +880,10 @@ public class ApiOrthanc {
      */
     public boolean UbahTagsStudy(String studyId, String modifyJson, boolean silent) {
         System.out.println("UbahTagsStudy : Study=" + studyId);
-        
+
+        // Strategy: Try Go API gateway first, fallback to direct Orthanc
         String converterBase = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
         if (!converterBase.isEmpty()) {
-            System.out.println("Gateway Mode: routing UbahTagsStudy through Go Converter API...");
             try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -776,10 +892,10 @@ public class ApiOrthanc {
                         dicomConverterUrl("/api/v1/studies/" + studyId + "/modify"),
                         HttpMethod.POST, requestEntity, String.class
                 ).getBody();
-                System.out.println("Gateway UbahTagsStudy Success Response : " + response);
+                System.out.println("UbahTagsStudy via Go API Success : " + response);
                 return true;
             } catch (Exception ex) {
-                System.out.println("Gateway Mode UbahTagsStudy error (falling back to direct connection): " + ex);
+                System.out.println("UbahTagsStudy via Go API error (fallback to direct): " + ex);
             }
         }
 
@@ -787,120 +903,16 @@ public class ApiOrthanc {
             headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            System.out.println("Request JSON UbahTagsStudy : " + modifyJson);
+            System.out.println("Request JSON UbahTagsStudy (direct) : " + modifyJson);
             requestEntity = new HttpEntity(modifyJson, headers);
             String response = getRest().exchange(
                     orthancUrl("/studies/" + studyId + "/modify"),
                     HttpMethod.POST, requestEntity, String.class
             ).getBody();
-            System.out.println("Response UbahTagsStudy : " + response);
+            System.out.println("Response UbahTagsStudy (direct) : " + response);
             return true;
-        } catch (org.springframework.web.client.HttpClientErrorException ex) {
-            System.out.println("ApiOrthanc UbahTagsStudy HTTP error : " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString());
-            if (ex.getStatusCode().value() == 400) {
-                String errorBody = ex.getResponseBodyAsString();
-                if (errorBody.contains("Trying to change patient tags in a study") || errorBody.contains("All the 'Replace' tags should match")) {
-                    System.out.println("Demographic mismatch detected. Attempting self-recovery by updating patient demographics in Orthanc...");
-                    try {
-                        JsonNode rootNode = mapper.readTree(modifyJson);
-                        JsonNode replaceNode = rootNode.path("Replace");
-                        String patientId = replaceNode.path("PatientID").asText();
-                        String patientName = replaceNode.path("PatientName").asText();
-                        String patientBirthDate = replaceNode.path("PatientBirthDate").asText();
-                        String patientSex = replaceNode.path("PatientSex").asText();
-                        String studyDate = replaceNode.path("StudyDate").asText();
-                        String modality = replaceNode.path("Modality").asText();
-
-                        if (patientId != null && !patientId.trim().isEmpty()) {
-                            headers = new HttpHeaders();
-                            headers.add("Authorization", "Basic " + authEncrypt);
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            String queryJson = "{"
-                                    + "\"Level\": \"Patient\","
-                                    + "\"Expand\": true,"
-                                    + "\"Query\": {"
-                                    + "\"PatientID\": \"" + patientId.trim() + "\""
-                                    + "}"
-                                    + "}";
-                            requestEntity = new HttpEntity(queryJson, headers);
-                            String patientResp = getRest().exchange(
-                                    orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
-                            ).getBody();
-                            JsonNode patients = mapper.readTree(patientResp);
-                            if (patients.isArray() && patients.size() > 0) {
-                                String patientInternalId = patients.get(0).path("ID").asText();
-                                System.out.println("Self-recovery: Found patient internal ID in Orthanc: " + patientInternalId);
-
-                                // Step 2: Trigger patient-level modify to update demographics to match SIMRS
-                                headers = new HttpHeaders();
-                                headers.add("Authorization", "Basic " + authEncrypt);
-                                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                                java.util.Map<String, Object> patReplace = new java.util.HashMap<>();
-                                if (patientName != null && !patientName.isEmpty()) patReplace.put("PatientName", patientName);
-                                if (patientBirthDate != null && !patientBirthDate.isEmpty()) patReplace.put("PatientBirthDate", patientBirthDate);
-                                if (patientSex != null && !patientSex.isEmpty()) patReplace.put("PatientSex", patientSex);
-
-                                java.util.Map<String, Object> patBody = new java.util.HashMap<>();
-                                patBody.put("Replace", patReplace);
-                                patBody.put("KeepSource", false);
-                                patBody.put("Force", true);
-
-                                String patModifyJson = mapper.writeValueAsString(patBody);
-                                System.out.println("Self-recovery: Request JSON Patient Modify : " + patModifyJson);
-                                requestEntity = new HttpEntity(patModifyJson, headers);
-
-                                String patResponse = getRest().exchange(
-                                        orthancUrl("/patients/" + patientInternalId + "/modify"),
-                                        HttpMethod.POST, requestEntity, String.class
-                                ).getBody();
-                                System.out.println("Self-recovery: Patient modify completed successfully. Response: " + patResponse);
-
-                                // Step 3: Wait a short moment for indexing and recreation
-                                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
-
-                                // Step 4: Re-resolve the study ID using PatientID, StudyDate, and Modality
-                                String newStudyId = "";
-                                if (studyDate != null && !studyDate.isEmpty() && modality != null && !modality.isEmpty()) {
-                                    JsonNode studies = this.AmbilSeriesDenganModality(patientId, studyDate, studyDate, modality);
-                                    if (studies != null && studies.isArray() && studies.size() > 0) {
-                                        newStudyId = studies.get(0).path("ID").asText();
-                                    }
-                                }
-
-                                if (!newStudyId.isEmpty()) {
-                                    System.out.println("Self-recovery: Found new Study ID after patient update: " + newStudyId);
-
-                                    // Step 5: Retry the study-level modify using the new Study ID
-                                    headers = new HttpHeaders();
-                                    headers.add("Authorization", "Basic " + authEncrypt);
-                                    headers.setContentType(MediaType.APPLICATION_JSON);
-                                    requestEntity = new HttpEntity(modifyJson, headers);
-                                    String retryResponse = getRest().exchange(
-                                            orthancUrl("/studies/" + newStudyId + "/modify"),
-                                            HttpMethod.POST, requestEntity, String.class
-                                    ).getBody();
-                                    System.out.println("Self-recovery: Study modify retry Response : " + retryResponse);
-                                    return true;
-                                } else {
-                                    System.out.println("Self-recovery failed: Could not resolve new Study ID after patient update.");
-                                }
-                            } else {
-                                System.out.println("Self-recovery failed: PatientID=" + patientId + " not found in Orthanc.");
-                            }
-                        }
-                    } catch (Exception ex2) {
-                        System.out.println("Self-recovery failed with exception: " + ex2);
-                    }
-                }
-            }
-            if (!silent) {
-                JOptionPane.showMessageDialog(null,
-                        "Gagal mengubah tags di Orthanc..!!");
-            }
-            return false;
         } catch (Exception e) {
-            System.out.println("ApiOrthanc UbahTagsStudy error : " + e);
+            System.out.println("UbahTagsStudy error : " + e);
             if (!silent) {
                 JOptionPane.showMessageDialog(null,
                         "Gagal mengubah tags di Orthanc..!!");
