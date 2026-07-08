@@ -1884,8 +1884,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (hit != null) {
             return hit;
         }
-        String startDate = getOffsetDicomDateFromDicom(studyDateYYYYMMDD, -3);
-        String endDate = getOffsetDicomDateFromDicom(studyDateYYYYMMDD, 3);
+        String startDate = studyDateYYYYMMDD;
+        String endDate = studyDateYYYYMMDD;
         
         java.util.List<String> modalitiesToQuery = new java.util.ArrayList<>();
         modalitiesToQuery.add(modality);
@@ -1929,6 +1929,102 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         return -1;
     }
 
+    private String showStudySelectionDialog(
+            String noRM, String patientName, String expectedModality,
+            String expectedDesc, String expectedDate, String expectedTime,
+            java.util.List<JsonNode> uniqueStudies) {
+        
+        java.util.List<String> optionsList = new java.util.ArrayList<>();
+        for (JsonNode s : uniqueStudies) {
+            String sId = s.path("ID").asText();
+            String studyDate = s.path("MainDicomTags").path("StudyDate").asText().trim();
+            String studyTime = s.path("MainDicomTags").path("StudyTime").asText().trim();
+            String studyDesc = s.path("MainDicomTags").path("StudyDescription").asText().trim();
+            String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
+            
+            // Extract Modality (first compatible or exact Modality found in Series/ModalitiesInStudy)
+            String modality = expectedModality;
+            JsonNode modalitiesNode = s.path("ModalitiesInStudy");
+            if (modalitiesNode.isArray() && modalitiesNode.size() > 0) {
+                modality = modalitiesNode.get(0).asText();
+            }
+            
+            // Format studyDate (yyyyMMdd -> yyyy-MM-dd)
+            String dateFormatted = studyDate;
+            if (studyDate.length() == 8) {
+                dateFormatted = studyDate.substring(0, 4) + "-" + studyDate.substring(4, 6) + "-" + studyDate.substring(6, 8);
+            }
+            
+            // Format studyTime (hhmmss -> hh:mm:ss)
+            String timeFormatted = studyTime;
+            if (studyTime.length() >= 4) {
+                timeFormatted = studyTime.substring(0, 2) + ":" + studyTime.substring(2, 4);
+                if (studyTime.length() >= 6) {
+                    timeFormatted += ":" + studyTime.substring(4, 6);
+                }
+            }
+            
+            String label = String.format("%s %s | %s | %s | ACSN: %s [ID: %s]",
+                    dateFormatted, timeFormatted, modality,
+                    studyDesc.isEmpty() ? "(No Description)" : studyDesc,
+                    studyAcsn.isEmpty() ? "-" : studyAcsn,
+                    sId);
+            optionsList.add(label);
+        }
+        
+        Object[] options = optionsList.toArray();
+        final String[] selectedId = new String[]{""};
+        
+        String dialogMessage = String.format(
+                "Ditemukan beberapa study di Orthanc untuk pasien:\n"
+                + "RM: %s - %s\n\n"
+                + "SIMRS Request:\n"
+                + "  Prosedur: %s\n"
+                + "  Modality: %s\n"
+                + "  Tgl/Jam : %s %s\n\n"
+                + "Pilih study PACS yang sesuai untuk dihubungkan:",
+                noRM, patientName, expectedDesc, expectedModality, expectedDate, expectedTime);
+        
+        String dialogTitle = String.format("Rekonsiliasi Study PACS - %s", patientName);
+        
+        try {
+            if (SwingUtilities.isEventDispatchThread()) {
+                Object selection = JOptionPane.showInputDialog(
+                        this,
+                        dialogMessage,
+                        dialogTitle,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                );
+                if (selection != null) {
+                    String selStr = selection.toString();
+                    selectedId[0] = selStr.substring(selStr.lastIndexOf("[ID: ") + 5, selStr.length() - 1);
+                }
+            } else {
+                SwingUtilities.invokeAndWait(() -> {
+                    Object selection = JOptionPane.showInputDialog(
+                            this,
+                            dialogMessage,
+                            dialogTitle,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]
+                    );
+                    if (selection != null) {
+                        String selStr = selection.toString();
+                        selectedId[0] = selStr.substring(selStr.lastIndexOf("[ID: ") + 5, selStr.length() - 1);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Error showing study selection dialog: " + e);
+        }
+        return selectedId[0];
+    }
+
     /**
      * Resolves the Orthanc internal study ID for a given table row. Uses an
      * Initial Query Strategy (Accession-first) and a High-Confidence Matching
@@ -1968,9 +2064,9 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             System.out.println("Orthanc Skip : Tanggal permintaan tidak valid untuk baris " + row);
             return "";
         }
-        String tanggalStart = getOffsetDicomDateFromHyphen(tglPermintaan, -3);
-        String tanggalEnd = getOffsetDicomDateFromHyphen(tglPermintaan, 3);
         String tanggalExact = dicomStudyDateFromYmd(tglPermintaan);
+        String tanggalStart = tanggalExact;
+        String tanggalEnd = tanggalExact;
 
         // Query Orthanc by checking compatible modalities with date range
         java.util.List<String> modalitiesToQuery = new java.util.ArrayList<>();
@@ -2005,7 +2101,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
         if (uniqueStudies.isEmpty()) {
             System.out.println("Orthanc Skip : Tidak ditemukan study untuk RM=" + noRM
-                    + ", Tanggal=" + tanggalExact + " (range ±3 hari, modalities=" + modalitiesToQuery + ")");
+                    + ", Tanggal=" + tanggalExact + " (exact date, modalities=" + modalitiesToQuery + ")");
             return "";
         }
 
@@ -2015,12 +2111,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             String sId = s.path("ID").asText();
             if (!sId.isEmpty()) {
                 String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
-                if (!studyAcsn.isEmpty() && !"-".equals(studyAcsn) && !studyAcsn.equals(acsn)) {
-                    System.out.println("Orthanc Match Skip Study " + sId + " karena AccessionNumber '" + studyAcsn + "' tidak cocok");
-                    return "";
+                if (studyAcsn.isEmpty() || "-".equals(studyAcsn) || studyAcsn.equals(acsn)) {
+                    System.out.println("Orthanc : Single match study found automatically. ID = " + sId);
+                    return sId;
                 }
-                System.out.println("Orthanc : Single match study found. ID = " + sId);
-                return sId;
+                System.out.println("Orthanc : Single study found but accession mismatch '" + studyAcsn + "' vs '" + acsn + "'. Requiring manual selection confirmation.");
             }
         }
 
@@ -2146,7 +2241,19 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             return bestMatchId;
         }
 
-        System.out.println("Orthanc Skip : Tidak ada High-confidence match (score=" + bestScore + ", runner-up=" + runnerUpScore + ") di PACS.");
+        // Automated match is ambiguous or low confidence, fallback to Interactive Selection Dialog!
+        System.out.println("Orthanc : Automated matching ambiguous. Falling back to interactive dropdown selection.");
+        String patientName = valueAtString(row, COL_NAMA_PASIEN);
+        String expectedDesc = valueAtString(row, COL_NM_PERAWATAN);
+        String selectedStudyId = showStudySelectionDialog(
+                noRM, patientName, modality, expectedDesc, tglPermintaan, jamPermStr, uniqueStudies);
+        
+        if (!selectedStudyId.isEmpty()) {
+            System.out.println("Orthanc : User manually selected Study ID = " + selectedStudyId);
+            return selectedStudyId;
+        }
+
+        System.out.println("Orthanc Skip : Tidak ada study yang dipilih oleh user.");
         return "";
     }
 
