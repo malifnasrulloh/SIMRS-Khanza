@@ -1016,6 +1016,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 try {
                     String orthancStudyId = orthanc.findStudyByAccession(acsn);
                     if (orthancStudyId.isEmpty()) {
+                        // Fallback to resolve by demographics/modality/time
+                        orthancStudyId = resolveOrthancStudyId(row);
+                        if (!orthancStudyId.isEmpty()) {
+                            System.out.println("Orthanc : Study found by demographics, updating ACSN to " + acsn);
+                            if (orthanc.UbahAccession(orthancStudyId, acsn, true)) {
+                                String newStudyId = orthanc.findStudyByAccession(acsn);
+                                if (!newStudyId.isEmpty()) {
+                                    orthancStudyId = newStudyId;
+                                }
+                            } else {
+                                orthancStudyId = ""; // Clear if update failed
+                            }
+                        }
+                    }
+
+                    if (orthancStudyId.isEmpty()) {
                         Object lokObj = tbObat.getValueAt(row, COL_LOKASI_IMAGE);
                         String lok = lokObj == null ? "" : lokObj.toString().trim();
                         if (lok.equalsIgnoreCase("webapps")) {
@@ -1823,6 +1839,41 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         }
     }
 
+    private boolean isModalityCompatible(String expected, String actual) {
+        if (expected == null || actual == null) return false;
+        expected = expected.trim().toUpperCase();
+        actual = actual.trim().toUpperCase();
+        if (expected.equals(actual)) return true;
+        if ("XR".equals(expected)) {
+            return "CR".equals(actual) || "DX".equals(actual) || "PX".equals(actual) || "RG".equals(actual) || "XR".equals(actual);
+        }
+        return false;
+    }
+
+    private static String getOffsetDicomDateFromDicom(String dicomDate, int daysOffset) {
+        if (dicomDate == null || dicomDate.length() < 8) {
+            return dicomDate;
+        }
+        try {
+            java.time.LocalDate date = java.time.LocalDate.parse(dicomDate, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+            return date.plusDays(daysOffset).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+        } catch (Exception e) {
+            return dicomDate;
+        }
+    }
+
+    private static String getOffsetDicomDateFromHyphen(String tglHyphen, int daysOffset) {
+        if (tglHyphen == null || tglHyphen.length() < 10) {
+            return "";
+        }
+        try {
+            java.time.LocalDate date = java.time.LocalDate.parse(tglHyphen.substring(0, 10));
+            return date.plusDays(daysOffset).format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+        } catch (Exception e) {
+            return dicomStudyDateFromYmd(tglHyphen);
+        }
+    }
+
     private boolean orthancStudyExistsCached(String noRM, String studyDateYYYYMMDD, String modality,
             Map<String, Boolean> cache) {
         if (modality == null || modality.isEmpty() || "-".equals(modality)) {
@@ -1833,9 +1884,26 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (hit != null) {
             return hit;
         }
-        JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, studyDateYYYYMMDD,
-                studyDateYYYYMMDD, modality);
-        boolean ok = studies != null && studies.isArray() && studies.size() > 0;
+        String startDate = getOffsetDicomDateFromDicom(studyDateYYYYMMDD, -3);
+        String endDate = getOffsetDicomDateFromDicom(studyDateYYYYMMDD, 3);
+        
+        java.util.List<String> modalitiesToQuery = new java.util.ArrayList<>();
+        modalitiesToQuery.add(modality);
+        if ("XR".equals(modality)) {
+            modalitiesToQuery.add("CR");
+            modalitiesToQuery.add("DX");
+            modalitiesToQuery.add("PX");
+            modalitiesToQuery.add("RG");
+        }
+        
+        boolean ok = false;
+        for (String m : modalitiesToQuery) {
+            JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, startDate, endDate, m);
+            if (studies != null && studies.isArray() && studies.size() > 0) {
+                ok = true;
+                break;
+            }
+        }
         cache.put(key, ok);
         return ok;
     }
@@ -1900,19 +1968,50 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             System.out.println("Orthanc Skip : Tanggal permintaan tidak valid untuk baris " + row);
             return "";
         }
-        String tanggal = dicomStudyDateFromYmd(tglPermintaan);
+        String tanggalStart = getOffsetDicomDateFromHyphen(tglPermintaan, -3);
+        String tanggalEnd = getOffsetDicomDateFromHyphen(tglPermintaan, 3);
+        String tanggalExact = dicomStudyDateFromYmd(tglPermintaan);
 
-        // Query Orthanc with modality filter
-        JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, tanggal, tanggal, modality);
-        if (studies == null || !studies.isArray() || studies.size() == 0) {
+        // Query Orthanc by checking compatible modalities with date range
+        java.util.List<String> modalitiesToQuery = new java.util.ArrayList<>();
+        modalitiesToQuery.add(modality);
+        if ("XR".equals(modality)) {
+            modalitiesToQuery.add("CR");
+            modalitiesToQuery.add("DX");
+            modalitiesToQuery.add("PX");
+            modalitiesToQuery.add("RG");
+        }
+
+        java.util.List<JsonNode> allStudies = new java.util.ArrayList<>();
+        for (String m : modalitiesToQuery) {
+            JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, tanggalStart, tanggalEnd, m);
+            if (studies != null && studies.isArray()) {
+                for (int i = 0; i < studies.size(); i++) {
+                    allStudies.add(studies.get(i));
+                }
+            }
+        }
+
+        // Deduplicate studies by their Orthanc ID
+        java.util.List<JsonNode> uniqueStudies = new java.util.ArrayList<>();
+        java.util.Set<String> studyIds = new java.util.HashSet<>();
+        for (JsonNode s : allStudies) {
+            String sId = s.path("ID").asText();
+            if (!sId.isEmpty() && !studyIds.contains(sId)) {
+                studyIds.add(sId);
+                uniqueStudies.add(s);
+            }
+        }
+
+        if (uniqueStudies.isEmpty()) {
             System.out.println("Orthanc Skip : Tidak ditemukan study untuk RM=" + noRM
-                    + ", Tanggal=" + tanggal + ", Modality=" + modality);
+                    + ", Tanggal=" + tanggalExact + " (range ±3 hari, modalities=" + modalitiesToQuery + ")");
             return "";
         }
 
         // Single-Study Fast-Track
-        if (studies.size() == 1) {
-            JsonNode s = studies.get(0);
+        if (uniqueStudies.size() == 1) {
+            JsonNode s = uniqueStudies.get(0);
             String sId = s.path("ID").asText();
             if (!sId.isEmpty()) {
                 String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
@@ -1941,8 +2040,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         int bestScore = -1;
         int runnerUpScore = -1;
 
-        for (int i = 0; i < studies.size(); i++) {
-            JsonNode s = studies.get(i);
+        for (int i = 0; i < uniqueStudies.size(); i++) {
+            JsonNode s = uniqueStudies.get(i);
             String sId = s.path("ID").asText();
             if (sId.isEmpty()) continue;
 
@@ -1955,7 +2054,13 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
             int score = 0;
 
-            // Match 1: Time Proximity
+            // Match 1: Accession Number exact match
+            if (studyAcsn.equals(acsn)) {
+                score += 100;
+                System.out.println("Orthanc Match Study " + sId + " cocok AccessionNumber exact: " + acsn + " (+100 pts)");
+            }
+
+            // Match 2: Time Proximity
             String studyTime = s.path("MainDicomTags").path("StudyTime").asText().trim();
             int studySeconds = timeToSeconds(studyTime);
             if (examSeconds >= 0 && studySeconds >= 0) {
@@ -1977,7 +2082,27 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 }
             }
 
-            // Match 2: Procedure Description
+            // Match 3: Date Proximity
+            String studyDate = s.path("MainDicomTags").path("StudyDate").asText().trim();
+            if (!studyDate.isEmpty() && !tanggalExact.isEmpty()) {
+                try {
+                    java.time.LocalDate d1 = java.time.LocalDate.parse(studyDate, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    java.time.LocalDate d2 = java.time.LocalDate.parse(tanggalExact, java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    long diffDays = Math.abs(java.time.temporal.ChronoUnit.DAYS.between(d1, d2));
+                    if (diffDays == 0) {
+                        score += 30;
+                        System.out.println("Orthanc Match Study " + sId + " cocok tanggal exact (+30 pts)");
+                    } else if (diffDays <= 1) {
+                        score += 15;
+                        System.out.println("Orthanc Match Study " + sId + " cocok tanggal ±1 hari (+15 pts)");
+                    } else if (diffDays <= 2) {
+                        score += 5;
+                        System.out.println("Orthanc Match Study " + sId + " cocok tanggal ±2 hari (+5 pts)");
+                    }
+                } catch (Exception ignored) {}
+            }
+
+            // Match 4: Procedure Description
             String studyDesc = s.path("MainDicomTags").path("StudyDescription").asText().trim().toLowerCase();
             if (!studyDesc.isEmpty() && !nmPerawatan.isEmpty()) {
                 if (studyDesc.equals(nmPerawatan)) {
@@ -2000,8 +2125,9 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         }
                     }
                     if (overlapCount > 0) {
-                        score += overlapCount * 10;
-                        System.out.println("Orthanc Match Study " + sId + " cocok deskripsi token overlap count=" + overlapCount + " (+ " + (overlapCount * 10) + " pts)");
+                        int tokenScore = Math.min(overlapCount * 10, 40);
+                        score += tokenScore;
+                        System.out.println("Orthanc Match Study " + sId + " cocok deskripsi token overlap count=" + overlapCount + " (+" + tokenScore + " pts)");
                     }
                 }
             }
