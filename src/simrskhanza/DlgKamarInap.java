@@ -230,6 +230,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private DlgRawatInap formrawatinap;
+    private DlgRawatJalan dlgrwjl;
     private DlgBilingRanap billing;
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
     private SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-MM-yyyy");
@@ -6331,19 +6332,18 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                             akses.setkdbangsal(bangsal);
                                       }
                                       
-                                      if (formrawatinap == null || !formrawatinap.isDisplayable()) {
+                                      if (formrawatinap == null) {
                                             formrawatinap=new DlgRawatInap(null,false);
+                                      }
                                             formrawatinap.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                                             formrawatinap.addWindowListener(new WindowAdapter() {
                                                 @Override
                                                 public void windowClosed(WindowEvent e) {
-                                                    formrawatinap=null;
                                                 }
                                             });
 
                                             formrawatinap.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                                             formrawatinap.setLocationRelativeTo(internalFrame1);
-                                      }
 
                                       if (formrawatinap == null) return;
                                       if (!formrawatinap.isVisible()) {
@@ -6396,19 +6396,18 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     }else{
                         akses.setkdbangsal(bangsal);
                     }
-                    if (formrawatinap == null || !formrawatinap.isDisplayable()) {
+                    if (formrawatinap == null) {
                         formrawatinap=new DlgRawatInap(null,false);
+                    }
                         formrawatinap.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                         formrawatinap.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosed(WindowEvent e) {
-                                formrawatinap=null;
                             }
                         });
 
                         formrawatinap.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                         formrawatinap.setLocationRelativeTo(internalFrame1);
-                    }
 
                     if (formrawatinap == null) return;
                     if (!formrawatinap.isVisible()) {
@@ -9483,7 +9482,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     psanak.setString(1,tbKamIn.getValueAt(tbKamIn.getSelectedRow()-1,0).toString());
                                     rs2=psanak.executeQuery();
                                     if(rs2.next()){
-                                        DlgRawatJalan dlgrwjl=new DlgRawatJalan(null,false);
+                                        if (dlgrwjl == null){
+                                            dlgrwjl=new DlgRawatJalan(null,false);
+                                        }
                                         dlgrwjl.bypassranap=true;
                                         dlgrwjl.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                                         dlgrwjl.setLocationRelativeTo(internalFrame1);
@@ -9518,7 +9519,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         System.out.println(e);
                     }                
                 }else{
-                    DlgRawatJalan dlgrwjl=new DlgRawatJalan(null,false);
+                    if (dlgrwjl == null){
+                        dlgrwjl=new DlgRawatJalan(null,false);
+                    }
                     dlgrwjl.bypassranap=true;
                     dlgrwjl.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                     dlgrwjl.setLocationRelativeTo(internalFrame1);

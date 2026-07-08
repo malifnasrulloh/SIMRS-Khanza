@@ -7755,8 +7755,9 @@ private void MnDataRalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 if(Sequel.cariInteger("select count(kamar_inap.no_rawat) from kamar_inap where kamar_inap.no_rawat=?",TNoRw.getText())>0){
                     JOptionPane.showMessageDialog(null,"Maaf, Pasien sudah masuk Kamar Inap. Gunakan billing Ranap..!!!");
                 }else {
-                    if (formrawatjalan == null || !formrawatjalan.isDisplayable()) {
+                    if (formrawatjalan == null) {
                         formrawatjalan=new DlgRawatJalan(null,false);
+                    }
                         formrawatjalan.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                         formrawatjalan.addWindowListener(new WindowAdapter() {
                             @Override
@@ -7766,13 +7767,11 @@ private void MnDataRalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                                         tabModekasir.setValueAt("Sudah",tbKasirRalan.getSelectedRow(),10);
                                     }
                                 }
-                                formrawatjalan=null;
                             }
                         });
 
                         formrawatjalan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                         formrawatjalan.setLocationRelativeTo(internalFrame1);
-                    }
                     if (formrawatjalan == null) return;
                     if (!formrawatjalan.isVisible()) {
                         formrawatjalan.emptTeks();
@@ -9384,19 +9383,19 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
                 if(Sequel.cariInteger("select count(kamar_inap.no_rawat) from kamar_inap where kamar_inap.no_rawat=?",tbKasirRalan2.getValueAt(tbKasirRalan2.getSelectedRow(),10).toString())>0){
                     JOptionPane.showMessageDialog(null,"Maaf, Pasien sudah masuk Kamar Inap. Gunakan billing Ranap..!!!");
                 }else{      
-                    if (formrawatjalan == null || !formrawatjalan.isDisplayable()) {
+                    if (formrawatjalan == null) {
                         formrawatjalan=new DlgRawatJalan(null,false);
+                    }
                         formrawatjalan.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                         formrawatjalan.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosed(WindowEvent e) {
-                                formrawatjalan=null;
                             }
                         });
 
                         formrawatjalan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                         formrawatjalan.setLocationRelativeTo(internalFrame1);
-                    }
+
                     if (formrawatjalan == null) return;
                     if (!formrawatjalan.isVisible()) {
                         formrawatjalan.emptTeks();
