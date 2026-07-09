@@ -134,11 +134,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private int i = 0;
     private String link = "", json = "", iddokter = "", idpasien = "";
     private ApiSatuSehat api = new ApiSatuSehat();
-    private HttpHeaders headers;
-    private HttpEntity requestEntity;
     private final ObjectMapper mapper = new ObjectMapper();
-    private JsonNode root;
-    private JsonNode response;
+    // root and response are local variables within methods
     private SatuSehatCekNIK cekViaSatuSehat = new SatuSehatCekNIK();
     private StringBuilder htmlContent;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -275,7 +272,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 Object statusObj = tbObat.getValueAt(r, COL_STATUS_ORTHANC);
                 if (statusObj == null) continue;
                 String statusStr = statusObj.toString().trim();
-                if ("PENDING".equalsIgnoreCase(statusStr) || "Waiting".equalsIgnoreCase(statusStr)) {
+                if ("PENDING".equalsIgnoreCase(statusStr) || "Waiting".equalsIgnoreCase(statusStr)
+                        || "Terkirim ke Router".equalsIgnoreCase(statusStr)) {
                     String acsnVal = valueAtString(r, COL_ACSN);
                     String localId = getImagingStudyIDLocal(acsnVal);
                     if (!localId.isEmpty()) {
@@ -786,13 +784,13 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         iddokter = idDokterLoc;
                         idpasien = idPasienLoc;
                         try {
-                            headers = new HttpHeaders();
+                            HttpHeaders headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
                             headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
                             String jsonPayload = buildServiceRequestJson(row, null);
                             System.out.println("URL Kirim : " + link + "/ServiceRequest");
                             System.out.println("Request JSON Kirim : " + jsonPayload);
-                            requestEntity = new HttpEntity(jsonPayload, headers);
+                            HttpEntity<String> requestEntity = new HttpEntity(jsonPayload, headers);
                             String resJson = api.getRest().exchange(link + "/ServiceRequest", HttpMethod.POST, requestEntity, String.class).getBody();
                             System.out.println("Result JSON Kirim : " + resJson);
                             JsonNode rootNode = mapper.readTree(resJson);
@@ -836,14 +834,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         iddokter = idDokterLoc;
                         idpasien = idPasienLoc;
                         try {
-                            headers = new HttpHeaders();
+                            HttpHeaders headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
                             headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
                             String jsonPayload = buildServiceRequestJson(row, tbObat.getValueAt(row, COL_ID_SR).toString());
                             String url = link + "/ServiceRequest/" + tbObat.getValueAt(row, COL_ID_SR);
                             System.out.println("URL Update : " + url);
                             System.out.println("Request JSON Update : " + jsonPayload);
-                            requestEntity = new HttpEntity(jsonPayload, headers);
+                            HttpEntity<String> requestEntity = new HttpEntity(jsonPayload, headers);
                             String resJson = api.getRest().exchange(url, HttpMethod.PUT, requestEntity, String.class).getBody();
                             System.out.println("Result JSON Update : " + resJson);
                             SwingUtilities.invokeLater(() -> tbObat.setValueAt(false, row, COL_PILIH));
@@ -1198,18 +1196,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
         String physicianName = valueAtString(row, COL_NM_DOKTER_PERUJUK);
         String stationName = valueAtString(row, COL_NM_POLI);
-        String aeTitle = modalityMapper.getAeTitle(kdJenisPrw, modality, koneksiDB.AETITLE_DICOMROUTER());
+        String aeTitle = safeAeTitle(modalityMapper.getAeTitle(kdJenisPrw, modality, koneksiDB.AETITLE_DICOMROUTER()), modality);
 
-        Map<String, Object> sqItem = new LinkedHashMap<>();
-        sqItem.put("Modality", modality);
-        sqItem.put("ScheduledStationAETitle", aeTitle);
-        putDicomIfNonempty(sqItem, "ScheduledProcedureStepStartDate", scheduledDate);
-        sqItem.put("ScheduledProcedureStepStartTime", scheduledTime);
-        putDicomIfNonempty(sqItem, "ScheduledPerformingPhysicianName", physicianName);
-        sqItem.put("ScheduledProcedureStepDescription", procedureDesc);
-        sqItem.put("ScheduledProcedureStepID", noorder);
-        putDicomIfNonempty(sqItem, "ScheduledStationName", stationName);
-        putDicomIfNonempty(sqItem, "CommentsOnTheScheduledProcedureStep", clinicalDiag);
+        Map<String, Object> sqItem = buildSqItem(row, modality, aeTitle,
+                scheduledDate, scheduledTime, physicianName, stationName,
+                procedureDesc, clinicalDiag, noorder);
 
         String orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality,
                 procedureDesc, clinicalDiag, noorder, scheduledDate, scheduledTime,
@@ -1330,6 +1321,12 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     }
 
     private void BtnKirimOrthancActionPerformed(java.awt.event.ActionEvent evt) {
+        if (ceksukses) {
+            return;
+        }
+        if (!isDisplayable()) {
+            return;
+        }
         List<Integer> rows = new ArrayList<>();
         for (int r = 0; r < tbObat.getRowCount(); r++) {
             if (!isRowCheckboxSelected(r)) {
@@ -1351,6 +1348,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (executor.isShutdown() || executor.isTerminated()) {
             return;
         }
+        ceksukses = true;
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         executor.submit(() -> {
             int[] sukgag = new int[]{0, 0};
@@ -1364,6 +1362,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     }
                 }
             } finally {
+                ceksukses = false;
                 final int ok = sukgag[0];
                 final int fail = sukgag[1];
                 SwingUtilities.invokeLater(() -> {
@@ -1450,18 +1449,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
         String physicianName = valueAtString(i, COL_NM_DOKTER_PERUJUK);
         String stationName = valueAtString(i, COL_NM_POLI);
-        String aeTitle = modalityMapper.getAeTitle(kdJenis, modality, koneksiDB.AETITLE_DICOMROUTER());
+        String aeTitle = safeAeTitle(modalityMapper.getAeTitle(kdJenis, modality, koneksiDB.AETITLE_DICOMROUTER()), modality);
 
-        Map<String, Object> sqItem = new LinkedHashMap<>();
-        sqItem.put("Modality", modality);
-        sqItem.put("ScheduledStationAETitle", aeTitle);
-        putDicomIfNonempty(sqItem, "ScheduledProcedureStepStartDate", scheduledDate);
-        sqItem.put("ScheduledProcedureStepStartTime", scheduledTime);
-        putDicomIfNonempty(sqItem, "ScheduledPerformingPhysicianName", physicianName);
-        sqItem.put("ScheduledProcedureStepDescription", procedureDesc);
-        sqItem.put("ScheduledProcedureStepID", noorder);
-        putDicomIfNonempty(sqItem, "ScheduledStationName", stationName);
-        putDicomIfNonempty(sqItem, "CommentsOnTheScheduledProcedureStep", clinicalDiag);
+        Map<String, Object> sqItem = buildSqItem(i, modality, aeTitle,
+                scheduledDate, scheduledTime, physicianName, stationName,
+                procedureDesc, clinicalDiag, noorder);
 
         String orthancModifyJson;
         try {
@@ -1918,6 +1910,40 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         return out.length() <= 16 ? out : out.substring(0, 16);
     }
 
+    /**
+     * Returns a non-empty ScheduledStationAETitle for a modify payload.
+     * Falls back to modality-based if the given aeTitle is empty/null.
+     */
+    private static String safeAeTitle(String aeTitle, String modality) {
+        if (aeTitle != null && !aeTitle.trim().isEmpty()) {
+            return aeTitle.trim();
+        }
+        // Fallback: build from modality
+        return sanitizeAeTitle(modality);
+    }
+
+    /**
+     * Builds the ScheduledProcedureStepSequence item for a given table row.
+     * Shared by {@link #BtnUpdateDanKirimActionPerformedSingleRow(int)} and
+     * {@link #uploadSingleRowToOrthanc(int)}.
+     */
+    private Map<String, Object> buildSqItem(int r, String modality, String aeTitle,
+            String scheduledDate, String scheduledTime, String physicianName,
+            String stationName, String procedureDesc, String clinicalDiag,
+            String noorder) {
+        Map<String, Object> sqItem = new LinkedHashMap<>();
+        sqItem.put("Modality", modality);
+        sqItem.put("ScheduledStationAETitle", aeTitle);
+        putDicomIfNonempty(sqItem, "ScheduledProcedureStepStartDate", scheduledDate);
+        sqItem.put("ScheduledProcedureStepStartTime", scheduledTime);
+        putDicomIfNonempty(sqItem, "ScheduledPerformingPhysicianName", physicianName);
+        sqItem.put("ScheduledProcedureStepDescription", procedureDesc);
+        sqItem.put("ScheduledProcedureStepID", noorder);
+        putDicomIfNonempty(sqItem, "ScheduledStationName", stationName);
+        putDicomIfNonempty(sqItem, "CommentsOnTheScheduledProcedureStep", clinicalDiag);
+        return sqItem;
+    }
+
     private String buildOrthancModifyPayloadJson(
             String acsn,
             String patientId,
@@ -2254,6 +2280,13 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             return "";
         }
         String tanggalExact = dicomStudyDateFromYmd(tglPermintaan);
+        // Validate parsed date is a reasonable DICOM date (yyyyMMdd, 1900-2100)
+        if (tanggalExact.length() != 8
+                || tanggalExact.compareTo("19000101") < 0
+                || tanggalExact.compareTo("21000101") > 0) {
+            System.out.println("Orthanc Skip : Tanggal tidak valid setelah parsing untuk baris " + row + " -> " + tanggalExact);
+            return "";
+        }
 
         // =====================================================================
         // TIER 2: Multi-Signal Scoring Engine
@@ -2522,7 +2555,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 h.add("Authorization", "Basic " + orthanc.Auth());
                 org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<>(h);
                 String json = orthanc.getRest().exchange(
-                        koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/studies/" + studyId,
+                        orthanc.orthancUrl("/studies/" + studyId),
                         org.springframework.http.HttpMethod.GET, entity, String.class
                 ).getBody();
                 currentAcsn = mapper.readTree(json).path("MainDicomTags").path("AccessionNumber").asText().trim();

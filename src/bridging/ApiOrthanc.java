@@ -47,15 +47,11 @@ import org.springframework.web.client.RestTemplate;
  */
 public class ApiOrthanc {
 
-    private HttpHeaders headers;
-    private JsonNode root;
-    private HttpEntity requestEntity;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private SSLContext sslContext;
     private org.springframework.http.client.SimpleClientHttpRequestFactory factory;
-    private String auth, authEncrypt, requestJson;
+    private String auth, authEncrypt;
     private byte[] encodedBytes;
-    private int i = 1;
     private RestTemplate restTemplate;
 
     public ApiOrthanc() {
@@ -93,11 +89,12 @@ public class ApiOrthanc {
      */
     public JsonNode AmbilSeries(String norm, String tanggal1, String tanggal2) {
         System.out.println("Mengambil Study Pasien : " + norm);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "{"
+            String requestJson = "{"
                     + "\"Level\": \"Study\","
                     + "\"Expand\": true,"
                     + "\"Query\": {"
@@ -106,7 +103,7 @@ public class ApiOrthanc {
                     + "}"
                     + "}";
             System.out.println("Request JSON AmbilSeries : " + requestJson);
-            requestEntity = new HttpEntity(requestJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             requestJson = getRest().exchange(
                     orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
             ).getBody();
@@ -136,11 +133,12 @@ public class ApiOrthanc {
     public JsonNode AmbilSeriesDenganModality(String norm, String tanggal1,
             String tanggal2, String modality) {
         System.out.println("Mengambil Study Pasien : " + norm + " | Modality : " + modality);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "{"
+            String requestJson = "{"
                     + "\"Level\": \"Study\","
                     + "\"Expand\": true,"
                     + "\"Query\": {"
@@ -150,7 +148,7 @@ public class ApiOrthanc {
                     + "}"
                     + "}";
             System.out.println("Request JSON AmbilSeriesDenganModality : " + requestJson);
-            requestEntity = new HttpEntity(requestJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             requestJson = getRest().exchange(
                     orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
             ).getBody();
@@ -173,11 +171,12 @@ public class ApiOrthanc {
      */
     public JsonNode AmbilSemuaStudyPasien(String noRM) {
         System.out.println("Mengambil Semua Study Pasien : " + noRM);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "{"
+            String requestJson = "{"
                     + "\"Level\": \"Study\","
                     + "\"Expand\": true,"
                     + "\"Query\": {"
@@ -185,7 +184,7 @@ public class ApiOrthanc {
                     + "}"
                     + "}";
             System.out.println("Request JSON AmbilSemuaStudyPasien : " + requestJson);
-            requestEntity = new HttpEntity(requestJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             requestJson = getRest().exchange(
                     orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
             ).getBody();
@@ -211,10 +210,10 @@ public class ApiOrthanc {
     public String findStudyByAccession(String accessionNumber) {
         System.out.println("Mencari Study berdasarkan AccessionNumber : " + accessionNumber);
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "{"
+            String requestJson = "{"
                     + "\"Level\": \"Study\","
                     + "\"Expand\": true,"
                     + "\"Query\": {"
@@ -222,7 +221,7 @@ public class ApiOrthanc {
                     + "}"
                     + "}";
             System.out.println("Request JSON findStudyByAccession : " + requestJson);
-            requestEntity = new HttpEntity(requestJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             requestJson = getRest().exchange(
                     orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
             ).getBody();
@@ -245,22 +244,23 @@ public class ApiOrthanc {
     // =========================================================================
     public JsonNode AmbilPng(String noRawat, String series) {
         System.out.println("Mengambil Gambar PNG : " + noRawat + ", Series : " + series);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
-            requestEntity = new HttpEntity(headers);
-            requestJson = getRest().exchange(
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
+            String requestJson = getRest().exchange(
                     orthancUrl("/series/" + series), HttpMethod.GET, requestEntity, String.class
             ).getBody();
             root = mapper.readTree(requestJson);
-            i = 1;
+            int i = 1;
             for (JsonNode instance : root.path("Instances")) {
-                headers = new HttpHeaders();
-                headers.add("Authorization", "Basic " + authEncrypt);
-                headers.add("Accept", "image/png");
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-                headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
-                HttpEntity<String> entity = new HttpEntity<>(headers);
+                HttpHeaders imgHeaders = new HttpHeaders();
+                imgHeaders.add("Authorization", "Basic " + authEncrypt);
+                imgHeaders.add("Accept", "image/png");
+                imgHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                imgHeaders.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity<String> entity = new HttpEntity<>(imgHeaders);
                 ResponseEntity<byte[]> response = getRest().exchange(
                         orthancUrl("/instances/" + instance.asText() + "/preview"),
                         HttpMethod.GET, entity, byte[].class);
@@ -279,22 +279,23 @@ public class ApiOrthanc {
 
     public JsonNode AmbilJpg(String noRawat, String series) {
         System.out.println("Mengambil Gambar JPG : " + noRawat + ", Series : " + series);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
-            requestEntity = new HttpEntity(headers);
-            requestJson = getRest().exchange(
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
+            String requestJson = getRest().exchange(
                     orthancUrl("/series/" + series), HttpMethod.GET, requestEntity, String.class
             ).getBody();
             root = mapper.readTree(requestJson);
-            i = 1;
+            int i = 1;
             for (JsonNode instance : root.path("Instances")) {
-                headers = new HttpHeaders();
-                headers.add("Authorization", "Basic " + authEncrypt);
-                headers.add("Accept", "image/jpeg");
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-                headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
-                HttpEntity<String> entity = new HttpEntity<>(headers);
+                HttpHeaders imgHeaders = new HttpHeaders();
+                imgHeaders.add("Authorization", "Basic " + authEncrypt);
+                imgHeaders.add("Accept", "image/jpeg");
+                imgHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                imgHeaders.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity<String> entity = new HttpEntity<>(imgHeaders);
                 ResponseEntity<byte[]> response = getRest().exchange(
                         orthancUrl("/instances/" + instance.asText() + "/preview"),
                         HttpMethod.GET, entity, byte[].class);
@@ -313,23 +314,24 @@ public class ApiOrthanc {
 
     public JsonNode AmbilJpg2(String Series) {
         System.out.println("Percobaan Mengambil Gambar JPG : " + Series + ", Series : " + Series);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             System.out.println("Auth : " + authEncrypt);
             headers.add("Authorization", "Basic " + authEncrypt);
-            requestEntity = new HttpEntity(headers);
-            System.out.println("URL : " + koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/series/" + Series);
-            requestJson = getRest().exchange(koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/series/" + Series, HttpMethod.GET, requestEntity, String.class).getBody();
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
+            System.out.println("URL : " + orthancUrl("/series/" + Series));
+            String requestJson = getRest().exchange(orthancUrl("/series/" + Series), HttpMethod.GET, requestEntity, String.class).getBody();
             System.out.println("Result JSON : " + requestJson);
             root = mapper.readTree(requestJson);
             for (JsonNode list : root.path("Instances")) {
-                headers = new HttpHeaders();
-                headers.add("Authorization", "Basic " + authEncrypt);
-                headers.add("Accept", "image/jpeg");
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-                headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
-                HttpEntity<String> entity = new HttpEntity<>(headers);
-                ResponseEntity<byte[]> response = getRest().exchange(koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + "/instances/" + list.asText() + "/preview", HttpMethod.GET, entity, byte[].class);
+                HttpHeaders imgHeaders = new HttpHeaders();
+                imgHeaders.add("Authorization", "Basic " + authEncrypt);
+                imgHeaders.add("Accept", "image/jpeg");
+                imgHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                imgHeaders.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity<String> entity = new HttpEntity<>(imgHeaders);
+                ResponseEntity<byte[]> response = getRest().exchange(orthancUrl("/instances/" + list.asText() + "/preview"), HttpMethod.GET, entity, byte[].class);
                 Files.write(Paths.get("./gambarradiologi/" + Series + ".jpg"), response.getBody());
             }
         } catch (Exception e) {
@@ -341,22 +343,23 @@ public class ApiOrthanc {
 
     public JsonNode AmbilBmp(String noRawat, String series) {
         System.out.println("Mengambil Gambar BMP : " + noRawat + ", Series : " + series);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
-            requestEntity = new HttpEntity(headers);
-            requestJson = getRest().exchange(
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
+            String requestJson = getRest().exchange(
                     orthancUrl("/series/" + series), HttpMethod.GET, requestEntity, String.class
             ).getBody();
             root = mapper.readTree(requestJson);
-            i = 1;
+            int i = 1;
             for (JsonNode instance : root.path("Instances")) {
-                headers = new HttpHeaders();
-                headers.add("Authorization", "Basic " + authEncrypt);
-                headers.add("Accept", "image/bmp");
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-                headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
-                HttpEntity<String> entity = new HttpEntity<>(headers);
+                HttpHeaders imgHeaders = new HttpHeaders();
+                imgHeaders.add("Authorization", "Basic " + authEncrypt);
+                imgHeaders.add("Accept", "image/bmp");
+                imgHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                imgHeaders.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity<String> entity = new HttpEntity<>(imgHeaders);
                 ResponseEntity<byte[]> response = getRest().exchange(
                         orthancUrl("/instances/" + instance.asText() + "/preview"),
                         HttpMethod.GET, entity, byte[].class);
@@ -375,20 +378,21 @@ public class ApiOrthanc {
 
     public JsonNode AmbilDcm(String noRawat, String series) {
         System.out.println("Mengambil Gambar DCM : " + noRawat + ", Series : " + series);
+        JsonNode root = null;
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
-            requestEntity = new HttpEntity(headers);
-            requestJson = getRest().exchange(
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
+            String requestJson = getRest().exchange(
                     orthancUrl("/series/" + series), HttpMethod.GET, requestEntity, String.class
             ).getBody();
             root = mapper.readTree(requestJson);
-            i = 1;
+            int i = 1;
             for (JsonNode instance : root.path("Instances")) {
-                headers = new HttpHeaders();
-                headers.add("Authorization", "Basic " + authEncrypt);
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-                HttpEntity<String> entity = new HttpEntity<>(headers);
+                HttpHeaders imgHeaders = new HttpHeaders();
+                imgHeaders.add("Authorization", "Basic " + authEncrypt);
+                imgHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+                HttpEntity<String> entity = new HttpEntity<>(imgHeaders);
                 ResponseEntity<byte[]> response = getRest().exchange(
                         orthancUrl("/instances/" + instance.asText() + "/file"),
                         HttpMethod.GET, entity, byte[].class);
@@ -419,7 +423,7 @@ public class ApiOrthanc {
     public byte[] AmbilGambarWebapps(String url, boolean silent) {
         System.out.println("Mengambil Gambar : " + url);
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Accept", "image/*,*/*");
             headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
             HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -490,10 +494,10 @@ public class ApiOrthanc {
         System.out.println("Proxy findStudyByAccession : " + accessionNumber);
         try {
             String jsonPayload = "{\"accession_number\":\"" + accessionNumber + "\"}";
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
-            requestEntity = new HttpEntity(jsonPayload, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(jsonPayload, headers);
             ResponseEntity<String> response = getRest().exchange(
                     dicomConverterFindByAcsnUrl(), HttpMethod.POST, requestEntity, String.class);
             JsonNode result = mapper.readTree(response.getBody());
@@ -512,10 +516,10 @@ public class ApiOrthanc {
     public boolean kirimKeModalityProxy(String studyId, String aeTitle, boolean silent) {
         System.out.println("Proxy kirimKeModality : Study=" + studyId + " → " + aeTitle);
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
-            requestEntity = new HttpEntity(headers);
+            HttpEntity<String> requestEntity = new HttpEntity(headers);
             ResponseEntity<String> response = getRest().exchange(
                     dicomConverterSendToModalityUrl(studyId, aeTitle),
                     HttpMethod.POST, requestEntity, String.class);
@@ -757,10 +761,10 @@ public class ApiOrthanc {
                 // Wait 2 seconds between polls
                 try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
 
-                headers = new HttpHeaders();
+                HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
-                requestEntity = new HttpEntity(headers);
+                HttpEntity<String> requestEntity = new HttpEntity(headers);
 
                 ResponseEntity<String> response = getRest().exchange(urlStr, HttpMethod.GET, requestEntity, String.class);
                 JsonNode jobData = mapper.readTree(response.getBody());
@@ -831,17 +835,17 @@ public class ApiOrthanc {
     public boolean UbahAccession(String studyId, String accessionBaru, boolean silent) {
         System.out.println("UbahAccession : Study=" + studyId + ", ACSN=" + accessionBaru);
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "{"
+            String requestJson = "{"
                     + "\"Replace\": {"
                     + "\"AccessionNumber\": \"" + accessionBaru + "\""
                     + "},"
                     + "\"KeepSource\": false"
                     + "}";
             System.out.println("Request JSON UbahAccession : " + requestJson);
-            requestEntity = new HttpEntity(requestJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             String response = getRest().exchange(
                     orthancUrl("/studies/" + studyId + "/modify"),
                     HttpMethod.POST, requestEntity, String.class
@@ -885,9 +889,9 @@ public class ApiOrthanc {
         String converterBase = koneksiDB.URLDICOMCONVERTER() == null ? "" : koneksiDB.URLDICOMCONVERTER().trim();
         if (!converterBase.isEmpty()) {
             try {
-                headers = new HttpHeaders();
+                HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                requestEntity = new HttpEntity(modifyJson, headers);
+                HttpEntity<String> requestEntity = new HttpEntity(modifyJson, headers);
                 String response = getRest().exchange(
                         dicomConverterUrl("/api/v1/studies/" + studyId + "/modify"),
                         HttpMethod.POST, requestEntity, String.class
@@ -900,11 +904,11 @@ public class ApiOrthanc {
         }
 
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
             System.out.println("Request JSON UbahTagsStudy (direct) : " + modifyJson);
-            requestEntity = new HttpEntity(modifyJson, headers);
+            HttpEntity<String> requestEntity = new HttpEntity(modifyJson, headers);
             String response = getRest().exchange(
                     orthancUrl("/studies/" + studyId + "/modify"),
                     HttpMethod.POST, requestEntity, String.class
@@ -948,11 +952,11 @@ public class ApiOrthanc {
         System.out.println("kirimKeModality : Study=" + studyId
                 + " → Router=" + routerAe);
         try {
-            headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + authEncrypt);
             headers.setContentType(MediaType.APPLICATION_JSON);
-            requestJson = "[\"" + studyId + "\"]";
-            requestEntity = new HttpEntity(requestJson, headers);
+            String requestJson = "[\"" + studyId + "\"]";
+            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
             String url = orthancUrl("/modalities/" + routerAe + "/store");
             System.out.println("URL kirimKeModality : " + url);
             System.out.println("Request JSON kirimKeModality : " + requestJson);
@@ -982,8 +986,12 @@ public class ApiOrthanc {
      * @param path path segment starting with '/', e.g. {@code "/tools/find"}
      * @return fully-qualified URL string
      */
-    private String orthancUrl(String path) {
-        return koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC() + path;
+    public String orthancUrl(String path) {
+        String base = koneksiDB.URLORTHANC();
+        if (base == null) base = "http://localhost";
+        // Remove existing port if present (e.g. "http://localhost:8042" -> "http://localhost")
+        base = base.replaceFirst("(?i)^(https?://[^:]+)(:\\d+)?(/.*)?$", "$1");
+        return base + ":" + koneksiDB.PORTORTHANC() + path;
     }
 
     /**
