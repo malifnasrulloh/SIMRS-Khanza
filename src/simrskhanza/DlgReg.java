@@ -17766,6 +17766,13 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnCetakSuratKeteranganLayakTerbang.setEnabled(akses.getsurat_keterangan_layak_terbang());
         MnCetakSuratKeteranganBerobat.setEnabled(akses.getsurat_keterangan_berobat());
         
+        if(akses.getkode().equals("Admin Utama")){
+            MnBatal.setEnabled(true);
+        }else{
+            MnBatal.setEnabled(false);
+        } 
+
+        
         if(TANGGALMUNDUR.equals("no")){
             if(!akses.getkode().equals("Admin Utama")){
                 DTPReg.setEditable(false);

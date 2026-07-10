@@ -13322,6 +13322,12 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnSkriningGiziKehamilan.setEnabled(akses.getskrining_gizi_kehamilan());
         MnPermintaanKonsultasiMedik.setEnabled(akses.getkonsultasi_medik());
         MnPermintaanKonsultasiPerawat.setEnabled(akses.getkonsultasi_perawat());
+        
+        if(akses.getkode().equals("Admin Utama")){
+            MnBatal.setEnabled(true);
+        }else{
+            MnBatal.setEnabled(false);
+        } 
     }
     
     private void isNumber(){

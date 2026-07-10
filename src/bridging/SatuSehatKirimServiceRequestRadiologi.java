@@ -2048,15 +2048,26 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     }
 
     private boolean orthancStudyExistsCached(String noRM, String studyDateYYYYMMDD, String modality,
-            Map<String, Boolean> cache) {
+            String acsn, Map<String, Boolean> cache) {
         if (modality == null || modality.isEmpty() || "-".equals(modality)) {
             return false;
         }
-        String key = noRM + "|" + studyDateYYYYMMDD + "|" + modality;
+        String key = noRM + "|" + studyDateYYYYMMDD + "|" + modality + "|" + acsn;
         Boolean hit = cache.get(key);
         if (hit != null) {
             return hit;
         }
+        
+        // 1. Check if a study with the specific accession number exists in Orthanc
+        if (acsn != null && !acsn.isEmpty() && !"-".equals(acsn)) {
+            String foundId = orthanc.findStudyByAccessionProxy(acsn);
+            if (foundId != null && !foundId.isEmpty()) {
+                cache.put(key, true);
+                return true;
+            }
+        }
+        
+        // 2. Fallback: check if there is an existing study with no accession number (old scans)
         String startDate = studyDateYYYYMMDD;
         String endDate = studyDateYYYYMMDD;
         
@@ -2072,8 +2083,16 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         boolean ok = false;
         for (String m : modalitiesToQuery) {
             JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, startDate, endDate, m);
-            if (studies != null && studies.isArray() && studies.size() > 0) {
-                ok = true;
+            if (studies != null && studies.isArray()) {
+                for (JsonNode study : studies) {
+                    String studyAcsn = study.path("MainDicomTags").path("AccessionNumber").asText().trim();
+                    if (studyAcsn.isEmpty() || "-".equals(studyAcsn)) {
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            if (ok) {
                 break;
             }
         }
@@ -2220,6 +2239,38 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         return selectedId[0];
     }
 
+    private void saveMatchedAcsnLocal(String noorder, String kdJenisPrw, String idServiceRequest, String acsn) {
+        try {
+            String sqlCheck = "SELECT acsn FROM satu_sehat_imagingstudy_radiologi WHERE noorder = ? AND kd_jenis_prw = ?";
+            try (PreparedStatement psCheck = koneksi.prepareStatement(sqlCheck)) {
+                psCheck.setString(1, noorder);
+                psCheck.setString(2, kdJenisPrw);
+                try (ResultSet rsCheck = psCheck.executeQuery()) {
+                    if (rsCheck.next()) {
+                        String sqlUpdate = "UPDATE satu_sehat_imagingstudy_radiologi SET acsn = ? WHERE noorder = ? AND kd_jenis_prw = ?";
+                        try (PreparedStatement psUpdate = koneksi.prepareStatement(sqlUpdate)) {
+                            psUpdate.setString(1, acsn);
+                            psUpdate.setString(2, noorder);
+                            psUpdate.setString(3, kdJenisPrw);
+                            psUpdate.executeUpdate();
+                        }
+                    } else {
+                        String sqlInsert = "INSERT INTO satu_sehat_imagingstudy_radiologi (noorder, kd_jenis_prw, id_servicerequest, acsn, id_imaging) VALUES (?, ?, ?, ?, '-')";
+                        try (PreparedStatement psInsert = koneksi.prepareStatement(sqlInsert)) {
+                            psInsert.setString(1, noorder);
+                            psInsert.setString(2, kdJenisPrw);
+                            psInsert.setString(3, idServiceRequest);
+                            psInsert.setString(4, acsn);
+                            psInsert.executeUpdate();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("saveMatchedAcsnLocal error : " + e);
+        }
+    }
+
     /**
      * Resolves the Orthanc internal study ID for a given table row.
      *
@@ -2260,6 +2311,21 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         String studyByAcsn = orthanc.findStudyByAccession(acsn);
         if (studyByAcsn != null && !studyByAcsn.isEmpty()) {
             System.out.println("Orthanc : [Tier 1] Study ditemukan langsung via AccessionNumber=" + acsn + " -> Study ID: " + studyByAcsn);
+            
+            // Save locally and update EMR UI synchronously to prevent infinite loop
+            String idServ = valueAtString(row, COL_ID_SR);
+            saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
+            try {
+                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt(acsn, row, COL_ACSN);
+                } else {
+                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
+                }
+            } catch (Exception e) {
+                System.out.println("Error updating COL_ACSN in Tier 1: " + e);
+                tbObat.setValueAt(acsn, row, COL_ACSN);
+            }
+            
             return studyByAcsn;
         }
 
@@ -2492,6 +2558,21 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (autoSelected) {
             // Auto-correct: Jika ACSN belum di-set di Orthanc, set sekarang
             autoCorrectAccession(best.studyId, acsn, best.studyNode);
+            
+            // Save locally and update EMR UI synchronously to prevent infinite loop
+            String idServ = valueAtString(row, COL_ID_SR);
+            saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
+            try {
+                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt(acsn, row, COL_ACSN);
+                } else {
+                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
+                }
+            } catch (Exception e) {
+                System.out.println("Error updating COL_ACSN in Tier 2: " + e);
+                tbObat.setValueAt(acsn, row, COL_ACSN);
+            }
+            
             return best.studyId;
         }
 
@@ -2516,6 +2597,21 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             System.out.println("Orthanc : [Tier 3] User memilih Study ID=" + selectedStudyId);
             // Auto-correct: Set ACSN untuk matching berikutnya
             autoCorrectAccession(selectedStudyId, acsn, null);
+            
+            // Save locally and update EMR UI synchronously to prevent infinite loop
+            String idServ = valueAtString(row, COL_ID_SR);
+            saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
+            try {
+                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt(acsn, row, COL_ACSN);
+                } else {
+                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
+                }
+            } catch (Exception e) {
+                System.out.println("Error updating COL_ACSN in Tier 3: " + e);
+                tbObat.setValueAt(acsn, row, COL_ACSN);
+            }
+            
             return selectedStudyId;
         }
 
@@ -2912,9 +3008,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     String noRm = rs.getString("no_rkm_medis");
                     String tanggalDic = dicomStudyDateFromYmd(tglPermRaw == null ? "" : tglPermRaw);
 
+                    String acsn = rs.getString("acsn");
+                    if (acsn == null) {
+                        acsn = "";
+                    }
+                    acsn = acsn.trim();
+                    if (acsn.isEmpty() || "-".equals(acsn)) {
+                        String noorder = rs.getString("noorder");
+                        if (noorder == null) {
+                            noorder = "";
+                        }
+                        acsn = buildAcsn(noorder, kdJenisPrw);
+                    }
+
                     String lokasiDisplay = "-";
                     if (mappedModality != null && !mappedModality.isEmpty()
-                            && orthancStudyExistsCached(noRm, tanggalDic, mappedModality, orthancHitCache)) {
+                            && orthancStudyExistsCached(noRm, tanggalDic, mappedModality, acsn, orthancHitCache)) {
                         lokasiDisplay = "orthanc";
                     } else if (!lokasiGambar.isEmpty()) {
                         lokasiDisplay = "webapps";

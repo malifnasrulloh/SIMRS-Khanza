@@ -16768,8 +16768,10 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         
         if(akses.getkode().equals("Admin Utama")){
             MnHapusData.setEnabled(true);
+            MnBatal.setEnabled(true);
         }else{
             MnHapusData.setEnabled(false);
+            MnBatal.setEnabled(false);
         } 
         
         if(akses.getkode().equals("Admin Utama")){
