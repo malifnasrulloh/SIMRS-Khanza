@@ -1215,17 +1215,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             throw new RuntimeException("Study Tidak Ditemukan");
         }
 
-        // Step 2: Apply metadata tags (KeepSource=false, metadata-only)
+        // Step 2: Apply metadata tags (KeepSource=true, in-place — study ID stays the same)
         if (!orthanc.UbahTagsStudy(orthancStudyId, orthancModifyJson, true)) {
             throw new RuntimeException("Gagal Update Tags");
         }
         System.out.println("Orthanc : Tags applied to study " + orthancStudyId);
 
-        // Step 3: Re-resolve after KeepSource:false (study ID may have changed)
-        String sendStudyId = orthanc.findStudyByAccession(acsn);
-        if (sendStudyId.isEmpty()) {
-            sendStudyId = orthancStudyId;
-        }
+        // KeepSource=true: study ID is unchanged, no re-resolve needed
+        String sendStudyId = orthancStudyId;
 
         // Step 4: Send to DICOM router with retries
         int maxRetries = 3;
@@ -1966,9 +1963,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         // are embedded directly in the DICOM file during CONVERSION via parameters.keys.
         //
         // The orthanc_modify payload below contains METADATA only.
-        // KeepSource=false is used to replace the study in-place (without orphan copies).
-        // Re-resolve via findStudyByAccession always succeeds because ACSN is already
-        // embedded in the DICOM (either from MWL or from during conversion).
+        // KeepSource=true modifies the study in-place (no copy, no ID change).
 
         Map<String, Object> replace = new LinkedHashMap<>();
 
@@ -2000,7 +1995,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         body.put("Replace", replace);
         body.put("Remove", Collections.emptyList());
         body.put("Keep", Collections.emptyList());
-        body.put("KeepSource", Boolean.FALSE);
+        body.put("KeepSource", Boolean.TRUE);
         body.put("KeepLabels", Boolean.TRUE);
         body.put("Force", Boolean.TRUE);
         return mapper.writeValueAsString(body);

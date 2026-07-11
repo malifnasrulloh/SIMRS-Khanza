@@ -821,10 +821,8 @@ public class ApiOrthanc {
      * Modifies the AccessionNumber of a study in Orthanc.
      *
      * <p>
-     * Uses {@code KeepSource: false}, which means Orthanc deletes the original
-     * study and creates a new one with a new internal ID. After calling this
-     * method, use {@link #findStudyByAccession(String)} to obtain the new ID
-     * before performing any further operations on the study.
+     * Uses {@code KeepSource: true}, which modifies the study in-place
+     * without creating a copy. The study's internal ID remains the same.
      *
      * @param studyId Orthanc internal study ID to modify
      * @param accessionBaru the new AccessionNumber value
@@ -842,7 +840,7 @@ public class ApiOrthanc {
                     + "\"Replace\": {"
                     + "\"AccessionNumber\": \"" + accessionBaru + "\""
                     + "},"
-                    + "\"KeepSource\": false"
+                    + "\"KeepSource\": true"
                     + "}";
             System.out.println("Request JSON UbahAccession : " + requestJson);
             HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
