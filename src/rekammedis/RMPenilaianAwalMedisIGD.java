@@ -2391,6 +2391,61 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
                     ps.close();
                 }
             }
+
+            boolean exists = false;
+            PreparedStatement psCheck = null;
+            ResultSet rsCheck = null;
+            try {
+                psCheck = koneksi.prepareStatement("select count(*) from penilaian_medis_igd where no_rawat=?");
+                psCheck.setString(1, TNoRw.getText());
+                rsCheck = psCheck.executeQuery();
+                if (rsCheck.next() && rsCheck.getInt(1) > 0) {
+                    exists = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Notif check medis igd: " + e);
+            } finally {
+                if (rsCheck != null) {
+                    try { rsCheck.close(); } catch (Exception e) {}
+                }
+                if (psCheck != null) {
+                    try { psCheck.close(); } catch (Exception e) {}
+                }
+            }
+
+            if (!exists) {
+                PreparedStatement psPemeriksaan = null;
+                ResultSet rsPemeriksaan = null;
+                try {
+                    psPemeriksaan = koneksi.prepareStatement(
+                        "select data_triase_igdprimer.keluhan_utama, data_triase_igd.tekanan_darah, " +
+                        "data_triase_igd.nadi, data_triase_igd.pernapasan, data_triase_igd.suhu, data_triase_igd.saturasi_o2 " +
+                        "from data_triase_igd " +
+                        "inner join data_triase_igdprimer on data_triase_igd.no_rawat=data_triase_igdprimer.no_rawat " +
+                        "where data_triase_igd.no_rawat=? " +
+                        "order by data_triase_igd.tgl_kunjungan desc limit 1"
+                    );
+                    psPemeriksaan.setString(1, TNoRw.getText());
+                    rsPemeriksaan = psPemeriksaan.executeQuery();
+                    if (rsPemeriksaan.next()) {
+                        KeluhanUtama.setText(rsPemeriksaan.getString("keluhan_utama") != null ? rsPemeriksaan.getString("keluhan_utama") : "");
+                        TD.setText(rsPemeriksaan.getString("tekanan_darah") != null ? rsPemeriksaan.getString("tekanan_darah") : "");
+                        Nadi.setText(rsPemeriksaan.getString("nadi") != null ? rsPemeriksaan.getString("nadi") : "");
+                        RR.setText(rsPemeriksaan.getString("pernapasan") != null ? rsPemeriksaan.getString("pernapasan") : "");
+                        Suhu.setText(rsPemeriksaan.getString("suhu") != null ? rsPemeriksaan.getString("suhu") : "");
+                        SPO.setText(rsPemeriksaan.getString("saturasi_o2") != null ? rsPemeriksaan.getString("saturasi_o2") : "");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Notif fetch triase medis igd: " + e);
+                } finally {
+                    if (rsPemeriksaan != null) {
+                        try { rsPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                    if (psPemeriksaan != null) {
+                        try { psPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                }
+            }
         } catch (Exception e) {
             System.out.println("Notif Cari Pasien : "+e);
         }

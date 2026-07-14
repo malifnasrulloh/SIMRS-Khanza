@@ -5353,6 +5353,58 @@ public final class RMPenilaianAwalKeperawatanBayiAnak extends javax.swing.JDialo
                     ps.close();
                 }
             }
+            boolean exists = false;
+            PreparedStatement psCheck = null;
+            ResultSet rsCheck = null;
+            try {
+                psCheck = koneksi.prepareStatement("select count(*) from penilaian_awal_keperawatan_ralan_bayi where no_rawat=?");
+                psCheck.setString(1, TNoRw.getText());
+                rsCheck = psCheck.executeQuery();
+                if (rsCheck.next() && rsCheck.getInt(1) > 0) {
+                    exists = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Notif check penilaian_awal_keperawatan_ralan_bayi: " + e);
+            } finally {
+                if (rsCheck != null) {
+                    try { rsCheck.close(); } catch (Exception e) {}
+                }
+                if (psCheck != null) {
+                    try { psCheck.close(); } catch (Exception e) {}
+                }
+            }
+
+            if (!exists) {
+                PreparedStatement psPemeriksaan = null;
+                ResultSet rsPemeriksaan = null;
+                try {
+                    psPemeriksaan = koneksi.prepareStatement(
+                        "select suhu_tubuh, tensi, nadi, respirasi, tinggi, berat, gcs, kesadaran, keluhan, alergi from pemeriksaan_ralan where no_rawat=? order by tgl_perawatan desc, jam_rawat desc limit 1"
+                    );
+                    psPemeriksaan.setString(1, TNoRw.getText());
+                    rsPemeriksaan = psPemeriksaan.executeQuery();
+                    if (rsPemeriksaan.next()) {
+                        TD.setText(rsPemeriksaan.getString("tensi") != null ? rsPemeriksaan.getString("tensi") : "");
+                        Nadi.setText(rsPemeriksaan.getString("nadi") != null ? rsPemeriksaan.getString("nadi") : "");
+                        RR.setText(rsPemeriksaan.getString("respirasi") != null ? rsPemeriksaan.getString("respirasi") : "");
+                        Suhu.setText(rsPemeriksaan.getString("suhu_tubuh") != null ? rsPemeriksaan.getString("suhu_tubuh") : "");
+                        GCS.setText(rsPemeriksaan.getString("gcs") != null ? rsPemeriksaan.getString("gcs") : "");
+                        BB.setText(rsPemeriksaan.getString("berat") != null ? rsPemeriksaan.getString("berat") : "");
+                        TB.setText(rsPemeriksaan.getString("tinggi") != null ? rsPemeriksaan.getString("tinggi") : "");
+                        KeluhanUtama.setText(rsPemeriksaan.getString("keluhan") != null ? rsPemeriksaan.getString("keluhan") : "");
+                        Alergi.setText(rsPemeriksaan.getString("alergi") != null ? rsPemeriksaan.getString("alergi") : "");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Notif fetch triase/pemeriksaan penilaian_awal_keperawatan_ralan_bayi: " + e);
+                } finally {
+                    if (rsPemeriksaan != null) {
+                        try { rsPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                    if (psPemeriksaan != null) {
+                        try { psPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                }
+            }
             runBackground(() ->tampilImunisasi());
         } catch (Exception e) {
             System.out.println("Notif : "+e);

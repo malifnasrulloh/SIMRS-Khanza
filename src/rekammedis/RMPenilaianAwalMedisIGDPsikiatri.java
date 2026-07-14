@@ -3767,6 +3767,73 @@ public final class RMPenilaianAwalMedisIGDPsikiatri extends javax.swing.JDialog 
                     ps.close();
                 }
             }
+            boolean exists = false;
+            PreparedStatement psCheck = null;
+            ResultSet rsCheck = null;
+            try {
+                psCheck = koneksi.prepareStatement("select count(*) from penilaian_medis_ralan_gawat_darurat_psikiatri where no_rawat=?");
+                psCheck.setString(1, TNoRw.getText());
+                rsCheck = psCheck.executeQuery();
+                if (rsCheck.next() && rsCheck.getInt(1) > 0) {
+                    exists = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Notif check penilaian_medis_ralan_gawat_darurat_psikiatri: " + e);
+            } finally {
+                if (rsCheck != null) {
+                    try { rsCheck.close(); } catch (Exception e) {}
+                }
+                if (psCheck != null) {
+                    try { psCheck.close(); } catch (Exception e) {}
+                }
+            }
+
+            if (!exists) {
+                PreparedStatement psPemeriksaan = null;
+                ResultSet rsPemeriksaan = null;
+                try {
+                    psPemeriksaan = koneksi.prepareStatement(
+                        "select data_triase_igdprimer.keluhan_utama, data_triase_igd.tekanan_darah, data_triase_igd.nadi, data_triase_igd.pernapasan, data_triase_igd.suhu, data_triase_igd.saturasi_o2, data_triase_igd.nyeri from data_triase_igd inner join data_triase_igdprimer on data_triase_igd.no_rawat=data_triase_igdprimer.no_rawat where data_triase_igd.no_rawat=? order by data_triase_igd.tgl_kunjungan desc limit 1"
+                    );
+                    psPemeriksaan.setString(1, TNoRw.getText());
+                    rsPemeriksaan = psPemeriksaan.executeQuery();
+                    if (rsPemeriksaan.next()) {
+                        KeluhanUtama.setText(rsPemeriksaan.getString("keluhan_utama") != null ? rsPemeriksaan.getString("keluhan_utama") : "");
+                        FisikTD.setText(rsPemeriksaan.getString("tekanan_darah") != null ? rsPemeriksaan.getString("tekanan_darah") : "");
+                        FisikNadi.setText(rsPemeriksaan.getString("nadi") != null ? rsPemeriksaan.getString("nadi") : "");
+                        FisikRR.setText(rsPemeriksaan.getString("pernapasan") != null ? rsPemeriksaan.getString("pernapasan") : "");
+                        FisikSuhu.setText(rsPemeriksaan.getString("suhu") != null ? rsPemeriksaan.getString("suhu") : "");
+                        String nyeriVal = rsPemeriksaan.getString("nyeri");
+                        if (nyeriVal != null) {
+                            try {
+                                int val = Integer.parseInt(nyeriVal.trim());
+                                if (val == 0) {
+                                    FisikNyeri.setSelectedItem("Tidak Nyeri");
+                                } else if (val >= 1 && val <= 3) {
+                                    FisikNyeri.setSelectedItem("Nyeri Ringan");
+                                } else if (val >= 4 && val <= 6) {
+                                    FisikNyeri.setSelectedItem("Nyeri Sedang");
+                                } else if (val >= 7 && val <= 8) {
+                                    FisikNyeri.setSelectedItem("Nyeri Berat");
+                                } else if (val >= 9) {
+                                    FisikNyeri.setSelectedItem("Nyeri Sangat Berat");
+                                }
+                            } catch (Exception ex) {
+                                FisikNyeri.setSelectedItem(nyeriVal);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Notif fetch triase/pemeriksaan penilaian_medis_ralan_gawat_darurat_psikiatri: " + e);
+                } finally {
+                    if (rsPemeriksaan != null) {
+                        try { rsPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                    if (psPemeriksaan != null) {
+                        try { psPemeriksaan.close(); } catch (Exception e) {}
+                    }
+                }
+            }
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
