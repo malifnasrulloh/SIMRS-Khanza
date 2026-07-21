@@ -69,6 +69,45 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
     public RMPenilaianAwalKeperawatanMata(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!TNoRw.getText().trim().equals("")) {
+                    LokalisCanvas canvas = new LokalisCanvas(
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall", PanelWall.getBackgroundImage(),
+                        () -> loadGambar_PanelWall()
+                    );
+                    canvas.setVisible(true);
+                }
+            }
+        });
+
+        PanelWall1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!TNoRw.getText().trim().equals("")) {
+                    LokalisCanvas canvas = new LokalisCanvas(
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall1", PanelWall1.getBackgroundImage(),
+                        () -> loadGambar_PanelWall1()
+                    );
+                    canvas.setVisible(true);
+                }
+            }
+        });
+
+        PanelWall2.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!TNoRw.getText().trim().equals("")) {
+                    LokalisCanvas canvas = new LokalisCanvas(
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall2", PanelWall2.getBackgroundImage(),
+                        () -> loadGambar_PanelWall2()
+                    );
+                    canvas.setVisible(true);
+                }
+            }
+        });
+
         
         tabMode=new DefaultTableModel(null,new Object[]{
             "No.Rawat","No.RM","Nama Pasien","J.K.","Agama","Bahasa","Cacat Fisik","Tgl.Lahir","Tgl.Asuhan","Informasi","TD","Nadi","RR","Suhu",
@@ -4746,6 +4785,9 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
+            loadGambar_PanelWall();
+        loadGambar_PanelWall1();
+        loadGambar_PanelWall2();
     }
     
     public void setNoRm(String norwt, Date tgl2) {
@@ -4920,4 +4962,65 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
         executor.shutdownNow();
         super.dispose();
     }
+
+    private void loadGambar_PanelWall() {
+        try {
+            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
+            psG.setString(1, TNoRw.getText());
+            psG.setString(2, "rmpenilaianawalkeperawatanmata_panelwall");
+            java.sql.ResultSet rsG = psG.executeQuery();
+            if (rsG.next()) {
+                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
+                PanelWall.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
+            } else {
+                PanelWall.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/nyeri.png")));
+            }
+            rsG.close();
+            psG.close();
+        } catch (Exception e) {
+            System.out.println("Error loading gambar lokalis PanelWall: " + e);
+        }
+    }
+
+    private void loadGambar_PanelWall1() {
+        try {
+            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
+            psG.setString(1, TNoRw.getText());
+            psG.setString(2, "rmpenilaianawalkeperawatanmata_panelwall1");
+            java.sql.ResultSet rsG = psG.executeQuery();
+            if (rsG.next()) {
+                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
+                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
+            } else {
+                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png")));
+            }
+            rsG.close();
+            psG.close();
+        } catch (Exception e) {
+            System.out.println("Error loading gambar lokalis PanelWall1: " + e);
+        }
+    }
+
+    private void loadGambar_PanelWall2() {
+        try {
+            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
+            psG.setString(1, TNoRw.getText());
+            psG.setString(2, "rmpenilaianawalkeperawatanmata_panelwall2");
+            java.sql.ResultSet rsG = psG.executeQuery();
+            if (rsG.next()) {
+                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
+                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
+            } else {
+                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png")));
+            }
+            rsG.close();
+            psG.close();
+        } catch (Exception e) {
+            System.out.println("Error loading gambar lokalis PanelWall2: " + e);
+        }
+    }
+
 }
