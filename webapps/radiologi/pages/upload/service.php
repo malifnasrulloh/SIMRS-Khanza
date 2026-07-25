@@ -35,7 +35,7 @@
                 );
                 http_response_code(201);
             } else {
-                if ((USERHYBRIDWEB == validTeks3($header['username'])) && (PASHYBRIDWEB == validTeks3($header['password']))) {
+                if ((USERHYBRIDWEB == trim($header['username'])) && (PASHYBRIDWEB == trim($header['password']))) {
                     $konten = trim(file_get_contents("php://input"));
                     $decode = json_decode($konten, true);
 
@@ -99,7 +99,7 @@
                         $namafileAsli       = validTeks3(basename($decode['namafile']));
                         $namafileBersih     = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $namafileAsli);
                         $namafileTanpaExt   = pathinfo($namafileBersih, PATHINFO_FILENAME);
-                        $namafileFinal      = $namafileTanpaExt.'.jpg';
+                        $namafileFinal      = $namafileTanpaExt; // extension set after format detection
 
                         if (empty($namafileTanpaExt)) {
                             $response = array(
@@ -125,19 +125,30 @@
                                 );
                                 http_response_code(201);
                             } else {
-                                $hex = bin2hex(substr($fileData, 0, 3));
-                                if ($hex !== 'ffd8ff') {
+                                // Detect image format from magic bytes
+                                // JPEG: ff d8 ff | PNG: 89 50 4e 47
+                                $hexHead = bin2hex(substr($fileData, 0, 4));
+                                $isJpeg  = (substr($hexHead, 0, 6) === 'ffd8ff');
+                                $isPng   = ($hexHead === '89504e47');
+
+                                if (!$isJpeg && !$isPng) {
                                     $response = array(
                                         'metadata' => array(
-                                            'message' => 'File bukan gambar JPG yang valid',
+                                            'message' => 'File bukan gambar yang valid (harus JPG atau PNG)',
                                             'code'    => 201
                                         )
                                     );
                                     http_response_code(201);
                                 } else {
-                                    $norawat = validTeks3($decode['norawat']);
-                                    $tanggal = validTeks3($decode['tanggal']);
-                                    $jam     = validTeks3($decode['jam']);
+                                    // Set correct extension based on actual format
+                                    $ext = $isJpeg ? '.jpg' : '.png';
+                                    $namafileFinal = $namafileTanpaExt . $ext;
+
+                                    // Use trim() instead of validTeks3() to preserve
+                                    // special characters like '/' in norawat
+                                    $norawat = trim($decode['norawat']);
+                                    $tanggal = trim($decode['tanggal']);
+                                    $jam     = trim($decode['jam']);
                                     try {
                                         if(Tambah3(" gambar_radiologi "," '$norawat','$tanggal','$jam','pages/upload/$namafileFinal' ")){
                                             $hasil   = file_put_contents($namafileFinal, $fileData);
