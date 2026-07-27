@@ -38,7 +38,7 @@
                 <tr class="head">
                     <td width="31%" >File Gambar Radiologi</td><td width="">:</td>
                     <td width="67%">
-                        <input name="gambar" class="text" onkeydown="setDefault(this, document.getElementById('MsgIsi1'));" type=file id="TxtIsi1" value="<?php echo $gambar;?>" size="50" maxlength="500" accept="image/jpeg,image/jpg"/>
+                        <input name="gambar" class="text" onkeydown="setDefault(this, document.getElementById('MsgIsi1'));" type=file id="TxtIsi1" value="<?php echo $gambar;?>" size="50" maxlength="500" accept="image/jpeg,image/jpg,image/png"/>
                         <span id="MsgIsi1" style="color:#CC0000; font-size:10px;"></span>
                     </td>
                 </tr>        
@@ -52,9 +52,12 @@
                     $tanggal     = validTeks(trim($_POST['tanggal']));
                     $jam         = validTeks(trim($_POST['jam']));
                     $gambar     = validTeks(str_replace(" ","_","pages/upload/".$_FILES['gambar']['name']));
-                    if((strtolower(substr($gambar,-4))==".jpg")||(strtolower(substr($gambar,-5))==".jpeg")){
-                        if(($_FILES['gambar']['type'] == 'image/jpeg')||($_FILES['gambar']['type'] == 'image/jpg')){
-                            if((@mime_content_type($_FILES['gambar']['tmp_name'])== 'image/jpeg')||(@mime_content_type($_FILES['gambar']['tmp_name'])== 'image/jpg')){
+                    $ext        = strtolower(pathinfo($gambar, PATHINFO_EXTENSION));
+                    if(in_array($ext, array('jpg', 'jpeg', 'png'))){
+                        $fileType = $_FILES['gambar']['type'];
+                        $mimeType = @mime_content_type($_FILES['gambar']['tmp_name']);
+                        if(in_array($fileType, array('image/jpeg', 'image/jpg', 'image/png'))){
+                            if(in_array($mimeType, array('image/jpeg', 'image/jpg', 'image/png'))){
                                 if ((!empty($no_rawat))&&(!empty($gambar))) {
                                     try {
                                         if(Tambah(" gambar_radiologi "," '$no_rawat','$tanggal','$jam','$gambar' "," Gambar Radiologi ")){
@@ -72,13 +75,13 @@
                                     echo 'Semua field harus isi..!!!';
                                 }
                             }else{
-                                echo "Berkas harus JPEG/JPG";
+                                echo "Berkas harus JPEG/JPG/PNG";
                             }
                         }else{
-                            echo "Berkas harus JPEG/JPG";
+                            echo "Berkas harus JPEG/JPG/PNG";
                         }
                     }else{
-                        echo "Berkas harus JPEG/JPG";
+                        echo "Berkas harus JPEG/JPG/PNG";
                     }
                 }
             ?>
