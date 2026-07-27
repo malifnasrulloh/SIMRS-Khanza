@@ -1448,46 +1448,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         String stationName = valueAtString(i, COL_NM_POLI);
         String aeTitle = safeAeTitle(modalityMapper.getAeTitle(kdJenis, modality, koneksiDB.AETITLE_DICOMROUTER()), modality);
 
-        Map<String, Object> sqItem = buildSqItem(i, modality, aeTitle,
-                scheduledDate, scheduledTime, physicianName, stationName,
-                procedureDesc, clinicalDiag, noorder);
-
-        String orthancModifyJson;
-        try {
-            orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality, procedureDesc, clinicalDiag,
-                    noorder, scheduledDate, scheduledTime,
-                    physicianName, stationName, aeTitle,
-                    sanitizeDicomPersonName(valueAtString(i, COL_NAMA_PASIEN)),
-                    valueAtString(i, COL_TGL_LAHIR), valueAtString(i, COL_JK),
-                    Collections.singletonList(sqItem));
-        } catch (JsonProcessingException ex) {
-            System.out.println("buildOrthancModifyPayloadJson : " + ex);
-            SwingUtilities.invokeLater(() -> tbObat.setValueAt("Gagal bikin payload", i, COL_STATUS_ORTHANC));
-            return false;
-        }
-
-        String pn = sanitizeDicomPersonName(valueAtString(i, COL_NAMA_PASIEN));
-        List<String> keys = new ArrayList<>();
-        keys.add("Modality=" + modality);
-        keys.add("PatientID=" + patientId.replace("=", ""));
-        keys.add("AccessionNumber=" + acsn);
-        if (!scheduledDate.isEmpty()) {
-            keys.add("StudyDate=" + scheduledDate);
-        }
-        if (!pn.isEmpty() && !pn.contains("=")) {
-            keys.add("PatientName=" + pn);
-        }
-        if (!acsn.isEmpty() && !acsn.contains("=")) {
-            keys.add("AccessionNumber=" + acsn);
-        }
-        String dob = valueAtString(i, COL_TGL_LAHIR);
-        String sex = valueAtString(i, COL_JK);
-        if (!dob.isEmpty() && !dob.contains("=")) {
-            keys.add("PatientBirthDate=" + dob);
-        }
-        if (!sex.isEmpty() && !sex.contains("=")) {
-            keys.add("PatientSex=" + sex);
-        }
+        List<String> keys = buildDcmtkConversionKeys(
+                modality, patientId, valueAtString(i, COL_NAMA_PASIEN), acsn,
+                scheduledDate, scheduledTime, valueAtString(i, COL_TGL_LAHIR),
+                valueAtString(i, COL_JK), procedureDesc, clinicalDiag, noorder, physicianName
+        );
 
         Map<String, Object> paramMap = new LinkedHashMap<>();
         paramMap.put("output_sop_class", "sec-capture");
@@ -1507,7 +1472,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         }
 
         SwingUtilities.invokeLater(() -> tbObat.setValueAt("Mengirim ke API...", i, COL_STATUS_ORTHANC));
-        JsonNode result = orthanc.KirimKeDicomConverterFromURLs(listUrls, parametersJson, orthancModifyJson);
+        JsonNode result = orthanc.KirimKeDicomConverterFromURLs(listUrls, parametersJson);
 
         if (result != null && "success".equalsIgnoreCase(result.path("status").asText().trim())) {
             final String acsnF = acsn;
@@ -1999,6 +1964,53 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         body.put("KeepLabels", Boolean.TRUE);
         body.put("Force", Boolean.TRUE);
         return mapper.writeValueAsString(body);
+    }
+
+    private List<String> buildDcmtkConversionKeys(
+            String modality,
+            String patientId,
+            String patientName,
+            String acsn,
+            String scheduledDate,
+            String scheduledTime,
+            String dob,
+            String sex,
+            String procedureDesc,
+            String clinicalDiag,
+            String noorder,
+            String physicianName
+    ) {
+        List<String> keys = new ArrayList<>();
+        addDcmtkKey(keys, "Modality", modality);
+        addDcmtkKey(keys, "PatientID", patientId.replace("=", ""));
+        addDcmtkKey(keys, "PatientName", sanitizeDicomPersonName(patientName));
+        addDcmtkKey(keys, "AccessionNumber", acsn);
+        addDcmtkKey(keys, "StudyDate", scheduledDate);
+        addDcmtkKey(keys, "StudyTime", scheduledTime);
+        addDcmtkKey(keys, "PatientBirthDate", dob);
+        addDcmtkKey(keys, "PatientSex", sex);
+        addDcmtkKey(keys, "StudyDescription", procedureDesc);
+        addDcmtkKey(keys, "RequestedProcedureDescription", procedureDesc);
+        addDcmtkKey(keys, "RequestedProcedureID", noorder);
+        addDcmtkKey(keys, "ReasonForTheRequestedProcedure", clinicalDiag);
+
+        String docName = sanitizeDicomPersonName(physicianName);
+        addDcmtkKey(keys, "ReferringPhysicianName", docName);
+        addDcmtkKey(keys, "RequestingPhysician", docName);
+
+        String instName = Sequel.cariIsi("select setting.nama_instansi from setting limit 1");
+        if (instName == null || instName.trim().isEmpty()) {
+            instName = "SIMRS KHANZA";
+        }
+        addDcmtkKey(keys, "InstitutionName", instName);
+
+        return keys;
+    }
+
+    private static void addDcmtkKey(List<String> keys, String tag, String val) {
+        if (val != null && !val.trim().isEmpty() && !val.contains("=")) {
+            keys.add(tag + "=" + val.trim());
+        }
     }
 
     private static void putDicomIfNonempty(Map<String, Object> dest, String tag, String value) {

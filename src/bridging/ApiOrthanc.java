@@ -619,15 +619,22 @@ public class ApiOrthanc {
         }
     }
 
+    public JsonNode KirimKeDicomConverterFromURLs(java.util.List<String> urls, String parametersJson) {
+        return KirimKeDicomConverterFromURLs(urls, parametersJson, null);
+    }
+
+    public JsonNode KirimKeDicomConverter(byte[] fileData, String filename, String parametersJson) {
+        return KirimKeDicomConverter(fileData, filename, parametersJson, null);
+    }
+
     /**
      * Converts a downloaded image and sends it to Orthanc via
      * dicom-converter-api.
      *
      * @param fileData The byte array of the image file
      * @param filename The name of the file (e.g. "image.jpg")
-     * @param parametersJson JSON parameters for the converter (e.g. SOP class,
-     * Modality)
-     * @param orthancModifyJson JSON payload for Orthanc tags modification
+     * @param parametersJson JSON parameters for the converter (e.g. SOP class, Modality)
+     * @param orthancModifyJson Optional JSON payload for Orthanc tags modification (deprecated)
      * @return JsonNode of the API response (success or structured error body)
      */
     public JsonNode KirimKeDicomConverter(byte[] fileData, String filename, String parametersJson, String orthancModifyJson) {
@@ -682,20 +689,24 @@ public class ApiOrthanc {
             writer.flush();
 
             // Add parameters field
-            writer.append("--").append(boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"parameters\"").append(LINE_FEED);
-            writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
-            writer.append(LINE_FEED);
-            writer.append(parametersJson).append(LINE_FEED);
-            writer.flush();
+            if (parametersJson != null && !parametersJson.trim().isEmpty()) {
+                writer.append("--").append(boundary).append(LINE_FEED);
+                writer.append("Content-Disposition: form-data; name=\"parameters\"").append(LINE_FEED);
+                writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
+                writer.append(LINE_FEED);
+                writer.append(parametersJson).append(LINE_FEED);
+                writer.flush();
+            }
 
-            // Add orthanc_modify field
-            writer.append("--").append(boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"orthanc_modify\"").append(LINE_FEED);
-            writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
-            writer.append(LINE_FEED);
-            writer.append(orthancModifyJson).append(LINE_FEED);
-            writer.flush();
+            // Add orthanc_modify field (optional)
+            if (orthancModifyJson != null && !orthancModifyJson.trim().isEmpty()) {
+                writer.append("--").append(boundary).append(LINE_FEED);
+                writer.append("Content-Disposition: form-data; name=\"orthanc_modify\"").append(LINE_FEED);
+                writer.append("Content-Type: application/json; charset=UTF-8").append(LINE_FEED);
+                writer.append(LINE_FEED);
+                writer.append(orthancModifyJson).append(LINE_FEED);
+                writer.flush();
+            }
 
             // End of multipart
             writer.append("--").append(boundary).append("--").append(LINE_FEED);
