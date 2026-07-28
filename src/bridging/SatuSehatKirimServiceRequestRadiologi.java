@@ -2958,7 +2958,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         try {
             ps = koneksi.prepareStatement(
                     "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,pasien.tgl_lahir,pasien.jk,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp as ktpdokter,"
-                    + "satu_sehat_encounter.id_encounter,permintaan_radiologi.noorder,permintaan_radiologi.tgl_permintaan,permintaan_radiologi.jam_permintaan,permintaan_radiologi.diagnosa_klinis,"
+                    + "satu_sehat_encounter.id_encounter,permintaan_radiologi.noorder,ifnull(periksa_radiologi.tgl_periksa,permintaan_radiologi.tgl_permintaan) as tgl_permintaan,ifnull(periksa_radiologi.jam,permintaan_radiologi.jam_permintaan) as jam_permintaan,permintaan_radiologi.diagnosa_klinis,"
                     + "jns_perawatan_radiologi.nm_perawatan,ifnull(satu_sehat_mapping_radiologi.code,'') as code,ifnull(satu_sehat_mapping_radiologi.system,'') as system,ifnull(satu_sehat_mapping_radiologi.display,'') as display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,permintaan_pemeriksaan_radiologi.kd_jenis_prw, "
                     + "ifnull(gambar_radiologi.lokasi_gambar, '') as lokasi_gambar, "

@@ -783,7 +783,7 @@ public class ApiOrthanc {
                 String status = jobData.path("status").asText();
                 System.out.println("Job " + jobId + " (attempt " + attempt + ") status: " + status);
 
-                if ("COMPLETED".equals(status)) {
+                if ("COMPLETED".equalsIgnoreCase(status)) {
                     // Success! Extract the result payload (contains upload and modify data)
                     JsonNode resultNode = jobData.path("result");
                     // Inject success status for UI compatibility
@@ -791,7 +791,7 @@ public class ApiOrthanc {
                         ((com.fasterxml.jackson.databind.node.ObjectNode) resultNode).put("status", "success");
                     }
                     return resultNode;
-                } else if ("FAILED".equals(status)) {
+                } else if ("FAILED".equalsIgnoreCase(status)) {
                     // Job failed in the Go worker
                     String errorMsg = jobData.path("error").asText();
                     String errJson = String.format("{\"status\":\"error\", \"error\":\"%s\", \"code\":\"JOB_FAILED\"}",
