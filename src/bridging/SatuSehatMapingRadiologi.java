@@ -58,7 +58,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         setSize(628,674);
 
         tabMode=new DefaultTableModel(null,new Object[]{
-                "Periksa Code","Pemeriksaan System","Kode Periksa","Nama Pemeriksaan","Pemeriksaan Display",
+                "Periksa Code","Pemeriksaan System","Kode Periksa","Nama Pemeriksaan","Modality","Pemeriksaan Display",
                 "Sampel Code","Sampel System","Sampel Display"
             }){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
@@ -68,7 +68,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < 9; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(80);
@@ -79,12 +79,14 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
             }else if(i==3){
                 column.setPreferredWidth(200);
             }else if(i==4){
-                column.setPreferredWidth(200);
+                column.setPreferredWidth(70);
             }else if(i==5){
-                column.setPreferredWidth(85);
-            }else if(i==6){
                 column.setPreferredWidth(200);
+            }else if(i==6){
+                column.setPreferredWidth(85);
             }else if(i==7){
+                column.setPreferredWidth(200);
+            }else if(i==8){
                 column.setPreferredWidth(200);
             }
         }
@@ -144,6 +146,8 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         RadiologiSystem = new widget.TextBox();
         jLabel11 = new widget.Label();
         jLabel12 = new widget.Label();
+        jLabel13 = new widget.Label();
+        Modality = new widget.ComboBox();
         SampelCode = new widget.TextBox();
         SampelDisplay = new widget.TextBox();
         jLabel5 = new widget.Label();
@@ -503,7 +507,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         jLabel5.setText("Sampel System :");
         jLabel5.setName("jLabel5"); // NOI18N
         FormInput.add(jLabel5);
-        jLabel5.setBounds(305, 70, 100, 23);
+        jLabel5.setBounds(405, 70, 100, 23);
 
         SampelRadiologiSystem.setHighlighter(null);
         SampelRadiologiSystem.setName("SampelRadiologiSystem"); // NOI18N
@@ -513,7 +517,17 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
             }
         });
         FormInput.add(SampelRadiologiSystem);
-        SampelRadiologiSystem.setBounds(409, 70, 315, 23);
+        SampelRadiologiSystem.setBounds(509, 70, 215, 23);
+
+        jLabel13.setText("Modality :");
+        jLabel13.setName("jLabel13"); // NOI18N
+        FormInput.add(jLabel13);
+        jLabel13.setBounds(260, 70, 60, 23);
+
+        Modality.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CR", "XR", "US", "CT", "MR", "MG", "DX", "RF", "OT" }));
+        Modality.setName("Modality"); // NOI18N
+        FormInput.add(Modality);
+        Modality.setBounds(325, 70, 75, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -587,11 +601,12 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         }else if(SampelDisplay.getText().trim().equals("")){
             Valid.textKosong(SampelDisplay,"Sampel Display");
         }else{
-            if(Sequel.menyimpantf("satu_sehat_mapping_radiologi","?,?,?,?,?,?,?","Mapping Tindakan Radiologi",7,new String[]{
-                KodePemeriksaan.getText(),Code.getText(),RadiologiSystem.getText(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText()
+            if(Sequel.menyimpantf("satu_sehat_mapping_radiologi","?,?,?,?,?,?,?,?","Mapping Tindakan Radiologi",8,new String[]{
+                KodePemeriksaan.getText(),Modality.getSelectedItem().toString(),Code.getText(),RadiologiSystem.getText(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText()
             })==true){
+                RadiologyModalityMapper.getInstance().reload();
                 tabMode.addRow(new Object[]{
-                    Code.getText(),RadiologiSystem.getText(),KodePemeriksaan.getText(),NamaPemeriksaan.getText(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText()
+                    Code.getText(),RadiologiSystem.getText(),KodePemeriksaan.getText(),NamaPemeriksaan.getText(),Modality.getSelectedItem().toString(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText()
                 });
                 emptTeks();
                 LCount.setText(""+tabMode.getRowCount());
@@ -617,6 +632,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         if(Valid.hapusTabletf(tabMode,KodePemeriksaan,"satu_sehat_mapping_radiologi","kd_jenis_prw")==true){
+            RadiologyModalityMapper.getInstance().reload();
             tabMode.removeRow(tbJnsPerawatan.getSelectedRow());
             emptTeks();
             LCount.setText(""+tabMode.getRowCount());
@@ -648,17 +664,19 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
             Valid.textKosong(SampelDisplay,"Sampel Display");
         }else{
             if(tbJnsPerawatan.getSelectedRow()>-1){
-                if(Sequel.mengedittf("satu_sehat_mapping_radiologi","kd_jenis_prw=?","kd_jenis_prw=?,code=?,system=?,display=?,sampel_code=?,sampel_system=?,sampel_display=?",8,new String[]{
-                        KodePemeriksaan.getText(),Code.getText(),RadiologiSystem.getText(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText(),tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString()
+                if(Sequel.mengedittf("satu_sehat_mapping_radiologi","kd_jenis_prw=?","kd_jenis_prw=?,modality=?,code=?,system=?,display=?,sampel_code=?,sampel_system=?,sampel_display=?",9,new String[]{
+                        KodePemeriksaan.getText(),Modality.getSelectedItem().toString(),Code.getText(),RadiologiSystem.getText(),Display.getText(),SampelCode.getText(),SampelRadiologiSystem.getText(),SampelDisplay.getText(),tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString()
                     })==true){
+                    RadiologyModalityMapper.getInstance().reload();
                     tabMode.setValueAt(Code.getText(),tbJnsPerawatan.getSelectedRow(),0);
                     tabMode.setValueAt(RadiologiSystem.getText(),tbJnsPerawatan.getSelectedRow(),1);
                     tabMode.setValueAt(KodePemeriksaan.getText(),tbJnsPerawatan.getSelectedRow(),2);
                     tabMode.setValueAt(NamaPemeriksaan.getText(),tbJnsPerawatan.getSelectedRow(),3);
-                    tabMode.setValueAt(Display.getText(),tbJnsPerawatan.getSelectedRow(),4);
-                    tabMode.setValueAt(SampelCode.getText(),tbJnsPerawatan.getSelectedRow(),5);
-                    tabMode.setValueAt(SampelRadiologiSystem.getText(),tbJnsPerawatan.getSelectedRow(),6);
-                    tabMode.setValueAt(SampelDisplay.getText(),tbJnsPerawatan.getSelectedRow(),7);
+                    tabMode.setValueAt(Modality.getSelectedItem().toString(),tbJnsPerawatan.getSelectedRow(),4);
+                    tabMode.setValueAt(Display.getText(),tbJnsPerawatan.getSelectedRow(),5);
+                    tabMode.setValueAt(SampelCode.getText(),tbJnsPerawatan.getSelectedRow(),6);
+                    tabMode.setValueAt(SampelRadiologiSystem.getText(),tbJnsPerawatan.getSelectedRow(),7);
+                    tabMode.setValueAt(SampelDisplay.getText(),tbJnsPerawatan.getSelectedRow(),8);
                     emptTeks();
                 }
             }                
@@ -851,6 +869,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
     private widget.PanelBiasa FormInput;
     private widget.TextBox KodePemeriksaan;
     private widget.Label LCount;
+    private widget.ComboBox Modality;
     private widget.TextBox NamaPemeriksaan;
     private javax.swing.JPanel PanelInput;
     private widget.TextBox RadiologiSystem;
@@ -864,6 +883,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
     private widget.Label jLabel10;
     private widget.Label jLabel11;
     private widget.Label jLabel12;
+    private widget.Label jLabel13;
     private widget.Label jLabel4;
     private widget.Label jLabel5;
     private widget.Label jLabel6;
@@ -879,11 +899,11 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         Valid.tabelKosong(tabMode);
         try{
            ps=koneksi.prepareStatement(
-                   "select satu_sehat_mapping_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan,satu_sehat_mapping_radiologi.code,satu_sehat_mapping_radiologi.system,"+
+                   "select satu_sehat_mapping_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan,satu_sehat_mapping_radiologi.modality,satu_sehat_mapping_radiologi.code,satu_sehat_mapping_radiologi.system,"+
                    "satu_sehat_mapping_radiologi.display,satu_sehat_mapping_radiologi.sampel_code,satu_sehat_mapping_radiologi.sampel_system,satu_sehat_mapping_radiologi.sampel_display "+
                    "from satu_sehat_mapping_radiologi inner join jns_perawatan_radiologi on satu_sehat_mapping_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "+
                    (TCari.getText().equals("")?"":"where satu_sehat_mapping_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? or "+
-                   "satu_sehat_mapping_radiologi.code like ? or satu_sehat_mapping_radiologi.display like ? ")+
+                   "satu_sehat_mapping_radiologi.code like ? or satu_sehat_mapping_radiologi.display like ? or satu_sehat_mapping_radiologi.modality like ? ")+
                    " order by satu_sehat_mapping_radiologi.code");
             try {
                 if(!TCari.getText().equals("")){
@@ -891,11 +911,12 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
                     ps.setString(2,"%"+TCari.getText()+"%");
                     ps.setString(3,"%"+TCari.getText()+"%");
                     ps.setString(4,"%"+TCari.getText()+"%");
+                    ps.setString(5,"%"+TCari.getText()+"%");
                 }
                 rs=ps.executeQuery();
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
-                        rs.getString("code"),rs.getString("system"),rs.getString("kd_jenis_prw"),rs.getString("nm_perawatan"),rs.getString("display"),rs.getString("sampel_code"),rs.getString("sampel_system"),rs.getString("sampel_display")
+                        rs.getString("code"),rs.getString("system"),rs.getString("kd_jenis_prw"),rs.getString("nm_perawatan"),rs.getString("modality")==null?"CR":rs.getString("modality"),rs.getString("display"),rs.getString("sampel_code"),rs.getString("sampel_system"),rs.getString("sampel_display")
                     });
                 }
             } catch (Exception e) {
@@ -919,6 +940,7 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
         RadiologiSystem.setText("");
         KodePemeriksaan.setText("");
         NamaPemeriksaan.setText("");
+        Modality.setSelectedIndex(0);
         Display.setText("");
         SampelCode.setText("");
         SampelRadiologiSystem.setText("");
@@ -934,10 +956,11 @@ public final class SatuSehatMapingRadiologi extends javax.swing.JDialog {
            RadiologiSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
            KodePemeriksaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString());
            NamaPemeriksaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
-           Display.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
-           SampelCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
-           SampelRadiologiSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),6).toString());
-           SampelDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
+           Modality.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
+           Display.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
+           SampelCode.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),6).toString());
+           SampelRadiologiSystem.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
+           SampelDisplay.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),8).toString());
         }
     }
     

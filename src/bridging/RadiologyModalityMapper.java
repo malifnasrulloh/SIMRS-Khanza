@@ -177,86 +177,38 @@ public class RadiologyModalityMapper {
     // Internal
     // -------------------------------------------------------------------------
     /**
-     * Reads and parses the mapping_tindakan_radiologi.iyem JSON file. Entries
-     * with a blank kd_jenis_prw, blank modality, or the placeholder value
-     * "XXXXXX" are silently skipped.
+     * Reads and loads modality mappings directly from the database table
+     * satu_sehat_mapping_radiologi.
      */
     private synchronized void loadMapping() {
         if (loaded) {
             return;
         }
 
-        File file = new File(MAPPING_FILE);
-        if (!file.exists()) {
-            System.out.println("RadiologyModalityMapper : File mapping tidak ditemukan: " + MAPPING_FILE);
-            loaded = true; // mark done so we don't keep retrying on every call
-            return;
-        }
-
-        FileReader reader = null;
+        Map<String, String> tempModality = new HashMap<>();
         try {
-            reader = new FileReader(file);
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(reader);
-
-            // Parse default_aet map
-            JsonNode defaultAetNode = root.path("default_aet");
-            Map<String, String> tempDefaultAet = new HashMap<>();
-            if (defaultAetNode.isObject()) {
-                Iterator<Map.Entry<String, JsonNode>> fields = defaultAetNode.fields();
-                while (fields.hasNext()) {
-                    Map.Entry<String, JsonNode> field = fields.next();
-                    String modalityKey = field.getKey().trim().toUpperCase();
-                    String aetValue = field.getValue().asText().trim();
-                    if (!modalityKey.isEmpty() && !aetValue.isEmpty()) {
-                        tempDefaultAet.put(modalityKey, aetValue);
+            java.sql.Connection conn = fungsi.koneksiDB.condb();
+            if (conn != null) {
+                java.sql.PreparedStatement ps = conn.prepareStatement(
+                    "SELECT kd_jenis_prw, modality FROM satu_sehat_mapping_radiologi WHERE modality IS NOT NULL AND modality != ''"
+                );
+                java.sql.ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String kd = rs.getString("kd_jenis_prw");
+                    String mod = rs.getString("modality");
+                    if (kd != null && mod != null && !kd.trim().isEmpty() && !mod.trim().isEmpty()) {
+                        tempModality.put(kd.trim(), mod.trim().toUpperCase());
                     }
                 }
+                rs.close();
+                ps.close();
             }
-            defaultAetMap = tempDefaultAet;
-
-            // Parse mapping array
-            JsonNode mappingArray = root.path("mapping");
-            if (!mappingArray.isArray()) {
-                System.out.println("RadiologyModalityMapper : Format file tidak valid — field 'mapping' bukan array");
-                loaded = true;
-                return;
-            }
-
-            Map<String, String> tempModality = new HashMap<>();
-            Map<String, String> tempProcedureAet = new HashMap<>();
-            for (JsonNode entry : mappingArray) {
-                String kd = entry.path("kd_jenis_prw").asText().trim();
-                String modality = entry.path("modality").asText().trim().toUpperCase();
-                String aet = entry.path("aet").asText().trim();
-
-                // Skip blank entries and design-time placeholder rows
-                if (kd.isEmpty() || modality.isEmpty() || "XXXXXX".equals(kd)) {
-                    continue;
-                }
-                tempModality.put(kd, modality);
-                if (!aet.isEmpty()) {
-                    tempProcedureAet.put(kd, aet);
-                }
-            }
-
-            modalityMap = tempModality;
-            procedureAetMap = tempProcedureAet;
-            loaded = true;
-            System.out.println("RadiologyModalityMapper : Berhasil memuat " + modalityMap.size()
-                    + " mapping modality, " + procedureAetMap.size() + " custom AET, dan "
-                    + defaultAetMap.size() + " default AET dari " + MAPPING_FILE);
-
         } catch (Exception e) {
-            System.out.println("RadiologyModalityMapper : Gagal membaca file mapping: " + e);
-            loaded = true; // prevent infinite retry loop
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (Exception ignored) {
-                }
-            }
+            System.out.println("RadiologyModalityMapper : Error querying database: " + e.getMessage());
         }
+
+        modalityMap = tempModality;
+        loaded = true;
+        System.out.println("RadiologyModalityMapper : Loaded " + modalityMap.size() + " modality mappings from database table satu_sehat_mapping_radiologi.");
     }
 }
