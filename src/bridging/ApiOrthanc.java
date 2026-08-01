@@ -557,8 +557,8 @@ public class ApiOrthanc {
             connection = (java.net.HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(60000);
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(180000);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
 
@@ -656,8 +656,8 @@ public class ApiOrthanc {
             connection = (java.net.HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(30000);
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(120000);
 
             String boundary = "Boundary" + System.currentTimeMillis();
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);

@@ -1471,6 +1471,28 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             listUrls.add(url);
         }
 
+        SwingUtilities.invokeLater(() -> tbObat.setValueAt("Memeriksa Orthanc...", i, COL_STATUS_ORTHANC));
+
+        // Pre-flight check: if study with this ACSN already exists in Orthanc,
+        // skip conversion & upload entirely. This handles the case where a
+        // previous upload succeeded in Orthanc but the HTTP response was lost
+        // (timeout/network error), causing a false "Gagal" in the UI.
+        String existingStudyId = orthanc.findStudyByAccessionProxy(acsn);
+        if (existingStudyId != null && !existingStudyId.isEmpty()) {
+            System.out.println("Pre-flight : Study sudah ada di Orthanc untuk ACSN=" + acsn
+                    + " (Study ID=" + existingStudyId + "). Skip upload.");
+            final String acsnF = acsn;
+            String idServiceRequest = valueAtString(i, COL_ID_SR);
+            setWebhookPending(noorder, kdJenis, idServiceRequest, acsnF);
+            SwingUtilities.invokeLater(() -> {
+                tbObat.setValueAt("Sudah ada di Orthanc (skip upload)", i, COL_STATUS_ORTHANC);
+                tbObat.setValueAt(acsnF, i, COL_ACSN);
+                tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                tbObat.setValueAt(false, i, COL_PILIH);
+            });
+            return true;
+        }
+
         SwingUtilities.invokeLater(() -> tbObat.setValueAt("Mengirim ke API...", i, COL_STATUS_ORTHANC));
         JsonNode result = orthanc.KirimKeDicomConverterFromURLs(listUrls, parametersJson);
 

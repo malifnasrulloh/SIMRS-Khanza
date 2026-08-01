@@ -4,17 +4,12 @@
  * Utility class to load and cache the mapping from kd_jenis_prw (radiology
  * procedure code) to DICOM modality type (CT, US, CR, MR, etc.) and AE Titles.
  *
- * The mapping data is read once from ./cache/mapping_tindakan_radiologi.iyem.
+ * The mapping data is read from database table satu_sehat_mapping_radiologi.
  */
 package bridging;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileReader;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -22,28 +17,15 @@ import java.util.Map;
  * (kd_jenis_prw) to DICOM modality identifier (CT, US, CR, DX, MR, MG, etc.)
  * and Scheduled Station AE Title.
  *
- * The mapping file is read exactly once per JVM lifetime. Use {@link #reload()}
- * to force a re-read after the file has been edited externally.
- *
- * Expected JSON format inside mapping_tindakan_radiologi.iyem:
- * <pre>
- * {
- *   "default_aet": {
- *     "CR": "CR_STATION",
- *     "US": "USG_STATION"
- *   },
- *   "mapping": [
- *     { "kd_jenis_prw": "RD001", "nm_perawatan": "CT Scan Kepala", "modality": "CT" },
- *     { "kd_jenis_prw": "RD002", "nm_perawatan": "USG Abdomen",    "modality": "US", "aet": "USG_STATION_ALT" }
- *   ]
- * }
- * </pre>
+ * <p>Data is read from the database table {@code satu_sehat_mapping_radiologi}
+ * exactly once per JVM lifetime. Use {@link #reload()} to force a re-read
+ * after mappings have been changed via the webapps UI.
  *
  * @author malifnasruloh
  */
 public class RadiologyModalityMapper {
 
-    private static final String MAPPING_FILE = "./cache/mapping_tindakan_radiologi.iyem";
+
 
     // Singleton: loaded once, shared across all callers.
     private static volatile RadiologyModalityMapper instance;
@@ -161,8 +143,8 @@ public class RadiologyModalityMapper {
     }
 
     /**
-     * Forces a re-read of the mapping file. Call this after the file has been
-     * edited externally so changes are picked up without restarting the
+     * Forces a re-read of the database mapping. Call this after mappings have
+     * been updated via webapps so changes are picked up without restarting the
      * application.
      */
     public synchronized void reload() {

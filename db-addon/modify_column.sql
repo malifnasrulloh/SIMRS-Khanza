@@ -12,3 +12,6 @@ MODIFY COLUMN `route_display` varchar(100) CHARACTER SET latin1 COLLATE latin1_s
 ALTER TABLE `satu_sehat_mapping_lab` 
 MODIFY COLUMN `display` varchar(1000) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `system`,
 MODIFY COLUMN `sampel_display` varchar(1000) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `sampel_system`;
+
+ALTER TABLE `trackersql`
+MODIFY COLUMN `sqle` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `tanggal`;
