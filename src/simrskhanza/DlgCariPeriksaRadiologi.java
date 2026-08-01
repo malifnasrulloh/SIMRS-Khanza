@@ -114,7 +114,7 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
         
         tabModeDicom=new DefaultTableModel(null,new Object[]{
-            "UUID Pasien","ID Studies","ID Series"}){
+            "Accession Number","ID Studies","ID Series"}){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
         tbListDicom.setModel(tabModeDicom);
@@ -2751,7 +2751,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                              for(JsonNode list:root){
                                  for(JsonNode sublist:list.path("Series")){
                                       tabModeDicom.addRow(new Object[]{
-                                           list.path("PatientMainDicomTags").path("PatientID").asText(),list.path("ID").asText(),sublist.asText()
+                                           list.path("MainDicomTags").path("AccessionNumber").asText(),list.path("ID").asText(),sublist.asText()
                                       });   
                                  }        
                              }

@@ -982,7 +982,11 @@ while ($data2  = mysqli_fetch_array($hasil2)) {
 					width: 430,
 					height: 320,
 					image_format: 'jpeg',
-					jpeg_quality: 90
+					jpeg_quality: 90,
+                	constraints: {
+        				video: true,
+        				facingMode: "environment"
+    				}
 				});
 				Webcam.attach('#my_camera');
 				webcamReady = true;

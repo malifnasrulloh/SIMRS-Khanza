@@ -4805,6 +4805,7 @@ private void TKtpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKtp
                 Alamat.setText("");
             }
             Alamat.requestFocus();
+            if(TKtp.getText().length()==16){MnViaBPJSNikActionPerformed(null);}
         }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
             Pekerjaan.requestFocus();
         }
@@ -6225,6 +6226,7 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     }//GEN-LAST:event_KelurahanPjKeyPressed
 
     private void TNoPesertaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoPesertaKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER && TNoPeserta.getText().length()>10){MnViaBPJSNoKartuActionPerformed(null);}
         Valid.pindah(evt,Kdpnj,EMail);
     }//GEN-LAST:event_TNoPesertaKeyPressed
 
@@ -7003,19 +7005,19 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
             Sequel.mengedit("diagnosa_corona","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("pasien_bayi","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("pasien_bayi","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("pasien_corona","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("pasien_corona","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("pasien_mati","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("pasien_mati","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("pasien_polri","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("pasien_polri","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("pasien_tni","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("pasien_tni","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
             Sequel.mengedit("pcare_peserta_kegiatan_kelompok","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
@@ -7030,7 +7032,7 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
             Sequel.mengedit("penjualan","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
-            Sequel.mengedit("personal_pasien","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+            Sequel.mengedit4("personal_pasien","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
             Sequel.mengedit("piutang","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
@@ -7073,6 +7075,9 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
                 NoRmTujuan.getText(),TNo.getText()
             });
             Sequel.mengedit("tagihan_bpd_jateng","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
+                NoRmTujuan.getText(),TNo.getText()
+            });
+            Sequel.mengedit("tagihan_mandiri","no_rkm_medis=?","no_rkm_medis=?",2,new String[]{
                 NoRmTujuan.getText(),TNo.getText()
             });
             if(Sequel.meghapustf("pasien","no_rkm_medis",TNo.getText())==true){

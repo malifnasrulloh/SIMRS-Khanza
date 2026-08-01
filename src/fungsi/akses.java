@@ -1357,4 +1357,12 @@ public final class akses {
     public static boolean gethasil_pemeriksaan_usg_abdomen(){return hakAkses.get(EnumAkses.hasil_pemeriksaan_usg_abdomen);}
     public static boolean getintervensi_nyeri_farmakologi(){return hakAkses.get(EnumAkses.intervensi_nyeri_farmakologi);}
     public static boolean getintervensi_nyeri_nonfarmakologi(){return hakAkses.get(EnumAkses.intervensi_nyeri_nonfarmakologi);}
+    public static boolean getsurat_pengajuan_cuti_pasien(){return hakAkses.get(EnumAkses.surat_pengajuan_cuti_pasien);}
+    public static boolean getchecklist_kriteria_masuk_isolasi(){return hakAkses.get(EnumAkses.checklist_kriteria_masuk_isolasi);}
+    public static boolean getsatu_sehat_mapping_kptl_tindakan_ralan(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_ralan);}
+    public static boolean getsatu_sehat_mapping_kptl_tindakan_ranap(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_ranap);}
+    public static boolean getsatu_sehat_mapping_kptl_tindakan_radiologi(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_radiologi);}
+    public static boolean getsatu_sehat_mapping_kptl_tindakan_laborat(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_laborat);}
+    public static boolean getsatu_sehat_mapping_kptl_tindakan_operasi(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_operasi);}
+    public static boolean getsatu_sehat_mapping_kptl_tarif_kamar(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tarif_kamar);}
 }

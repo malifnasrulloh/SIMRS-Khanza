@@ -1216,6 +1216,14 @@ public enum EnumAkses {
     hasil_pemeriksaan_usg_abdomen("[M]Hasil USG Abdomen"),
     intervensi_nyeri_farmakologi("[M]Intervensi Nyeri Farmakologi"),
     intervensi_nyeri_nonfarmakologi("[M]Intervensi Nyeri Non Farmakologi"),
+    surat_pengajuan_cuti_pasien("[P]Surat Pengajuan Cuti Perawatan"),
+    checklist_kriteria_masuk_isolasi("[M]Check List Kriteria Masuk Isolasi"),
+    satu_sehat_mapping_kptl_tindakan_ralan("[L]Mapping Tindakan Ralan KPTL Satu Sehat"),
+    satu_sehat_mapping_kptl_tindakan_ranap("[L]Mapping Tindakan Ranap KPTL Satu Sehat"),
+    satu_sehat_mapping_kptl_tindakan_radiologi("[L]Mapping Tindakan Radiologi KPTL Satu Sehat"),
+    satu_sehat_mapping_kptl_tindakan_laborat("[L]Mapping Tindakan Laborat KPTL Satu Sehat"),
+    satu_sehat_mapping_kptl_tindakan_operasi("[L]Mapping Tindakan Operasi KPTL Satu Sehat"),
+    satu_sehat_mapping_kptl_tarif_kamar("[L]Mapping Tarif Kamar KPTL Satu Sehat"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat");
