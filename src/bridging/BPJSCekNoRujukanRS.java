@@ -7692,23 +7692,36 @@ public final class BPJSCekNoRujukanRS extends javax.swing.JDialog {
                         headers.add("x-signature",apiMobileJKN.getHmac(utc));
                         headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
 
+                        String tglPeriksaSep = Valid.SetTgl(TanggalSEP.getSelectedItem() + "");
+                        String kodeBookingSep = BPJSAntreanHelper.fetchOrGenerateNobooking(koneksi, TNoRw.getText(), tglPeriksaSep);
+                        String kdPoliBpjsSep = BPJSAntreanHelper.getBpjsPoliCode(koneksi, KdPoli.getText());
+                        String kdDokterBpjsSep = BPJSAntreanHelper.getBpjsDokterCode(koneksi, KdDPJP.getText());
+                        String jamPraktekSep = jammulai.substring(0,5) + "-" + jamselesai.substring(0,5);
+                        String pasBaruStr = statuspasien.replaceAll("Baru","1").replaceAll("Lama","0").replaceAll("-","0");
+
+                        BPJSAntreanHelper.saveToReferensiMobileJKN(
+                            koneksi, kodeBookingSep, TNoRw.getText(), TNoPeserta.getText(), TKtp.getText(), TTlp.getText(),
+                            kdPoliBpjsSep, pasBaruStr, TNo.getText(), tglPeriksaSep, kdDokterBpjsSep,
+                            jamPraktekSep, NoRujukan.getText(), TNoReg.getText(), kuota
+                        );
+
                         requestJson ="{" +
-                                        "\"kodebooking\": \""+TNoRw.getText()+"\"," +
+                                        "\"kodebooking\": \""+kodeBookingSep+"\"," +
                                         "\"jenispasien\": \"JKN\"," +
                                         "\"nomorkartu\": \""+TNoPeserta.getText()+"\"," +
                                         "\"nik\": \""+TKtp.getText()+"\"," +
                                         "\"nohp\": \""+TTlp.getText()+"\"," +
-                                        "\"kodepoli\": \""+KdPoli.getText()+"\"," +
+                                        "\"kodepoli\": \""+kdPoliBpjsSep+"\"," +
                                         "\"namapoli\": \""+NmPoli.getText()+"\"," +
-                                        "\"pasienbaru\": "+statuspasien.replaceAll("Baru","1").replaceAll("Lama","0").replaceAll("-","0")+"," +
+                                        "\"pasienbaru\": "+pasBaruStr+"," +
                                         "\"norm\": \""+TNo.getText()+"\"," +
-                                        "\"tanggalperiksa\": \""+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"\"," +
-                                        "\"kodedokter\": "+KdDPJP.getText()+"," +
+                                        "\"tanggalperiksa\": \""+tglPeriksaSep+"\"," +
+                                        "\"kodedokter\": "+kdDokterBpjsSep+"," +
                                         "\"namadokter\": \""+NmDPJP.getText()+"\"," +
-                                        "\"jampraktek\": \""+jammulai.substring(0,5)+"-"+jamselesai.substring(0,5)+"\"," +
+                                        "\"jampraktek\": \""+jamPraktekSep+"\"," +
                                         "\"jeniskunjungan\": "+jeniskunjungan+"," +
                                         "\"nomorreferensi\": \""+NoRujukan.getText()+"\"," +
-                                        "\"nomorantrean\": \""+TNoReg.getText()+"\"," +
+                                        "\"nomorantrean\": \""+kdPoliBpjsSep+"-"+TNoReg.getText()+"\"," +
                                         "\"angkaantrean\": "+Integer.parseInt(TNoReg.getText())+"," +
                                         "\"estimasidilayani\": "+parsedDate.getTime()+"," +
                                         "\"sisakuotajkn\": "+(kuota-Integer.parseInt(TNoReg.getText()))+"," +
@@ -7742,23 +7755,30 @@ public final class BPJSCekNoRujukanRS extends javax.swing.JDialog {
                             headers.add("x-signature",apiMobileJKN.getHmac(utc));
                             headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
 
+                            String tglPeriksaSep = Valid.SetTgl(TanggalSEP.getSelectedItem() + "");
+                            String kodeBookingSep = BPJSAntreanHelper.fetchOrGenerateNobooking(koneksi, TNoRw.getText(), tglPeriksaSep);
+                            String kdPoliBpjsSep = BPJSAntreanHelper.getBpjsPoliCode(koneksi, KdPoli.getText());
+                            String kdDokterBpjsSep = BPJSAntreanHelper.getBpjsDokterCode(koneksi, KdDPJP.getText());
+                            String jamPraktekSep = jammulai.substring(0,5) + "-" + jamselesai.substring(0,5);
+                            String pasBaruStr = statuspasien.replaceAll("Baru","1").replaceAll("Lama","0").replaceAll("-","0");
+
                             requestJson ="{" +
-                                            "\"kodebooking\": \""+TNoRw.getText()+"\"," +
+                                            "\"kodebooking\": \""+kodeBookingSep+"\"," +
                                             "\"jenispasien\": \"JKN\"," +
                                             "\"nomorkartu\": \""+TNoPeserta.getText()+"\"," +
                                             "\"nik\": \""+TKtp.getText()+"\"," +
                                             "\"nohp\": \""+TTlp.getText()+"\"," +
-                                            "\"kodepoli\": \""+KdPoli.getText()+"\"," +
+                                            "\"kodepoli\": \""+kdPoliBpjsSep+"\"," +
                                             "\"namapoli\": \""+NmPoli.getText()+"\"," +
-                                            "\"pasienbaru\": "+statuspasien.replaceAll("Baru","1").replaceAll("Lama","0").replaceAll("-","0")+"," +
+                                            "\"pasienbaru\": "+pasBaruStr+"," +
                                             "\"norm\": \""+TNo.getText()+"\"," +
-                                            "\"tanggalperiksa\": \""+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"\"," +
-                                            "\"kodedokter\": "+KdDPJP.getText()+"," +
+                                            "\"tanggalperiksa\": \""+tglPeriksaSep+"\"," +
+                                            "\"kodedokter\": "+kdDokterBpjsSep+"," +
                                             "\"namadokter\": \""+NmDPJP.getText()+"\"," +
-                                            "\"jampraktek\": \""+jammulai.substring(0,5)+"-"+jamselesai.substring(0,5)+"\"," +
+                                            "\"jampraktek\": \""+jamPraktekSep+"\"," +
                                             "\"jeniskunjungan\": "+jeniskunjungan+"," +
                                             "\"nomorreferensi\": \""+NoSKDP.getText()+"\"," +
-                                            "\"nomorantrean\": \""+TNoReg.getText()+"\"," +
+                                            "\"nomorantrean\": \""+kdPoliBpjsSep+"-"+TNoReg.getText()+"\"," +
                                             "\"angkaantrean\": "+Integer.parseInt(TNoReg.getText())+"," +
                                             "\"estimasidilayani\": "+parsedDate.getTime()+"," +
                                             "\"sisakuotajkn\": "+(kuota-Integer.parseInt(TNoReg.getText()))+"," +

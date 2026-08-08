@@ -634,14 +634,17 @@ public class frmUtama extends javax.swing.JFrame {
                                     try {
                                         datajam = Sequel.cariIsi("select DATE_ADD(concat('" + rs.getString("tgl_registrasi") + "',' ','" + rs2.getString("jam_mulai") + "'),INTERVAL " + (Integer.parseInt(rs.getString("no_reg")) * 5) + " MINUTE) ");
                                         parsedDateTime = dateTimeFormat.parse(datajam);
-                                        if (!rs.getString("kd_pj").equals(kodebpjs)) {
+                                            String kdPoliBpjsMain = Sequel.cariIsi("select maping_poli_bpjs.kd_poli_bpjs from maping_poli_bpjs where maping_poli_bpjs.kd_poli_rs=?", rs.getString("kd_poli"));
+                                            if (kdPoliBpjsMain.equals("")) {
+                                                kdPoliBpjsMain = rs.getString("kd_poli");
+                                            }
                                             requestJson = JsonUtil.createObject()
                                                     .put("kodebooking", rs.getString("no_rawat"))
                                                     .put("jenispasien", "NON JKN")
                                                     .put("nomorkartu", "-")
                                                     .put("nik", "-")
                                                     .put("nohp", "-")
-                                                    .put("kodepoli", Sequel.cariIsi("select maping_poli_bpjs.kd_poli_bpjs from maping_poli_bpjs where maping_poli_bpjs.kd_poli_rs=?", rs.getString("kd_poli")))
+                                                    .put("kodepoli", kdPoliBpjsMain)
                                                     .put("namapoli", rs.getString("nm_poli"))
                                                     .put("pasienbaru", rs.getString("stts_daftar").replaceAll("Baru", "1").replaceAll("Lama", "0").replaceAll("-", "0"))
                                                     .put("norm", rs.getString("no_rkm_medis"))
@@ -651,7 +654,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                     .put("jampraktek", rs2.getString("jam_mulai").substring(0, 5) + "-" + rs2.getString("jam_selesai").substring(0, 5))
                                                     .put("jeniskunjungan", 3)
                                                     .put("nomorreferensi", "-")
-                                                    .put("nomorantrean", rs.getString("no_reg"))
+                                                    .put("nomorantrean", kdPoliBpjsMain + "-" + rs.getString("no_reg"))
                                                     .put("angkaantrean", Integer.parseInt(rs.getString("no_reg")))
                                                     .put("estimasidilayani", parsedDateTime.getTime())
                                                     .put("sisakuotajkn", rs2.getInt("kuota") - Integer.parseInt(rs.getString("no_reg")))
