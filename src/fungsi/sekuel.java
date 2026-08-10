@@ -29,6 +29,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +42,11 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -69,8 +77,92 @@ public final class sekuel {
     private Date waktumulai, kegiatan;
     private long bedawaktu = 0;
     
+    private static final Map<String, JsonNode> CACHE_MAP = new HashMap<>();
+    private static final Map<String, Long> CACHE_STAMP = new HashMap<>();
+    private static final Map<String, Long> CACHE_SIZE = new HashMap<>();
+    private static final Set<String> CACHE_CORRUPT = new HashSet<>();
+    private static final Object CACHE_LOCK = new Object();
+    
     public sekuel() {
         super();
+    }
+    
+    /**
+     * Membaca cache JSON secara aman. Hasil parsing di-cache sehingga file
+     * hanya dibaca sekali walaupun dipanggil berkali-kali (misal per baris user).
+     * Jika file rusak/tidak ada, dikembalikan null tanpa spam pesan error dan
+     * file yang rusak dihapus agar dibangun ulang oleh dialog pencari data.
+     */
+    private JsonNode bacaCache(String namaFile) {
+        File file = new File(namaFile);
+        long lastModified, length;
+        try {
+            lastModified = file.lastModified();
+            length = file.length();
+            if (lastModified == 0L || length == 0L) {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        synchronized (CACHE_LOCK) {
+            JsonNode cached = CACHE_MAP.get(namaFile);
+            Long stamp = CACHE_STAMP.get(namaFile);
+            Long size = CACHE_SIZE.get(namaFile);
+            if (cached != null && stamp != null && size != null
+                    && stamp.equals(lastModified) && size.equals(length)) {
+                return cached;
+            }
+            try {
+                JsonNode root = new ObjectMapper().readTree(file);
+                CACHE_MAP.put(namaFile, root);
+                CACHE_STAMP.put(namaFile, lastModified);
+                CACHE_SIZE.put(namaFile, length);
+                return root;
+            } catch (Exception ex) {
+                CACHE_MAP.remove(namaFile);
+                CACHE_STAMP.remove(namaFile);
+                CACHE_SIZE.remove(namaFile);
+                if (CACHE_CORRUPT.add(namaFile)) {
+                    System.out.println("Notifikasi : cache " + namaFile + " rusak, akan dibangun ulang otomatis (" + ex + ")");
+                }
+                try {
+                    file.delete();
+                } catch (Exception ignore) {
+                }
+                return null;
+            }
+        }
+    }
+    
+    /**
+     * Menyimpan cache JSON secara atomik: ditulis dulu ke file sementara,
+     * lalu dipindahkan menimpa file tujuan. Pembaca tidak akan pernah
+     * melihat isi file yang terpotong/parsial.
+     */
+    public static void simpanCache(File target, String json) {
+        if (target == null || json == null) {
+            return;
+        }
+        File parent = target.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
+        }
+        File tmp = new File(parent, target.getName() + ".tmp");
+        try {
+            Files.write(tmp.toPath(), json.getBytes(StandardCharsets.UTF_8));
+            try {
+                Files.move(tmp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (AtomicMoveNotSupportedException e) {
+                Files.move(tmp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+            try {
+                tmp.delete();
+            } catch (Exception ignore) {
+            }
+        }
     }
     
     public void menyimpan(String table, String value, String sama) {
@@ -2133,15 +2225,10 @@ public final class sekuel {
     }
     
     public String CariDokter(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/dokter.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("dokter");
+        JsonNode root = bacaCache("./cache/dokter.iyem");
+        if (root != null) {
+            JsonNode response = root.path("dokter");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("KodeDokter").asText().equalsIgnoreCase(kode)) {
@@ -2150,16 +2237,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?", kode);
@@ -2168,15 +2245,10 @@ public final class sekuel {
     }
     
     public String CariPetugas(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/petugas.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("petugas");
+        JsonNode root = bacaCache("./cache/petugas.iyem");
+        if (root != null) {
+            JsonNode response = root.path("petugas");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NIP").asText().equalsIgnoreCase(kode)) {
@@ -2185,16 +2257,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select petugas.nama from petugas where petugas.nip=?", kode);
@@ -2203,15 +2265,10 @@ public final class sekuel {
     }
     
     public String CariPegawai(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/pegawai.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("pegawai");
+        JsonNode root = bacaCache("./cache/pegawai.iyem");
+        if (root != null) {
+            JsonNode response = root.path("pegawai");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NIP").asText().equalsIgnoreCase(kode)) {
@@ -2220,16 +2277,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select pegawai.nama from pegawai where pegawai.nik=?", kode);
@@ -2238,15 +2285,10 @@ public final class sekuel {
     }
     
     public String CariJabatanPegawai(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/pegawai.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("pegawai");
+        JsonNode root = bacaCache("./cache/pegawai.iyem");
+        if (root != null) {
+            JsonNode response = root.path("pegawai");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NIP").asText().toLowerCase().equals(kode)) {
@@ -2255,16 +2297,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select pegawai.jbtn from pegawai where pegawai.nik=?", kode);
@@ -2273,15 +2305,10 @@ public final class sekuel {
     }
     
     public String CariDepartemenPegawai(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/pegawai.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("pegawai");
+        JsonNode root = bacaCache("./cache/pegawai.iyem");
+        if (root != null) {
+            JsonNode response = root.path("pegawai");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NIP").asText().toLowerCase().equals(kode)) {
@@ -2290,16 +2317,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select pegawai.departemen from pegawai where pegawai.nik=?", kode);
@@ -2308,15 +2325,10 @@ public final class sekuel {
     }
     
     public String CariBangsal(String kode) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/bangsal.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("bangsal");
+        JsonNode root = bacaCache("./cache/bangsal.iyem");
+        if (root != null) {
+            JsonNode response = root.path("bangsal");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("KodeKamar").asText().equalsIgnoreCase(kode)) {
@@ -2325,16 +2337,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", kode);
@@ -2343,15 +2345,10 @@ public final class sekuel {
     }
     
     public String CariKodePropinsi(String nama) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/masterpropinsi.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("masterpropinsi");
+        JsonNode root = bacaCache("./cache/masterpropinsi.iyem");
+        if (root != null) {
+            JsonNode response = root.path("masterpropinsi");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NamaProp").asText().toLowerCase().equals(nama)) {
@@ -2360,16 +2357,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select propinsi.kd_prop from propinsi where propinsi.nm_prop=?", nama);
@@ -2378,15 +2365,10 @@ public final class sekuel {
     }
     
     public String CariKodeKabupaten(String nama) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/masterkabupaten.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("masterkabupaten");
+        JsonNode root = bacaCache("./cache/masterkabupaten.iyem");
+        if (root != null) {
+            JsonNode response = root.path("masterkabupaten");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NamaKab").asText().toLowerCase().equals(nama)) {
@@ -2395,16 +2377,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select kabupaten.kd_kab from kabupaten where kabupaten.nm_kab=?", nama);
@@ -2413,15 +2385,10 @@ public final class sekuel {
     }
     
     public String CariKodeKecamatan(String nama) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/masterkecamatan.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("masterkecamatan");
+        JsonNode root = bacaCache("./cache/masterkecamatan.iyem");
+        if (root != null) {
+            JsonNode response = root.path("masterkecamatan");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NamaKec").asText().toLowerCase().equals(nama)) {
@@ -2430,16 +2397,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select kecamatan.kd_kec from kecamatan where kecamatan.nm_kec=?", nama);
@@ -2448,15 +2405,10 @@ public final class sekuel {
     }
     
     public String CariKodeKelurahan(String nama) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root;
-        JsonNode response;
-        FileReader myObj = null;
         String iyem = "";
-        try {
-            myObj = new FileReader("./cache/masterkelurahan.iyem");
-            root = mapper.readTree(myObj);
-            response = root.path("masterkelurahan");
+        JsonNode root = bacaCache("./cache/masterkelurahan.iyem");
+        if (root != null) {
+            JsonNode response = root.path("masterkelurahan");
             if (response.isArray()) {
                 for (JsonNode list : response) {
                     if (list.path("NamaKel").asText().toLowerCase().equals(nama)) {
@@ -2465,16 +2417,6 @@ public final class sekuel {
                     }
                 }
             }
-            myObj.close();
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : " + ex);
-        } finally {
-            if (myObj != null) try {
-                myObj.close();
-            } catch (Exception e) {
-            }
-            response = null;
-            root = null;
         }
         if (iyem.equals("")) {
             iyem = cariIsi("select kelurahan.kd_kel from kelurahan where kelurahan.nm_kel=?", nama);

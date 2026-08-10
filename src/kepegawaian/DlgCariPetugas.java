@@ -12,11 +12,15 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -38,13 +42,12 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;
     private File file;
-    private FileWriter fileWriter;
     private ObjectMapper mapper = new ObjectMapper();
     private JsonNode root;
     private JsonNode response;
-    private FileReader myObj;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
+    private static final Object TULIS_CACHE = new Object();
     /** Creates new form DlgPenyakit
      * @param parent
      * @param modal */
@@ -399,46 +402,51 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
 
     private void tampil() {  
         Valid.tabelKosong(tabMode);
-        try{
-            file=new File("./cache/petugas.iyem");
-            file.createNewFile();
-            fileWriter = new FileWriter(file);
-            StringBuilder iyembuilder = new StringBuilder();
-            ps=koneksi.prepareStatement("select petugas.nip,petugas.nama,petugas.jk,petugas.tmp_lahir,petugas.tgl_lahir, "+
-                    "petugas.gol_darah,petugas.agama,petugas.stts_nikah,petugas.alamat,jabatan.nm_jbtn,petugas.no_telp "+
-                    "from petugas inner join jabatan on jabatan.kd_jbtn=petugas.kd_jbtn "+
-                    "where petugas.status='1' order by petugas.nip");
-            try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11)
-                    });
-                    iyembuilder.append("{\"NIP\":\"").append(rs.getString(1)).append("\",\"NamaPetugas\":\"").append(rs.getString(2).replaceAll("\"","")).append("\",\"JK\":\"").append(rs.getString(3)).append("\",\"TmpLahir\":\"").append(rs.getString(4).replaceAll("\"","")).append("\",\"TglLahir\":\"").append(rs.getString(5)).append("\",\"GD\":\"").append(rs.getString(6)).append("\",\"Agama\":\"").append(rs.getString(7)).append("\",\"SttsNikah\":\"").append(rs.getString(8)).append("\",\"Alamat\":\"").append(rs.getString(9).replaceAll("\"","")).append("\",\"Jabatan\":\"").append(rs.getString(10)).append("\",\"NoTelp\":\"").append(rs.getString(11)).append("\"},");
+        synchronized (TULIS_CACHE) {
+            try{
+                List<Map<String, String>> rows = new ArrayList<>();
+                ps=koneksi.prepareStatement("select petugas.nip,petugas.nama,petugas.jk,petugas.tmp_lahir,petugas.tgl_lahir, "+
+                        "petugas.gol_darah,petugas.agama,petugas.stts_nikah,petugas.alamat,jabatan.nm_jbtn,petugas.no_telp "+
+                        "from petugas inner join jabatan on jabatan.kd_jbtn=petugas.kd_jbtn "+
+                        "where petugas.status='1' order by petugas.nip");
+                try {
+                    rs=ps.executeQuery();
+                    while(rs.next()){
+                        tabMode.addRow(new Object[]{
+                            rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11)
+                        });
+                        Map<String, String> d = new HashMap<>();
+                        d.put("NIP", rs.getString(1));
+                        d.put("NamaPetugas", rs.getString(2));
+                        d.put("JK", rs.getString(3));
+                        d.put("TmpLahir", rs.getString(4));
+                        d.put("TglLahir", rs.getString(5));
+                        d.put("GD", rs.getString(6));
+                        d.put("Agama", rs.getString(7));
+                        d.put("SttsNikah", rs.getString(8));
+                        d.put("Alamat", rs.getString(9));
+                        d.put("Jabatan", rs.getString(10));
+                        d.put("NoTelp", rs.getString(11));
+                        rows.add(d);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                } finally{
+                    if(rs!=null){
+                        rs.close();
+                    }
+                    if(ps!=null){
+                        ps.close();
+                    }
                 }
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
+                
+                Map<String, Object> doc = new HashMap<>();
+                doc.put("petugas", rows);
+                file = new File("./cache/petugas.iyem");
+                Sequel.simpanCache(file, mapper.writeValueAsString(doc));
+            }catch(Exception e){
+                System.out.println("Notifikasi : "+e);
             }
-            
-            if (iyembuilder.length() > 0) {
-                iyembuilder.setLength(iyembuilder.length() - 1);
-                fileWriter.write("{\"petugas\":["+iyembuilder+"]}");
-                fileWriter.flush();
-            }
-            
-            fileWriter.close();
-            iyembuilder=null;
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }finally {
-            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
         }
         LCount.setText(""+tabMode.getRowCount());
     }
@@ -457,8 +465,7 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
     
     private void tampil2() {
         try {
-            myObj = new FileReader("./cache/petugas.iyem");
-            root = mapper.readTree(myObj);
+            root = mapper.readTree(Files.newBufferedReader(new File("./cache/petugas.iyem").toPath(), StandardCharsets.UTF_8));
             Valid.tabelKosong(tabMode);
             response = root.path("petugas");
             if(response.isArray()){
@@ -478,15 +485,9 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
                     }
                 }
             }
-            myObj.close();
         } catch (Exception ex) {
-            if(ex.toString().contains("java.io.FileNotFoundException")){
-                tampil();
-            }else{
-                System.out.println("Notifikasi : "+ex);
-            }
+            tampil();
         } finally {
-            if (myObj != null) try { myObj.close(); } catch (Exception e) {}
             response = null;
             root = null;
         }
@@ -505,8 +506,7 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
         
         String iyem="";
         try {
-            myObj = new FileReader("./cache/petugas.iyem");
-            root = mapper.readTree(myObj);
+            root = mapper.readTree(Files.newBufferedReader(new File("./cache/petugas.iyem").toPath(), StandardCharsets.UTF_8));
             response = root.path("petugas");
             if(response.isArray()){
                 for(JsonNode list:response){
@@ -516,11 +516,9 @@ public final class DlgCariPetugas extends javax.swing.JDialog {
                     }
                 }
             }
-            myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            tampil();
         } finally {
-            if (myObj != null) try { myObj.close(); } catch (Exception e) {}
             response = null;
             root = null;
         }

@@ -23,11 +23,15 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -48,14 +52,13 @@ public final class DlgCariDokter extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;
     private File file;
-    private FileWriter fileWriter;
     private ObjectMapper mapper = new ObjectMapper();
     private JsonNode root;
     private JsonNode response;
-    private FileReader myObj;
     private sekuel Sequel=new sekuel();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
+    private static final Object TULIS_CACHE = new Object();
     /** Creates new form DlgPenyakit
      * @param parent
      * @param modal */
@@ -420,53 +423,60 @@ public final class DlgCariDokter extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try {
-            file=new File("./cache/dokter.iyem");
-            file.createNewFile();
-            fileWriter = new FileWriter(file);
-            StringBuilder iyembuilder = new StringBuilder();
-            ps=koneksi.prepareStatement(
-                "select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "+
-                "dokter.tgl_lahir,dokter.gol_drh,dokter.agama,dokter.almt_tgl,dokter.no_telp, "+
-                "dokter.stts_nikah,spesialis.nm_sps,dokter.alumni,dokter.no_ijn_praktek "+
-                "from dokter inner join spesialis on dokter.kd_sps=spesialis.kd_sps "+
-                "where dokter.status='1' order by dokter.nm_dokter");
-            try{
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8),rs.getString(9),
-                        rs.getString(10),rs.getString(11),rs.getString(12),
-                        rs.getString(13)
-                    });
-                    iyembuilder.append("{\"KodeDokter\":\"").append(rs.getString(1)).append("\",\"NamaDokter\":\"").append(rs.getString(2).replaceAll("\"","")).append("\",\"JK\":\"").append(rs.getString(3)).append("\",\"TmpLahir\":\"").append(rs.getString(4).replaceAll("\"","")).append("\",\"TglLahir\":\"").append(rs.getString(5)).append("\",\"GD\":\"").append(rs.getString(6)).append("\",\"Agama\":\"").append(rs.getString(7)).append("\",\"AlamatTinggal\":\"").append(rs.getString(8).replaceAll("\"","")).append("\",\"NoTelp\":\"").append(rs.getString(9)).append("\",\"SttsNikah\":\"").append(rs.getString(10)).append("\",\"Spesialis\":\"").append(rs.getString(11)).append("\",\"Alumni\":\"").append(rs.getString(12).replaceAll("\"","")).append("\",\"NoIjinPraktek\":\"").append(rs.getString(13)).append("\"},");
-                }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            }finally{
-                if( rs != null ){
-                    rs.close();
+        synchronized (TULIS_CACHE) {
+            try {
+                List<Map<String, String>> rows = new ArrayList<>();
+                ps=koneksi.prepareStatement(
+                    "select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "+
+                    "dokter.tgl_lahir,dokter.gol_drh,dokter.agama,dokter.almt_tgl,dokter.no_telp, "+
+                    "dokter.stts_nikah,spesialis.nm_sps,dokter.alumni,dokter.no_ijn_praktek "+
+                    "from dokter inner join spesialis on dokter.kd_sps=spesialis.kd_sps "+
+                    "where dokter.status='1' order by dokter.nm_dokter");
+                try{
+                    rs=ps.executeQuery();
+                    while(rs.next()){
+                        tabMode.addRow(new Object[]{
+                            rs.getString(1),rs.getString(2),rs.getString(3),
+                            rs.getString(4),rs.getString(5),rs.getString(6),
+                            rs.getString(7),rs.getString(8),rs.getString(9),
+                            rs.getString(10),rs.getString(11),rs.getString(12),
+                            rs.getString(13)
+                        });
+                        Map<String, String> d = new HashMap<>();
+                        d.put("KodeDokter", rs.getString(1));
+                        d.put("NamaDokter", rs.getString(2));
+                        d.put("JK", rs.getString(3));
+                        d.put("TmpLahir", rs.getString(4));
+                        d.put("TglLahir", rs.getString(5));
+                        d.put("GD", rs.getString(6));
+                        d.put("Agama", rs.getString(7));
+                        d.put("AlamatTinggal", rs.getString(8));
+                        d.put("NoTelp", rs.getString(9));
+                        d.put("SttsNikah", rs.getString(10));
+                        d.put("Spesialis", rs.getString(11));
+                        d.put("Alumni", rs.getString(12));
+                        d.put("NoIjinPraktek", rs.getString(13));
+                        rows.add(d);
+                    }
+                }catch(Exception e){
+                    System.out.println("Notifikasi : "+e);
+                }finally{
+                    if( rs != null ){
+                        rs.close();
+                    }
+                    
+                    if( ps != null ){
+                        ps.close();
+                    }
                 }
                 
-                if( ps != null ){
-                    ps.close();
-                }
+                Map<String, Object> doc = new HashMap<>();
+                doc.put("dokter", rows);
+                file = new File("./cache/dokter.iyem");
+                Sequel.simpanCache(file, mapper.writeValueAsString(doc));
+            } catch (Exception e) {
+                System.out.println("Notifikasi : "+e);
             }
-            
-            if (iyembuilder.length() > 0) {
-                iyembuilder.setLength(iyembuilder.length() - 1);
-                fileWriter.write("{\"dokter\":["+iyembuilder+"]}");
-                fileWriter.flush();
-            }
-            
-            fileWriter.close();
-            iyembuilder=null;
-        } catch (Exception e) {
-            System.out.println("Notifikasi : "+e);
-        } finally {
-            if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
         }
         LCount.setText(""+tabMode.getRowCount());
     }
@@ -485,8 +495,7 @@ public final class DlgCariDokter extends javax.swing.JDialog {
     
     private void tampil2() {
         try {
-            myObj = new FileReader("./cache/dokter.iyem");
-            root = mapper.readTree(myObj);
+            root = mapper.readTree(Files.newBufferedReader(new File("./cache/dokter.iyem").toPath(), StandardCharsets.UTF_8));
             Valid.tabelKosong(tabMode);
             response = root.path("dokter");
             if(response.isArray()){
@@ -506,15 +515,9 @@ public final class DlgCariDokter extends javax.swing.JDialog {
                     }
                 }
             }
-            myObj.close();
         } catch (Exception ex) {
-            if(ex.toString().contains("java.io.FileNotFoundException")){
-                tampil();
-            }else{
-                System.out.println("Notifikasi : "+ex);
-            }
+            tampil();
         } finally {
-            if (myObj != null) try { myObj.close(); } catch (Exception e) {}
             response = null;
             root = null;
         }
@@ -533,8 +536,7 @@ public final class DlgCariDokter extends javax.swing.JDialog {
         
         String iyem="";
         try {
-            myObj = new FileReader("./cache/dokter.iyem");
-            root = mapper.readTree(myObj);
+            root = mapper.readTree(Files.newBufferedReader(new File("./cache/dokter.iyem").toPath(), StandardCharsets.UTF_8));
             response = root.path("dokter");
             if(response.isArray()){
                 for(JsonNode list:response){
@@ -544,11 +546,9 @@ public final class DlgCariDokter extends javax.swing.JDialog {
                     }
                 }
             }
-            myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            tampil();
         } finally {
-            if (myObj != null) try { myObj.close(); } catch (Exception e) {}
             response = null;
             root = null;
         }
