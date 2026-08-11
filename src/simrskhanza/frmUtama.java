@@ -219,6 +219,7 @@ import dapur.DapurSuplier;
 import dapur.DapurSuratPemesanan;
 import dapur.DapurVerifikasiPenerimaan;
 import fungsi.akses;
+import fungsi.autoLogout;
 import fungsi.batasInput;
 import fungsi.cacheigd;
 import fungsi.cacherawatinap;
@@ -2839,40 +2840,54 @@ public class frmUtama extends javax.swing.JFrame {
 
         switch (BtnLog.getText().trim()) {
             case "Log Out":
-                BtnToolReg.setEnabled(false);
-                BtnToolKamnap.setEnabled(false);
-                BtnToolKasir.setEnabled(false);
-                btnToolIGD.setEnabled(false);
-                MnGantiPassword.setEnabled(false);
-                MnPengajuanCutiPegawai.setEnabled(false);
-                akses.setpenjualan_obatfalse();
-                akses.setpenjualan_obatfalse();
-                akses.setutd_penyerahan_darahfalse();
-                akses.setresep_dokterfalse();
-                akses.setresep_obatfalse();
-                akses.setpermintaanlabfalse();
-                akses.setperiksalabfalse();
-                akses.setperiksalabpafalse();
-                akses.setperiksalabmbfalse();
-                akses.setpermintaanradiologifalse();
-                akses.setperiksaradiologifalse();
-                edAdmin.setText("");
-                edPwd.setText("");
-                BtnLog.setText("Log In");
-                MnLogin.setText("Log In");
-                lblStts.setText("Status Admin : ");
-                lblUser.setText("Log Out");
-                BtnMenu.setEnabled(false);
-                akses.setLogOut();
-                isTutup();
+                doLogOut();
                 break;
             case "Log In":
-                isTutup();
-                DlgLogin.setVisible(true);
-                edAdmin.requestFocus();
+                doLoginShow();
                 break;
         }
     }//GEN-LAST:event_BtnLogActionPerformed
+
+    private void doLogOut() {
+        BtnToolReg.setEnabled(false);
+        BtnToolKamnap.setEnabled(false);
+        BtnToolKasir.setEnabled(false);
+        btnToolIGD.setEnabled(false);
+        MnGantiPassword.setEnabled(false);
+        MnPengajuanCutiPegawai.setEnabled(false);
+        akses.setpenjualan_obatfalse();
+        akses.setpenjualan_obatfalse();
+        akses.setutd_penyerahan_darahfalse();
+        akses.setresep_dokterfalse();
+        akses.setresep_obatfalse();
+        akses.setpermintaanlabfalse();
+        akses.setperiksalabfalse();
+        akses.setperiksalabpafalse();
+        akses.setperiksalabmbfalse();
+        akses.setpermintaanradiologifalse();
+        akses.setperiksaradiologifalse();
+        edAdmin.setText("");
+        edPwd.setText("");
+        BtnLog.setText("Log In");
+        MnLogin.setText("Log In");
+        lblStts.setText("Status Admin : ");
+        lblUser.setText("Log Out");
+        BtnMenu.setEnabled(false);
+        akses.setLogOut();
+        autoLogout.stop();
+        isTutup();
+    }
+
+    private void doLoginShow() {
+        isTutup();
+        DlgLogin.setVisible(true);
+        edAdmin.requestFocus();
+    }
+
+    private void autoLogoutFlow() {
+        doLogOut();
+        System.exit(0);
+    }
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
         if (edAdmin.getText().trim().equals("")) {
@@ -2916,6 +2931,7 @@ public class frmUtama extends javax.swing.JFrame {
                     if (AKTIFKANTRACKSQL.equals("yes")) {
                         Sequel.menyimpan("tracker", "'Admin Utama',current_date(),current_time()", "Login");
                     }
+                    autoLogout.start(this, this::autoLogoutFlow);
                 } else if (akses.getjml2() >= 1) {
                     BtnMenu.setEnabled(true);
                     DlgLogin.dispose();
@@ -2967,6 +2983,7 @@ public class frmUtama extends javax.swing.JFrame {
                     if (AKTIFKANTRACKSQL.equals("yes")) {
                         Sequel.menyimpan("tracker", "'" + edAdmin.getText() + "',current_date(),current_time()", "Login");
                     }
+                    autoLogout.start(this, this::autoLogoutFlow);
                 } else if ((akses.getjml1() == 0) && (akses.getjml2() == 0)) {
                     JOptionPane.showMessageDialog(null, "Maaf, Gagal login. ID User atau password ada yang salah ...!");
                     BtnToolReg.setEnabled(false);

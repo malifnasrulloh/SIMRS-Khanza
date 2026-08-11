@@ -213,6 +213,16 @@ public class koneksiDB {
         return var;
     }
 
+    public static String TIMEOUTLOGOUT() {
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var = prop.getProperty("TIMEOUTLOGOUT", "10");
+        } catch (Exception e) {
+            var = "10";
+        }
+        return var;
+    }
+
     public static String HOSTHYBRIDWEB() {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
