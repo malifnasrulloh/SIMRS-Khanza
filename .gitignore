@@ -15,3 +15,9 @@ lib/test.*
 ~*
 report/*.pdf
 edokter-next/
+# ── Generated Jasper/iReport exports (root level) ──
+/*.html
+/*.csv
+/*.wps
+/CompileReport.class
+/*.pdf
