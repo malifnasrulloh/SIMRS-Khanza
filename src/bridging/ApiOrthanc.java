@@ -208,34 +208,45 @@ public class ApiOrthanc {
      * @return Orthanc internal study ID string, or empty string if not found
      */
     public String findStudyByAccession(String accessionNumber) {
-        System.out.println("Mencari Study berdasarkan AccessionNumber : " + accessionNumber);
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Basic " + authEncrypt);
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            String requestJson = "{"
-                    + "\"Level\": \"Study\","
-                    + "\"Expand\": true,"
-                    + "\"Query\": {"
-                    + "\"AccessionNumber\": \"" + accessionNumber + "\""
-                    + "}"
-                    + "}";
-            System.out.println("Request JSON findStudyByAccession : " + requestJson);
-            HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
-            requestJson = getRest().exchange(
-                    orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
-            ).getBody();
-            System.out.println("Result JSON findStudyByAccession : " + requestJson);
-            JsonNode result = mapper.readTree(requestJson);
-            if (result.isArray() && result.size() > 0) {
-                String studyId = result.get(0).path("ID").asText();
-                System.out.println("findStudyByAccession : Ditemukan Study ID = " + studyId);
-                return studyId;
-            }
-            System.out.println("findStudyByAccession : Study tidak ditemukan untuk ACSN=" + accessionNumber);
-        } catch (Exception e) {
-            System.out.println("ApiOrthanc findStudyByAccession error : " + e);
+        return findStudyByAccession(accessionNumber, 1, 0);
+    }
+
+    public String findStudyByAccession(String accessionNumber, int retries, long delayMs) {
+        if (accessionNumber == null || accessionNumber.trim().isEmpty()) {
+            return "";
         }
+        String cleanAcsn = accessionNumber.trim();
+        System.out.println("Mencari Study berdasarkan AccessionNumber : " + cleanAcsn);
+        for (int attempt = 1; attempt <= retries; attempt++) {
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", "Basic " + authEncrypt);
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                String requestJson = "{"
+                        + "\"Level\": \"Study\","
+                        + "\"Expand\": true,"
+                        + "\"Query\": {"
+                        + "\"AccessionNumber\": \"" + cleanAcsn + "\""
+                        + "}"
+                        + "}";
+                HttpEntity<String> requestEntity = new HttpEntity(requestJson, headers);
+                String responseStr = getRest().exchange(
+                        orthancUrl("/tools/find"), HttpMethod.POST, requestEntity, String.class
+                ).getBody();
+                JsonNode result = mapper.readTree(responseStr);
+                if (result.isArray() && result.size() > 0) {
+                    String studyId = result.get(0).path("ID").asText();
+                    System.out.println("findStudyByAccession : Ditemukan Study ID = " + studyId + " (attempt " + attempt + "/" + retries + ")");
+                    return studyId;
+                }
+            } catch (Exception e) {
+                System.out.println("ApiOrthanc findStudyByAccession error (attempt " + attempt + "): " + e);
+            }
+            if (attempt < retries && delayMs > 0) {
+                try { Thread.sleep(delayMs); } catch (InterruptedException ignored) {}
+            }
+        }
+        System.out.println("findStudyByAccession : Study tidak ditemukan untuk ACSN=" + cleanAcsn);
         return "";
     }
 
@@ -491,22 +502,38 @@ public class ApiOrthanc {
      * @return Orthanc internal study ID, or empty string on failure
      */
     public String findStudyByAccessionProxy(String accessionNumber) {
-        System.out.println("Proxy findStudyByAccession : " + accessionNumber);
-        try {
-            String jsonPayload = "{\"accession_number\":\"" + accessionNumber + "\"}";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
-            HttpEntity<String> requestEntity = new HttpEntity(jsonPayload, headers);
-            ResponseEntity<String> response = getRest().exchange(
-                    dicomConverterFindByAcsnUrl(), HttpMethod.POST, requestEntity, String.class);
-            JsonNode result = mapper.readTree(response.getBody());
-            String studyId = result.path("study_id").asText();
-            return studyId;
-        } catch (Exception e) {
-            System.out.println("Proxy findStudyByAccession error (fallback to direct): " + e);
-            return findStudyByAccession(accessionNumber);
+        return findStudyByAccessionProxy(accessionNumber, 1, 0);
+    }
+
+    public String findStudyByAccessionProxy(String accessionNumber, int retries, long delayMs) {
+        if (accessionNumber == null || accessionNumber.trim().isEmpty()) {
+            return "";
         }
+        String cleanAcsn = accessionNumber.trim();
+        System.out.println("Proxy findStudyByAccession : " + cleanAcsn);
+        for (int attempt = 1; attempt <= retries; attempt++) {
+            try {
+                String jsonPayload = "{\"accession_number\":\"" + cleanAcsn + "\"}";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.add("User-Agent", "SIMRS-Khanza-ApiOrthanc/1.0");
+                HttpEntity<String> requestEntity = new HttpEntity(jsonPayload, headers);
+                ResponseEntity<String> response = getRest().exchange(
+                        dicomConverterFindByAcsnUrl(), HttpMethod.POST, requestEntity, String.class);
+                JsonNode result = mapper.readTree(response.getBody());
+                String studyId = result.path("study_id").asText();
+                if (studyId != null && !studyId.trim().isEmpty()) {
+                    System.out.println("Proxy findStudyByAccession : Ditemukan Study ID = " + studyId + " (attempt " + attempt + "/" + retries + ")");
+                    return studyId.trim();
+                }
+            } catch (Exception e) {
+                System.out.println("Proxy findStudyByAccession error (attempt " + attempt + "): " + e);
+            }
+            if (attempt < retries && delayMs > 0) {
+                try { Thread.sleep(delayMs); } catch (InterruptedException ignored) {}
+            }
+        }
+        return findStudyByAccession(cleanAcsn, retries, delayMs);
     }
 
     /**
@@ -1001,6 +1028,19 @@ public class ApiOrthanc {
         // Remove existing port if present (e.g. "http://localhost:8042" -> "http://localhost")
         base = base.replaceFirst("(?i)^(https?://[^:]+)(:\\d+)?(/.*)?$", "$1");
         return base + ":" + koneksiDB.PORTORTHANC() + path;
+    }
+
+    /**
+     * Returns the web browser URL for viewing a study in Orthanc Explorer / WebViewer.
+     *
+     * @param studyId Orthanc internal study ID
+     * @return URL string
+     */
+    public String getOrthancStudyWebUrl(String studyId) {
+        if (studyId == null || studyId.trim().isEmpty()) {
+            return orthancUrl("/ui/app/");
+        }
+        return orthancUrl("/ui/app/#/study?uuid=" + studyId.trim());
     }
 
     /**

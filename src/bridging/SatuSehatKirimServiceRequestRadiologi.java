@@ -144,6 +144,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     // FIX: Use singleton so the mapping file is loaded exactly once per JVM.
     private final ApiOrthanc orthanc = new ApiOrthanc();
     private final RadiologyModalityMapper modalityMapper = RadiologyModalityMapper.getInstance();
+    private final java.util.concurrent.ConcurrentHashMap<String, String> knownStudyIdByAcsn = new java.util.concurrent.ConcurrentHashMap<>();
 
     /**
      * Timer for auto-refreshing webhook status. Initialized and started in constructor.
@@ -1417,7 +1418,13 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             Object fnObj = tbObat.getValueAt(i, COL_LOKASI_FILE_IMAGE);
             String lf = fnObj == null ? "" : fnObj.toString().trim();
             if (!lf.isEmpty()) {
-                listLokasi.add(lf);
+                // Split by safe delimiter ' ; ' or '|' to prevent splitting filenames containing commas
+                for (String part : lf.split("\\s*;\\s*|\\s*\\|\\s*")) {
+                    String trimmed = part.trim();
+                    if (!trimmed.isEmpty()) {
+                        listLokasi.add(trimmed);
+                    }
+                }
             }
         }
 
@@ -1479,17 +1486,32 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         // (timeout/network error), causing a false "Gagal" in the UI.
         String existingStudyId = orthanc.findStudyByAccessionProxy(acsn);
         if (existingStudyId != null && !existingStudyId.isEmpty()) {
+            knownStudyIdByAcsn.put(acsn, existingStudyId);
             System.out.println("Pre-flight : Study sudah ada di Orthanc untuk ACSN=" + acsn
                     + " (Study ID=" + existingStudyId + "). Skip upload.");
             final String acsnF = acsn;
             String idServiceRequest = valueAtString(i, COL_ID_SR);
             setWebhookPending(noorder, kdJenis, idServiceRequest, acsnF);
-            SwingUtilities.invokeLater(() -> {
+            try {
+                if (SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt("Sudah ada di Orthanc (skip upload)", i, COL_STATUS_ORTHANC);
+                    tbObat.setValueAt(acsnF, i, COL_ACSN);
+                    tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                    tbObat.setValueAt(false, i, COL_PILIH);
+                } else {
+                    SwingUtilities.invokeAndWait(() -> {
+                        tbObat.setValueAt("Sudah ada di Orthanc (skip upload)", i, COL_STATUS_ORTHANC);
+                        tbObat.setValueAt(acsnF, i, COL_ACSN);
+                        tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                        tbObat.setValueAt(false, i, COL_PILIH);
+                    });
+                }
+            } catch (Exception ex) {
                 tbObat.setValueAt("Sudah ada di Orthanc (skip upload)", i, COL_STATUS_ORTHANC);
                 tbObat.setValueAt(acsnF, i, COL_ACSN);
                 tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
                 tbObat.setValueAt(false, i, COL_PILIH);
-            });
+            }
             return true;
         }
 
@@ -1500,16 +1522,37 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             final String acsnF = acsn;
             final String finalTxt = "Sukses konversi & Orthanc (" + listUrls.size() + " img)";
 
+            // Extract resolved study_id if returned by converter API
+            String resolvedStudyId = result.path("study_id").asText().trim();
+            if (!resolvedStudyId.isEmpty()) {
+                knownStudyIdByAcsn.put(acsn, resolvedStudyId);
+                System.out.println("uploadSingleRowToOrthanc: Captured Study ID=" + resolvedStudyId + " for ACSN=" + acsn);
+            }
+
             // Persist ke database agar tercatat di satu_sehat_imagingstudy_radiologi
             String idServiceRequest = valueAtString(i, COL_ID_SR);
             setWebhookPending(noorder, kdJenis, idServiceRequest, acsnF);
 
-            SwingUtilities.invokeLater(() -> {
+            try {
+                if (SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
+                    tbObat.setValueAt(acsnF, i, COL_ACSN);
+                    tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                    tbObat.setValueAt(false, i, COL_PILIH);
+                } else {
+                    SwingUtilities.invokeAndWait(() -> {
+                        tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
+                        tbObat.setValueAt(acsnF, i, COL_ACSN);
+                        tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
+                        tbObat.setValueAt(false, i, COL_PILIH);
+                    });
+                }
+            } catch (Exception ex) {
                 tbObat.setValueAt(finalTxt, i, COL_STATUS_ORTHANC);
                 tbObat.setValueAt(acsnF, i, COL_ACSN);
                 tbObat.setValueAt("orthanc", i, COL_LOKASI_IMAGE);
                 tbObat.setValueAt(false, i, COL_PILIH);
-            });
+            }
             return true;
         } else {
             String lastErr = summarizeDicomConverterApiError(result);
@@ -1749,8 +1792,15 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 SwingUtilities.invokeLater(() ->
                     tbObat.setValueAt("Upload ke Orthanc...", row, COL_STATUS_ORTHANC));
                 if (uploadSingleRowToOrthanc(row)) {
-                    // Upload berhasil → re-check status (now should be orthanc + ACSN set)
-                    processRow(row);
+                    // Upload berhasil & study ID terverifikasi -> langsung lanjut ke pengiriman PACS / sync
+                    SwingUtilities.invokeLater(() ->
+                        tbObat.setValueAt("Mengirim ke PACS...", row, COL_STATUS_ORTHANC));
+                    try {
+                        BtnUpdateDanKirimActionPerformedSingleRow(row);
+                    } catch (Exception ex) {
+                        SwingUtilities.invokeLater(() ->
+                            tbObat.setValueAt("Gagal: " + ex.getMessage(), row, COL_STATUS_ORTHANC));
+                    }
                 }
                 break;
             }
@@ -1759,8 +1809,18 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     tbObat.setValueAt("Mencocokkan studi...", row, COL_STATUS_ORTHANC));
                 String studyId = resolveOrthancStudyId(row);
                 if (!studyId.isEmpty()) {
-                    // Match found + ACSN auto-corrected → re-check
-                    processRow(row);
+                    // Match found + ACSN auto-corrected → langsung lanjut ke pengiriman PACS / sync
+                    SwingUtilities.invokeLater(() ->
+                        tbObat.setValueAt("Mengirim ke PACS...", row, COL_STATUS_ORTHANC));
+                    try {
+                        BtnUpdateDanKirimActionPerformedSingleRow(row);
+                    } catch (Exception ex) {
+                        SwingUtilities.invokeLater(() ->
+                            tbObat.setValueAt("Gagal: " + ex.getMessage(), row, COL_STATUS_ORTHANC));
+                    }
+                } else {
+                    SwingUtilities.invokeLater(() ->
+                        tbObat.setValueAt("Study tidak ditemukan / dilewati", row, COL_STATUS_ORTHANC));
                 }
                 break;
             }
@@ -2041,14 +2101,23 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         }
     }
 
+    private static final java.util.Set<String> FILLER_WORDS = new java.util.HashSet<>(java.util.Arrays.asList(
+        "foto", "pemeriksaan", "radiologi", "rontgen", "dan", "dengan", "atau", "sisi", "posisi", "hasil"
+    ));
+
     private boolean isModalityCompatible(String expected, String actual) {
         if (expected == null || actual == null) return false;
         expected = expected.trim().toUpperCase();
         actual = actual.trim().toUpperCase();
+        if (expected.isEmpty() || actual.isEmpty() || "-".equals(expected) || "-".equals(actual)) return false;
         if (expected.equals(actual)) return true;
-        if ("XR".equals(expected)) {
-            return "CR".equals(actual) || "DX".equals(actual) || "PX".equals(actual) || "RG".equals(actual) || "XR".equals(actual);
-        }
+        if ("OT".equals(expected) || "OT".equals(actual)) return true;
+
+        // Equivalence group for Radiography (CR, DX, XR, PX, RG)
+        boolean expectedXray = "CR".equals(expected) || "DX".equals(expected) || "XR".equals(expected) || "PX".equals(expected) || "RG".equals(expected);
+        boolean actualXray = "CR".equals(actual) || "DX".equals(actual) || "XR".equals(actual) || "PX".equals(actual) || "RG".equals(actual);
+        if (expectedXray && actualXray) return true;
+
         return false;
     }
 
@@ -2081,52 +2150,30 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         if (modality == null || modality.isEmpty() || "-".equals(modality)) {
             return false;
         }
+        
+        // 1. Instant check against in-memory upload cache
+        if (acsn != null && !acsn.isEmpty() && knownStudyIdByAcsn.containsKey(acsn)) {
+            return true;
+        }
+
         String key = noRM + "|" + studyDateYYYYMMDD + "|" + modality + "|" + acsn;
         Boolean hit = cache.get(key);
         if (hit != null) {
             return hit;
         }
         
-        // 1. Check if a study with the specific accession number exists in Orthanc
+        // 2. Fast single-attempt check by AccessionNumber (0ms delay)
         if (acsn != null && !acsn.isEmpty() && !"-".equals(acsn)) {
-            String foundId = orthanc.findStudyByAccessionProxy(acsn);
+            String foundId = orthanc.findStudyByAccessionProxy(acsn, 1, 0);
             if (foundId != null && !foundId.isEmpty()) {
+                knownStudyIdByAcsn.put(acsn, foundId);
                 cache.put(key, true);
                 return true;
             }
         }
         
-        // 2. Fallback: check if there is an existing study with no accession number (old scans)
-        String startDate = studyDateYYYYMMDD;
-        String endDate = studyDateYYYYMMDD;
-        
-        java.util.List<String> modalitiesToQuery = new java.util.ArrayList<>();
-        modalitiesToQuery.add(modality);
-        if ("XR".equals(modality)) {
-            modalitiesToQuery.add("CR");
-            modalitiesToQuery.add("DX");
-            modalitiesToQuery.add("PX");
-            modalitiesToQuery.add("RG");
-        }
-        
-        boolean ok = false;
-        for (String m : modalitiesToQuery) {
-            JsonNode studies = orthanc.AmbilSeriesDenganModality(noRM, startDate, endDate, m);
-            if (studies != null && studies.isArray()) {
-                for (JsonNode study : studies) {
-                    String studyAcsn = study.path("MainDicomTags").path("AccessionNumber").asText().trim();
-                    if (studyAcsn.isEmpty() || "-".equals(studyAcsn)) {
-                        ok = true;
-                        break;
-                    }
-                }
-            }
-            if (ok) {
-                break;
-            }
-        }
-        cache.put(key, ok);
-        return ok;
+        cache.put(key, false);
+        return false;
     }
 
     private int timeToSeconds(String timeStr) {
@@ -2151,23 +2198,22 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     }
 
     private String showStudySelectionDialog(
-            String noRM, String patientName, String expectedModality,
-            String expectedDesc, String expectedDate, String expectedTime,
-            java.util.List<JsonNode> uniqueStudies) {
+            String noRM, String patientName, String jk, String tglLahir,
+            String noorder, String expectedDesc, String expectedModality,
+            String expectedDate, String expectedTime, String nmDokter, String nmPoli, String diagnosa,
+            java.util.List<ScoredStudy> scoredList) {
 
-        java.util.List<String> optionsList = new java.util.ArrayList<>();
-        int optionIndex = 0;
-        for (JsonNode s : uniqueStudies) {
-            String sId = s.path("ID").asText();
+        java.util.List<SatuSehatRekonsiliasiStudyRadiologi.CandidateItem> candidateItems = new java.util.ArrayList<>();
+        for (ScoredStudy ss : scoredList) {
+            JsonNode s = ss.studyNode;
+            String sId = ss.studyId;
             String studyDate = s.path("MainDicomTags").path("StudyDate").asText().trim();
             String studyTime = s.path("MainDicomTags").path("StudyTime").asText().trim();
             String studyDesc = s.path("MainDicomTags").path("StudyDescription").asText().trim();
             String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
 
-            // Extract Modality (first compatible or exact Modality found in Series/ModalitiesInStudy)
             String modality = expectedModality;
             JsonNode modalitiesNode = s.path("ModalitiesInStudy");
-
             if (modalitiesNode.isArray() && modalitiesNode.size() > 0) {
                 modality = modalitiesNode.get(0).asText();
             }
@@ -2187,80 +2233,46 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 }
             }
 
-            // Show score indicator — if we can compute a rough relevance
-            double scorePct = 0.0;
-            // Best match indicator: if date matches and description overlaps
-            boolean hasDate = !studyDate.isEmpty() && expectedDate.length() >= 8;
-            if (hasDate) {
-                String expectedDateDicom = dicomStudyDateFromYmd(expectedDate);
-                if (studyDate.equals(expectedDateDicom)) {
-                    scorePct += 0.5;
-                }
-            }
-            if (!studyDesc.isEmpty() && !expectedDesc.isEmpty()) {
-                String descLower = studyDesc.toLowerCase();
-                String expLower = expectedDesc.toLowerCase();
-                if (descLower.equals(expLower)) scorePct += 0.4;
-                else if (descLower.contains(expLower) || expLower.contains(descLower)) scorePct += 0.25;
+            // Series count
+            int seriesCount = 0;
+            JsonNode seriesNode = s.path("Series");
+            if (seriesNode.isArray()) {
+                seriesCount = seriesNode.size();
             }
 
-            String star = scorePct >= 0.7 ? "★ " : (scorePct >= 0.3 ? "• " : "  ");
-            String label = String.format("%s%s %s | %s | %s | ACSN: %s [ID: %s]",
-                    star, dateFormatted, timeFormatted, modality,
-                    studyDesc.isEmpty() ? "(No Description)" : studyDesc,
-                    studyAcsn.isEmpty() ? "-" : studyAcsn,
-                    sId);
-            optionsList.add(label);
-            optionIndex++;
+            // Match label
+            String matchLabel;
+            if (ss.score >= 80) {
+                matchLabel = "★★★ Sangat Cocok (" + ss.score + " pts)";
+            } else if (ss.score >= 50) {
+                matchLabel = "★★ Cukup Cocok (" + ss.score + " pts)";
+            } else {
+                matchLabel = "★ Kurang Cocok (" + ss.score + " pts)";
+            }
+
+            candidateItems.add(new SatuSehatRekonsiliasiStudyRadiologi.CandidateItem(
+                    sId, ss.score, matchLabel, modality,
+                    dateFormatted, timeFormatted, studyDesc,
+                    studyAcsn, seriesCount, s
+            ));
         }
 
-        Object[] options = optionsList.toArray();
         final String[] selectedId = new String[]{""};
-
-        String dialogMessage = String.format(
-                "Ditemukan beberapa study di Orthanc untuk pasien:\n"
-                + "RM: %s - %s\n\n"
-                + "SIMRS Request:\n"
-                + "  Prosedur: %s\n"
-                + "  Modality: %s\n"
-                + "  Tgl/Jam : %s %s\n\n"
-                + "★ = sangat cocok  • = cukup cocok\n"
-                + "Pilih study PACS yang sesuai:",
-                noRM, patientName, expectedDesc, expectedModality, expectedDate, expectedTime);
-
-        String dialogTitle = String.format("Rekonsiliasi Study PACS - %s", patientName);
-        
         try {
+            Runnable showDialogTask = () -> {
+                SatuSehatRekonsiliasiStudyRadiologi dialog = new SatuSehatRekonsiliasiStudyRadiologi(null, true);
+                dialog.setRequestContext(noRM, patientName, jk, tglLahir, noorder, expectedDesc, expectedModality,
+                        expectedDate, expectedTime, nmDokter, nmPoli, diagnosa);
+                dialog.setCandidates(candidateItems);
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
+                selectedId[0] = dialog.getSelectedStudyId();
+            };
+
             if (SwingUtilities.isEventDispatchThread()) {
-                Object selection = JOptionPane.showInputDialog(
-                        this,
-                        dialogMessage,
-                        dialogTitle,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[0]
-                );
-                if (selection != null) {
-                    String selStr = selection.toString();
-                    selectedId[0] = selStr.substring(selStr.lastIndexOf("[ID: ") + 5, selStr.length() - 1);
-                }
+                showDialogTask.run();
             } else {
-                SwingUtilities.invokeAndWait(() -> {
-                    Object selection = JOptionPane.showInputDialog(
-                            this,
-                            dialogMessage,
-                            dialogTitle,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]
-                    );
-                    if (selection != null) {
-                        String selStr = selection.toString();
-                        selectedId[0] = selStr.substring(selStr.lastIndexOf("[ID: ") + 5, selStr.length() - 1);
-                    }
-                });
+                SwingUtilities.invokeAndWait(showDialogTask);
             }
         } catch (Exception e) {
             System.out.println("Error showing study selection dialog: " + e);
@@ -2311,13 +2323,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
      * or previously matched data).</li>
      * <li><b>Tier 2 (Multi-Signal Scoring):</b> Query ALL studies for the
      * patient (no date/modality filter), filter candidates within ±3 days,
-     * then score each with 10 signals:
+     * then score each with 8 weighted clinical and temporal signals:
      * StudyDate, StudyTime, StudyDescription token overlap,
-     * PatientName, PatientBirthDate, PatientSex, InstitutionName.
-     * Auto-select if {@code bestScore >= 100} or
-     * {@code bestScore >= 70 AND gap >= 30}.</li>
-     * <li><b>Tier 3 (Interactive Dialog):</b> Show sorted candidates to the
-     * user for manual selection.</li>
+     * PatientName, PatientBirthDate, PatientSex, Modality compatibility.
+     * Auto-selects without popup if:
+     * - Sole candidate with score &ge; 35, OR
+     * - Multi-candidate with dominant winner (score &ge; 90 OR (score &ge; 55 AND gap &ge; 20)).</li>
+     * <li><b>Tier 3 (Interactive Dialog):</b> Shows dedicated comparison dialog
+     * ONLY when multiple viable studies are ambiguous.</li>
      * </ol>
      *
      * <p>
@@ -2335,10 +2348,35 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         String acsn = buildAcsn(noorder, kdJenisPrw);
 
         // =====================================================================
-        // TIER 1: AccessionNumber Match (instant, zero ambiguity)
+        // TIER 0: In-Memory / Upload Cache Match (instant, 100% confidence)
         // =====================================================================
-        String studyByAcsn = orthanc.findStudyByAccession(acsn);
+        String cachedStudyId = knownStudyIdByAcsn.get(acsn);
+        if (cachedStudyId != null && !cachedStudyId.trim().isEmpty()) {
+            System.out.println("Orthanc : [Tier 0] Study ditemukan via Upload Cache untuk ACSN=" + acsn + " -> Study ID: " + cachedStudyId);
+            
+            // Save locally and update EMR UI synchronously
+            String idServ = valueAtString(row, COL_ID_SR);
+            saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
+            try {
+                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+                    tbObat.setValueAt(acsn, row, COL_ACSN);
+                } else {
+                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
+                }
+            } catch (Exception e) {
+                System.out.println("Error updating COL_ACSN in Tier 0: " + e);
+                tbObat.setValueAt(acsn, row, COL_ACSN);
+            }
+            
+            return cachedStudyId.trim();
+        }
+
+        // =====================================================================
+        // TIER 1: AccessionNumber Match (with automatic retry)
+        // =====================================================================
+        String studyByAcsn = orthanc.findStudyByAccessionProxy(acsn, 3, 500);
         if (studyByAcsn != null && !studyByAcsn.isEmpty()) {
+            knownStudyIdByAcsn.put(acsn, studyByAcsn);
             System.out.println("Orthanc : [Tier 1] Study ditemukan langsung via AccessionNumber=" + acsn + " -> Study ID: " + studyByAcsn);
             
             // Save locally and update EMR UI synchronously to prevent infinite loop
@@ -2388,7 +2426,6 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         // =====================================================================
 
         // Query ALL studies for this patient (no date/modality filter).
-        // Orthanc's /tools/find with only PatientID returns every study.
         JsonNode allStudiesNode = orthanc.AmbilSemuaStudyPasien(noRM);
         if (allStudiesNode == null || !allStudiesNode.isArray() || allStudiesNode.size() == 0) {
             System.out.println("Orthanc Skip : Tidak ditemukan study apapun untuk RM=" + noRM);
@@ -2443,7 +2480,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             int score = 0;
             StringBuilder log = new StringBuilder();
 
-            // --- Signal 1: AccessionNumber exact match (should not happen in Tier 2, but check) ---
+            // --- Signal 1: AccessionNumber exact match ---
             if (studyAcsn.equals(acsn)) {
                 score += 100;
                 log.append(" ACSN=+100");
@@ -2460,11 +2497,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                         score += 50;
                         log.append(" dateExact=+50");
                     } else if (diffDays == 1) {
-                        score += 25;
-                        log.append(" date-1d=+25");
+                        score += 30;
+                        log.append(" date-1d=+30");
                     } else if (diffDays <= 3) {
-                        score += 10;
-                        log.append(" date-3d=+10");
+                        score += 15;
+                        log.append(" date-3d=+15");
                     }
                 } catch (Exception ignored) {}
             }
@@ -2475,42 +2512,59 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             if (examSeconds >= 0 && studySeconds >= 0) {
                 int diff = Math.abs(studySeconds - examSeconds);
                 if (diff <= 3600) {
-                    score += 40;
-                    log.append(" time-1h=+40");
+                    score += 35;
+                    log.append(" time-1h=+35");
                 } else if (diff <= 7200) {
                     score += 20;
                     log.append(" time-2h=+20");
                 } else if (diff <= 14400) {
+                    score += 10;
+                    log.append(" time-4h=+10");
+                } else if (diff <= 43200) {
                     score += 5;
-                    log.append(" time-4h=+5");
+                    log.append(" time-12h=+5");
                 }
             }
 
             // --- Signal 4: StudyDescription token overlap ---
             String studyDesc = s.path("MainDicomTags").path("StudyDescription").asText().trim().toLowerCase();
             if (!studyDesc.isEmpty() && !nmPerawatan.isEmpty()) {
-                String[] studyTokens = studyDesc.split("[\\s\\p{Punct}]+");
-                String[] simrsTokens = nmPerawatan.split("[\\s\\p{Punct}]+");
-                int overlapCount = 0;
-                int totalMin = Math.min(studyTokens.length, simrsTokens.length);
-                for (String st : studyTokens) {
-                    if (st.length() < 3) continue;
-                    for (String mt : simrsTokens) {
-                        if (mt.length() < 3) continue;
-                        if (st.equals(mt)) { overlapCount++; break; }
+                if (studyDesc.equals(nmPerawatan)) {
+                    score += 40;
+                    log.append(" descExact=+40");
+                } else {
+                    String[] rawStudyTokens = studyDesc.split("[\\s\\p{Punct}]+");
+                    String[] rawSimrsTokens = nmPerawatan.split("[\\s\\p{Punct}]+");
+                    java.util.List<String> studyTokens = new java.util.ArrayList<>();
+                    for (String st : rawStudyTokens) {
+                        if (st.length() >= 3 && !FILLER_WORDS.contains(st)) studyTokens.add(st);
                     }
-                }
-                if (totalMin > 0) {
-                    double ratio = (double) overlapCount / totalMin;
-                    if (ratio >= 0.80) {
-                        score += 40;
-                        log.append(" desc-80pct=+40");
-                    } else if (ratio >= 0.50) {
-                        score += 25;
-                        log.append(" desc-50pct=+25");
-                    } else if (ratio >= 0.30) {
-                        score += 10;
-                        log.append(" desc-30pct=+10");
+                    java.util.List<String> simrsTokens = new java.util.ArrayList<>();
+                    for (String mt : rawSimrsTokens) {
+                        if (mt.length() >= 3 && !FILLER_WORDS.contains(mt)) simrsTokens.add(mt);
+                    }
+                    int overlapCount = 0;
+                    int totalMin = Math.min(studyTokens.size(), simrsTokens.size());
+                    for (String st : studyTokens) {
+                        for (String mt : simrsTokens) {
+                            if (st.equals(mt) || (st.length() >= 4 && mt.contains(st)) || (mt.length() >= 4 && st.contains(mt))) {
+                                overlapCount++;
+                                break;
+                            }
+                        }
+                    }
+                    if (totalMin > 0) {
+                        double ratio = (double) overlapCount / totalMin;
+                        if (ratio >= 0.70) {
+                            score += 35;
+                            log.append(" desc-70pct=+35");
+                        } else if (ratio >= 0.40) {
+                            score += 20;
+                            log.append(" desc-40pct=+20");
+                        } else if (ratio >= 0.20) {
+                            score += 10;
+                            log.append(" desc-20pct=+10");
+                        }
                     }
                 }
             }
@@ -2519,9 +2573,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             JsonNode pmd = s.path("PatientMainDicomTags");
             String orthancPatientName = pmd.path("PatientName").asText().trim().toLowerCase();
             if (!orthancPatientName.isEmpty() && !namaPasien.isEmpty()) {
-                // DICOM PN format: "Last^First" — normalize
-                String normalizedOrthanc = orthancPatientName.replace('^', ' ').replace('_', ' ').trim();
-                String normalizedSimrs = namaPasien.replace('^', ' ').replace('_', ' ').trim();
+                String normalizedOrthanc = orthancPatientName.replace('^', ' ').replace('_', ' ').replaceAll("\\s+", " ").trim();
+                String normalizedSimrs = namaPasien.replace('^', ' ').replace('_', ' ').replaceAll("\\s+", " ").trim();
                 if (normalizedOrthanc.equals(normalizedSimrs)) {
                     score += 25;
                     log.append(" nameExact=+25");
@@ -2532,8 +2585,9 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             }
 
             // --- Signal 6: PatientBirthDate match ---
-            String orthancBirthDate = pmd.path("PatientBirthDate").asText().trim();
-            if (!orthancBirthDate.isEmpty() && !tglLahir.isEmpty() && orthancBirthDate.equals(tglLahir)) {
+            String orthancBirthDate = pmd.path("PatientBirthDate").asText().trim().replaceAll("[^0-9]", "");
+            String simrsBirthDate = tglLahir.replaceAll("[^0-9]", "");
+            if (!orthancBirthDate.isEmpty() && !simrsBirthDate.isEmpty() && orthancBirthDate.equals(simrsBirthDate)) {
                 score += 20;
                 log.append(" dobMatch=+20");
             }
@@ -2545,17 +2599,25 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 log.append(" sexMatch=+5");
             }
 
-            // --- Signal 8: Modality compatibility ---
+            // --- Signal 8: Modality match & incompatibility guard ---
             JsonNode modalitiesNode = s.path("ModalitiesInStudy");
+            boolean modalityMatched = false;
+            String foundCandidateModality = "";
             if (modalitiesNode.isArray() && modalitiesNode.size() > 0) {
                 for (JsonNode m : modalitiesNode) {
                     String mStr = m.asText().trim();
+                    foundCandidateModality = mStr;
                     if (isModalityCompatible(modality, mStr)) {
-                        score += 20;
-                        log.append(" modalityMatch=+20");
+                        score += 30;
+                        log.append(" modalityMatch=+30");
+                        modalityMatched = true;
                         break;
                     }
                 }
+            }
+            if (!modalityMatched && !foundCandidateModality.isEmpty() && !"OT".equals(foundCandidateModality) && !"OT".equals(modality)) {
+                score -= 30;
+                log.append(" modalityMismatch=-30");
             }
 
             System.out.println("Orthanc Match Study " + sId + " score=" + score + ":" + log.toString());
@@ -2571,21 +2633,37 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         java.util.Collections.sort(scoredList, (a, b) -> Integer.compare(b.score, a.score));
 
         ScoredStudy best = scoredList.get(0);
-        int runnerUpScore = scoredList.size() > 1 ? scoredList.get(1).score : -1;
-
-        // Auto-select rules:
-        // HIGH_CONFIDENCE (score >= 100) or MEDIUM_CONFIDENCE (score >= 70 & gap >= 30)
         boolean autoSelected = false;
-        if (best.score >= 100) {
-            autoSelected = true;
-            System.out.println("Orthanc : [Tier 2] HIGH_CONFIDENCE auto-select score=" + best.score + " -> Study ID=" + best.studyId);
-        } else if (best.score >= 70 && (best.score - runnerUpScore) >= 30) {
-            autoSelected = true;
-            System.out.println("Orthanc : [Tier 2] MEDIUM_CONFIDENCE auto-select score=" + best.score + " (runner-up=" + runnerUpScore + ") -> Study ID=" + best.studyId);
+
+        if (scoredList.size() == 1) {
+            // -----------------------------------------------------------------
+            // RULE 1: SOLE CANDIDATE (No other studies in Orthanc for this patient)
+            // -----------------------------------------------------------------
+            if (best.score >= 35) {
+                autoSelected = true;
+                System.out.println("Orthanc : [Tier 2] SOLE_CANDIDATE auto-matched (Score=" + best.score + ") -> Study ID=" + best.studyId);
+            } else {
+                System.out.println("Orthanc Skip : Study tunggal tidak memenuhi skor minimal (Score=" + best.score + " < 35) untuk RM=" + noRM);
+                return "";
+            }
+        } else if (scoredList.size() > 1) {
+            // -----------------------------------------------------------------
+            // RULE 2: MULTIPLE CANDIDATES (Check for clear winner)
+            // -----------------------------------------------------------------
+            int runnerUpScore = scoredList.get(1).score;
+            int gap = best.score - runnerUpScore;
+
+            if (best.score >= 90) {
+                autoSelected = true;
+                System.out.println("Orthanc : [Tier 2] HIGH_CONFIDENCE auto-matched (Score=" + best.score + ") -> Study ID=" + best.studyId);
+            } else if (best.score >= 55 && gap >= 20) {
+                autoSelected = true;
+                System.out.println("Orthanc : [Tier 2] CLEAR_WINNER auto-matched (Score=" + best.score + ", Gap=" + gap + ") -> Study ID=" + best.studyId);
+            }
         }
 
         if (autoSelected) {
-            // Auto-correct: Jika ACSN belum di-set di Orthanc, set sekarang
+            // Auto-correct: Set ACSN to Orthanc if missing
             autoCorrectAccession(best.studyId, acsn, best.studyNode);
             
             // Save locally and update EMR UI synchronously to prevent infinite loop
@@ -2605,29 +2683,35 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             return best.studyId;
         }
 
-        // =====================================================================
-        // TIER 3: Interactive Selection Dialog
-        // =====================================================================
-        System.out.println("Orthanc : [Tier 3] Scoring ambiguous — best=" + best.score + " runner-up=" + runnerUpScore
-                + ". Menampilkan dialog pilihan ke user.");
-
-        // Build candidate list sorted by score for the dialog
-        java.util.List<JsonNode> orderedCandidates = new java.util.ArrayList<>();
-        for (ScoredStudy ss : scoredList) {
-            orderedCandidates.add(ss.studyNode);
+        // If top candidate is below threshold, skip rather than prompt user with irrelevant studies
+        if (best.score < 35) {
+            System.out.println("Orthanc Skip : Semua kandidat bernilai rendah (Best Score=" + best.score + " < 35) untuk RM=" + noRM);
+            return "";
         }
+
+        // =====================================================================
+        // TIER 3: Interactive Selection Dialog (Only when genuinely ambiguous)
+        // =====================================================================
+        System.out.println("Orthanc : [Tier 3] Scoring ambiguous — best=" + best.score
+                + (scoredList.size() > 1 ? (" runner-up=" + scoredList.get(1).score) : "")
+                + ". Menampilkan dialog rekonsiliasi ke user.");
 
         String patientName = valueAtString(row, COL_NAMA_PASIEN);
         String expectedDesc = valueAtString(row, COL_NM_PERAWATAN);
+        String jk = valueAtString(row, COL_JK);
+        String tglLahirDisplay = valueAtString(row, COL_TGL_LAHIR);
+        String diagnosa = valueAtString(row, COL_DIAGNOSA);
+        String nmDokter = valueAtString(row, COL_NM_DOKTER_PERUJUK);
+        String nmPoli = valueAtString(row, COL_NM_POLI);
+
         String selectedStudyId = showStudySelectionDialog(
-                noRM, patientName, modality, expectedDesc, tglPermintaan, jamPermStr, orderedCandidates);
+                noRM, patientName, jk, tglLahirDisplay, noorder, expectedDesc, modality,
+                tglPermintaan, jamPermStr, nmDokter, nmPoli, diagnosa, scoredList);
 
         if (!selectedStudyId.isEmpty()) {
             System.out.println("Orthanc : [Tier 3] User memilih Study ID=" + selectedStudyId);
-            // Auto-correct: Set ACSN untuk matching berikutnya
             autoCorrectAccession(selectedStudyId, acsn, null);
             
-            // Save locally and update EMR UI synchronously to prevent infinite loop
             String idServ = valueAtString(row, COL_ID_SR);
             saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
             try {
@@ -2983,7 +3067,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                     + "satu_sehat_encounter.id_encounter,permintaan_radiologi.noorder,ifnull(periksa_radiologi.tgl_periksa,permintaan_radiologi.tgl_permintaan) as tgl_permintaan,ifnull(periksa_radiologi.jam,permintaan_radiologi.jam_permintaan) as jam_permintaan,permintaan_radiologi.diagnosa_klinis,"
                     + "jns_perawatan_radiologi.nm_perawatan,ifnull(satu_sehat_mapping_radiologi.code,'') as code,ifnull(satu_sehat_mapping_radiologi.system,'') as system,ifnull(satu_sehat_mapping_radiologi.display,'') as display,"
                     + "ifnull(satu_sehat_servicerequest_radiologi.id_servicerequest,'') as id_servicerequest,permintaan_pemeriksaan_radiologi.kd_jenis_prw, "
-                    + "ifnull(gambar_radiologi.lokasi_gambar, '') as lokasi_gambar, "
+                    + "ifnull(group_concat(distinct gambar_radiologi.lokasi_gambar separator ' ; '), '') as lokasi_gambar, "
                     + "ifnull(satu_sehat_imagingstudy_radiologi.acsn,'') as acsn, ifnull(satu_sehat_imagingstudy_radiologi.id_imaging,'') as id_imaging, "
                     + "ifnull(poliklinik.nm_poli,'') as nm_poli, ifnull(dokter.nm_dokter,'') as nm_dokter_perujuk "
                     + "from permintaan_radiologi "
