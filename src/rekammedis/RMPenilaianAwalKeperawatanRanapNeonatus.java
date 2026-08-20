@@ -10072,6 +10072,104 @@ public final class RMPenilaianAwalKeperawatanRanapNeonatus extends javax.swing.J
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
+
+        boolean exists = false;
+        PreparedStatement psCheck = null;
+        ResultSet rsCheck = null;
+        try {
+            psCheck = koneksi.prepareStatement("select no_rawat from penilaian_awal_keperawatan_ranap_neonatus where no_rawat=? limit 1");
+            psCheck.setString(1, TNoRw.getText());
+            rsCheck = psCheck.executeQuery();
+            if (rsCheck.next()) {
+                exists = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi Check : " + e);
+        } finally {
+            if (rsCheck != null) {
+                try { rsCheck.close(); } catch (Exception e) {}
+            }
+            if (psCheck != null) {
+                try { psCheck.close(); } catch (Exception e) {}
+            }
+        }
+
+        if (!exists) {
+            PreparedStatement psPemeriksaan = null;
+            ResultSet rsPemeriksaan = null;
+            try {
+                psPemeriksaan = koneksi.prepareStatement(
+                    "select suhu_tubuh, tensi, nadi, respirasi, tinggi, berat, gcs, kesadaran, keluhan, alergi " +
+                    "from pemeriksaan_ranap where no_rawat=? order by tgl_perawatan desc, jam_rawat desc limit 1"
+                );
+                psPemeriksaan.setString(1, TNoRw.getText());
+                rsPemeriksaan = psPemeriksaan.executeQuery();
+                if (!rsPemeriksaan.next()) {
+                    rsPemeriksaan.close();
+                    psPemeriksaan.close();
+                    psPemeriksaan = koneksi.prepareStatement(
+                        "select suhu_tubuh, tensi, nadi, respirasi, tinggi, berat, gcs, kesadaran, keluhan, alergi " +
+                        "from pemeriksaan_ralan where no_rawat=? order by tgl_perawatan desc, jam_rawat desc limit 1"
+                    );
+                    psPemeriksaan.setString(1, TNoRw.getText());
+                    rsPemeriksaan = psPemeriksaan.executeQuery();
+                }
+
+                if (rsPemeriksaan.next()) {
+                    KeluhanUtama.setText(rsPemeriksaan.getString("keluhan") != null ? rsPemeriksaan.getString("keluhan") : "");
+                    String kesadaranVal = rsPemeriksaan.getString("kesadaran");
+                    if (kesadaranVal != null) {
+                        if (kesadaranVal.equals("Compos Mentis")) {
+                            Kesadaran.setSelectedItem("Compos Mentis");
+                        } else if (kesadaranVal.equals("Somnolence")) {
+                            Kesadaran.setSelectedItem("Somnolen");
+                        } else if (kesadaranVal.equals("Sopor")) {
+                            Kesadaran.setSelectedItem("Sopor");
+                        } else if (kesadaranVal.equals("Coma")) {
+                            Kesadaran.setSelectedItem("Koma");
+                        } else if (kesadaranVal.equals("Apatis")) {
+                            Kesadaran.setSelectedItem("Apatis");
+                        } else if (kesadaranVal.equals("Delirium")) {
+                            Kesadaran.setSelectedItem("Delirium");
+                        }
+                    }
+                } else {
+                    PreparedStatement psTriase = null;
+                    ResultSet rsTriase = null;
+                    try {
+                        psTriase = koneksi.prepareStatement(
+                            "select data_triase_igdsekunder.anamnesa_singkat, data_triase_igd.tekanan_darah, " +
+                            "data_triase_igd.nadi, data_triase_igd.pernapasan, data_triase_igd.suhu " +
+                            "from data_triase_igd left join data_triase_igdsekunder on data_triase_igd.no_rawat=data_triase_igdsekunder.no_rawat " +
+                            "where data_triase_igd.no_rawat=? order by data_triase_igd.tgl_kunjungan desc limit 1"
+                        );
+                        psTriase.setString(1, TNoRw.getText());
+                        rsTriase = psTriase.executeQuery();
+                        if (rsTriase.next()) {
+                            KeluhanUtama.setText(rsTriase.getString("anamnesa_singkat") != null ? rsTriase.getString("anamnesa_singkat") : "");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi Triase Fallback : " + e);
+                    } finally {
+                        if (rsTriase != null) {
+                            try { rsTriase.close(); } catch (Exception e) {}
+                        }
+                        if (psTriase != null) {
+                            try { psTriase.close(); } catch (Exception e) {}
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi Examination Auto-fill : " + e);
+            } finally {
+                if (rsPemeriksaan != null) {
+                    try { rsPemeriksaan.close(); } catch (Exception e) {}
+                }
+                if (psPemeriksaan != null) {
+                    try { psPemeriksaan.close(); } catch (Exception e) {}
+                }
+            }
+        }
     }
     
     public void setNoRm(String norwt,Date tgl2) {

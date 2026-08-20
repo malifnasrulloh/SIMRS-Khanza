@@ -6011,9 +6011,14 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             sudahperiksa=false;
             i=JOptionPane.showConfirmDialog(null, "Mau skalian update status pasien sudah diperiksa ????","Konfirmasi",JOptionPane.YES_NO_OPTION);
             if(i==JOptionPane.YES_OPTION){
-                if(Sequel.mengedittf("reg_periksa","no_rawat=?","stts=?",2,new String[]{"Sudah",TNoRw.getText()})==true){
-                    Sequel.menyimpan("mutasi_berkas","'"+TNoRw.getText()+"','Sudah Kembali',now(),'0000-00-00 00:00:00',now(),'0000-00-00 00:00:00','0000-00-00 00:00:00'","status='Sudah Kembali',kembali=now()","no_rawat='"+TNoRw.getText()+"'");
+                if(Sequel.cariIsi("select stts from reg_periksa where no_rawat=?", TNoRw.getText()).equalsIgnoreCase("sudah")){
+                    JOptionPane.showMessageDialog(null,"Jika pasien statusnya sudah diperiksa, jangan di set sudah diperiksa lagi boss..!!");
                     sudahperiksa=true;
+                }else{
+                    if(Sequel.mengedittf("reg_periksa","no_rawat=?","stts=?",2,new String[]{"Sudah",TNoRw.getText()})==true){
+                        Sequel.menyimpan("mutasi_berkas","'"+TNoRw.getText()+"','Sudah Kembali',now(),'0000-00-00 00:00:00',now(),'0000-00-00 00:00:00','0000-00-00 00:00:00'","status='Sudah Kembali',kembali=now()","no_rawat='"+TNoRw.getText()+"'");
+                        sudahperiksa=true;
+                    }
                 }
             }
         } catch (Exception e) {

@@ -2136,6 +2136,64 @@ public final class RMSkriningDiabetesMelitus extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
+
+        boolean exists = false;
+        PreparedStatement psCheck = null;
+        ResultSet rsCheck = null;
+        try {
+            psCheck = koneksi.prepareStatement("select no_rawat from skrining_diabetes_melitus where no_rawat=? limit 1");
+            psCheck.setString(1, TNoRw.getText());
+            rsCheck = psCheck.executeQuery();
+            if (rsCheck.next()) {
+                exists = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi Check : " + e);
+        } finally {
+            if (rsCheck != null) {
+                try { rsCheck.close(); } catch (Exception e) {}
+            }
+            if (psCheck != null) {
+                try { psCheck.close(); } catch (Exception e) {}
+            }
+        }
+
+        if (!exists) {
+            PreparedStatement psPemeriksaan = null;
+            ResultSet rsPemeriksaan = null;
+            try {
+                psPemeriksaan = koneksi.prepareStatement(
+                    "select suhu_tubuh, tensi, nadi, respirasi, tinggi, berat, gcs, kesadaran, keluhan, alergi " +
+                    "from pemeriksaan_ranap where no_rawat=? order by tgl_perawatan desc, jam_rawat desc limit 1"
+                );
+                psPemeriksaan.setString(1, TNoRw.getText());
+                rsPemeriksaan = psPemeriksaan.executeQuery();
+                if (!rsPemeriksaan.next()) {
+                    rsPemeriksaan.close();
+                    psPemeriksaan.close();
+                    psPemeriksaan = koneksi.prepareStatement(
+                        "select suhu_tubuh, tensi, nadi, respirasi, tinggi, berat, gcs, kesadaran, keluhan, alergi " +
+                        "from pemeriksaan_ralan where no_rawat=? order by tgl_perawatan desc, jam_rawat desc limit 1"
+                    );
+                    psPemeriksaan.setString(1, TNoRw.getText());
+                    rsPemeriksaan = psPemeriksaan.executeQuery();
+                }
+
+                if (rsPemeriksaan.next()) {
+                    BB.setText(rsPemeriksaan.getString("berat") != null ? rsPemeriksaan.getString("berat") : "");
+                    TB.setText(rsPemeriksaan.getString("tinggi") != null ? rsPemeriksaan.getString("tinggi") : "");
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi Examination Auto-fill : " + e);
+            } finally {
+                if (rsPemeriksaan != null) {
+                    try { rsPemeriksaan.close(); } catch (Exception e) {}
+                }
+                if (psPemeriksaan != null) {
+                    try { psPemeriksaan.close(); } catch (Exception e) {}
+                }
+            }
+        }
     }
  
     public void setNoRm(String norwt,Date tgl2) {
