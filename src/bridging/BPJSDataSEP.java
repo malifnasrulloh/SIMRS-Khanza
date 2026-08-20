@@ -7100,12 +7100,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             String kdDokterBpjsSep = BPJSAntreanHelper.getBpjsDokterCode(koneksi, KdDPJP.getText());
                             String jamPraktekSep = jammulai.substring(0,5) + "-" + jamselesai.substring(0,5);
 
-                            BPJSAntreanHelper.saveToReferensiMobileJKN(
-                                koneksi, kodeBookingSep, TNoRw.getText(), NoKartu.getText(), NIK.getText(), NoTelp.getText(),
-                                kdPoliBpjsSep, "0", TNoRM.getText(), tglPeriksaSep, kdDokterBpjsSep,
-                                jamPraktekSep, NoRujukan.getText(), nomorreg, kuota
-                            );
-
                             requestJson ="{" +
                                             "\"kodebooking\": \""+kodeBookingSep+"\"," +
                                             "\"jenispasien\": \"JKN\"," +
@@ -7139,6 +7133,13 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             nameNode = root.path("metadata");  
                             respon=nameNode.path("code").asText();
                             System.out.println("respon WS BPJS Kirim Pakai NoRujukan : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
+                            if(respon.equals("200") || respon.equals("208")){
+                                BPJSAntreanHelper.saveToReferensiMobileJKN(
+                                    koneksi, kodeBookingSep, TNoRw.getText(), NoKartu.getText(), NIK.getText(), NoTelp.getText(),
+                                    kdPoliBpjsSep, "0", TNoRM.getText(), tglPeriksaSep, kdDokterBpjsSep,
+                                    jamPraktekSep, NoRujukan.getText(), nomorreg, kuota
+                                );
+                            }
                         } catch (Exception e) {
                             statusantrean=false;
                             System.out.println("Notif No.Rujuk : "+e);
@@ -7193,8 +7194,16 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                                 System.out.println("URL : "+URL);
                                 root = mapper.readTree(apiMobileJKN.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                 nameNode = root.path("metadata");  
-                                System.out.println("respon WS BPJS Kirim Pakai SKDP : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
-                                if(nameNode.path("code").asText().equals("201")){
+                                String responSkdp = nameNode.path("code").asText();
+                                System.out.println("respon WS BPJS Kirim Pakai SKDP : "+responSkdp+" "+nameNode.path("message").asText()+"\n");
+                                if(responSkdp.equals("200") || responSkdp.equals("208")){
+                                    BPJSAntreanHelper.saveToReferensiMobileJKN(
+                                        koneksi, kodeBookingSep, TNoRw.getText(), NoKartu.getText(), NIK.getText(), NoTelp.getText(),
+                                        kdPoliBpjsSep, "0", TNoRM.getText(), tglPeriksaSep, kdDokterBpjsSep,
+                                        jamPraktekSep, NoSKDP.getText(), nomorreg, kuota
+                                    );
+                                }
+                                if(responSkdp.equals("201")){
                                     statusantrean=false;
                                 }
                             } catch (Exception e) {
