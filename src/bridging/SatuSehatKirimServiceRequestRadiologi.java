@@ -1203,18 +1203,25 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
                 scheduledDate, scheduledTime, physicianName, stationName,
                 procedureDesc, clinicalDiag, noorder);
 
+        // Step 1: Find study in Orthanc using Three-Tier Matching Engine
+        String orthancStudyId = resolveOrthancStudyId(row);
+        if (orthancStudyId.isEmpty()) {
+            throw new RuntimeException("Study Tidak Ditemukan");
+        }
+
+        // Use the resolved/aligned ACSN from the table
+        String resolvedAcsn = valueAtString(row, COL_ACSN).trim();
+        if (!resolvedAcsn.isEmpty() && !"-".equals(resolvedAcsn)) {
+            acsn = resolvedAcsn;
+        }
+
+        // Re-generate orthancModifyJson with the confirmed ACSN if needed
         String orthancModifyJson = buildOrthancModifyPayloadJson(acsn, patientId, modality,
                 procedureDesc, clinicalDiag, noorder, scheduledDate, scheduledTime,
                 physicianName, stationName, aeTitle,
                 sanitizeDicomPersonName(valueAtString(row, COL_NAMA_PASIEN)),
                 valueAtString(row, COL_TGL_LAHIR), valueAtString(row, COL_JK),
                 Collections.singletonList(sqItem));
-
-        // Step 1: Find study in Orthanc using Three-Tier Matching Engine
-        String orthancStudyId = resolveOrthancStudyId(row);
-        if (orthancStudyId.isEmpty()) {
-            throw new RuntimeException("Study Tidak Ditemukan");
-        }
 
         // Step 2: Apply metadata tags (KeepSource=true, in-place — study ID stays the same)
         if (!orthanc.UbahTagsStudy(orthancStudyId, orthancModifyJson, true)) {
@@ -1590,9 +1597,11 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         for (int i = 0; i < tbObat.getRowCount(); i++) {
             Object srObj = tbObat.getValueAt(i, COL_ID_SR);
             Object imgObj = tbObat.getValueAt(i, COL_ID_IMAGING);
+            Object locObj = tbObat.getValueAt(i, COL_LOKASI_IMAGE);
             String srVal = srObj == null ? "" : srObj.toString().trim();
             String imgVal = imgObj == null ? "" : imgObj.toString().trim();
-            tbObat.setValueAt(!srVal.isEmpty() && !srVal.equals("-") && (imgVal.isEmpty() || imgVal.equals("-")), i, COL_PILIH);
+            String locVal = locObj == null ? "" : locObj.toString().trim();
+            tbObat.setValueAt(!srVal.isEmpty() && !locVal.isEmpty() && !srVal.equals("-") && !locVal.equals("-") && (imgVal.isEmpty() || imgVal.equals("-")), i, COL_PILIH);
         }
     }//GEN-LAST:event_ppPilihBelumTerkirim1ActionPerformed
 
@@ -1731,6 +1740,15 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
     private String buildAcsn(String noorder, String kdJenisPrw) {
         String base = noorder.replace("PR", "") + kdJenisPrw;
         return base.replaceAll("[^a-zA-Z0-9_\\-]", "_");
+    }
+
+    private String normalizeAcsn(String raw) {
+        if (raw == null) return "";
+        String s = raw.trim();
+        if (s.toUpperCase().startsWith("PR")) {
+            s = s.substring(2);
+        }
+        return s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
     }
 
     private boolean isRowCheckboxSelected(int row) {
@@ -2312,6 +2330,20 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         }
     }
 
+    private void setTableAcsnSync(int row, String acsnVal) {
+        final String val = acsnVal;
+        try {
+            if (javax.swing.SwingUtilities.isEventDispatchThread()) {
+                tbObat.setValueAt(val, row, COL_ACSN);
+            } else {
+                javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(val, row, COL_ACSN));
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating COL_ACSN: " + e);
+            tbObat.setValueAt(val, row, COL_ACSN);
+        }
+    }
+
     /**
      * Resolves the Orthanc internal study ID for a given table row.
      *
@@ -2346,27 +2378,25 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         String kdJenisPrw = tbObat.getValueAt(row, COL_KD_JENIS_PRW).toString().trim();
         String noorder = tbObat.getValueAt(row, COL_NOORDER).toString().trim();
         String acsn = buildAcsn(noorder, kdJenisPrw);
+        String tableAcsn = valueAtString(row, COL_ACSN).trim();
+        if ("-".equals(tableAcsn)) {
+            tableAcsn = "";
+        }
 
         // =====================================================================
         // TIER 0: In-Memory / Upload Cache Match (instant, 100% confidence)
         // =====================================================================
         String cachedStudyId = knownStudyIdByAcsn.get(acsn);
+        if ((cachedStudyId == null || cachedStudyId.isEmpty()) && !tableAcsn.isEmpty()) {
+            cachedStudyId = knownStudyIdByAcsn.get(tableAcsn);
+        }
         if (cachedStudyId != null && !cachedStudyId.trim().isEmpty()) {
             System.out.println("Orthanc : [Tier 0] Study ditemukan via Upload Cache untuk ACSN=" + acsn + " -> Study ID: " + cachedStudyId);
             
             // Save locally and update EMR UI synchronously
             String idServ = valueAtString(row, COL_ID_SR);
             saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
-            try {
-                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-                    tbObat.setValueAt(acsn, row, COL_ACSN);
-                } else {
-                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
-                }
-            } catch (Exception e) {
-                System.out.println("Error updating COL_ACSN in Tier 0: " + e);
-                tbObat.setValueAt(acsn, row, COL_ACSN);
-            }
+            setTableAcsnSync(row, acsn);
             
             return cachedStudyId.trim();
         }
@@ -2374,7 +2404,17 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
         // =====================================================================
         // TIER 1: AccessionNumber Match (with automatic retry)
         // =====================================================================
-        String studyByAcsn = orthanc.findStudyByAccessionProxy(acsn, 3, 500);
+        String studyByAcsn = "";
+        if (!tableAcsn.isEmpty()) {
+            studyByAcsn = orthanc.findStudyByAccessionProxy(tableAcsn, 2, 200);
+            if (studyByAcsn != null && !studyByAcsn.isEmpty()) {
+                knownStudyIdByAcsn.put(tableAcsn, studyByAcsn);
+                acsn = tableAcsn; // Align with active table ACSN
+            }
+        }
+        if (studyByAcsn == null || studyByAcsn.isEmpty()) {
+            studyByAcsn = orthanc.findStudyByAccessionProxy(acsn, 3, 500);
+        }
         if (studyByAcsn != null && !studyByAcsn.isEmpty()) {
             knownStudyIdByAcsn.put(acsn, studyByAcsn);
             System.out.println("Orthanc : [Tier 1] Study ditemukan langsung via AccessionNumber=" + acsn + " -> Study ID: " + studyByAcsn);
@@ -2382,16 +2422,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             // Save locally and update EMR UI synchronously to prevent infinite loop
             String idServ = valueAtString(row, COL_ID_SR);
             saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
-            try {
-                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-                    tbObat.setValueAt(acsn, row, COL_ACSN);
-                } else {
-                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
-                }
-            } catch (Exception e) {
-                System.out.println("Error updating COL_ACSN in Tier 1: " + e);
-                tbObat.setValueAt(acsn, row, COL_ACSN);
-            }
+            setTableAcsnSync(row, acsn);
             
             return studyByAcsn;
         }
@@ -2472,7 +2503,14 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
 
             // Exclude study if already assigned to a DIFFERENT ACSN
             String studyAcsn = s.path("MainDicomTags").path("AccessionNumber").asText().trim();
-            if (!studyAcsn.isEmpty() && !"-".equals(studyAcsn) && !studyAcsn.equals(acsn)) {
+            String normStudyAcsn = normalizeAcsn(studyAcsn);
+            String normExpectedAcsn = normalizeAcsn(acsn);
+            String normTableAcsn = normalizeAcsn(tableAcsn);
+
+            boolean acsnMatches = (!normExpectedAcsn.isEmpty() && normStudyAcsn.equals(normExpectedAcsn))
+                    || (!normTableAcsn.isEmpty() && normStudyAcsn.equals(normTableAcsn));
+
+            if (!studyAcsn.isEmpty() && !"-".equals(studyAcsn) && !acsnMatches) {
                 System.out.println("Orthanc Match Skip Study " + sId + " karena AccessionNumber '" + studyAcsn + "' tidak cocok dengan '" + acsn + "'");
                 continue;
             }
@@ -2480,8 +2518,8 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             int score = 0;
             StringBuilder log = new StringBuilder();
 
-            // --- Signal 1: AccessionNumber exact match ---
-            if (studyAcsn.equals(acsn)) {
+            // --- Signal 1: AccessionNumber normalized match ---
+            if (acsnMatches && !normStudyAcsn.isEmpty()) {
                 score += 100;
                 log.append(" ACSN=+100");
             }
@@ -2669,16 +2707,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             // Save locally and update EMR UI synchronously to prevent infinite loop
             String idServ = valueAtString(row, COL_ID_SR);
             saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
-            try {
-                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-                    tbObat.setValueAt(acsn, row, COL_ACSN);
-                } else {
-                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
-                }
-            } catch (Exception e) {
-                System.out.println("Error updating COL_ACSN in Tier 2: " + e);
-                tbObat.setValueAt(acsn, row, COL_ACSN);
-            }
+            setTableAcsnSync(row, acsn);
             
             return best.studyId;
         }
@@ -2714,16 +2743,7 @@ public final class SatuSehatKirimServiceRequestRadiologi extends javax.swing.JDi
             
             String idServ = valueAtString(row, COL_ID_SR);
             saveMatchedAcsnLocal(noorder, kdJenisPrw, idServ, acsn);
-            try {
-                if (javax.swing.SwingUtilities.isEventDispatchThread()) {
-                    tbObat.setValueAt(acsn, row, COL_ACSN);
-                } else {
-                    javax.swing.SwingUtilities.invokeAndWait(() -> tbObat.setValueAt(acsn, row, COL_ACSN));
-                }
-            } catch (Exception e) {
-                System.out.println("Error updating COL_ACSN in Tier 3: " + e);
-                tbObat.setValueAt(acsn, row, COL_ACSN);
-            }
+            setTableAcsnSync(row, acsn);
             
             return selectedStudyId;
         }
