@@ -2530,14 +2530,8 @@ public final class RMPenilaianAwalMedisRalanMata extends javax.swing.JDialog {
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());          
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            try {
-                param.put("lokalis",getClass().getResource("/picture/mata.png").openStream()); 
-            } catch (Exception e) {
-            }
-            try {
-                param.put("lokalis2",getClass().getResource("/picture/mata.png").openStream());
-            } catch (Exception e) {
-            }    
+            param.put("lokalis", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanmata_panelwall", "/picture/mata.png"));
+            param.put("lokalis2", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanmata_panelwall1", "/picture/mata.png"));    
             finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
             param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),5).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()));
             Valid.MyReportqry("rptCetakPenilaianAwalMedisRalanMata.jasper","report","::[ Laporan Pengkajian Awal Medis Rawat Jalan Mata ]::",

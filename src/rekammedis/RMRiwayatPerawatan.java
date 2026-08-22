@@ -10497,7 +10497,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisigd_panelwall", "/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -10657,7 +10657,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralandewasa_panelwall", "/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -11004,7 +11004,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralananak_panelwall", "/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -11153,7 +11153,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/medis awal THT.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralantht_panelwall", "/picture/medis awal THT.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -13264,7 +13264,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisranapdewasa_panelwall", "/picture/semua.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -18668,9 +18668,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                             "<td valign='top' width='40%' bgcolor='#FFFAF8'>OS : Mata Kiri</td>").append(
                                           "</tr>").append(
                                           "<tr align='center'>").append(
-                                               "<td><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/mata.png"))).append("' width='170' height='70'/></td>").append(
+                                               "<td><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanmata_panelwall", "/picture/mata.png"))).append("' width='170' height='70'/></td>").append(
                                                "<td></td>").append(
-                                               "<td><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/mata.png"))).append("' width='170' height='70'/></td>").append(
+                                               "<td><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanmata_panelwall1", "/picture/mata.png"))).append("' width='170' height='70'/></td>").append(
                                           "</tr>").append(
                                           "<tr align='center'>").append(
                                                "<td>").append(rs2.getString("visuskanan")).append("</td>").append(
@@ -19092,7 +19092,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/LokalisOrtho.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanorthopedi_panelwall", "/picture/LokalisOrtho.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -19272,7 +19272,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/LokalisOrtho.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanbedah_panelwall", "/picture/LokalisOrtho.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keteranan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -21735,16 +21735,16 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
                                                "<td width='30%'>Wajah : ").append(rs2.getString("wajah").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
-                                               "<td width='50%' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/wajah1.png"))).append("' width='350' height='150'/></td>").append(
-                                               "<td width='20%' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/wajah2.png"))).append("' width='100' height='150'/></td>").append(
+                                               "<td width='50%' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanbedahmulut_panelwall2", "/picture/wajah1.png"))).append("' width='350' height='150'/></td>").append(
+                                               "<td width='20%' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanbedahmulut_panelwall1", "/picture/wajah2.png"))).append("' width='100' height='150'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='30%'>Intra Oral : ").append(rs2.getString("intra").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
-                                               "<td width='70%' colspan='2' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/intraoral.png"))).append("' width='100%' height='250'/></td>").append(
+                                               "<td width='70%' colspan='2' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanbedahmulut_panelwall3", "/picture/intraoral.png"))).append("' width='100%' height='250'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='30%'>Gigi Geligi : ").append(rs2.getString("gigigeligi").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
-                                               "<td width='70%' colspan='2' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/gigigeligi.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='70%' colspan='2' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanbedahmulut_panelwall4", "/picture/gigigeligi.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                        "</table>").append(
                                     "</td>").append(
@@ -23269,7 +23269,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/kelamin.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralankulitdankelamin_panelwall1", "/picture/kelamin.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan Dermatovenereologis : ").append(rs2.getString("statusderma").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -24487,7 +24487,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "IV. STATUS LOKALISATA").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/LokalisOrtho.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append(LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisigdpsikiatri_panelwall2", "/picture/LokalisOrtho.png")).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("status_lokalisata").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(
@@ -25104,7 +25104,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                        "III. STATUS LOKALIS").append(  
                                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0px' class='tbl_form'>").append(
                                           "<tr>").append(
-                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((getClass().getResource("/picture/LokalisParu.png"))).append("' width='100%' height='400'/></td>").append(
+                                               "<td width='100%' border='0' align='center'><img alt='Gambar Lokalis' src='").append((LokalisCanvas.getLokalisUrl(koneksi, norawat, "rmpenilaianawalmedisralanparu_panelwall", "/picture/LokalisParu.png"))).append("' width='100%' height='400'/></td>").append(
                                           "</tr>").append(
                                           "<tr>").append(
                                                "<td width='100%' border='0'>Keterangan : ").append(rs2.getString("ket_lokalis").replaceAll("(\r\n|\r|\n|\n\r)","<br>")).append("</td>").append(

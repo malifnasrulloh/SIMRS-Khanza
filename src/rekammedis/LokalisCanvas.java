@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,6 +30,72 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class LokalisCanvas extends JDialog {
+    /**
+     * Fetches the saved Lokalis image as an InputStream for JasperReports,
+     * falling back to the default classpath image if no drawing exists or on error.
+     */
+    public static InputStream getLokalisStream(Connection koneksi, String noRawat, String jenisForm, String defaultResource) {
+        if (koneksi != null && noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
+            try {
+                String sql = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+                PreparedStatement ps = koneksi.prepareStatement(sql);
+                ps.setString(1, noRawat);
+                ps.setString(2, jenisForm);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    String lokasi = rs.getString("lokasi_gambar");
+                    rs.close();
+                    ps.close();
+                    if (lokasi != null && !lokasi.trim().isEmpty()) {
+                        String urlPath = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                        return new URL(urlPath).openStream();
+                    }
+                } else {
+                    rs.close();
+                    ps.close();
+                }
+            } catch (Exception e) {
+                // Fallback to default resource
+            }
+        }
+        try {
+            return LokalisCanvas.class.getResourceAsStream(defaultResource);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Resolves the URL string of the saved Lokalis image for HTML/Timeline rendering,
+     * falling back to the default classpath resource URL if no drawing exists.
+     */
+    public static String getLokalisUrl(Connection koneksi, String noRawat, String jenisForm, String defaultResource) {
+        if (koneksi != null && noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
+            try {
+                String sql = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+                PreparedStatement ps = koneksi.prepareStatement(sql);
+                ps.setString(1, noRawat);
+                ps.setString(2, jenisForm);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    String lokasi = rs.getString("lokasi_gambar");
+                    rs.close();
+                    ps.close();
+                    if (lokasi != null && !lokasi.trim().isEmpty()) {
+                        return "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                    }
+                } else {
+                    rs.close();
+                    ps.close();
+                }
+            } catch (Exception e) {
+                // Fallback
+            }
+        }
+        URL res = LokalisCanvas.class.getResource(defaultResource);
+        return res != null ? res.toString() : "";
+    }
+
     private final Connection koneksi;
     private final String noRawat;
     private final String jenisForm;

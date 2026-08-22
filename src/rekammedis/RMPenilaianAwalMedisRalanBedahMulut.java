@@ -2365,22 +2365,10 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());          
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            try {
-                param.put("wajah1",getClass().getResource("/picture/wajah1.png").openStream()); 
-            } catch (Exception e) {
-            }   
-            try {
-                param.put("wajah2",getClass().getResource("/picture/wajah2.png").openStream()); 
-            } catch (Exception e) {
-            } 
-            try {
-                param.put("intraoral",getClass().getResource("/picture/intraoral.png").openStream()); ; 
-            } catch (Exception e) {
-            } 
-            try {
-                param.put("gigigeligi",getClass().getResource("/picture/gigigeligi.png").openStream()); 
-            } catch (Exception e) {
-            } 
+            param.put("wajah1", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", "/picture/wajah1.png"));
+            param.put("wajah2", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", "/picture/wajah2.png"));
+            param.put("intraoral", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", "/picture/intraoral.png"));
+            param.put("gigigeligi", LokalisCanvas.getLokalisStream(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", "/picture/gigigeligi.png")); 
             finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
             param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),5).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString())); 
             
