@@ -60,18 +60,6 @@ public final class RMLaporanPemantauanAnastesi extends javax.swing.JDialog {
     public RMLaporanPemantauanAnastesi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (!TNoRw.getText().trim().equals("")) {
-                    LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmlaporanpemantauananastesi_panelwall", PanelWall.getBackgroundImage(),
-                        () -> loadGambar_PanelWall()
-                    );
-                    canvas.setVisible(true);
-                }
-            }
-        });
 
         
         DlgRiwayatPersalinan.setSize(650,192);

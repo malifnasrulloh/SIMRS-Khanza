@@ -77,18 +77,6 @@ public final class RMPenilaianAwalKeperawatanRanapBayiAnak extends javax.swing.J
     public RMPenilaianAwalKeperawatanRanapBayiAnak(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (!TNoRw.getText().trim().equals("")) {
-                    LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanranapbayianak_panelwall", PanelWall.getBackgroundImage(),
-                        () -> loadGambar_PanelWall()
-                    );
-                    canvas.setVisible(true);
-                }
-            }
-        });
 
         
         DlgRiwayatImunisasi.setSize(465,112);

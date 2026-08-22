@@ -64,25 +64,12 @@ public final class RMPenilaianFisioterapi extends javax.swing.JDialog {
     public RMPenilaianFisioterapi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (!TNoRw.getText().trim().equals("")) {
-                    LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianfisioterapi_panelwall", PanelWall.getBackgroundImage(),
-                        () -> loadGambar_PanelWall()
-                    );
-                    canvas.setVisible(true);
-                }
-            }
-        });
-
         PanelWall1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianfisioterapi_panelwall1", PanelWall1.getBackgroundImage(),
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianfisioterapi_panelwall1", new javax.swing.ImageIcon(getClass().getResource("/picture/fisiobody.png")),
                         () -> loadGambar_PanelWall1()
                     );
                     canvas.setVisible(true);
@@ -2902,6 +2889,7 @@ public final class RMPenilaianFisioterapi extends javax.swing.JDialog {
             } else {
                 PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/fisiobody.png")));
             }
+            PanelWall1.repaint();
             rsG.close();
             psG.close();
         } catch (Exception e) {

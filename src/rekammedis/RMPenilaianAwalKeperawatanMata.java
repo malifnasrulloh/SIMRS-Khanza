@@ -69,25 +69,12 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
     public RMPenilaianAwalKeperawatanMata(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (!TNoRw.getText().trim().equals("")) {
-                    LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall", PanelWall.getBackgroundImage(),
-                        () -> loadGambar_PanelWall()
-                    );
-                    canvas.setVisible(true);
-                }
-            }
-        });
-
         PanelWall1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall1", PanelWall1.getBackgroundImage(),
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall1", new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png")),
                         () -> loadGambar_PanelWall1()
                     );
                     canvas.setVisible(true);
@@ -100,7 +87,7 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall2", PanelWall2.getBackgroundImage(),
+                        null, true, koneksi, TNoRw.getText(), "rmpenilaianawalkeperawatanmata_panelwall2", new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png")),
                         () -> loadGambar_PanelWall2()
                     );
                     canvas.setVisible(true);
@@ -2098,7 +2085,7 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
         jLabel78.setBounds(10, 1070, 380, 23);
 
         PanelWall1.setBackground(new java.awt.Color(29, 29, 29));
-        PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png"))); // NOI18N
+        PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png"))); // NOI18N
         PanelWall1.setBackgroundImageType(usu.widget.constan.BackgroundConstan.BACKGROUND_IMAGE_STRECT);
         PanelWall1.setPreferredSize(new java.awt.Dimension(200, 200));
         PanelWall1.setRound(false);
@@ -2149,7 +2136,7 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
         label17.setBounds(460, 1090, 170, 23);
 
         PanelWall2.setBackground(new java.awt.Color(29, 29, 29));
-        PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png"))); // NOI18N
+        PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png"))); // NOI18N
         PanelWall2.setBackgroundImageType(usu.widget.constan.BackgroundConstan.BACKGROUND_IMAGE_STRECT);
         PanelWall2.setPreferredSize(new java.awt.Dimension(200, 200));
         PanelWall2.setRound(false);
@@ -4994,7 +4981,7 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
                 String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
                 PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
             } else {
-                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png")));
+                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png")));
             }
             rsG.close();
             psG.close();
@@ -5014,7 +5001,7 @@ public final class RMPenilaianAwalKeperawatanMata extends javax.swing.JDialog {
                 String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
                 PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
             } else {
-                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/newmata.png")));
+                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/mata.png")));
             }
             rsG.close();
             psG.close();

@@ -64,18 +64,6 @@ public final class RMMonitoringBromagePascaAnestesi extends javax.swing.JDialog 
     public RMMonitoringBromagePascaAnestesi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        PanelWall.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (!TNoRw.getText().trim().equals("")) {
-                    LokalisCanvas canvas = new LokalisCanvas(
-                        null, true, koneksi, TNoRw.getText(), "rmmonitoringbromagepascaanestesi_panelwall", PanelWall.getBackgroundImage(),
-                        () -> loadGambar_PanelWall()
-                    );
-                    canvas.setVisible(true);
-                }
-            }
-        });
 
         this.setLocation(8,1);
         setSize(700,674);

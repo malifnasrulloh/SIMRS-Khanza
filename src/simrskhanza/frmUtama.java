@@ -980,6 +980,7 @@ import rekammedis.RMPenatalaksanaanTerapiOkupasi;
 import rekammedis.RMPengkajianRestrain;
 import rekammedis.RMPenilaianAwalKeperawatanBayiAnak;
 import rekammedis.RMPenilaianAwalKeperawatanGigi;
+import rekammedis.RMPenilaianAwalKeperawatanMata;
 import rekammedis.RMPenilaianAwalKeperawatanIGD;
 import rekammedis.RMPenilaianAwalKeperawatanKebidanan;
 import rekammedis.RMPenilaianAwalKeperawatanKebidananRanap;
@@ -7552,6 +7553,15 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         });
     }
 
+    private void btnPenilaianAwalKeperawatanMataActionPerformed(java.awt.event.ActionEvent evt) {
+        RMPenilaianAwalKeperawatanMata aplikasi = new RMPenilaianAwalKeperawatanMata(this, false);
+        showForm(aplikasi, () -> {
+            aplikasi.isCek();
+            aplikasi.emptTeks();
+            aplikasi.setTampil();
+        });
+    }
+
     private void btnPenilaianAwalKeperawatanGigiActionPerformed(java.awt.event.ActionEvent evt) {
         RMPenilaianAwalKeperawatanGigi aplikasi = new RMPenilaianAwalKeperawatanGigi(this, false);
         showForm(aplikasi, () -> {
@@ -11735,7 +11745,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSuplierToko, btnJenisToko, btnSetHargaToko, btnBarangToko, btnPenagihanPiutangPasien, btnAkunPenagihanPiutang, btnStokOpnameToko,
             btnRiwayatBarangToko, btnSuratPemesananToko, btnPengajuanBarangToko, btnPenerimaanBarangToko, btnPengadaanBarangToko, btnHutangToko,
             btnBayarPesanToko, btnMemberToko, btnPenjualanToko, btnRegistrasiPoliPerTanggal, btnPiutangToko, btnReturKeSuplierToko, btnReturBarangNonMedis,
-            btnRiwayatBarangNonMedis, btnPasienCorona, btnPendapatanHarianToko, btnDiagnosaPasienCorona, btnPerawatanPasienCorona, btnPenilaianAwalKeperawatanGigi,
+            btnRiwayatBarangNonMedis, btnPasienCorona, btnPendapatanHarianToko, btnDiagnosaPasienCorona, btnPerawatanPasienCorona, btnPenilaianAwalKeperawatanGigi, btnPenilaianAwalKeperawatanMata,
             btnMasterMasalahKeperawatanGigi, btnBayarPiutangToko, btnPiutangHarianToko, btnPenjualanHarianToko, btnDeteksiDiniCorona, btnPenilaianAwalKeperawatanKebidanan,
             btnPengumumanEPasien, btnSuratHamil, btnSetTarifOnline, btnBookingPeriksa, btnSirkulasiBarangToko, btnReturJualToko, btnReturPiutangToko,
             btnSirkulasiBarangToko2, btnKeuntunganBarangToko, btnZISPengeluaranPenerimaDankes, btnZISPenghasilanPenerimaDankes, btnZISUkuranRumahPenerimaDankes,
@@ -13647,6 +13657,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpenilaian_awal_keperawatan_igd(), btnPenilaianAwalKeperawatanIGD);
 
             addMenu(akses.getpenilaian_awal_keperawatan_gigi(), btnPenilaianAwalKeperawatanGigi);
+
+            addMenu(akses.getpenilaian_awal_keperawatan_mata(), btnPenilaianAwalKeperawatanMata);
 
             addMenu(akses.getpenilaian_awal_keperawatan_kebidanan(), btnPenilaianAwalKeperawatanKebidanan);
 
@@ -15776,6 +15788,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnPerawatanPasienCorona = createMenuButton("/48x48/iconfinder_Night-sleep-sleeping-health_5994844.png", "Perawatan Pasien Corona", "btnPerawatanPasienCorona", this::btnPerawatanPasienCoronaActionPerformed);
 
         btnPenilaianAwalKeperawatanGigi = createMenuButton("/48x48/iconfinder_09-report_5980350.png", "Awal Keperawatan Gigi", "btnPenilaianAwalKeperawatanGigi", this::btnPenilaianAwalKeperawatanGigiActionPerformed);
+
+        btnPenilaianAwalKeperawatanMata = createMenuButton("/48x48/iconfinder_09-report_5980350.png", "Awal Keperawatan Mata", "btnPenilaianAwalKeperawatanMata", this::btnPenilaianAwalKeperawatanMataActionPerformed);
 
         btnMasterMasalahKeperawatanGigi = createMenuButton("/48x48/iconfinder_healthcare_and_medical-hygienic-tooth_paste-toothpaste-toothbrush-health_care_4394831.png", "Master Masalah Keperawatan Gigi", "btnMasterMasalahKeperawatanGigi", this::btnMasterMasalahKeperawatanGigiActionPerformed);
 
