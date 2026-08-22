@@ -21,3 +21,4 @@ edokter-next/
 /*.wps
 /CompileReport.class
 /*.pdf
+*.jasper
