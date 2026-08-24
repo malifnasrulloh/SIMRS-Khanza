@@ -11,6 +11,9 @@
  */
 package simrskhanza;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import bridging.AkunRekeningBankJabar;
 import bridging.AkunRekeningBankJateng;
 import bridging.AkunRekeningBankMandiri;
@@ -1233,7 +1236,6 @@ import ziscsr.ZISUkuranRumahPenerimaDankes;
  * @author perpustakaan
  */
 public class frmUtama extends javax.swing.JFrame {
-
     private final Connection koneksi = koneksiDB.condb();
     private final sekuel Sequel = new sekuel();
     private final validasi Valid = new validasi();
@@ -1310,7 +1312,6 @@ public class frmUtama extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         DlgLogin = new javax.swing.JDialog();
         internalFrame2 = new widget.InternalFrame();
         internalFrame3 = new widget.InternalFrame();
@@ -3024,8 +3025,7 @@ public class frmUtama extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLoginActionPerformed
 
     private void BtnToolKamnapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolKamnapActionPerformed
-        DlgKamarInap kamarinap = new DlgKamarInap(null, false);
-        showForm(kamarinap, () -> {
+        showForm(() -> new DlgKamarInap(null, false), kamarinap -> {
             kamarinap.isCek();
             kamarinap.emptTeks();
         });
@@ -3062,11 +3062,10 @@ private void BtnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_BtnMenuActionPerformed
 
 private void BtnToolKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolKasirActionPerformed
-    DlgKasirRalan kasirralan = new DlgKasirRalan(this, false);
-    showForm(kasirralan, () -> {
-        kasirralan.isCek();
-    });
-}//GEN-LAST:event_BtnToolKasirActionPerformed
+        showForm(() -> new DlgKasirRalan(this, false), kasirralan -> {
+            kasirralan.isCek();
+        });
+    }//GEN-LAST:event_BtnToolKasirActionPerformed
 
 private void BtnToolRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolRegActionPerformed
     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -3178,43 +3177,35 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }//GEN-LAST:event_btnToolLabActionPerformed
 
     private void MnSudahPulang1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang1ActionPerformed
-        InformasiKamar belum = new InformasiKamar(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiKamar(this, true));
     }//GEN-LAST:event_MnSudahPulang1ActionPerformed
 
     private void MnRekapBulanan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapBulanan1ActionPerformed
-        InformasiKamarInap informasikamar = new InformasiKamarInap(this, true);
-        showForm(informasikamar);
+        showForm(() -> new InformasiKamarInap(this, true));
     }//GEN-LAST:event_MnRekapBulanan1ActionPerformed
 
     private void MnRekapHadir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapHadir1ActionPerformed
-        InformasiJadwal belum = new InformasiJadwal(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiJadwal(this, true));
     }//GEN-LAST:event_MnRekapHadir1ActionPerformed
 
     private void MnSudahPulang2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang2ActionPerformed
-        InformasiTarifRalan belum = new InformasiTarifRalan(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiTarifRalan(this, true));
     }//GEN-LAST:event_MnSudahPulang2ActionPerformed
 
     private void MnSudahPulang3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang3ActionPerformed
-        InformasiTarifLab belum = new InformasiTarifLab(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiTarifLab(this, true));
     }//GEN-LAST:event_MnSudahPulang3ActionPerformed
 
     private void MnSudahPulang4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang4ActionPerformed
-        InformasiTarifOperasi belum = new InformasiTarifOperasi(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiTarifOperasi(this, true));
     }//GEN-LAST:event_MnSudahPulang4ActionPerformed
 
     private void MnSudahPulang5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang5ActionPerformed
-        InformasiTarifRanap belum = new InformasiTarifRanap(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiTarifRanap(this, true));
     }//GEN-LAST:event_MnSudahPulang5ActionPerformed
 
     private void MnSudahPulang6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahPulang6ActionPerformed
-        InformasiTarifRadiologi belum = new InformasiTarifRadiologi(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiTarifRadiologi(this, true));
     }//GEN-LAST:event_MnSudahPulang6ActionPerformed
 
     private void btnToolIGDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToolIGDActionPerformed
@@ -3242,8 +3233,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }//GEN-LAST:event_btnToolRadActionPerformed
 
     private void MnRekapBulanan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapBulanan2ActionPerformed
-        InformasiAnalisaKamin analisakamin = new InformasiAnalisaKamin(this, true);
-        showForm(analisakamin);
+        showForm(() -> new InformasiAnalisaKamin(this, true));
     }//GEN-LAST:event_MnRekapBulanan2ActionPerformed
 
     private void MnAnjunganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnAnjunganActionPerformed
@@ -3440,8 +3430,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }//GEN-LAST:event_MnRekapHadir5ActionPerformed
 
     private void MnRekapBulanan3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapBulanan3ActionPerformed
-        InformasiTelusurKunjunganPasien belum = new InformasiTelusurKunjunganPasien(this, false);
-        showForm(belum);
+        showForm(() -> new InformasiTelusurKunjunganPasien(this, false));
     }//GEN-LAST:event_MnRekapBulanan3ActionPerformed
 
     private void MnRekapHadir6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapHadir6ActionPerformed
@@ -3474,8 +3463,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }//GEN-LAST:event_MnPengajuanCutiPegawaiActionPerformed
 
     private void MnRekapBulanan4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnRekapBulanan4ActionPerformed
-        InformasiStokDarah belum = new InformasiStokDarah(this, true);
-        showForm(belum);
+        showForm(() -> new InformasiStokDarah(this, true));
     }//GEN-LAST:event_MnRekapBulanan4ActionPerformed
 
     private void MnInfoLaboratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnInfoLaboratActionPerformed
@@ -3555,53 +3543,46 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void btnBarcodeActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBarcode barcode = new DlgBarcode(this, false);
-        showForm(barcode, () -> barcode.isCek());
+        showForm(() -> new DlgBarcode(this, false), barcode -> barcode.isCek());
     }
 
     private void btnICDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenyakit penyakit = new DlgPenyakit(null, false);
-        showForm(penyakit, () -> {
+        showForm(() -> new DlgPenyakit(null, false), penyakit -> {
             penyakit.isCek();
             penyakit.emptTeks();
         });
     }
 
     private void btnObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBarang barang = new DlgBarang(null, false);
-        showForm(barang, () -> {
+        showForm(() -> new DlgBarang(null, false), barang -> {
             barang.emptTeks();
             barang.isCek();
         });
     }
 
     private void btnObatPenyakitActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgObatPenyakit obatpenyakit = new DlgObatPenyakit(this, false);
-        showForm(obatpenyakit, () -> {
+        showForm(() -> new DlgObatPenyakit(this, false), obatpenyakit -> {
             obatpenyakit.isCek();
             obatpenyakit.emptTeks();
         });
     }
 
     private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKamar kamar = new DlgKamar(null, false);
-        showForm(kamar, () -> {
+        showForm(() -> new DlgKamar(null, false), kamar -> {
             kamar.emptTeks();
             kamar.isCek();
         });
     }
 
     private void btnTindakanRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanRalan form = new DlgJnsPerawatanRalan(null, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJnsPerawatanRalan(null, false), form -> {
             form.emptTeks();
             form.isCek();
         });
     }
 
     private void btnDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDokter dokter = new DlgDokter(null, false);
-        showForm(dokter, () -> {
+        showForm(() -> new DlgDokter(null, false), dokter -> {
             dokter.emptTeks();
             dokter.isCek();
             dokter.setAlwaysOnTop(false);
@@ -3609,32 +3590,28 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPetugas petugas = new DlgPetugas(null, false);
-        showForm(petugas, () -> {
+        showForm(() -> new DlgPetugas(null, false), petugas -> {
             petugas.emptTeks();
             petugas.isCek();
         });
     }
 
     private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPasien pasien = new DlgPasien(null, false);
-        showForm(pasien, () -> {
+        showForm(() -> new DlgPasien(null, false), pasien -> {
             pasien.emptTeks();
             pasien.isCek();
         });
     }
 
     private void btnRegistrasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgReg reg = new DlgReg(this, false);
-        showForm(reg, () -> {
+        showForm(() -> new DlgReg(this, false), reg -> {
             reg.emptTeks();
             reg.isCek();
         });
     }
 
     private void btnRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRawatJalan form = new DlgRawatJalan(null, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRawatJalan(null, false), form -> {
             form.SetPj("-");
             form.SetPoli("-");
             form.isCek();
@@ -3642,21 +3619,18 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKamarInapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKamarInap kamarinap = new DlgKamarInap(null, false);
-        showForm(kamarinap, () -> {
+        showForm(() -> new DlgKamarInap(null, false), kamarinap -> {
             kamarinap.isCek();
             kamarinap.emptTeks();
         });
     }
 
     private void btnRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRawatInap rawatinap = new DlgRawatInap(null, false);
-        showForm(rawatinap, () -> rawatinap.isCek());
+        showForm(() -> new DlgRawatInap(null, false), rawatinap -> rawatinap.isCek());
     }
 
     private void btnResepObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgResepObat resep = new DlgResepObat(this, false);
-        showForm(resep, () -> {
+        showForm(() -> new DlgResepObat(this, false), resep -> {
             resep.tampil2();
             resep.emptTeks();
             resep.isCek();
@@ -3664,105 +3638,91 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRujukPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRujuk rujuk = new DlgRujuk(this, false);
-        showForm(rujuk, () -> {
+        showForm(() -> new DlgRujuk(this, false), rujuk -> {
             rujuk.emptTeks();
             rujuk.isCek();
         });
     }
 
     private void btnBeriObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPemberianObat beriobat = new DlgPemberianObat(null, false);
-        showForm(beriobat, () -> {
+        showForm(() -> new DlgPemberianObat(null, false), beriobat -> {
             beriobat.tampilPO3();
             beriobat.isCek();
         });
     }
 
     private void btnPasienMatiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPasienMati pasienmati = new DlgPasienMati(this, false);
-        showForm(pasienmati, () -> {
+        showForm(() -> new DlgPasienMati(this, false), pasienmati -> {
             pasienmati.emptTeks();
             pasienmati.isCek();
         });
     }
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAdmin admin = new DlgAdmin(this, false);
-        showForm(admin, () -> {
+        showForm(() -> new DlgAdmin(this, false), admin -> {
             admin.tampil();
             admin.emptTeks();
         });
     }
 
     private void btnVakumActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgVakum vakum = new DlgVakum(this, false);
-        showForm(vakum);
+        showForm(() -> new DlgVakum(this, false));
     }
 
     private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRunTeks runteks = new DlgRunTeks(this, false);
-        showForm(runteks, () -> {
+        showForm(() -> new DlgRunTeks(this, false), runteks -> {
             runteks.emptTeks();
         });
     }
 
     private void btnSetupHargaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetHarga setharga = new DlgSetHarga(this, false);
-        showForm(setharga, () -> {
+        showForm(() -> new DlgSetHarga(this, false), setharga -> {
             setharga.emptTeks();
         });
     }
 
     private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {
-        InventorySuplier suplier = new InventorySuplier(this, false);
-        showForm(suplier, () -> {
+        showForm(() -> new InventorySuplier(this, false), suplier -> {
             suplier.isCek();
             suplier.emptTeks();
         });
     }
 
     private void btnJnsBarangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJenis jenis = new DlgJenis(null, false);
-        showForm(jenis, () -> {
+        showForm(() -> new DlgJenis(null, false), jenis -> {
             jenis.isCek();
             jenis.emptTeks();
         });
     }
 
     private void btnKonversiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKonversi konversi = new DlgKonversi(this, false);
-        showForm(konversi, () -> {
+        showForm(() -> new DlgKonversi(this, false), konversi -> {
             konversi.isCek();
             konversi.emptTeks();
         });
     }
 
     private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSatuan satuan = new DlgSatuan(null, false);
-        showForm(satuan, () -> {
+        showForm(() -> new DlgSatuan(null, false), satuan -> {
             satuan.isCek();
             satuan.emptTeks();
         });
     }
 
     private void btnCashFlowActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCashflow bubes = new DlgCashflow(this, false);
-        showForm(bubes, () -> {
+        showForm(() -> new DlgCashflow(this, false), bubes -> {
             bubes.isCek();
         });
     }
 
     private void btnBubesActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBubes bubes = new KeuanganBubes(this, false);
-        showForm(bubes, () -> {
+        showForm(() -> new KeuanganBubes(this, false), bubes -> {
             bubes.isCek();
         });
     }
 
     private void btnPostingJurnalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJurnal jurnal = new DlgJurnal(this, false);
-        showForm(jurnal, () -> {
+        showForm(() -> new DlgJurnal(this, false), jurnal -> {
             jurnal.tampil();
             jurnal.isCek();
             jurnal.emptTeks();
@@ -3770,8 +3730,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRekeningTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekeningTahun rekeningtahun = new DlgRekeningTahun(this, false);
-        showForm(rekeningtahun, () -> {
+        showForm(() -> new DlgRekeningTahun(this, false), rekeningtahun -> {
             rekeningtahun.tampil2();
             rekeningtahun.isCek();
             rekeningtahun.emptTeks();
@@ -3779,8 +3738,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRekeningActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekening rekening = new DlgRekening(this, false);
-        showForm(rekening, () -> {
+        showForm(() -> new DlgRekening(this, false), rekening -> {
             rekening.tampil3();
             rekening.isCek();
             rekening.emptTeks();
@@ -3788,53 +3746,46 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPembelianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembelian pembelian = new DlgPembelian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new DlgPembelian(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnPenjualanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenjualan penjualan = new DlgPenjualan(this, false);
-        showForm(penjualan, () -> {
+        showForm(() -> new DlgPenjualan(this, false), penjualan -> {
             penjualan.isCek();
         });
     }
 
     private void btnPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPiutang piutang = new DlgPiutang(this, false);
-        showForm(piutang, () -> {
+        showForm(() -> new DlgPiutang(this, false), piutang -> {
             piutang.emptTeks();
             piutang.isCek();
         });
     }
 
     private void btnBayarPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBayarPiutang bayarpiutang = new DlgBayarPiutang(this, false);
-        showForm(bayarpiutang, () -> {
+        showForm(() -> new DlgBayarPiutang(this, false), bayarpiutang -> {
             bayarpiutang.emptTeks();
             bayarpiutang.isCek();
         });
     }
 
     private void btnOpnameActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgInputStok opname = new DlgInputStok(this, false);
-        showForm(opname, () -> {
+        showForm(() -> new DlgInputStok(this, false), opname -> {
             opname.isCek();
         });
     }
 
     private void btnReturBeliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgReturBeli returbeli = new DlgReturBeli(this, false);
-        showForm(returbeli, () -> {
+        showForm(() -> new DlgReturBeli(this, false), returbeli -> {
             returbeli.isCek();
             returbeli.emptTeks();
         });
     }
 
     private void btnReturJualActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgReturJual returjual = new DlgReturJual(this, false);
-        showForm(returjual, () -> {
+        showForm(() -> new DlgReturJual(this, false), returjual -> {
             akses.setform("DlgReturJual");
             returjual.emptTeks();
             returjual.isCek();
@@ -3842,80 +3793,68 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSirkulasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang sirkulasi = new DlgSirkulasiBarang(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnKeuntunganActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgProyeksiJual projul = new DlgProyeksiJual(this, false);
-        showForm(projul, () -> {
+        showForm(() -> new DlgProyeksiJual(this, false), projul -> {
             projul.isCek();
         });
     }
 
     private void btnLabaRugiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLabaRugi labrug = new DlgLabaRugi(this, false);
-        showForm(labrug, () -> {
+        showForm(() -> new DlgLabaRugi(this, false), labrug -> {
             labrug.isCek();
         });
     }
 
     private void btnReturPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgReturPiutang returpiutang = new DlgReturPiutang(this, false);
-        showForm(returpiutang, () -> {
+        showForm(() -> new DlgReturPiutang(this, false), returpiutang -> {
             returpiutang.isCek();
             returpiutang.emptTeks();
         });
     }
 
     private void btnAnalisaKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        InformasiAnalisaKamin analisakamin = new InformasiAnalisaKamin(this, false);
-        showForm(analisakamin);
+        showForm(() -> new InformasiAnalisaKamin(this, false));
     }
 
     private void btnRHDOkterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHJmDokter rhtindakandokter = new DlgRHJmDokter(this, false);
-        showForm(rhtindakandokter, () -> {
+        showForm(() -> new DlgRHJmDokter(this, false), rhtindakandokter -> {
             rhtindakandokter.isCek();
         });
     }
 
     private void btnRBDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBJmDokter rbtindakandokter = new DlgRBJmDokter(this, false);
-        showForm(rbtindakandokter, () -> {
+        showForm(() -> new DlgRBJmDokter(this, false), rbtindakandokter -> {
             rbtindakandokter.isCek();
         });
     }
 
     private void btnTagihanMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBiaya billing = new DlgLhtBiaya(this, false);
-        showForm(billing);
+        showForm(() -> new DlgLhtBiaya(this, false));
     }
 
     private void btnResumeActionPerformed(java.awt.event.ActionEvent evt) {
-        RMRiwayatPerawatan resume = new RMRiwayatPerawatan(this, false);
-        showForm(resume);
+        showForm(() -> new RMRiwayatPerawatan(this, false));
     }
 
     private void btnDietActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPemberianDiet diet = new DlgPemberianDiet(this, false);
-        showForm(diet, () -> {
+        showForm(() -> new DlgPemberianDiet(this, false), diet -> {
             diet.tampil();
         });
     }
 
     private void btnRHParamedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHJmParamedis rhtindakanparamedis = new DlgRHJmParamedis(this, false);
-        showForm(rhtindakanparamedis, () -> {
+        showForm(() -> new DlgRHJmParamedis(this, false), rhtindakanparamedis -> {
             rhtindakanparamedis.isCek();
         });
     }
 
     private void btnRBParamedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBJmParamedis rbtindakanparamedis = new DlgRBJmParamedis(this, false);
-        showForm(rbtindakanparamedis, () -> {
+        showForm(() -> new DlgRBJmParamedis(this, false), rbtindakanparamedis -> {
             rbtindakanparamedis.isCek();
         });
     }
@@ -3925,249 +3864,214 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnLahirActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgIKBBayi lahir = new DlgIKBBayi(this, false);
-        showForm(lahir, () -> {
+        showForm(() -> new DlgIKBBayi(this, false), lahir -> {
             lahir.isCek();
             lahir.emptTeks();
         });
     }
 
     private void btnSetBiayaHarianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBiayaHarian biayaharian = new DlgBiayaHarian(this, false);
-        showForm(biayaharian, () -> {
+        showForm(() -> new DlgBiayaHarian(this, false), biayaharian -> {
             biayaharian.emptTeks();
         });
     }
 
     private void btnJenisInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisJenis jnsinventaris = new InventarisJenis(this, false);
-        showForm(jnsinventaris, () -> {
+        showForm(() -> new InventarisJenis(this, false), jnsinventaris -> {
             jnsinventaris.emptTeks();
             jnsinventaris.isCek();
         });
     }
 
     private void btnKategoriInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisKategori ktginventaris = new InventarisKategori(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisKategori(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnLihatPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtPiutang billing = new DlgLhtPiutang(this, false);
-        showForm(billing, () -> {
+        showForm(() -> new DlgLhtPiutang(this, false), billing -> {
             billing.isCek();
         });
     }
 
     private void btnLaboratoriumActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPeriksaLab produsen = new DlgCariPeriksaLab(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgCariPeriksaLab(this, false), produsen -> {
             //produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnRalanMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranRalan billing = new DlgPembayaranRalan(this, false);
-        showForm(billing);
+        showForm(() -> new DlgPembayaranRalan(this, false));
     }
 
     private void btnSetupAplikasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetAplikasi aplikasi = new DlgSetAplikasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetAplikasi(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnSetOtoRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetOtoRalan aplikasi = new DlgSetOtoRalan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetOtoRalan(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnRanapMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranRanap billing = new DlgPembayaranRanap(this, false);
-        showForm(billing, () -> billing.tampil());
+        showForm(() -> new DlgPembayaranRanap(this, false), billing -> billing.tampil());
     }
 
     private void btnProdusenInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisProdusen produsen = new InventarisProdusen(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new InventarisProdusen(this, false), produsen -> {
             produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnSetBiayaMasukSekaliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBiayaSekaliMasuk biayaharian = new DlgBiayaSekaliMasuk(this, false);
-        showForm(biayaharian, () -> {
+        showForm(() -> new DlgBiayaSekaliMasuk(this, false), biayaharian -> {
             biayaharian.emptTeks();
         });
     }
 
     private void btnPaketOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanOperasi produsen = new DlgJnsPerawatanOperasi(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgJnsPerawatanOperasi(this, false), produsen -> {
             produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnTagihanOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariTagihanOperasi produsen = new DlgCariTagihanOperasi(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgCariTagihanOperasi(this, false), produsen -> {
             //produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void BtnJadwalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJadwal jadwal = new DlgJadwal(this, false);
-        showForm(jadwal, () -> {
+        showForm(() -> new DlgJadwal(this, false), jadwal -> {
             jadwal.emptTeks();
         });
     }
 
     private void btnMerkInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisMerk ktginventaris = new InventarisMerk(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisMerk(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnRuangInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisRuang ktginventaris = new InventarisRuang(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisRuang(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnBarangInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisBarang ktginventaris = new InventarisBarang(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisBarang(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisKoleksi ktginventaris = new InventarisKoleksi(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisKoleksi(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnSirkulasiInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisSirkulasi ktginventaris = new InventarisSirkulasi(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisSirkulasi(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnFrekuensiRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFrekuensiPenyakitRalan ktginventaris = new DlgFrekuensiPenyakitRalan(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new DlgFrekuensiPenyakitRalan(this, false), ktginventaris -> {
             ktginventaris.isCek();
         });
     }
 
     private void btnFrekuensiRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFrekuensiPenyakitRanap ktginventaris = new DlgFrekuensiPenyakitRanap(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new DlgFrekuensiPenyakitRanap(this, false), ktginventaris -> {
             ktginventaris.isCek();
         });
     }
 
     private void btnSetupOtoLokasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetOtoLokasi ktginventaris = new DlgSetOtoLokasi(this, false);
-        showForm(ktginventaris);
+        showForm(() -> new DlgSetOtoLokasi(this, false));
     }
 
     private void btnTagihanPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBTindakanPoli rbpoli = new DlgRBTindakanPoli(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBTindakanPoli(this, false));
     }
 
     private void btnRujukMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRujukMasuk rujukmasuk = new DlgRujukMasuk(null, false);
-        showForm(rujukmasuk, () -> {
+        showForm(() -> new DlgRujukMasuk(null, false), rujukmasuk -> {
             rujukmasuk.emptTeks();
             rujukmasuk.isCek();
         });
     }
 
     private void btnTrackerActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenelusuranLogin rbpoli = new DlgPenelusuranLogin(this, false);
-        showForm(rbpoli, () -> {
+        showForm(() -> new DlgPenelusuranLogin(this, false), rbpoli -> {
             rbpoli.isCek();
         });
     }
 
     private void btnTindakanRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanRanap perawatan = new DlgJnsPerawatanRanap(null, false);
-        showForm(perawatan, () -> {
+        showForm(() -> new DlgJnsPerawatanRanap(null, false), perawatan -> {
             perawatan.emptTeks();
             perawatan.isCek();
         });
     }
 
     private void btnSetupJamInapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetKamarInap form = new DlgSetKamarInap(this, false);
-        showForm(form);
+        showForm(() -> new DlgSetKamarInap(this, false));
     }
 
     private void btnStokObatPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgStokPasien opname = new DlgStokPasien(this, false);
-        showForm(opname, () -> {
+        showForm(() -> new DlgStokPasien(this, false), opname -> {
             opname.isCek();
         });
     }
 
     private void btnTarifLabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanLab tariflab = new DlgJnsPerawatanLab(this, false);
-        showForm(tariflab, () -> {
+        showForm(() -> new DlgJnsPerawatanLab(this, false), tariflab -> {
             tariflab.emptTeks();
             tariflab.isCek();
         });
     }
 
     private void btnSetPenjabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetPenjabLab aplikasi = new DlgSetPenjabLab(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetPenjabLab(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnTagihanObatPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatPoli rbpoli = new DlgRBObatPoli(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBObatPoli(this, false));
     }
 
     private void btnTagihanObatBangsalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatBangsal rbobatbangsal = new DlgRBObatBangsal(this, false);
-        showForm(rbobatbangsal, () -> {
+        showForm(() -> new DlgRBObatBangsal(this, false), rbobatbangsal -> {
             rbobatbangsal.isCek();
         });
     }
 
     private void btnReturPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgReturObatPasien returpasien = new DlgReturObatPasien(this, false);
-        showForm(returpasien, () -> {
+        showForm(() -> new DlgReturObatPasien(this, false), returpasien -> {
             returpasien.isCek();
         });
     }
 
     private void btnKeuntunganObatRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgProyeksiBeriObat projul = new DlgProyeksiBeriObat(this, false);
-        showForm(projul, () -> {
+        showForm(() -> new DlgProyeksiBeriObat(this, false), projul -> {
             projul.isCek();
         });
     }
@@ -4221,106 +4125,90 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDeposit deposit = new DlgDeposit(this, false);
-        showForm(deposit, () -> {
+        showForm(() -> new DlgDeposit(this, false), deposit -> {
             deposit.tampil2();
             deposit.isCek();
         });
     }
 
     private void btnSetupRMActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetRM aplikasi = new DlgSetRM(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetRM(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnResepPulangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgResepPulang reseppulang = new DlgResepPulang(this, false);
-        showForm(reseppulang, () -> {
+        showForm(() -> new DlgResepPulang(this, false), reseppulang -> {
             reseppulang.tampil2();
             reseppulang.isCek();
         });
     }
 
     private void btnSetupTarifActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetTarif aplikasi = new DlgSetTarif(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetTarif(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnBarangIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSBarang ipsrs = new IPSRSBarang(this, false);
-        showForm(ipsrs, () -> {
+        showForm(() -> new IPSRSBarang(this, false), ipsrs -> {
             ipsrs.emptTeks();
             ipsrs.onCari();
         });
     }
 
     private void btnPembelianIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPembelian pembelian = new IPSRSPembelian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new IPSRSPembelian(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnPengeluaranIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPengeluaran pengeluaran = new IPSRSPengeluaran(this, false);
-        showForm(pengeluaran, () -> {
+        showForm(() -> new IPSRSPengeluaran(this, false), pengeluaran -> {
             pengeluaran.isCek();
         });
     }
 
     private void btnRHMasukIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHPembelianIPSRS rhipsrs = new DlgRHPembelianIPSRS(this, false);
-        showForm(rhipsrs);
+        showForm(() -> new DlgRHPembelianIPSRS(this, false));
     }
 
     private void btnRHKeluarIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHPengeluaranIPSRS rhkeluaripsrs = new DlgRHPengeluaranIPSRS(this, false);
-        showForm(rhkeluaripsrs);
+        showForm(() -> new DlgRHPengeluaranIPSRS(this, false));
     }
 
     private void btnRBiayaIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBiayaHarianIPSRS rhkeluaripsrs = new DlgRBiayaHarianIPSRS(this, false);
-        showForm(rhkeluaripsrs);
+        showForm(() -> new DlgRBiayaHarianIPSRS(this, false));
     }
 
     private void btnTarifRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanRadiologi tarifrad = new DlgJnsPerawatanRadiologi(this, false);
-        showForm(tarifrad, () -> {
+        showForm(() -> new DlgJnsPerawatanRadiologi(this, false), tarifrad -> {
             tarifrad.emptTeks();
             tarifrad.isCek();
         });
     }
 
     private void btnPeriksaRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPeriksaRadiologi produsen = new DlgCariPeriksaRadiologi(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgCariPeriksaRadiologi(this, false), produsen -> {
             //produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnTagihanRalanPerhariActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranRalanPerHari rhkeluaripsrs = new DlgPembayaranRalanPerHari(this, false);
-        showForm(rhkeluaripsrs);
+        showForm(() -> new DlgPembayaranRalanPerHari(this, false));
     }
 
     private void btnTagihanRanapPerhariActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranRanapPerhari rhkeluaripsrs = new DlgPembayaranRanapPerhari(this, false);
-        showForm(rhkeluaripsrs);
+        showForm(() -> new DlgPembayaranRanapPerhari(this, false));
     }
 
     private void btnSetupEmbalaseActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetEmbalase ktginventaris = new DlgSetEmbalase(this, false);
-        showForm(ktginventaris);
+        showForm(() -> new DlgSetEmbalase(this, false));
     }
 
     private void btnSirkulasiBerkasActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBerkas ktginventaris = new DlgSirkulasiBerkas(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new DlgSirkulasiBerkas(this, false), ktginventaris -> {
             ktginventaris.tampil();
             ktginventaris.emptTeks();
             ktginventaris.isCek();
@@ -4328,140 +4216,115 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnObatPasienRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatDokterRalan rbpoli = new DlgRBObatDokterRalan(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBObatDokterRalan(this, false));
     }
 
     private void btnObatPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatDokterRanap rbpoli = new DlgRBObatDokterRanap(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBObatDokterRanap(this, false));
     }
 
     private void btnPemesananActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPemesanan pembelian = new DlgPemesanan(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new DlgPemesanan(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnPengeluaranActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengeluaranHarian pembelian = new DlgPengeluaranHarian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new DlgPengeluaranHarian(this, false), pembelian -> {
             pembelian.emptTeks();
             pembelian.isCek();
         });
     }
 
     private void btnTambahanBiayaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailTambahan pembelian = new DlgDetailTambahan(this, false);
-        showForm(pembelian);
+        showForm(() -> new DlgDetailTambahan(this, false));
     }
 
     private void btnPotonganBiayaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailPotongan pembelian = new DlgDetailPotongan(this, false);
-        showForm(pembelian);
+        showForm(() -> new DlgDetailPotongan(this, false));
     }
 
     private void btnJMDetailDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailJMDokter rhtindakandokter = new DlgDetailJMDokter(this, false);
-        showForm(rhtindakandokter);
+        showForm(() -> new DlgDetailJMDokter(this, false));
     }
 
     private void btnIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgIGD igd = new DlgIGD(this, false);
-        showForm(igd, () -> {
+        showForm(() -> new DlgIGD(this, false), igd -> {
             //igd.emptTeks();
             igd.isCek();
         });
     }
 
     private void btnBarcodeRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBarcodeRalan barcode = new DlgBarcodeRalan(this, false);
-        showForm(barcode);
+        showForm(() -> new DlgBarcodeRalan(this, false));
     }
 
     private void btnBarcodeRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBarcodeRanap barcode = new DlgBarcodeRanap(this, false);
-        showForm(barcode);
+        showForm(() -> new DlgBarcodeRanap(this, false));
     }
 
     private void btnSetObatRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetHargaObatRalan aplikasi = new DlgSetHargaObatRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgSetHargaObatRalan(this, false));
     }
 
     private void btnSetObatRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetHargaObatRanap aplikasi = new DlgSetHargaObatRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgSetHargaObatRanap(this, false));
     }
 
     private void btnPenyakitPD3IActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenyakitPd3i aplikasi = new DlgPenyakitPd3i(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPenyakitPd3i(this, false));
     }
 
     private void btnSurveilansPD3IActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkSurveilansPD3I aplikasi = new DlgDkkSurveilansPD3I(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkSurveilansPD3I(this, false));
     }
 
     private void btnSurveilansRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkSurveilansRalan aplikasi = new DlgDkkSurveilansRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkSurveilansRalan(this, false));
     }
 
     private void btnDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDiagnosaPenyakit diagnosa = new DlgDiagnosaPenyakit(null, false);
-        showForm(diagnosa, () -> {
+        showForm(() -> new DlgDiagnosaPenyakit(null, false), diagnosa -> {
             diagnosa.isCek();
         });
     }
 
     private void btnSurveilansRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkSurveilansRanap aplikasi = new DlgDkkSurveilansRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkSurveilansRanap(this, false));
     }
 
     private void btnPnyTakMenularRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkPenyakitTidakMenularRanap aplikasi = new DlgDkkPenyakitTidakMenularRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkPenyakitTidakMenularRanap(this, false));
     }
 
     private void btnPnyTakMenularRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkPenyakitTidakMenularRalan aplikasi = new DlgDkkPenyakitTidakMenularRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkPenyakitTidakMenularRalan(this, false));
     }
 
     private void btnKunjunganRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganRalan aplikasi = new DlgKunjunganRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKunjunganRalan(this, false));
     }
 
     private void btnRl32ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl32 aplikasi = new DlgRl32(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgRl32(this, false), aplikasi -> {
             aplikasi.tampil();
         });
     }
 
     private void btnRl33ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl33 aplikasi = new DlgRl33(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRl33(this, false));
     }
 
     private void btnRl37ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl37 aplikasi = new DlgRl37(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRl37(this, false));
     }
 
     private void btnRl38ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl38 aplikasi = new DlgRl38(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRl38(this, false));
     }
 
     private void btnTagihanDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBTindakanDokter rbpoli = new DlgRBTindakanDokter(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBTindakanDokter(this, false));
     }
 
     private void btnSMSActionPerformed(java.awt.event.ActionEvent evt) {
@@ -4472,84 +4335,71 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSidikJariActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSidikJari sidikjari = new DlgSidikJari(this, false);
-        showForm(sidikjari, () -> {
+        showForm(() -> new DlgSidikJari(this, false), sidikjari -> {
             sidikjari.isCek();
         });
     }
 
     private void btnJamPresensiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJamMasuk jammasuk = new DlgJamMasuk(this, false);
-        showForm(jammasuk, () -> {
+        showForm(() -> new DlgJamMasuk(this, false), jammasuk -> {
             jammasuk.isCek();
         });
     }
 
     private void btnJadwalPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJadwalPegawai jadwal = new DlgJadwalPegawai(this, false);
-        showForm(jadwal, () -> {
+        showForm(() -> new DlgJadwalPegawai(this, false), jadwal -> {
             jadwal.isCek();
         });
     }
 
     private void btnJenisParkirActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgParkirJenis jenisparkir = new DlgParkirJenis(this, false);
-        showForm(jenisparkir, () -> {
+        showForm(() -> new DlgParkirJenis(this, false), jenisparkir -> {
             jenisparkir.isCek();
         });
     }
 
     private void btnBarcodeParkirActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgParkirBarcode barcode = new DlgParkirBarcode(this, false);
-        showForm(barcode, () -> barcode.isCek());
+        showForm(() -> new DlgParkirBarcode(this, false), barcode -> barcode.isCek());
     }
 
     private void btnParkirMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgParkirMasuk parkirin = new DlgParkirMasuk(this, false);
-        showForm(parkirin, () -> {
+        showForm(() -> new DlgParkirMasuk(this, false), parkirin -> {
             parkirin.isCek();
         });
     }
 
     private void btnSetupNotaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetNota aplikasi = new DlgSetNota(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetNota(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void BtnDpjpActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDpjp aplikasi = new DlgDpjp(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDpjp(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMutasiBarangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgMutasiBarang aplikasi = new DlgMutasiBarang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgMutasiBarang(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnRl34ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl34 aplikasi = new DlgRl34(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRl34(this, false));
     }
 
     private void btnRl36ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRl36 aplikasi = new DlgRl36(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRl36(this, false));
     }
 
     private void btnfee_bacaan_ekgActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFeeBacaanEKG feebacaanekg = new DlgFeeBacaanEKG(this, false);
-        showForm(feebacaanekg);
+        showForm(() -> new DlgFeeBacaanEKG(this, false));
     }
 
     private void btnfee_rujukan_rontgenActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFeeRujukanRontgen feerujukanrontgen = new DlgFeeRujukanRontgen(this, false);
-        showForm(feerujukanrontgen);
+        showForm(() -> new DlgFeeRujukanRontgen(this, false));
     }
 
     private void btnfee_rujukan_ranapActionPerformed(java.awt.event.ActionEvent evt) {
@@ -4557,96 +4407,81 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnfee_ralanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFeePeriksaRalan feeperiksaralan = new DlgFeePeriksaRalan(this, false);
-        showForm(feeperiksaralan);
+        showForm(() -> new DlgFeePeriksaRalan(this, false));
     }
 
     private void btnakun_bayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAkunBayar feeperiksaralan = new DlgAkunBayar(this, false);
-        showForm(feeperiksaralan);
+        showForm(() -> new DlgAkunBayar(this, false));
     }
 
     private void btnbayar_pemesananActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPemesananFarmasi bayarpesan = new KeuanganBayarPemesananFarmasi(this, false);
-        showForm(bayarpesan, () -> {
+        showForm(() -> new KeuanganBayarPemesananFarmasi(this, false), bayarpesan -> {
             bayarpesan.tampil2();
         });
     }
 
     private void btnObatPasienPeresepActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatDokterPeresep rbpoli = new DlgRBObatDokterPeresep(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBObatDokterPeresep(this, false));
     }
 
     private void btnJenisIpsrsActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSJenis aplikasi = new IPSRSJenis(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new IPSRSJenis(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPemasukanLainActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPemasukanLain aplikasi = new DlgPemasukanLain(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPemasukanLain(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPengaturanRekeningActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengaturanRekening aplikasi = new DlgPengaturanRekening(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPengaturanRekening(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnJadwalTambahanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJadwalTambahan jadwal = new DlgJadwalTambahan(this, false);
-        showForm(jadwal, () -> {
+        showForm(() -> new DlgJadwalTambahan(this, false), jadwal -> {
             jadwal.isCek();
         });
     }
 
     private void btnClosingKasirActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgClosingKasir ckas = new DlgClosingKasir(this, false);
-        showForm(ckas, () -> {
+        showForm(() -> new DlgClosingKasir(this, false), ckas -> {
             ckas.isCek();
         });
     }
 
     private void btnKeterlambatanPresensiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetKeterlambatan keterlambatan = new DlgSetKeterlambatan(this, false);
-        showForm(keterlambatan);
+        showForm(() -> new DlgSetKeterlambatan(this, false));
     }
 
     private void btnSetHargaKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetHargaKamar hargakamar = new DlgSetHargaKamar(this, false);
-        showForm(hargakamar);
+        showForm(() -> new DlgSetHargaKamar(this, false));
     }
 
     private void btnRekapPershiftActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPerShift aplikasi = new DlgRekapPerShift(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRekapPerShift(this, false));
     }
 
     private void btnCekBPJSNikActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekNIK2 form = new BPJSCekNIK2(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekNIK2(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCekBPJSKartuActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekKartu form = new BPJSCekKartu(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekKartu(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCekBPJSRiwayatRujukanPCareActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekRiwayatRujukanPCare form = new BPJSCekRiwayatRujukanPCare(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekRiwayatRujukanPCare(this, false));
     }
 
     private void btnRekapPresensi2ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -4660,42 +4495,35 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnObatPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBObatPercaraBayar rbpoli = new DlgRBObatPercaraBayar(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBObatPercaraBayar(this, false));
     }
 
     private void btnKunjunganRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganRanap aplikasi = new DlgKunjunganRanap(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgKunjunganRanap(this, false), aplikasi -> {
             aplikasi.tampil();
         });
     }
 
     private void btnPaymentPointActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPaymentPoint aplikasi = new DlgPaymentPoint(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPaymentPoint(this, false));
     }
 
     private void btnCekBPJSNomorRujukanPCareActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekNoRujukanPCare form = new BPJSCekNoRujukanPCare(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekNoRujukanPCare(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnICD9ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgICD9 aplikasi = new DlgICD9(this, false);
-        showForm(aplikasi, () -> aplikasi.emptTeks());
+        showForm(() -> new DlgICD9(this, false), aplikasi -> aplikasi.emptTeks());
     }
 
     private void btnDaruratStokActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaruratStok aplikasi = new DlgDaruratStok(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDaruratStok(this, false));
     }
 
     private void btnRetensiRMActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRetensi retensi = new DlgRetensi(this, false);
-        showForm(retensi, () -> {
+        showForm(() -> new DlgRetensi(this, false), retensi -> {
             try {
                 retensi.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "medrec/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -4705,274 +4533,232 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnTemporaryPresensiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgTemporaryPresensi temporary = new DlgTemporaryPresensi(this, false);
-        showForm(temporary);
+        showForm(() -> new DlgTemporaryPresensi(this, false));
     }
 
     private void btnJurnalHarianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJurnalHarian jh = new DlgJurnalHarian(this, false);
-        showForm(jh);
+        showForm(() -> new DlgJurnalHarian(this, false));
     }
 
     private void btnSirkulasi2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang2 sirkulasi = new DlgSirkulasiBarang2(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang2(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnCekBPJSDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiPenyakit form = new BPJSCekReferensiPenyakit(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiPenyakit(this, false));
     }
 
     private void btnCekBPJSPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiPoli form = new BPJSCekReferensiPoli(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiPoli(this, false));
     }
 
     private void btnIndustriFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgIndustriFarmasi suplier = new DlgIndustriFarmasi(this, false);
-        showForm(suplier, () -> {
+        showForm(() -> new DlgIndustriFarmasi(this, false), suplier -> {
             suplier.isCek();
             suplier.emptTeks();
         });
     }
 
     private void btnRHJasaSaranaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHJS rhjs = new DlgRHJS(this, false);
-        showForm(rhjs, () -> {
+        showForm(() -> new DlgRHJS(this, false), rhjs -> {
             rhjs.isCek();
         });
     }
 
     private void btnRBJasaSaranaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBJS rbjs = new DlgRBJS(this, false);
-        showForm(rbjs, () -> {
+        showForm(() -> new DlgRBJS(this, false), rbjs -> {
             rbjs.isCek();
         });
     }
 
     private void btnRHPaketBHPActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHPaketBHP rhpaketbhp = new DlgRHPaketBHP(this, false);
-        showForm(rhpaketbhp, () -> {
+        showForm(() -> new DlgRHPaketBHP(this, false), rhpaketbhp -> {
             rhpaketbhp.isCek();
         });
     }
 
     private void btnRBPaketBHPActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBPaketBHP rbpaketbhp = new DlgRBPaketBHP(this, false);
-        showForm(rbpaketbhp, () -> {
+        showForm(() -> new DlgRBPaketBHP(this, false), rbpaketbhp -> {
             rbpaketbhp.isCek();
         });
     }
 
     private void btnPiutangBelumLunasActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangBelumLunas rbpaketbhp = new KeuanganPiutangBelumLunas(this, false);
-        showForm(rbpaketbhp, () -> {
+        showForm(() -> new KeuanganPiutangBelumLunas(this, false), rbpaketbhp -> {
             rbpaketbhp.isCek();
         });
     }
 
     private void btnCekBPJSFaskesActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiFaskes form = new BPJSCekReferensiFaskes(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiFaskes(this, false));
     }
 
     private void btnBPJSSEPActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSDataSEP form = new BPJSDataSEP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSDataSEP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengambilanUTDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengambilanUTD form = new DlgPengambilanUTD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPengambilanUTD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnTarifUtdActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJnsPerawatanUTD tarifutd = new DlgJnsPerawatanUTD(this, false);
-        showForm(tarifutd, () -> {
+        showForm(() -> new DlgJnsPerawatanUTD(this, false), tarifutd -> {
             tarifutd.emptTeks();
             tarifutd.isCek();
         });
     }
 
     private void btnPengambilanUTD2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPengambilanUTD form = new DlgCariPengambilanUTD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPengambilanUTD(this, false), form -> {
             form.setHapus();
         });
     }
 
     private void btnUTDMedisRusakActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDMedisRusak form = new UTDMedisRusak(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDMedisRusak(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengambilanPenunjangUTDActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPengambilanPenunjangUTD form = new IPSRSPengambilanPenunjangUTD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSPengambilanPenunjangUTD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengambilanPenunjangUTD2ActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSCariPengambilanPenunjangUTD form = new IPSRSCariPengambilanPenunjangUTD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSCariPengambilanPenunjangUTD(this, false), form -> {
             form.setHapus();
         });
     }
 
     private void btnUTDPenunjangRusakActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDPenunjangRusak form = new UTDPenunjangRusak(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDPenunjangRusak(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuplierIPSRSActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSSuplier suplier = new IPSRSSuplier(this, false);
-        showForm(suplier, () -> {
+        showForm(() -> new IPSRSSuplier(this, false), suplier -> {
             suplier.isCek();
             suplier.emptTeks();
         });
     }
 
     private void btnUTDDonorDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDDonor form = new UTDDonor(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDDonor(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMonitoringKlaimActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSMonitoringKlaim form = new BPJSMonitoringKlaim(this, false);
-        showForm(form);
+        showForm(() -> new BPJSMonitoringKlaim(this, false));
     }
 
     private void btnUTDCekalDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDCekalDarah form = new UTDCekalDarah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDCekalDarah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnUTDKomponenDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDKomponenDarah form = new UTDKomponenDarah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDKomponenDarah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnUTDStokDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDStokDarah form = new UTDStokDarah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDStokDarah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnUTDPemisahanDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDPemisahanDarah form = new UTDPemisahanDarah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDPemisahanDarah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnHarianKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBTindakanKamar rbpoli = new DlgRBTindakanKamar(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRBTindakanKamar(this, false));
     }
 
     private void btnRincianPiutangPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRincianPiutangPasien billing = new KeuanganRincianPiutangPasien(this, false);
-        showForm(billing);
+        showForm(() -> new KeuanganRincianPiutangPasien(this, false));
     }
 
     private void btnKeuntunganObat2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgProyeksiBeriObat2 projul = new DlgProyeksiBeriObat2(this, false);
-        showForm(projul, () -> {
+        showForm(() -> new DlgProyeksiBeriObat2(this, false), projul -> {
             projul.isCek();
         });
     }
 
     private void btnReklasifikasiRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        ReklasifikasiRalan billing = new ReklasifikasiRalan(this, false);
-        showForm(billing);
+        showForm(() -> new ReklasifikasiRalan(this, false));
     }
 
     private void btnReklasifikasiRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        ReklasifikasiRanap billing = new ReklasifikasiRanap(this, false);
-        showForm(billing);
+        showForm(() -> new ReklasifikasiRanap(this, false));
     }
 
     private void btnUTDPenyerahanDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDPenyerahanDarah form = new UTDPenyerahanDarah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new UTDPenyerahanDarah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnHutangObatActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganHutangObatBelumLunas form = new KeuanganHutangObatBelumLunas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganHutangObatBelumLunas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRiwayatBarangMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatBarangMedis sirkulasi = new DlgRiwayatBarangMedis(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgRiwayatBarangMedis(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnInputPenjualanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenjualan penjualan = new DlgPenjualan(this, false);
-        showForm(penjualan, () -> {
+        showForm(() -> new DlgPenjualan(this, false), penjualan -> {
             penjualan.isCek();
         });
     }
 
     private void btnDataPenjualanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPenjualan penjualan = new DlgCariPenjualan(this, false);
-        showForm(penjualan, () -> {
+        showForm(() -> new DlgCariPenjualan(this, false), penjualan -> {
             penjualan.emptTeks();
             penjualan.isCek();
         });
     }
 
     private void btnDataPenyerahanDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDCariPenyerahanDarah carijual = new UTDCariPenyerahanDarah(null, false);
-        showForm(carijual, () -> {
+        showForm(() -> new UTDCariPenyerahanDarah(null, false), carijual -> {
             carijual.emptTeks();
             carijual.isCek();
         });
     }
 
     private void btnSensusHarianPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSensusHarianPoli aplikasi = new DlgSensusHarianPoli(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgSensusHarianPoli(this, false));
     }
 
     private void btnRl4aActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRL4A aplikasi = new DlgRL4A(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRL4A(this, false));
     }
 
     private void btnAplicareReferensiKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        AplicareCekReferensiKamar form = new AplicareCekReferensiKamar(this, false);
-        showForm(form);
+        showForm(() -> new AplicareCekReferensiKamar(this, false));
     }
 
     private void btnAplicareKetersediaanKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        AplicareKetersediaanKamar form = new AplicareKetersediaanKamar(this, false);
-        showForm(form);
+        showForm(() -> new AplicareKetersediaanKamar(this, false));
     }
 
     private void btnInaCBGKlaimBaruOtomatisActionPerformed(java.awt.event.ActionEvent evt) {
@@ -5042,16 +4828,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnInaCBGCoderNIKActionPerformed(java.awt.event.ActionEvent evt) {
-        INACBGCoderNIK inacbg = new INACBGCoderNIK(this, false);
-        showForm(inacbg, () -> {
+        showForm(() -> new INACBGCoderNIK(this, false), inacbg -> {
             inacbg.emptTeks();
             inacbg.isCek();
         });
     }
 
     private void btnMutasiBerkasActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgMutasiBerkas mutasiberkas = new DlgMutasiBerkas(this, false);
-        showForm(mutasiberkas, () -> {
+        showForm(() -> new DlgMutasiBerkas(this, false), mutasiberkas -> {
             mutasiberkas.setJudul("::[ Mutasi Berkas Rekam Medis ]::", "monitoringberkas/pages");
             try {
                 mutasiberkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "monitoringberkas/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
@@ -5062,195 +4846,161 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnAkunPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAkunPiutang form = new DlgAkunPiutang(this, false);
-        showForm(form);
+        showForm(() -> new DlgAkunPiutang(this, false));
     }
 
     private void btnRHKSOActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHKSO rhkso = new DlgRHKSO(this, false);
-        showForm(rhkso, () -> {
+        showForm(() -> new DlgRHKSO(this, false), rhkso -> {
             rhkso.isCek();
         });
     }
 
     private void btnRBKSOActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBKSO rbkso = new DlgRBKSO(this, false);
-        showForm(rbkso, () -> {
+        showForm(() -> new DlgRBKSO(this, false), rbkso -> {
             rbkso.isCek();
         });
     }
 
     private void btnRHMenejemenActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRHMenejemen rhmenejemen = new DlgRHMenejemen(this, false);
-        showForm(rhmenejemen, () -> {
+        showForm(() -> new DlgRHMenejemen(this, false), rhmenejemen -> {
             rhmenejemen.isCek();
         });
     }
 
     private void btnRBMenejemenActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRBMenejemen rbmenejemen = new DlgRBMenejemen(this, false);
-        showForm(rbmenejemen, () -> {
+        showForm(() -> new DlgRBMenejemen(this, false), rbmenejemen -> {
             rbmenejemen.isCek();
         });
     }
 
     private void btnCekEligibilitasInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthCekEligibilitas form = new InhealthCekEligibilitas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthCekEligibilitas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnReferensiKamarInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthReferensiJenpelRuang form = new InhealthReferensiJenpelRuang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthReferensiJenpelRuang(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnCekInhealthPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthCekReferensiPoli form = new InhealthCekReferensiPoli(this, false);
-        showForm(form);
+        showForm(() -> new InhealthCekReferensiPoli(this, false));
     }
 
     private void btnCekInhealthFaskesActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthCekReferensiFaskes form = new InhealthCekReferensiFaskes(this, false);
-        showForm(form);
+        showForm(() -> new InhealthCekReferensiFaskes(this, false));
     }
 
     private void btnInhealthSJPActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthDataSJP form = new InhealthDataSJP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthDataSJP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPiutangRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPiutangRalan billing = new DlgPiutangRalan(this, false);
-        showForm(billing);
+        showForm(() -> new DlgPiutangRalan(this, false));
     }
 
     private void btnPiutangRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPiutangRanap billing = new DlgPiutangRanap(this, false);
-        showForm(billing);
+        showForm(() -> new DlgPiutangRanap(this, false));
     }
 
     private void btnPiutangPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPiutangPercaraBayar rbpaketbhp = new DlgPiutangPercaraBayar(this, false);
-        showForm(rbpaketbhp);
+        showForm(() -> new DlgPiutangPercaraBayar(this, false));
     }
 
     private void btnLamaPelayananRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananRalan aplikasi = new DlgPelayananRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananRalan(this, false));
     }
 
     private void btnCatatanPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtCatatanPasien aplikasi = new DlgLhtCatatanPasien(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgLhtCatatanPasien(this, false));
     }
 
     private void btnRl4bActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRL4B aplikasi = new DlgRL4B(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRL4B(this, false));
     }
 
     private void btnRl4asebabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRL4ASebab aplikasi = new DlgRL4ASebab(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRL4ASebab(this, false));
     }
 
     private void btnRl4bsebabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRL4BSebab aplikasi = new DlgRL4BSebab(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRL4BSebab(this, false));
     }
 
     private void btnDataHAIsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataHAIs aplikasi = new DlgDataHAIs(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDataHAIs(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.tampil();
         });
     }
 
     private void btnHarianHAIsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHarianHAIs aplikasi = new DlgHarianHAIs(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHarianHAIs(this, false));
     }
 
     private void btnBulananHAIsActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBulananHAIs aplikasi = new DlgBulananHAIs(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgBulananHAIs(this, false));
     }
 
     private void btnHitungBorActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHitungBOR aplikasi = new DlgHitungBOR(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHitungBOR(this, false));
     }
 
     private void btnPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPerusahaan aplikasi = new DlgPerusahaan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPerusahaan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnDaftarPermintaanResepActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPermintaanResep daftar = new DlgDaftarPermintaanResep(null, false);
-        showForm(daftar, () -> {
+        showForm(() -> new DlgDaftarPermintaanResep(null, false), daftar -> {
             daftar.emptTeks();
             daftar.isCek();
         });
     }
 
     private void btnLamaPelayananApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananApotek aplikasi = new DlgPelayananApotek(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananApotek(this, false));
     }
 
     private void btnHitungAlosActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHitungALOS aplikasi = new DlgHitungALOS(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHitungALOS(this, false));
     }
 
     private void btnDetailTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailTindakan dettin = new DlgDetailTindakan(this, false);
-        showForm(dettin);
+        showForm(() -> new DlgDetailTindakan(this, false));
     }
 
     private void btnRekapPoliAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRekapPoliAnak aplikasi = new KeuanganRekapPoliAnak(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRekapPoliAnak(this, false));
     }
 
     private void btnGrafikKunjunganPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPoli aplikasi = new GrafikRegistrasiPoli(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPoli(this, true));
     }
 
     private void btnGrafikKunjunganPerDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerDokter aplikasi = new GrafikRegistrasiPerDokter(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerDokter(this, true));
     }
 
     private void btnGrafikKunjunganPerPekerjaanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerPekerjaan aplikasi = new GrafikRegistrasiPerPekerjaan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerPekerjaan(this, true));
     }
 
     private void btnGrafikKunjunganPerPendidikanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerPendidikan aplikasi = new GrafikRegistrasiPerPendidikan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerPendidikan(this, true));
     }
 
     private void btnGrafikKunjunganPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerTahun aplikasi = new GrafikRegistrasiPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerTahun(this, true));
     }
 
     private void btnBerkasDigitalPerawatanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBerkasRawat berkas = new DlgBerkasRawat(this, false);
-        showForm(berkas, () -> {
+        showForm(() -> new DlgBerkasRawat(this, false), berkas -> {
             berkas.setJudul("::[ Berkas Digital Perawatan ]::", "berkasrawat/pages");
             try {
                 if (akses.gethapus_berkas_digital_perawatan() == true) {
@@ -5265,164 +5015,133 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPnyMenularRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkPenyakitMenularRanap aplikasi = new DlgDkkPenyakitMenularRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkPenyakitMenularRanap(this, false));
     }
 
     private void btnPnyMenularRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDkkPenyakitMenularRalan aplikasi = new DlgDkkPenyakitMenularRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDkkPenyakitMenularRalan(this, false));
     }
 
     private void btnGrafikKunjunganPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerBulan aplikasi = new GrafikRegistrasiPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerBulan(this, true));
     }
 
     private void btnGrafikKunjunganPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerTanggal aplikasi = new GrafikRegistrasiPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerTanggal(this, true));
     }
 
     private void btnGrafikDemografiRegistrasiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikDemografiRegistrasi aplikasi = new GrafikDemografiRegistrasi(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikDemografiRegistrasi(this, true));
     }
 
     private void btnGrafikStatusRegPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerTahun aplikasi = new GrafikStatusRegPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerTahun(this, true));
     }
 
     private void btnGrafikStatusRegPerTahun2ActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerTahun2 aplikasi = new GrafikStatusRegPerTahun2(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerTahun2(this, true));
     }
 
     private void btnGrafikStatusRegPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerBulan aplikasi = new GrafikStatusRegPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerBulan(this, true));
     }
 
     private void btnGrafikStatusRegPerBulan2ActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerBulan2 aplikasi = new GrafikStatusRegPerBulan2(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerBulan2(this, true));
     }
 
     private void btnGrafikStatusRegPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerTanggal aplikasi = new GrafikStatusRegPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerTanggal(this, true));
     }
 
     private void btnGrafikStatusRegPerTanggal2ActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusRegPerTanggal2 aplikasi = new GrafikStatusRegPerTanggal2(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusRegPerTanggal2(this, true));
     }
 
     private void btnGrafikStatusRegBatalPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusBatalRegPerTahun aplikasi = new GrafikStatusBatalRegPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusBatalRegPerTahun(this, true));
     }
 
     private void btnGrafikStatusRegBatalPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusBatalRegPerBulan aplikasi = new GrafikStatusBatalRegPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusBatalRegPerBulan(this, true));
     }
 
     private void btnCekPCareDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiPenyakit form = new PCareCekReferensiPenyakit(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiPenyakit(this, false));
     }
 
     private void btnGrafikStatusRegBatalPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusBatalRegPerTanggal aplikasi = new GrafikStatusBatalRegPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusBatalRegPerTanggal(this, true));
     }
 
     private void btnKategoriBarangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKategori form = new DlgKategori(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgKategori(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGolonganBarangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgGolongan form = new DlgGolongan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgGolongan(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnObatPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgObatPerTanggal form = new DlgObatPerTanggal(this, false);
-        showForm(form);
+        showForm(() -> new DlgObatPerTanggal(this, false));
     }
 
     private void btnPenjualanPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenjualanPerTanggal form = new DlgPenjualanPerTanggal(this, false);
-        showForm(form);
+        showForm(() -> new DlgPenjualanPerTanggal(this, false));
     }
 
     private void btnCekPCareKesadaranActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiKesadaran form = new PCareCekReferensiKesadaran(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiKesadaran(this, false));
     }
 
     private void btnPembatalanPeriksaDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembatalanPeriksaPerDokter form = new DlgPembatalanPeriksaPerDokter(this, false);
-        showForm(form);
+        showForm(() -> new DlgPembatalanPeriksaPerDokter(this, false));
     }
 
     private void btnPembayaranPerUnitActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerPoli form = new DlgPembayaranPerPoli(this, false);
-        showForm(form);
+        showForm(() -> new DlgPembayaranPerPoli(this, false));
     }
 
     private void btnRekapPembayaranPerUnitActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPembayaranPerPoli form = new DlgRekapPembayaranPerPoli(this, false);
-        showForm(form);
+        showForm(() -> new DlgRekapPembayaranPerPoli(this, false));
     }
 
     private void btnGrafikKunjunganPerCarabayarActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerCaraBayar aplikasi = new GrafikRegistrasiPerCaraBayar(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerCaraBayar(this, true));
     }
 
     private void btnPengadaanIPSRSPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengadaanIPSRSPerTanggal form = new DlgPengadaanIPSRSPerTanggal(this, false);
-        showForm(form);
+        showForm(() -> new DlgPengadaanIPSRSPerTanggal(this, false));
     }
 
     private void btnStokKeluarIPSRSPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgStokKeluarIPSRSPerTanggal form = new DlgStokKeluarIPSRSPerTanggal(this, false);
-        showForm(form);
+        showForm(() -> new DlgStokKeluarIPSRSPerTanggal(this, false));
     }
 
     private void btnGrafikKunjunganRanapPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKunjunganRanapPerTahun aplikasi = new GrafikKunjunganRanapPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKunjunganRanapPerTahun(this, true));
     }
 
     private void btnCekPCareRujukanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekRujukan form = new PCareCekRujukan(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekRujukan(this, false));
     }
 
     private void btnGrafikLabRalanPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLabRalanPerTahun aplikasi = new GrafikLabRalanPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLabRalanPerTahun(this, true));
     }
 
     private void btnGrafikRadRalanPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRadRalanPerTahun aplikasi = new GrafikRadRalanPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRadRalanPerTahun(this, true));
     }
 
     private void btnCekEntryRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCekEntryRalan aplikasi = new DlgCekEntryRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgCekEntryRalan(this, false));
     }
 
     private void btnInaCBGKlaimBaruManual2ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -5459,112 +5178,93 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPermintaanMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPermintaan form = new DlgPermintaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPermintaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRingkasanPermintaanMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPermintaan rhipsrs = new DlgRekapPermintaan(this, false);
-        showForm(rhipsrs);
+        showForm(() -> new DlgRekapPermintaan(this, false));
     }
 
     private void btnSuratPemesananMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventorySuratPemesanan form = new InventorySuratPemesanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InventorySuratPemesanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPermintaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPermintaan form = new IPSRSPermintaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSPermintaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRekapPermintaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPermintaanNonMedis rhipsrs = new DlgRekapPermintaanNonMedis(this, false);
-        showForm(rhipsrs);
+        showForm(() -> new DlgRekapPermintaanNonMedis(this, false));
     }
 
     private void btnSuratPemesananNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSSuratPemesanan form = new IPSRSSuratPemesanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSSuratPemesanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikPerPerujukActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerPerujuk aplikasi = new GrafikRegistrasiPerPerujuk(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerPerujuk(this, true));
     }
 
     private void btnCekReferensiProsedurBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiProsedur form = new BPJSCekReferensiProsedur(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiProsedur(this, false));
     }
 
     private void btnCekReferensiKelasRawatBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiKelasRawat form = new BPJSCekReferensiKelasRawat(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiKelasRawat(this, false));
     }
 
     private void btnCekReferensiDokterBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiDokter form = new BPJSCekReferensiDokter(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiDokter(this, false));
     }
 
     private void btnCekReferensiSpesialistikBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiSpesialistik form = new BPJSCekReferensiSpesialistik(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiSpesialistik(this, false));
     }
 
     private void btnCekReferensiRuangRawatBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiRuangRawat form = new BPJSCekReferensiRuangRawat(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiRuangRawat(this, false));
     }
 
     private void btnCekReferensiCaraKeluarBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiCaraKeluar form = new BPJSCekReferensiCaraKeluar(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiCaraKeluar(this, false));
     }
 
     private void btnCekReferensiPascaPulangBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiPascaPulang form = new BPJSCekReferensiPascaPulang(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiPascaPulang(this, false));
     }
 
     private void btnDetailVKOKActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailVKOK dettin = new DlgDetailVKOK(this, false);
-        showForm(dettin);
+        showForm(() -> new DlgDetailVKOK(this, false));
     }
 
     private void btnCekBPJSNomorRujukanRSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekNoRujukanRS form = new BPJSCekNoRujukanRS(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekNoRujukanRS(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCekBPJSRujukanKartuPCareActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekRujukanKartuPCare form = new BPJSCekRujukanKartuPCare(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekRujukanKartuPCare(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCekBPJSRujukanKartuRSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekRujukanKartuRS form = new BPJSCekRujukanKartuRS(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekRujukanKartuRS(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRujukanKeluarBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSRujukanKeluar rujuk = new BPJSRujukanKeluar(this, false);
-        showForm(rujuk, () -> {
+        showForm(() -> new BPJSRujukanKeluar(this, false), rujuk -> {
             rujuk.tampil();
             rujuk.emptTeks();
             rujuk.isCek();
@@ -5572,26 +5272,22 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnGrafikLabRalanPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLabRalanPerBulan aplikasi = new GrafikLabRalanPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLabRalanPerBulan(this, true));
     }
 
     private void btnStokKeluarMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengeluaranApotek pengeluaran = new DlgPengeluaranApotek(this, false);
-        showForm(pengeluaran, () -> {
+        showForm(() -> new DlgPengeluaranApotek(this, false), pengeluaran -> {
             pengeluaran.tampilkanpermintaan = true;
             pengeluaran.isCek();
         });
     }
 
     private void btnGrafikRadRalanPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRadRalanPerBulan aplikasi = new GrafikRadRalanPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRadRalanPerBulan(this, true));
     }
 
     private void btnJMDetailDokter2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDetailJMDokter2 rhtindakandokter = new DlgDetailJMDokter2(this, false);
-        showForm(rhtindakandokter, () -> {
+        showForm(() -> new DlgDetailJMDokter2(this, false), rhtindakandokter -> {
             rhtindakandokter.isCek();
         });
     }
@@ -5605,31 +5301,26 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnGrafikLabRalanPerHariActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLabRalanPerHari aplikasi = new GrafikLabRalanPerHari(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLabRalanPerHari(this, true));
     }
 
     private void btnGrafikRadRalanPerHariActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRadRalanPerHari aplikasi = new GrafikRadRalanPerHari(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRadRalanPerHari(this, true));
     }
 
     private void btnSensusHarianRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSensusHarianRalan aplikasi = new DlgSensusHarianRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgSensusHarianRalan(this, false));
     }
 
     private void btnMetodeRacikActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgMetodeRacik racik = new DlgMetodeRacik(this, false);
-        showForm(racik, () -> {
+        showForm(() -> new DlgMetodeRacik(this, false), racik -> {
             racik.isCek();
             racik.emptTeks();
         });
     }
 
     private void btnPembayaranAkunBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerAKunBayar aplikasi = new DlgPembayaranPerAKunBayar(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPembayaranPerAKunBayar(this, false));
     }
 
     private void btnResepObatDepanActionPerformed(java.awt.event.ActionEvent evt) {
@@ -5637,35 +5328,30 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenggunaObatResepActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenggunaObat penggunaobat = new DlgPenggunaObat(this, false);
-        showForm(penggunaobat, () -> {
+        showForm(() -> new DlgPenggunaObat(this, false), penggunaobat -> {
             penggunaobat.isCek();
         });
     }
 
     private void btnRekapPenerimaanObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPenerimaan form = new DlgRekapPenerimaan(null, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRekapPenerimaan(null, false), form -> {
             form.emptTeks();
             form.isCek();
         });
     }
 
     private void btnMasterBerkasPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgMasterBerkasPegawai form = new DlgMasterBerkasPegawai(null, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgMasterBerkasPegawai(null, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnBerkasPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBerkasKepegawaian form = new DlgBerkasKepegawaian(null, false);
-        showForm(form);
+        showForm(() -> new DlgBerkasKepegawaian(null, false));
     }
 
     private void btnRiwayatJabatanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatJabatan form = new DlgRiwayatJabatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatJabatan(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatjabatan.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5675,8 +5361,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRiwayatPendidikanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatPendidikan form = new DlgRiwayatPendidikan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatPendidikan(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatpendidikan.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5686,8 +5371,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRiwayatNaikGajiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatNaikGaji form = new DlgRiwayatNaikGaji(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatNaikGaji(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatgaji.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5697,8 +5381,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKegiatanIlmiahActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKegiatanIlmiah form = new DlgKegiatanIlmiah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgKegiatanIlmiah(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatseminar.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5708,8 +5391,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRiwayatPenghargaanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatPenghargaan form = new DlgRiwayatPenghargaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatPenghargaan(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatpenghargaan.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5719,8 +5401,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRiwayatPenelitianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatPenelitian form = new DlgRiwayatPenelitian(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatPenelitian(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatpenelitian.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -5730,196 +5411,164 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenerimaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPemesanan pembelian = new IPSRSPemesanan(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new IPSRSPemesanan(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnBayarPesanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPemesananNonMedis bayarpesan = new KeuanganBayarPemesananNonMedis(this, false);
-        showForm(bayarpesan, () -> {
+        showForm(() -> new KeuanganBayarPemesananNonMedis(this, false), bayarpesan -> {
             bayarpesan.tampil2();
         });
     }
 
     private void btnHutangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganHutangNonMedisBelumLunas form = new KeuanganHutangNonMedisBelumLunas(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganHutangNonMedisBelumLunas(this, false));
     }
 
     private void btnRekapPenerimaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPenerimaanNonMedis form = new DlgRekapPenerimaanNonMedis(null, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRekapPenerimaanNonMedis(null, false), form -> {
             form.emptTeks();
             form.isCek();
         });
     }
 
     private void btnInsidenKeselamatanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgInsidenKeselamatan aplikasi = new DlgInsidenKeselamatan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgInsidenKeselamatan(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnInsidenKeselamatanPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataInsidenKeselamatan aplikasi = new DlgDataInsidenKeselamatan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDataInsidenKeselamatan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnGrafikKejadianIKPPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKejadianIKPPerTahun aplikasi = new GrafikKejadianIKPPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKejadianIKPPerTahun(this, true));
     }
 
     private void btnGrafikKejadianIKPPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKejadianIKPPerBulan aplikasi = new GrafikKejadianIKPPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKejadianIKPPerBulan(this, true));
     }
 
     private void btnGrafikKejadianIKPPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKejadianIKPPerTanggal aplikasi = new GrafikKejadianIKPPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKejadianIKPPerTanggal(this, true));
     }
 
     private void btnRiwayatBatchActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatBatch aplikasi = new DlgRiwayatBatch(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRiwayatBatch(this, false));
     }
 
     private void btnGrafikKejadianIKPPerJenisActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKejadianIKPPerJenis aplikasi = new GrafikKejadianIKPPerJenis(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKejadianIKPPerJenis(this, true));
     }
 
     private void btnGrafikKejadianIKPPerDampakActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKejadianIKPPerDampak aplikasi = new GrafikKejadianIKPPerDampak(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKejadianIKPPerDampak(this, true));
     }
 
     private void btnPiutangPerAkunPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPiutangPerAKunPiutang aplikasi = new DlgPiutangPerAKunPiutang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPiutangPerAKunPiutang(this, false));
     }
 
     private void btnGrafikKunjunganPerAgamaActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerAgama aplikasi = new GrafikRegistrasiPerAgama(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerAgama(this, true));
     }
 
     private void btnGrafikKunjunganPerUmurActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerUmur aplikasi = new GrafikRegistrasiPerUmur(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerUmur(this, true));
     }
 
     private void btnSukuActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSuku form = new DlgSuku(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSuku(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnBahasaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBahasa form = new DlgBahasa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgBahasa(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGolonganTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgGolonganTNI form = new DlgGolonganTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgGolonganTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSatuanTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSatuanTNI form = new DlgSatuanTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSatuanTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnJabatanTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJabatanTNI form = new DlgJabatanTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJabatanTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPangkatTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPangkatTNI form = new DlgPangkatTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPangkatTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGolonganPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgGolonganPolri form = new DlgGolonganPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgGolonganPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSatuanPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSatuanPolri form = new DlgSatuanPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSatuanPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnJabatanPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJabatanPolri form = new DlgJabatanPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJabatanPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPangkatPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPangkatPolri form = new DlgPangkatPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPangkatPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCacatFisikActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCacatFisik form = new DlgCacatFisik(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCacatFisik(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikKunjunganPerSukuActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerSuku aplikasi = new GrafikRegistrasiPerSuku(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerSuku(this, true));
     }
 
     private void btnGrafikKunjunganPerBahasaActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerBahasa aplikasi = new GrafikRegistrasiPerBahasa(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerBahasa(this, true));
     }
 
     private void btnJadwalOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBookingOperasi form = new DlgBookingOperasi(this, false);
-        showForm(form);
+        showForm(() -> new DlgBookingOperasi(this, false));
     }
 
     private void btnMapingPoliBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSMapingPoli form = new BPJSMapingPoli(this, false);
-        showForm(form);
+        showForm(() -> new BPJSMapingPoli(this, false));
     }
 
     private void btnGrafikKunjunganPerCacatActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikRegistrasiPerCacat aplikasi = new GrafikRegistrasiPerCacat(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikRegistrasiPerCacat(this, true));
     }
 
     private void btnBarangCSSDActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisBarangCSSD form = new InventarisBarangCSSD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InventarisBarangCSSD(this, false), form -> {
             form.emptTeks();
             form.tampil();
             form.isCek();
@@ -5927,724 +5576,604 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSKDPBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKontrol form = new SuratKontrol(this, false);
-        showForm(form);
+        showForm(() -> new SuratKontrol(this, false));
     }
 
     private void btnBookingRegistrasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBookingRegistrasi form = new DlgBookingRegistrasi(this, false);
-        showForm(form);
+        showForm(() -> new DlgBookingRegistrasi(this, false));
     }
 
     private void btnCekReferensiPropinsiBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiPropinsi form = new BPJSCekReferensiPropinsi(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiPropinsi(this, false));
     }
 
     private void btnCekReferensiKabupatenBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiKabupaten form = new BPJSCekReferensiKabupaten(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiKabupaten(this, false));
     }
 
     private void btnCekReferensiKecamatanBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiKecamatan form = new BPJSCekReferensiKecamatan(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiKecamatan(this, false));
     }
 
     private void btnCekReferensiDokterDPJPBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiDokterDPJP form = new BPJSCekReferensiDokterDPJP(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiDokterDPJP(this, false));
     }
 
     private void btnCekBPJSRiwayatRujukanRSActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekRiwayatRujukanRS form = new BPJSCekRiwayatRujukanRS(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekRiwayatRujukanRS(this, false));
     }
 
     private void btnCekBPJSTanggalRujukanActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekTanggalRujukan form = new BPJSCekTanggalRujukan(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekTanggalRujukan(this, false));
     }
 
     private void btnPermintaanLabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPermintaanLab form = new DlgCariPermintaanLab(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPermintaanLab(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPermintaanRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPermintaanRadiologi form = new DlgCariPermintaanRadiologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPermintaanRadiologi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratIndeksActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratIndeks form = new SuratIndeks(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratIndeks(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratMapActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratMap form = new SuratMap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratMap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratAlmariActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratAlmari form = new SuratAlmari(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratAlmari(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratRakActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratRak form = new SuratRak(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratRak(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratRuang form = new SuratRuang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratRuang(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratKlasifikasiActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKlasifikasi form = new SuratKlasifikasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratKlasifikasi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratStatusActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratStatus form = new SuratStatus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratStatus(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratSifatActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratSifat form = new SuratSifat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratSifat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratBalasActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratBalas form = new SuratBalas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratBalas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratMasukActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratMasuk form = new SuratMasuk(null, false);
-        showForm(form);
+        showForm(() -> new SuratMasuk(null, false));
     }
 
     private void btnPCareReferensiDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiDokter form = new PCareCekReferensiDokter(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiDokter(this, false));
     }
 
     private void btnPCareReferensiPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiPoli form = new PCareCekReferensiPoli(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiPoli(this, false));
     }
 
     private void btnPCareReferensiProviderActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiProvider form = new PCareCekReferensiProvider(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiProvider(this, false));
     }
 
     private void btnPCareReferensiStatusPulangActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiStatusPulang form = new PCareCekReferensiStatusPulang(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiStatusPulang(this, false));
     }
 
     private void btnPCareReferensiSpesialisActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiSpesialis form = new PCareCekReferensiSpesialis(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiSpesialis(this, false));
     }
 
     private void btnPCareReferensiSubspesialisActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiSubspesialis form = new PCareCekReferensiSubspesialis(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiSubspesialis(this, false));
     }
 
     private void btnPCareReferensiSaranaActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiSarana form = new PCareCekReferensiSarana(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiSarana(this, false));
     }
 
     private void btnPCareReferensiKhususActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiKhusus form = new PCareCekReferensiKhusus(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiKhusus(this, false));
     }
 
     private void btnPCareReferensiObatActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiObat form = new PCareCekReferensiObat(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiObat(this, false));
     }
 
     private void btnPCareReferensiTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiTindakan form = new PCareCekReferensiTindakan(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiTindakan(this, false));
     }
 
     private void btnPCareFaskesSubspesialisActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekFaskesSubspesialis form = new PCareCekFaskesSubspesialis(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekFaskesSubspesialis(this, false));
     }
 
     private void btnPCareFaskesAlihRawatActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekFaskesAlihRawat form = new PCareCekFaskesAlihRawat(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekFaskesAlihRawat(this, false));
     }
 
     private void btnPCareFaskesThalasemiaActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekFaskesThalasemia form = new PCareCekFaskesThalasemia(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekFaskesThalasemia(this, false));
     }
 
     private void btnPCareMapingObatActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareMapingObat form = new PCareMapingObat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareMapingObat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareMapingTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareMapingTindakanRalan form = new PCareMapingTindakanRalan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareMapingTindakanRalan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareClubProlanisActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareClubProlanis form = new PCareClubProlanis(this, false);
-        showForm(form);
+        showForm(() -> new PCareClubProlanis(this, false));
     }
 
     private void btnPCareMapingPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareMapingPoli form = new PCareMapingPoli(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareMapingPoli(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareKegiatanKelompokActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareKegiatanKelompok form = new PCareKegiatanKelompok(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareKegiatanKelompok(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareMapingTindakanRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareMapingTindakanRanap form = new PCareMapingTindakanRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareMapingTindakanRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCarePesertaKegiatanKelompokActionPerformed(java.awt.event.ActionEvent evt) {
-        PCarePesertaKegiatanKelompok form = new PCarePesertaKegiatanKelompok(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCarePesertaKegiatanKelompok(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSirkulasi3ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang3 sirkulasi = new DlgSirkulasiBarang3(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang3(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnPCarePendaftaranActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareDataPendaftaran form = new PCareDataPendaftaran(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareDataPendaftaran(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareMapingDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareMapingDokter form = new PCareMapingDokter(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareMapingDokter(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRanapPerRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRanapPerRuang form = new DlgRanapPerRuang(this, false);
-        showForm(form);
+        showForm(() -> new DlgRanapPerRuang(this, false));
     }
 
     private void btnPenyakitRanapCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenyakitRanapPerCaraBayar form = new DlgPenyakitRanapPerCaraBayar(this, false);
-        showForm(form);
+        showForm(() -> new DlgPenyakitRanapPerCaraBayar(this, false));
     }
 
     private void btnAnggotaMiliterDirawatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAnggotaMiliterDirawat form = new DlgAnggotaMiliterDirawat(this, false);
-        showForm(form);
+        showForm(() -> new DlgAnggotaMiliterDirawat(this, false));
     }
 
     private void btnSetInputParsialActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetInputParsial form = new DlgSetInputParsial(this, false);
-        showForm(form);
+        showForm(() -> new DlgSetInputParsial(this, false));
     }
 
     private void btnLamaPelayananRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananRadiologi aplikasi = new DlgPelayananRadiologi(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananRadiologi(this, false));
     }
 
     private void btnLamaPelayananLabActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananLab aplikasi = new DlgPelayananLab(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananLab(this, false));
     }
 
     private void btnCekSEPActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekDetailSEP2 detail = new BPJSCekDetailSEP2(null, true);
-        showForm(detail);
+        showForm(() -> new BPJSCekDetailSEP2(null, true));
     }
 
     private void btnSuratKeluarActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeluar form = new SuratKeluar(null, false);
-        showForm(form);
+        showForm(() -> new SuratKeluar(null, false));
     }
 
     private void btnKegiatanFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKegiatanFarmasi aplikasi = new DlgKegiatanFarmasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgKegiatanFarmasi(this, false), aplikasi -> {
             aplikasi.tampil();
         });
     }
 
     private void btnOpnameIPSRSActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSInputStok opname = new IPSRSInputStok(this, false);
-        showForm(opname, () -> {
+        showForm(() -> new IPSRSInputStok(this, false), opname -> {
             opname.isCek();
         });
     }
 
     private void btnSirkulasiNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiNonMedis sirkulasi = new DlgSirkulasiNonMedis(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiNonMedis(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnRekapLabPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapLabPerTahun aplikasi = new DlgRekapLabPerTahun(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRekapLabPerTahun(this, false));
     }
 
     private void btnPerujukLabPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPerujukLabPerTahun aplikasi = new DlgPerujukLabPerTahun(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPerujukLabPerTahun(this, false));
     }
 
     private void btnRekapRadiologiPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapRadiologiPerTahun aplikasi = new DlgRekapRadiologiPerTahun(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRekapRadiologiPerTahun(this, false));
     }
 
     private void btnPerujukRadiologiPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPerujukRadiologiPerTahun aplikasi = new DlgPerujukRadiologiPerTahun(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPerujukRadiologiPerTahun(this, false));
     }
 
     private void btnJumlahPorsiDietActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJumlahPorsiDiet aplikasi = new DlgJumlahPorsiDiet(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgJumlahPorsiDiet(this, false));
     }
 
     private void btnJumlahMacamDietActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJumlahMacamDiet aplikasi = new DlgJumlahMacamDiet(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgJumlahMacamDiet(this, false));
     }
 
     private void btnPaymentPoint2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPaymentPoint2 aplikasi = new DlgPaymentPoint2(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPaymentPoint2(this, false));
     }
 
     private void btnPembayaranAkunBayar2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerAKunBayar2 aplikasi = new DlgPembayaranPerAKunBayar2(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPembayaranPerAKunBayar2(this, false));
     }
 
     private void btnHAIsBangsalActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHAIsPerBangsal aplikasi = new DlgHAIsPerBangsal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHAIsPerBangsal(this, false));
     }
 
     private void btnPPNObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPPNObat aplikasi = new DlgCariPPNObat(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgCariPPNObat(this, false));
     }
 
     private void btnSaldoAkunPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganSaldoAkunPerBulan aplikasi = new KeuanganSaldoAkunPerBulan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganSaldoAkunPerBulan(this, false));
     }
 
     private void btnDisplayApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRunTeksApotek runteks = new DlgRunTeksApotek(this, false);
-        showForm(runteks, () -> {
+        showForm(() -> new DlgRunTeksApotek(this, false), runteks -> {
             runteks.emptTeks();
         });
     }
 
     private void btnCekSisruteFaskesActionPerformed(java.awt.event.ActionEvent evt) {
-        SisruteCekReferensiFaskes form = new SisruteCekReferensiFaskes(this, false);
-        showForm(form);
+        showForm(() -> new SisruteCekReferensiFaskes(this, false));
     }
 
     private void btnCekSisruteAlasanRujukActionPerformed(java.awt.event.ActionEvent evt) {
-        SisruteCekReferensiAlasanRujuk form = new SisruteCekReferensiAlasanRujuk(this, false);
-        showForm(form);
+        showForm(() -> new SisruteCekReferensiAlasanRujuk(this, false));
     }
 
     private void btnCekSisruteDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {
-        SisruteCekReferensiDiagnosa form = new SisruteCekReferensiDiagnosa(this, false);
-        showForm(form);
+        showForm(() -> new SisruteCekReferensiDiagnosa(this, false));
     }
 
     private void btnRujukanMasukSisruteActionPerformed(java.awt.event.ActionEvent evt) {
-        SisruteRujukanMasukan form = new SisruteRujukanMasukan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SisruteRujukanMasukan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRujukanKeluarSisruteActionPerformed(java.awt.event.ActionEvent evt) {
-        SisruteRujukanKeluar form = new SisruteRujukanKeluar(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SisruteRujukanKeluar(this, false), form -> {
             form.isCek();
             form.tutupInput();
         });
     }
 
     private void btnCekBPJSSKDPActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekSKDP form = new BPJSCekSKDP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSCekSKDP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDataBatchActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataBatch form = new DlgDataBatch(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDataBatch(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnKunjunganLabRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganLabRalan aplikasi = new DlgKunjunganLabRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKunjunganLabRalan(this, false));
     }
 
     private void btnKunjunganLabRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganLabRanap aplikasi = new DlgKunjunganLabRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKunjunganLabRanap(this, false));
     }
 
     private void btnKunjunganRadRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganRadRalan aplikasi = new DlgKunjunganRadRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKunjunganRadRalan(this, false));
     }
 
     private void btnKunjunganRadRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKunjunganRadRanap aplikasi = new DlgKunjunganRadRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKunjunganRadRanap(this, false));
     }
 
     private void btnPCareBeriObatActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareDataPemberianObat form = new PCareDataPemberianObat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareDataPemberianObat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPCareBeriTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareDataPemberianTindakan form = new PCareDataPemberianTindakan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareDataPemberianTindakan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPembayaranAkunBayar3ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerAKunBayar3 aplikasi = new DlgPembayaranPerAKunBayar3(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPembayaranPerAKunBayar3(this, false));
     }
 
     private void btnPasswordAsuransiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPasswordBPJS form = new DlgPasswordBPJS(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPasswordBPJS(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnDataSITTActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataTB aplikasi = new DlgDataTB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDataTB(this, false), aplikasi -> {
             aplikasi.emptTeks();
             aplikasi.isCek();
         });
     }
 
     private void btnSiranapKetersediaanKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        SiranapKetersediaanKamar form = new SiranapKetersediaanKamar(this, false);
-        showForm(form);
+        showForm(() -> new SiranapKetersediaanKamar(this, false));
     }
 
     private void btnGrafikTBLaporanPeriodeActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBPeriodeLaporan aplikasi = new GrafikTBPeriodeLaporan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBPeriodeLaporan(this, true));
     }
 
     private void btnGrafikTBRujukanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBRujukan aplikasi = new GrafikTBRujukan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBRujukan(this, true));
     }
 
     private void btnGrafikTBRiwayatActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBRiwayat aplikasi = new GrafikTBRiwayat(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBRiwayat(this, true));
     }
 
     private void btnGrafikTBTipeDiagnosisActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBTipeDiagnosis aplikasi = new GrafikTBTipeDiagnosis(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBTipeDiagnosis(this, true));
     }
 
     private void btnGrafikTBSTatusHIVActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBStatusHIV aplikasi = new GrafikTBStatusHIV(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBStatusHIV(this, true));
     }
 
     private void btnGrafikTBSkoringAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBSkoringAnak aplikasi = new GrafikTBSkoringAnak(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBSkoringAnak(this, true));
     }
 
     private void btnGrafikTBKonfirmasiSkoring5ActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBKonfirmasiSkoring5 aplikasi = new GrafikTBKonfirmasiSkoring5(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBKonfirmasiSkoring5(this, true));
     }
 
     private void btnGrafikTBKonfirmasiSkoring6ActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBKonfirmasiSkoring6 aplikasi = new GrafikTBKonfirmasiSkoring6(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBKonfirmasiSkoring6(this, true));
     }
 
     private void btnGrafikTBSumberObatActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBSumberObat aplikasi = new GrafikTBSumberObat(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBSumberObat(this, true));
     }
 
     private void btnGrafikTBHasilAkhirPengobatanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBHasilAkhirPengobatan aplikasi = new GrafikTBHasilAkhirPengobatan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBHasilAkhirPengobatan(this, true));
     }
 
     private void btnGrafikTBHasilTesHIVActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikTBHasilTesHIV aplikasi = new GrafikTBHasilTesHIV(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikTBHasilTesHIV(this, true));
     }
 
     private void btnKadaluarsaBatchActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKadaluarsaBatch form = new DlgKadaluarsaBatch(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgKadaluarsaBatch(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSisaStokActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSisaStok form = new DlgSisaStok(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSisaStok(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnObatPerResepActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgObatPeresep form = new DlgObatPeresep(this, false);
-        showForm(form);
+        showForm(() -> new DlgObatPeresep(this, false));
     }
 
     private void btnPemakaianAirPDAMActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingPemakaiaanAirPDAM form = new KeslingPemakaiaanAirPDAM(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingPemakaiaanAirPDAM(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnLimbahB3MedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingLimbahB3Medis form = new KeslingLimbahB3Medis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingLimbahB3Medis(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikPemakaianAirPDAMPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingPDAMPertanggal aplikasi = new GrafikKeslingPDAMPertanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingPDAMPertanggal(this, true));
     }
 
     private void btnGrafikPemakaianAirPDAMPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingPDAMPerBulan aplikasi = new GrafikKeslingPDAMPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingPDAMPerBulan(this, true));
     }
 
     private void btnGrafikLimbahB3MedisPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahB3Pertanggal aplikasi = new GrafikKeslingLimbahB3Pertanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahB3Pertanggal(this, true));
     }
 
     private void btnGrafikLimbahB3MedisPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahB3Bulan aplikasi = new GrafikKeslingLimbahB3Bulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahB3Bulan(this, true));
     }
 
     private void btnLimbahDomestikActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingLimbahDomestik form = new KeslingLimbahDomestik(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingLimbahDomestik(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikLimbahDomestikPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahDomestikPertanggal aplikasi = new GrafikKeslingLimbahDomestikPertanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahDomestikPertanggal(this, true));
     }
 
     private void btnLaboratoriumPAActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPeriksaLabPA produsen = new DlgCariPeriksaLabPA(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgCariPeriksaLabPA(this, false), produsen -> {
             //produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnLaboratoriumMBActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPeriksaLabMB produsen = new DlgCariPeriksaLabMB(this, false);
-        showForm(produsen, () -> {
+        showForm(() -> new DlgCariPeriksaLabMB(this, false), produsen -> {
             //produsen.emptTeks();
             produsen.isCek();
         });
     }
 
     private void btnKategoriPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanKategori form = new PerpustakaanKategori(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanKategori(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnJenisPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanJenis form = new PerpustakaanJenis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanJenis(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnRuangPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanRuang form = new PerpustakaanRuang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanRuang(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPengarangPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanPengarang form = new PerpustakaanPengarang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanPengarang(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenerbitPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanPenerbit form = new PerpustakaanPenerbit(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanPenerbit(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnKoleksiPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanKoleksi form = new PerpustakaanKoleksi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanKoleksi(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnInventarisPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanInventaris form = new PerpustakaanInventaris(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanInventaris(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPengaturanPeminjamanPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanPengaturanPeminjaman form = new PerpustakaanPengaturanPeminjaman(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanPengaturanPeminjaman(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnDendaPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanDenda form = new PerpustakaanDenda(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanDenda(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnAnggotaPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanAnggota form = new PerpustakaanAnggota(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanAnggota(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPeminjamanPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanSirkulasi form = new PerpustakaanSirkulasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanSirkulasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnBayarDendaPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanBayarDenda form = new PerpustakaanBayarDenda(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanBayarDenda(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenelitianPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanPenelitian form = new PerpustakaanPenelitian(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanPenelitian(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginperpustakaanpenelitian.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -6654,8 +6183,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnEbookPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanEbook form = new PerpustakaanEbook(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanEbook(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "ebook/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -6665,8 +6193,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnCariEbookActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanCariEbook form = new PerpustakaanCariEbook(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PerpustakaanCariEbook(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "ebook/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -6676,673 +6203,560 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPestControlActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingPestControl form = new KeslingPestControl(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingPestControl(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnMutuAirLimbahActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingMutuAirLimbah form = new KeslingMutuAirLimbah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingMutuAirLimbah(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnCariInventarisPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        PerpustakaanCariInventaris form = new PerpustakaanCariInventaris(this, false);
-        showForm(form);
+        showForm(() -> new PerpustakaanCariInventaris(this, false));
     }
 
     private void btnJenisCideraK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisCidera form = new K3RSJenisCidera(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSJenisCidera(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenyebabKecelakaanK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSPenyebab form = new K3RSPenyebab(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSPenyebab(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnJenisLukaK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisLuka form = new K3RSJenisLuka(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSJenisLuka(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLokasiKejadianK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSLokasiKejadian form = new K3RSLokasiKejadian(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSLokasiKejadian(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDampakCideraK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSDampakCidera form = new K3RSDampakCidera(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSDampakCidera(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikLimbahDomestikPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahDomestikBulan aplikasi = new GrafikKeslingLimbahDomestikBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahDomestikBulan(this, true));
     }
 
     private void btnJenisPekerjaanK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisPekerjaan form = new K3RSJenisPekerjaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSJenisPekerjaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnBagianTubuhK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSBagianTubuh form = new K3RSBagianTubuh(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSBagianTubuh(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPeristiwaK3ActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSPeristiwa form = new K3RSPeristiwa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new K3RSPeristiwa(this, false), form -> {
             form.emptTeks();
             form.isCek();
         });
     }
 
     private void btnGrafikK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerTahun aplikasi = new GrafikPeristiwaK3PerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerTahun(this, true));
     }
 
     private void btnGrafikK3PerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerBulan aplikasi = new GrafikPeristiwaK3PerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerBulan(this, true));
     }
 
     private void btnGrafikK3PerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerTanggal aplikasi = new GrafikPeristiwaK3PerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerTanggal(this, true));
     }
 
     private void btnGrafikK3PerJenisCideraActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerJenisCidera aplikasi = new GrafikPeristiwaK3PerJenisCidera(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerJenisCidera(this, true));
     }
 
     private void btnGrafikK3PerPenyebabActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerPenyebab aplikasi = new GrafikPeristiwaK3PerPenyebab(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerPenyebab(this, true));
     }
 
     private void btnGrafikK3PerJenisLukaActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerJenisLuka aplikasi = new GrafikPeristiwaK3PerJenisLuka(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerJenisLuka(this, true));
     }
 
     private void btnGrafikK3PerLokasiKejadianActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerLokasiKejadian aplikasi = new GrafikPeristiwaK3PerLokasiKejadian(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerLokasiKejadian(this, true));
     }
 
     private void btnGrafikK3PerDampakCideraActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerDampakCidera aplikasi = new GrafikPeristiwaK3PerDampakCidera(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerDampakCidera(this, true));
     }
 
     private void btnGrafikK3PerJenisPekerjaanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerJenisPekerjaan aplikasi = new GrafikPeristiwaK3PerJenisPekerjaan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerJenisPekerjaan(this, true));
     }
 
     private void btnGrafikK3PerBagianTubuhActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPeristiwaK3PerBagianTubuh aplikasi = new GrafikPeristiwaK3PerBagianTubuh(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPeristiwaK3PerBagianTubuh(this, true));
     }
 
     private void btnJenisCideraK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisCideraPerTahun form = new K3RSJenisCideraPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSJenisCideraPerTahun(this, false));
     }
 
     private void btnPenyebabKecelakaanK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSPenyebabPerTahun form = new K3RSPenyebabPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSPenyebabPerTahun(this, false));
     }
 
     private void btnJenisLukaK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisLukaPerTahun form = new K3RSJenisLukaPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSJenisLukaPerTahun(this, false));
     }
 
     private void btnLokasiKejadianK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSLokasiKejadianPerTahun form = new K3RSLokasiKejadianPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSLokasiKejadianPerTahun(this, false));
     }
 
     private void btnDampakCideraK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSDampakCideraPerTahun form = new K3RSDampakCideraPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSDampakCideraPerTahun(this, false));
     }
 
     private void btnJenisPekerjaanK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSJenisPekerjaanPerTahun form = new K3RSJenisPekerjaanPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSJenisPekerjaanPerTahun(this, false));
     }
 
     private void btnBagianTubuhK3PerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        K3RSBagianTubuhPerTahun form = new K3RSBagianTubuhPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new K3RSBagianTubuhPerTahun(this, false));
     }
 
     private void btnSkriningRawatJalanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSKriningRawatJalan form = new RMSKriningRawatJalan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSKriningRawatJalan(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnBPJSHistoriPelayananActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSHistoriPelayanan form = new BPJSHistoriPelayanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSHistoriPelayanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRekapMutasiBerkasActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapMutasiBerkas form = new DlgRekapMutasiBerkas(this, false);
-        showForm(form);
+        showForm(() -> new DlgRekapMutasiBerkas(this, false));
     }
 
     private void btnSkriningRalanPernapasanPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanRekapSkriningPernapasanRalanPerTahun form = new LaporanRekapSkriningPernapasanRalanPerTahun(this, false);
-        showForm(form);
+        showForm(() -> new LaporanRekapSkriningPernapasanRalanPerTahun(this, false));
     }
 
     private void btnPengajuanBarangMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryPengajuanBarangMedis form = new InventoryPengajuanBarangMedis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InventoryPengajuanBarangMedis(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengajuanBarangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSPengajuanBarangNonMedis form = new IPSRSPengajuanBarangNonMedis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSPengajuanBarangNonMedis(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikKunjunganRanapBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKunjunganRanapPerBulan aplikasi = new GrafikKunjunganRanapPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKunjunganRanapPerBulan(this, true));
     }
 
     private void btnGrafikKunjunganRanapTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKunjunganRanapPerTanggal aplikasi = new GrafikKunjunganRanapPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKunjunganRanapPerTanggal(this, true));
     }
 
     private void btnGrafikKunjunganRanapRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKunjunganRanapPerRuang aplikasi = new GrafikKunjunganRanapPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKunjunganRanapPerRuang(this, true));
     }
 
     private void btnKunjunganBangsalTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanRekapKunjunganRuangPerTahun aplikasi = new LaporanRekapKunjunganRuangPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new LaporanRekapKunjunganRuangPerTahun(this, true));
     }
 
     private void btnGrafikJenjangJabatanPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerJenjangJabatan aplikasi = new GrafikPegawaiPerJenjangJabatan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerJenjangJabatan(this, true));
     }
 
     private void btnGrafikBidangPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerBidang aplikasi = new GrafikPegawaiPerBidang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerBidang(this, true));
     }
 
     private void btnGrafikDepartemenPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerDepartemen aplikasi = new GrafikPegawaiPerDepartemen(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerDepartemen(this, true));
     }
 
     private void btnGrafikPendidikanPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerPendidikan aplikasi = new GrafikPegawaiPerPendidikan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerPendidikan(this, true));
     }
 
     private void btnGrafikStatusWPPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerStatusWP aplikasi = new GrafikPegawaiPerStatusWP(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerStatusWP(this, true));
     }
 
     private void btnGrafikStatusKerjaPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerStatusKerja aplikasi = new GrafikPegawaiPerStatusKerja(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerStatusKerja(this, true));
     }
 
     private void btnGrafikStatusPulangRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikStatusPulangRanap aplikasi = new GrafikStatusPulangRanap(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikStatusPulangRanap(this, true));
     }
 
     private void btnKIPPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKIPPasienRanap aplikasi = new DlgKIPPasienRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKIPPasienRanap(this, false));
     }
 
     private void btnKIPPasienRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKIPPasienRalan aplikasi = new DlgKIPPasienRalan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKIPPasienRalan(this, false));
     }
 
     private void btnMappingDokterDPJPVClaimActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSMapingDokterDPJP form = new BPJSMapingDokterDPJP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new BPJSMapingDokterDPJP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseSkala1ActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseSkala1 form = new MasterTriaseSkala1(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseSkala1(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseSkala2ActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseSkala2 form = new MasterTriaseSkala2(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseSkala2(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseSkala3ActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseSkala3 form = new MasterTriaseSkala3(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseSkala3(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseSkala4ActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseSkala4 form = new MasterTriaseSkala4(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseSkala4(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseSkala5ActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseSkala5 form = new MasterTriaseSkala5(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseSkala5(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriasePemeriksaanActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriasePemeriksaan form = new MasterTriasePemeriksaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriasePemeriksaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterTriaseMacamKasusActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTriaseMacamKasus form = new MasterTriaseMacamKasus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTriaseMacamKasus(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDataTriaseIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        RMTriaseIGD form = new RMTriaseIGD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMTriaseIGD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRekapPermintaanDietActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapPermintaanDiet form = new DlgRekapPermintaanDiet(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRekapPermintaanDiet(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDaftarPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPasienRanap form = new DlgDaftarPasienRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDaftarPasienRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDaftarPasienRanapTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPasienRanapTNI form = new DlgDaftarPasienRanapTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDaftarPasienRanapTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnfee_visit_dokterActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgFeeVisitDokter feevisitdokter = new DlgFeeVisitDokter(this, false);
-        showForm(feevisitdokter);
+        showForm(() -> new DlgFeeVisitDokter(this, false));
     }
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgUser user = new DlgUser(this, false);
-        showForm(user, () -> {
+        showForm(() -> new DlgUser(this, false), user -> {
             user.emptTeks();
         });
     }
 
     private void btnPengajuanAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        PengajuanInventaris form = new PengajuanInventaris(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PengajuanInventaris(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikItemApotekPerJenisActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikItemApotekPerJenis aplikasi = new GrafikItemApotekPerJenis(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikItemApotekPerJenis(this, true));
     }
 
     private void btnGrafikItemApotekPerKategoriActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikItemApotekPerKategori aplikasi = new GrafikItemApotekPerKategori(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikItemApotekPerKategori(this, true));
     }
 
     private void btnGrafikItemApotekPerGolonganActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikItemApotekPerGolongan aplikasi = new GrafikItemApotekPerGolongan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikItemApotekPerGolongan(this, true));
     }
 
     private void btnGrafikItemApotekPerIndustriFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikItemApotekPerIndustriFarmasi aplikasi = new GrafikItemApotekPerIndustriFarmasi(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikItemApotekPerIndustriFarmasi(this, true));
     }
 
     private void btn10BesarObatPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        Dlg10ObatTerbanyakPoli form = new Dlg10ObatTerbanyakPoli(this, false);
-        showForm(form);
+        showForm(() -> new Dlg10ObatTerbanyakPoli(this, false));
     }
 
     private void btnGrafikPengajuanAsetUrgensiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPengajuanAsetUrgensi aplikasi = new GrafikPengajuanAsetUrgensi(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPengajuanAsetUrgensi(this, true));
     }
 
     private void btnGrafikPengajuanAsetStatusActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPengajuanAsetStatus aplikasi = new GrafikPengajuanAsetStatus(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPengajuanAsetStatus(this, true));
     }
 
     private void btnGrafikPengajuanAsetDepartemenActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPengajuanAsetDepartemen aplikasi = new GrafikPengajuanAsetDepartemen(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPengajuanAsetDepartemen(this, true));
     }
 
     private void btnRekapPengajuanAsetDepartemenActionPerformed(java.awt.event.ActionEvent evt) {
-        RekapPengajuanInventarisDepartemen form = new RekapPengajuanInventarisDepartemen(this, false);
-        showForm(form);
+        showForm(() -> new RekapPengajuanInventarisDepartemen(this, false));
     }
 
     private void btnGrafikKelompokJabatanPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerKelompokJabatan aplikasi = new GrafikPegawaiPerKelompokJabatan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerKelompokJabatan(this, true));
     }
 
     private void btnGrafikRisikoKerjaPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerResikoKerja aplikasi = new GrafikPegawaiPerResikoKerja(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerResikoKerja(this, true));
     }
 
     private void btnGrafikEmergencyIndexPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPegawaiPerEmergencyIndex aplikasi = new GrafikPegawaiPerEmergencyIndex(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPegawaiPerEmergencyIndex(this, true));
     }
 
     private void btnGrafikInventarisRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikInventarisPerRuang aplikasi = new GrafikInventarisPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikInventarisPerRuang(this, true));
     }
 
     private void btnHarianHAIs2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHarianHAIs2 aplikasi = new DlgHarianHAIs2(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHarianHAIs2(this, false));
     }
 
     private void btnGrafikInventarisJenisActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikInventarisPerJenis aplikasi = new GrafikInventarisPerJenis(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikInventarisPerJenis(this, true));
     }
 
     private void btnResumePasienActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataResumePasien form = new RMDataResumePasien(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataResumePasien(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnResumePasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataResumePasienRanap form = new RMDataResumePasienRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataResumePasienRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPerkiraanBiayaRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPerkiraanBiayaRanap form = new DlgPerkiraanBiayaRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPerkiraanBiayaRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRekapObatPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapObatPoli rbpoli = new DlgRekapObatPoli(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRekapObatPoli(this, false));
     }
 
     private void btnRekapObatPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapObatPasien rbpoli = new DlgRekapObatPasien(this, false);
-        showForm(rbpoli);
+        showForm(() -> new DlgRekapObatPasien(this, false));
     }
 
     private void btnGrafikHAIsPasienRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPasienHAIsRuang aplikasi = new GrafikPasienHAIsRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPasienHAIsRuang(this, true));
     }
 
     private void btnGrafikHAIsPasienBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPasienHAIsBulan aplikasi = new GrafikPasienHAIsBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPasienHAIsBulan(this, true));
     }
 
     private void btnPermintaanPerbaikanInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPermintaanPerbaikan form = new InventarisPermintaanPerbaikan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InventarisPermintaanPerbaikan(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikHAIsLajuVAPActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsVAPPerRuang aplikasi = new GrafikLajuHAIsVAPPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsVAPPerRuang(this, true));
     }
 
     private void btnGrafikHAIsLajuIADActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsIADPerRuang aplikasi = new GrafikLajuHAIsIADPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsIADPerRuang(this, true));
     }
 
     private void btnGrafikHAIsLajuPlebActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsPlebPerRuang aplikasi = new GrafikLajuHAIsPlebPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsPlebPerRuang(this, true));
     }
 
     private void btnGrafikHAIsLajuISKActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsISKPerRuang aplikasi = new GrafikLajuHAIsISKPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsISKPerRuang(this, true));
     }
 
     private void btnGrafikHAIsLajuILOActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsILOPerRuang aplikasi = new GrafikLajuHAIsILOPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsILOPerRuang(this, true));
     }
 
     private void btnGrafikHAIsLajuHAPActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikLajuHAIsHAPPerRuang aplikasi = new GrafikLajuHAIsHAPPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikLajuHAIsHAPPerRuang(this, true));
     }
 
     private void btnMappingPoliInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthMapingPoli form = new InhealthMapingPoli(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthMapingPoli(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingDokterInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthMapingDokter form = new InhealthMapingDokter(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthMapingDokter(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingTindakanRalanInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTindakanRalan form = new InhealthTindakanRalan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTindakanRalan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingTindakanRanapInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTindakanRanap form = new InhealthTindakanRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTindakanRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingTindakanRadiologiInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTindakanRadiologi form = new InhealthTindakanRadiologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTindakanRadiologi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingTindakanLaboratInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTindakanLaborat form = new InhealthTindakanLaborat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTindakanLaborat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingTindakanOperasiInhealthActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTindakanOperasi form = new InhealthTindakanOperasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTindakanOperasi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnHibahObatBHPActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryHibahObatBHP pembelian = new InventoryHibahObatBHP(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new InventoryHibahObatBHP(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnAsalHibahActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisAsalHibah form = new InventarisAsalHibah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InventarisAsalHibah(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnAsuhanGiziActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataAsuhanGizi form = new RMDataAsuhanGizi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataAsuhanGizi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnKirimTagihanInheathActionPerformed(java.awt.event.ActionEvent evt) {
-        InhealthTagihan form = new InhealthTagihan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new InhealthTagihan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSirkulasiObat4ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang4 sirkulasi = new DlgSirkulasiBarang4(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang4(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnSirkulasiObat5ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang5 sirkulasi = new DlgSirkulasiBarang5(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang5(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnSirkulasiObat6ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiBarang6 sirkulasi = new DlgSirkulasiBarang6(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiBarang6(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnSirkulasiNonMedis2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSirkulasiNonMedis2 sirkulasi = new DlgSirkulasiNonMedis2(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DlgSirkulasiNonMedis2(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnMonitoringAsuhanGiziActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataMonitoringAsuhanGizi form = new RMDataMonitoringAsuhanGizi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataMonitoringAsuhanGizi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnGrafikPenerimaanObatPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPenerimaanObatPerbulan aplikasi = new GrafikPenerimaanObatPerbulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPenerimaanObatPerbulan(this, true));
     }
 
     private void btnRekapKunjunganActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapKunjungan aplikasi = new DlgRekapKunjungan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRekapKunjungan(this, false));
     }
 
     private void btnSuratSakitActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratSakit aplikasi = new SuratSakit(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratSakit(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratSakitPihak2ActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratSakitPihak2 aplikasi = new SuratSakitPihak2(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratSakitPihak2(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRalan aplikasi = new RMPenilaianAwalKeperawatanRalan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRalan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -7350,212 +6764,181 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnMasterMasalahKeperawatanActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatan form = new MasterMasalahKeperawatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengajuanCutiActionPerformed(java.awt.event.ActionEvent evt) {
-        PengajuanCutiAdmin form = new PengajuanCutiAdmin(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PengajuanCutiAdmin(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnKedatanganPasienPerJamActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanKedatanganPasienPerJam form = new LaporanKedatanganPasienPerJam(this, false);
-        showForm(form);
+        showForm(() -> new LaporanKedatanganPasienPerJam(this, false));
     }
 
     private void btnPendonorDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        UTDPendonor form = new UTDPendonor(this, false);
-        showForm(form);
+        showForm(() -> new UTDPendonor(this, false));
     }
 
     private void btnSuplierTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoSuplier suplier = new TokoSuplier(this, false);
-        showForm(suplier, () -> {
+        showForm(() -> new TokoSuplier(this, false), suplier -> {
             suplier.isCek();
             suplier.emptTeks();
         });
     }
 
     private void btnJenisTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoJenis aplikasi = new TokoJenis(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new TokoJenis(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSetHargaTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSetHargaToko aplikasi = new DlgSetHargaToko(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgSetHargaToko(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoBarang form = new TokoBarang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoBarang(this, false), form -> {
             form.emptTeks();
             form.onCari();
         });
     }
 
     private void btnPenagihanPiutangPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPenagihanPiutangPasien form = new KeuanganPenagihanPiutangPasien(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganPenagihanPiutangPasien(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnAkunPenagihanPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAkunPenagihanPiutang form = new DlgAkunPenagihanPiutang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgAkunPenagihanPiutang(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnStokOpnameTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoInputStok opname = new TokoInputStok(this, false);
-        showForm(opname, () -> {
+        showForm(() -> new TokoInputStok(this, false), opname -> {
             opname.tampil();
             opname.isCek();
         });
     }
 
     private void btnRiwayatBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoRiwayatBarang sirkulasi = new TokoRiwayatBarang(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new TokoRiwayatBarang(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnSuratPemesananTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoSuratPemesanan form = new TokoSuratPemesanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoSuratPemesanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengajuanBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPengajuanBarang form = new TokoPengajuanBarang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoPengajuanBarang(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenerimaanBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPemesanan pembelian = new TokoPemesanan(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new TokoPemesanan(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnPengadaanBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPembelian pembelian = new TokoPembelian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new TokoPembelian(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnHutangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganHutangToko form = new KeuanganHutangToko(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganHutangToko(this, false));
     }
 
     private void btnBayarPesanTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPesanToko bayarpesan = new KeuanganBayarPesanToko(this, false);
-        showForm(bayarpesan, () -> {
+        showForm(() -> new KeuanganBayarPesanToko(this, false), bayarpesan -> {
             bayarpesan.tampil2();
         });
     }
 
     private void btnMemberTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoMember form = new TokoMember(null, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoMember(null, false), form -> {
             form.emptTeks();
             form.isCek();
         });
     }
 
     private void btnRegistrasiPoliPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanRegistrasiPoliPerTanggal form = new LaporanRegistrasiPoliPerTanggal(null, false);
-        showForm(form);
+        showForm(() -> new LaporanRegistrasiPoliPerTanggal(null, false));
     }
 
     private void btnPenjualanTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPenjualan form = new TokoPenjualan(null, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoPenjualan(null, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPiutangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPiutang form = new TokoPiutang(null, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoPiutang(null, false), form -> {
             form.isCek();
         });
     }
 
     private void btnReturKeSuplierTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoReturBeli form = new TokoReturBeli(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoReturBeli(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnReturBarangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSReturBeli form = new IPSRSReturBeli(this, false);
-        showForm(form, () -> {
+        showForm(() -> new IPSRSReturBeli(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRiwayatBarangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRiwayatBarang sirkulasi = new IPSRSRiwayatBarang(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new IPSRSRiwayatBarang(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnPasienCoronaActionPerformed(java.awt.event.ActionEvent evt) {
-        CoronaPasien form = new CoronaPasien(this, false);
-        showForm(form, () -> form.isCek());
+        showForm(() -> new CoronaPasien(this, false), form -> form.isCek());
     }
 
     private void btnPendapatanHarianTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPendapatanHarian form = new TokoPendapatanHarian(this, false);
-        showForm(form);
+        showForm(() -> new TokoPendapatanHarian(this, false));
     }
 
     private void btnDiagnosaPasienCoronaActionPerformed(java.awt.event.ActionEvent evt) {
-        CoronaDiagnosa form = new CoronaDiagnosa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new CoronaDiagnosa(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPerawatanPasienCoronaActionPerformed(java.awt.event.ActionEvent evt) {
-        INACBGPerawatanCorona form = new INACBGPerawatanCorona(this, false);
-        showForm(form, () -> {
+        showForm(() -> new INACBGPerawatanCorona(this, false), form -> {
             form.isCek();
             form.tampil();
         });
     }
 
     private void btnMasterMasalahKeperawatanGigiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanGigi form = new MasterMasalahKeperawatanGigi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanGigi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanMataActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanMata aplikasi = new RMPenilaianAwalKeperawatanMata(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanMata(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -7563,8 +6946,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalKeperawatanGigiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanGigi aplikasi = new RMPenilaianAwalKeperawatanGigi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanGigi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -7572,8 +6954,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBayarPiutangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoBayarPiutang bayarpiutang = new TokoBayarPiutang(this, false);
-        showForm(bayarpiutang, () -> {
+        showForm(() -> new TokoBayarPiutang(this, false), bayarpiutang -> {
             bayarpiutang.tampil();
             bayarpiutang.emptTeks();
             bayarpiutang.isCek();
@@ -7581,25 +6962,21 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPiutangHarianTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPiutangHarian form = new TokoPiutangHarian(this, false);
-        showForm(form);
+        showForm(() -> new TokoPiutangHarian(this, false));
     }
 
     private void btnPenjualanHarianTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoPenjualanHarian form = new TokoPenjualanHarian(this, false);
-        showForm(form);
+        showForm(() -> new TokoPenjualanHarian(this, false));
     }
 
     private void btnDeteksiDiniCoronaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDeteksiDiniCorona form = new RMDeteksiDiniCorona(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDeteksiDiniCorona(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanKebidananActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanKebidanan aplikasi = new RMPenilaianAwalKeperawatanKebidanan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanKebidanan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -7607,23 +6984,20 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPengumumanEPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        PengumumanEPasien aplikasi = new PengumumanEPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new PengumumanEPasien(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSuratHamilActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratTidakHamil aplikasi = new SuratTidakHamil(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratTidakHamil(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSetTarifOnlineActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganSetTarifOnline aplikasi = new KeuanganSetTarifOnline(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganSetTarifOnline(this, false));
     }
 
     private void btnBookingPeriksaActionPerformed(java.awt.event.ActionEvent evt) {
@@ -7639,153 +7013,133 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSirkulasiBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoSirkulasi sirkulasi = new TokoSirkulasi(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new TokoSirkulasi(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnReturJualTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoReturJual form = new TokoReturJual(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoReturJual(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnReturPiutangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoReturPiutang form = new TokoReturPiutang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new TokoReturPiutang(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSirkulasiBarangToko2ActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoSirkulasi2 sirkulasi = new TokoSirkulasi2(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new TokoSirkulasi2(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnKeuntunganBarangTokoActionPerformed(java.awt.event.ActionEvent evt) {
-        TokoKeuntunganBarang form = new TokoKeuntunganBarang(this, false);
-        showForm(form);
+        showForm(() -> new TokoKeuntunganBarang(this, false));
     }
 
     private void btnZISPengeluaranPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISPengeluaranPenerimaDankes form = new ZISPengeluaranPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISPengeluaranPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISPenghasilanPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISPenghasilanPenerimaDankes form = new ZISPenghasilanPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISPenghasilanPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISUkuranRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISUkuranRumahPenerimaDankes form = new ZISUkuranRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISUkuranRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISDindingRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISDindingRumahPenerimaDankes form = new ZISDindingRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISDindingRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISLantaiRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISLantaiRumahPenerimaDankes form = new ZISLantaiRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISLantaiRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISAtapRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISAtapRumahPenerimaDankes form = new ZISAtapRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISAtapRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISKepemilikanRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISAtapRumahPenerimaDankes form = new ZISAtapRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISAtapRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISKamarMandiPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISKamarMandiPenerimaDankes form = new ZISKamarMandiPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISKamarMandiPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISDapurRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISDapurRumahPenerimaDankes form = new ZISDapurRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISDapurRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISKursiRumahPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISKursiRumahPenerimaDankes form = new ZISKursiRumahPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISKursiRumahPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISKategoriPHBSPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISKategoriPHBSPenerimaDankes form = new ZISKategoriPHBSPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISKategoriPHBSPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISElektronikPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISElektronikPenerimaDankes form = new ZISElektronikPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISElektronikPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISTernakPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISTernakPenerimaDankes form = new ZISTernakPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISTernakPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnZISJenisSimpananPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISJenisSimpananPenerimaDankes form = new ZISJenisSimpananPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISJenisSimpananPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenilaianAwalRalanBayiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanBayiAnak aplikasi = new RMPenilaianAwalKeperawatanBayiAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanBayiAnak(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -7793,314 +7147,261 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnZISKategoriAsnafPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISKategoriAsnafPenerimaDankes form = new ZISKategoriAsnafPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISKategoriAsnafPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnMasterMasalahKeperawatanAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanAnak form = new MasterMasalahKeperawatanAnak(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanAnak(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterImunisasiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterImunisasi form = new MasterImunisasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterImunisasi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnZISPatologisPenerimaDankesActionPerformed(java.awt.event.ActionEvent evt) {
-        ZISPatologisPenerimaDankes form = new ZISPatologisPenerimaDankes(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ZISPatologisPenerimaDankes(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPCareCekKartuActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekKartu form = new PCareCekKartu(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCareCekKartu(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratBebasNarkobaActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratBebasNarkoba form = new SuratBebasNarkoba(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratBebasNarkoba(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSuratKeteranganCovidActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganCovid form = new SuratKeteranganCovid(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratKeteranganCovid(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPemakaianAirTanahActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingPemakaiaanAirTanah form = new KeslingPemakaiaanAirTanah(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingPemakaiaanAirTanah(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikPemakaianAirTanahPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingTanahPertanggal aplikasi = new GrafikKeslingTanahPertanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingTanahPertanggal(this, true));
     }
 
     private void btnGrafikPemakaianAirTanahPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingTanahPerBulan aplikasi = new GrafikKeslingTanahPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingTanahPerBulan(this, true));
     }
 
     private void btnLamaPelayananPoliActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananPoli aplikasi = new DlgPelayananPoli(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananPoli(this, false));
     }
 
     private void btnHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHemodialisa aplikasi = new RMHemodialisa(null, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMHemodialisa(null, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnGrafikHemodialisaPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikHemodialisaPerTanggal aplikasi = new GrafikHemodialisaPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikHemodialisaPerTanggal(this, true));
     }
 
     private void btnGrafikHemodialisaPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikHemodialisaPerBulan aplikasi = new GrafikHemodialisaPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikHemodialisaPerBulan(this, true));
     }
 
     private void btnGrafikHemodialisaPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikHemodialisaPerBulan aplikasi = new GrafikHemodialisaPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikHemodialisaPerBulan(this, true));
     }
 
     private void btnGrafikMeninggalPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikMeninggalPerBulan aplikasi = new GrafikMeninggalPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikMeninggalPerBulan(this, true));
     }
 
     private void btnLaporanTahunanIRJActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanTahunanIRJ aplikasi = new LaporanTahunanIRJ(this, true);
-        showForm(aplikasi, () -> {
+        showForm(() -> new LaporanTahunanIRJ(this, true), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPerbaikanInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPerbaikan aplikasi = new InventarisPerbaikan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new InventarisPerbaikan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratCutiHamilActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratCutiHamil aplikasi = new SuratCutiHamil(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratCutiHamil(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPermintaanStokObatPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPermintaanStokPasien aplikasi = new DlgDaftarPermintaanStokPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDaftarPermintaanStokPasien(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.tampil();
         });
     }
 
     private void btnPemeliharaanInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPemeliharaan aplikasi = new InventarisPemeliharaan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new InventarisPemeliharaan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKlasifikasiPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataKlasifikasiPasienRanap aplikasi = new DlgDataKlasifikasiPasienRanap(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDataKlasifikasiPasienRanap(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBulananKlasifikasiPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBulananKlasifikasiPasienRanap aplikasi = new DlgBulananKlasifikasiPasienRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgBulananKlasifikasiPasienRanap(this, false));
     }
 
     private void btnHarianKlasifikasiPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgHarianKlasifikasiPasienRanap aplikasi = new DlgHarianKlasifikasiPasienRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgHarianKlasifikasiPasienRanap(this, false));
     }
 
     private void btnKlasifikasiPasienPerRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKlasifikasiPasienPerBangsal aplikasi = new DlgKlasifikasiPasienPerBangsal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKlasifikasiPasienPerBangsal(this, false));
     }
 
     private void btnSOAPPerawatanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSOAPPerawatan aplikasi = new DlgSOAPPerawatan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgSOAPPerawatan(this, false));
     }
 
     private void btnKlaimRawatJalanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganKlaimRalan billing = new KeuanganKlaimRalan(this, false);
-        showForm(billing);
+        showForm(() -> new KeuanganKlaimRalan(this, false));
     }
 
     private void btnSkriningGiziLanjutActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataSkriningGiziLanjut form = new RMDataSkriningGiziLanjut(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataSkriningGiziLanjut(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLamaPenyiapanRMActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenyiapanRM aplikasi = new DlgPenyiapanRM(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPenyiapanRM(this, false));
     }
 
     private void btnDosisRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDosisRadiologi aplikasi = new DlgDosisRadiologi(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDosisRadiologi(this, false));
     }
 
     private void btnDemografiUmurKunjunganActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDemografiUmurKunjungan aplikasi = new DlgDemografiUmurKunjungan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgDemografiUmurKunjungan(this, false));
     }
 
     private void btnJamDietPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJamDietPasien form = new DlgJamDietPasien(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJamDietPasien(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRVPPiutangBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRVPBPJS rbpaketbhp = new KeuanganRVPBPJS(this, false);
-        showForm(rbpaketbhp, () -> {
+        showForm(() -> new KeuanganRVPBPJS(this, false), rbpaketbhp -> {
             rbpaketbhp.isCek();
         });
     }
 
     private void btnVerifikasiPenerimaanFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryVerifikasiPenerimaan form = new InventoryVerifikasiPenerimaan(this, false);
-        showForm(form);
+        showForm(() -> new InventoryVerifikasiPenerimaan(this, false));
     }
 
     private void btnVerifikasiPenerimaanLogistikActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSVerifikasiPenerimaan form = new IPSRSVerifikasiPenerimaan(this, false);
-        showForm(form);
+        showForm(() -> new IPSRSVerifikasiPenerimaan(this, false));
     }
 
     private void btnPermintaanLabPAActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPermintaanLabPA form = new DlgCariPermintaanLabPA(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPermintaanLabPA(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPermintaanLabMBActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPermintaanLabMB form = new DlgCariPermintaanLabMB(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPermintaanLabMB(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLamaPelayananLabPAActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananLabPA aplikasi = new DlgPelayananLabPA(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananLabPA(this, false));
     }
 
     private void btnLamaPelayananLabMBActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananLabMB aplikasi = new DlgPelayananLabMB(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananLabMB(this, false));
     }
 
     private void btnRingkasanPengajuanMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPengajuanBarangMedis aplikasi = new InventoryRingkasanPengajuanBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPengajuanBarangMedis(this, false));
     }
 
     private void btnRingkasanPemesananMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPemesananBarangMedis aplikasi = new InventoryRingkasanPemesananBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPemesananBarangMedis(this, false));
     }
 
     private void btnRingkasanPembelianMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPembelianBarangMedis aplikasi = new InventoryRingkasanPembelianBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPembelianBarangMedis(this, false));
     }
 
     private void btnRingkasanPenerimaanMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPenerimaanBarangMedis aplikasi = new InventoryRingkasanPenerimaanBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPenerimaanBarangMedis(this, false));
     }
 
     private void btnRingkasanHibahMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanHibahBarangMedis aplikasi = new InventoryRingkasanHibahBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanHibahBarangMedis(this, false));
     }
 
     private void btnRingkasanPenjualanMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPenjualanBarangMedis aplikasi = new InventoryRingkasanPenjualanBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPenjualanBarangMedis(this, false));
     }
 
     private void btnRingkasanBeriObatActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanBeriObat aplikasi = new InventoryRingkasanBeriObat(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanBeriObat(this, false));
     }
 
     private void btnRingkasanPiutangObatActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanPiutangBarangMedis aplikasi = new InventoryRingkasanPiutangBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanPiutangBarangMedis(this, false));
     }
 
     private void btnRingkasanStokKeluarObatActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanStokKeluarBarangMedis aplikasi = new InventoryRingkasanStokKeluarBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanStokKeluarBarangMedis(this, false));
     }
 
     private void btnRingkasanReturSuplierObatActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanReturSuplierBarangMedis aplikasi = new InventoryRingkasanReturSuplierBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanReturSuplierBarangMedis(this, false));
     }
 
     private void btnRingkasanReturJualObatActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanReturJualBarangMedis aplikasi = new InventoryRingkasanReturJualBarangMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanReturJualBarangMedis(this, false));
     }
 
     private void btnRingkasanPengajuanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanPengajuanBarangNonMedis aplikasi = new IPSRSRingkasanPengajuanBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanPengajuanBarangNonMedis(this, false));
     }
 
     private void btnRingkasanPemesananNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanPemesananBarangNonMedis aplikasi = new IPSRSRingkasanPemesananBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanPemesananBarangNonMedis(this, false));
     }
 
     private void btnPenilaianAwalKeperawatanKebidananRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanKebidananRanap aplikasi = new RMPenilaianAwalKeperawatanKebidananRanap(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanKebidananRanap(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8108,311 +7409,257 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRingkasanPengadaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanPengadaanBarangNonMedis aplikasi = new IPSRSRingkasanPengadaanBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanPengadaanBarangNonMedis(this, false));
     }
 
     private void btnRingkasanPenerimaanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanPenerimaanBarangNonMedis aplikasi = new IPSRSRingkasanPenerimaanBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanPenerimaanBarangNonMedis(this, false));
     }
 
     private void btnRingkasanStokKeluarNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanPengeluaranBarangNonMedis aplikasi = new IPSRSRingkasanPengeluaranBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanPengeluaranBarangNonMedis(this, false));
     }
 
     private void btnRingkasanReturSuplierNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSRingkasanReturBeliBarangNonMedis aplikasi = new IPSRSRingkasanReturBeliBarangNonMedis(this, false);
-        showForm(aplikasi);
+        showForm(() -> new IPSRSRingkasanReturBeliBarangNonMedis(this, false));
     }
 
     private void btnOmsetPenerimaanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgOmsetPenerimaan aplikasi = new DlgOmsetPenerimaan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgOmsetPenerimaan(this, false));
     }
 
     private void btnValidasiPenagihanPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiPenagihanPiutang aplikasi = new KeuanganValidasiPenagihanPiutang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganValidasiPenagihanPiutang(this, false));
     }
 
     private void btnPermintaanRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPermintaanRanap aplikasi = new DlgPermintaanRanap(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPermintaanRanap(this, false));
     }
 
     private void btnBPJSReferensiDiagnosaPRBActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiDiagnosaPRB form = new BPJSCekReferensiDiagnosaPRB(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiDiagnosaPRB(this, false));
     }
 
     private void btnBPJSReferensiObatPRBActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiObatPRB form = new BPJSCekReferensiObatPRB(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiObatPRB(this, false));
     }
 
     private void btnBPJSSuratKontrolActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSSuratKontrol form = new BPJSSuratKontrol(this, false);
-        showForm(form);
+        showForm(() -> new BPJSSuratKontrol(this, false));
     }
 
     private void btnPenggunaanBHPOKActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryPenggunaanBHPOK form = new InventoryPenggunaanBHPOK(this, false);
-        showForm(form);
+        showForm(() -> new InventoryPenggunaanBHPOK(this, false));
     }
 
     private void btnSuratKeteranganRawatInapActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganRawatInap form = new SuratKeteranganRawatInap(this, false);
-        showForm(form);
+        showForm(() -> new SuratKeteranganRawatInap(this, false));
     }
 
     private void btnSuratKeteranganSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganSehat form = new SuratKeteranganSehat(this, false);
-        showForm(form);
+        showForm(() -> new SuratKeteranganSehat(this, false));
     }
 
     private void btnPendapatanPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPendapatanPerCaraBayar form = new DlgPendapatanPerCaraBayar(this, false);
-        showForm(form);
+        showForm(() -> new DlgPendapatanPerCaraBayar(this, false));
     }
 
     private void btnAkunRekeningHtHBankJatengActionPerformed(java.awt.event.ActionEvent evt) {
-        AkunRekeningBankJateng form = new AkunRekeningBankJateng(this, false);
-        showForm(form);
+        showForm(() -> new AkunRekeningBankJateng(this, false));
     }
 
     private void btnPembayaranBankJatengActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBankJateng form = new DlgLhtBankJateng(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtBankJateng(this, false));
     }
 
     private void btnBPJSSuratPRIActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSSPRI form = new BPJSSPRI(this, false);
-        showForm(form);
+        showForm(() -> new BPJSSPRI(this, false));
     }
 
     private void btnRingkasanTindakanRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanTindakan dettin = new KeuanganRingkasanTindakan(this, false);
-        showForm(dettin);
+        showForm(() -> new KeuanganRingkasanTindakan(this, false));
     }
 
     private void btnLamaPelayananPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLamaPelayananPasien form = new DlgLamaPelayananPasien(this, false);
-        showForm(form);
+        showForm(() -> new DlgLamaPelayananPasien(this, false));
     }
 
     private void btnReferensiPendaftaranMobileJKNActionPerformed(java.awt.event.ActionEvent evt) {
-        MobileJKNReferensiPendaftaran form = new MobileJKNReferensiPendaftaran(this, false);
-        showForm(form);
+        showForm(() -> new MobileJKNReferensiPendaftaran(this, false));
     }
 
     private void btnBatalPendaftaranMobileJKNActionPerformed(java.awt.event.ActionEvent evt) {
-        MobileJKNPembatalanPendaftaran form = new MobileJKNPembatalanPendaftaran(this, false);
-        showForm(form);
+        showForm(() -> new MobileJKNPembatalanPendaftaran(this, false));
     }
 
     private void btnLamaOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananOperasi aplikasi = new DlgPelayananOperasi(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananOperasi(this, false));
     }
 
     private void btnGrafikInventarisKategoriActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikInventarisPerKategori aplikasi = new GrafikInventarisPerKategori(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikInventarisPerKategori(this, true));
     }
 
     private void btnGrafikInventarisMerkActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikInventarisPerMerk aplikasi = new GrafikInventarisPerMerk(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikInventarisPerMerk(this, true));
     }
 
     private void btnGrafikInventarisProdusenActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikInventarisPerProdusen aplikasi = new GrafikInventarisPerProdusen(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikInventarisPerProdusen(this, true));
     }
 
     private void btnTagihanHutangObatActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganTagihanObatBHP form = new KeuanganTagihanObatBHP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganTagihanObatBHP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengembalianDepositPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengembalianDepositPasien aplikasi = new DlgPengembalianDepositPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPengembalianDepositPasien(this, false), aplikasi -> {
             aplikasi.tampil();
         });
     }
 
     private void btnValidasiTagihanObatBHPActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiTagihanObatBHP form = new KeuanganValidasiTagihanObatBHP(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganValidasiTagihanObatBHP(this, false));
     }
 
     private void btnPiutangObatBelumLunasActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangObatBelumLunas form = new KeuanganPiutangObatBelumLunas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganPiutangObatBelumLunas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnIntegrasiBRIApiActionPerformed(java.awt.event.ActionEvent evt) {
-        BRIApiIntegrasi form = new BRIApiIntegrasi(this, false);
-        showForm(form);
+        showForm(() -> new BRIApiIntegrasi(this, false));
     }
 
     private void btnAkunAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAkunAsetInventaris form = new DlgAkunAsetInventaris(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgAkunAsetInventaris(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPengadaanAsetActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPembelian pembelian = new InventarisPembelian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new InventarisPembelian(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnSuplierInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisSuplier suplier = new InventarisSuplier(this, false);
-        showForm(suplier, () -> {
+        showForm(() -> new InventarisSuplier(this, false), suplier -> {
             suplier.isCek();
             suplier.emptTeks();
         });
     }
 
     private void btnPenerimaanAsetActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPemesanan pemesanan = new InventarisPemesanan(this, false);
-        showForm(pemesanan, () -> {
+        showForm(() -> new InventarisPemesanan(this, false), pemesanan -> {
             pemesanan.isCek();
         });
     }
 
     private void btnBayarPemesananInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPemesananAset bayarpesan = new KeuanganBayarPemesananAset(this, false);
-        showForm(bayarpesan);
+        showForm(() -> new KeuanganBayarPemesananAset(this, false));
     }
 
     private void btnHutangAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganHutangAsetIventarisBelumLunas form = new KeuanganHutangAsetIventarisBelumLunas(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganHutangAsetIventarisBelumLunas(this, false));
     }
 
     private void btnHibahAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisHibah hibah = new InventarisHibah(this, false);
-        showForm(hibah, () -> {
+        showForm(() -> new InventarisHibah(this, false), hibah -> {
             hibah.isCek();
         });
     }
 
     private void btnTagihanHutangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganTagihanNonMedis form = new KeuanganTagihanNonMedis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganTagihanNonMedis(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnValidasiTagihanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiTagihanNonMedis form = new KeuanganValidasiTagihanNonMedis(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganValidasiTagihanNonMedis(this, false));
     }
 
     private void btnTagihanHutangAsetActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganTagihanAset form = new KeuanganTagihanAset(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganTagihanAset(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnValidasiTagihanAsetActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiTagihanAset form = new KeuanganValidasiTagihanAset(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganValidasiTagihanAset(this, false));
     }
 
     private void btnHibahNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSHibah hibah = new IPSRSHibah(this, false);
-        showForm(hibah, () -> {
+        showForm(() -> new IPSRSHibah(this, false), hibah -> {
             hibah.isCek();
         });
     }
 
     private void btnCekPCareTACCActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiTACC form = new PCareCekReferensiTACC(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiTACC(this, false));
     }
 
     private void btnResepLuarActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryCariResepLuar form = new InventoryCariResepLuar(this, false);
-        showForm(form);
+        showForm(() -> new InventoryCariResepLuar(this, false));
     }
 
     private void btnSuratBebasTBCActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganBebasTBC form = new SuratKeteranganBebasTBC(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratKeteranganBebasTBC(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSuratButaWarnaActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratButaWarna form = new SuratButaWarna(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratButaWarna(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSuratBebasTatoActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratBebasTato form = new SuratBebasTato(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratBebasTato(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSuratKewaspadaanKesehatanActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKewaspadaanKesehatan form = new SuratKewaspadaanKesehatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SuratKewaspadaanKesehatan(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikPorsiDietPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPorsiDietPerTanggal aplikasi = new GrafikPorsiDietPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPorsiDietPerTanggal(this, true));
     }
 
     private void btnGrafikPorsiDietPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPorsiDietPerBulan aplikasi = new GrafikPorsiDietPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPorsiDietPerBulan(this, true));
     }
 
     private void btnGrafikPorsiDietPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPorsiDietPerTahun aplikasi = new GrafikPorsiDietPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPorsiDietPerTahun(this, true));
     }
 
     private void btnGrafikPorsiDietPerRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPorsiDietPerRuang aplikasi = new GrafikPorsiDietPerRuang(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPorsiDietPerRuang(this, true));
     }
 
     private void btnMasterMasalahKeperawatanMataActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanMata form = new MasterMasalahKeperawatanMata(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanMata(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalMedisRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanDewasa aplikasi = new RMPenilaianAwalMedisRalanDewasa(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanDewasa(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8420,8 +7667,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRanapDewasa aplikasi = new RMPenilaianAwalMedisRanapDewasa(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRanapDewasa(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8429,8 +7675,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRanapKandunganActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRanapKandungan aplikasi = new RMPenilaianAwalMedisRanapKandungan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRanapKandungan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8438,8 +7683,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanKandunganActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanKandungan aplikasi = new RMPenilaianAwalMedisRalanKandungan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanKandungan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8447,8 +7691,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisIGD aplikasi = new RMPenilaianAwalMedisIGD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisIGD(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8456,8 +7699,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanBayiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanAnak aplikasi = new RMPenilaianAwalMedisRalanAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanAnak(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8465,23 +7707,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBPJSReferensiPoliHFISActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiPoliHFIS form = new BPJSCekReferensiPoliHFIS(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiPoliHFIS(this, false));
     }
 
     private void btnBPJSReferensiDokterHFISActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiDokterHFIS form = new BPJSCekReferensiDokterHFIS(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiDokterHFIS(this, false));
     }
 
     private void btnBPJSReferensiJadwalHFISActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekReferensiJadwalHFIS form = new BPJSCekReferensiJadwalHFIS(this, false);
-        showForm(form);
+        showForm(() -> new BPJSCekReferensiJadwalHFIS(this, false));
     }
 
     private void btnFisioterapiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianFisioterapi aplikasi = new RMPenilaianFisioterapi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianFisioterapi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8489,72 +7727,59 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBPJSProgramPRBActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSProgramPRB aplikasi = new BPJSProgramPRB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new BPJSProgramPRB(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBPJSSuplesiJasaRaharjaActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekSuplesiJasaRaharja aplikasi = new BPJSCekSuplesiJasaRaharja(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSCekSuplesiJasaRaharja(this, false));
     }
 
     private void btnBPJSDataIndukKecelakaanActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekDataIndukKecelakaan aplikasi = new BPJSCekDataIndukKecelakaan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSCekDataIndukKecelakaan(this, false));
     }
 
     private void btnBPJSDataSEPInternalActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekDataSEPInternal aplikasi = new BPJSCekDataSEPInternal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSCekDataSEPInternal(this, false));
     }
 
     private void btnBPJSKlaimJasaRaharjaActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSCekKlaimJasaRaharja aplikasi = new BPJSCekKlaimJasaRaharja(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSCekKlaimJasaRaharja(this, false));
     }
 
     private void btnBPJSPasienFingerActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSDataFingerPrintPasien aplikasi = new BPJSDataFingerPrintPasien(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSDataFingerPrintPasien(this, false));
     }
 
     private void btnBPJSRujukanKhususActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSRujukanKhusus aplikasi = new BPJSRujukanKhusus(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSRujukanKhusus(this, false));
     }
 
     private void btnPemeliharaanGedungActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisPemeliharaanGedung aplikasi = new InventarisPemeliharaanGedung(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new InventarisPemeliharaanGedung(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnGrafikPerbaikanInventarisPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPerbaikanInventarisPerTanggal aplikasi = new GrafikPerbaikanInventarisPerTanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPerbaikanInventarisPerTanggal(this, true));
     }
 
     private void btnGrafikPerbaikanInventarisPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPerbaikanInventarisPerBulan aplikasi = new GrafikPerbaikanInventarisPerBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPerbaikanInventarisPerBulan(this, true));
     }
 
     private void btnGrafikPerbaikanInventarisPerTahunActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPerbaikanInventarisPerTahun aplikasi = new GrafikPerbaikanInventarisPerTahun(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPerbaikanInventarisPerTahun(this, true));
     }
 
     private void btnGrafikPerbaikanInventarisPerPelaksanaStatusActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikPerbaikanInventarisPerPelaksanaStatus aplikasi = new GrafikPerbaikanInventarisPerPelaksanaStatus(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikPerbaikanInventarisPerPelaksanaStatus(this, true));
     }
 
     private void btnPenilaianMCUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMMCU aplikasi = new RMMCU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMMCU(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8562,147 +7787,125 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPenanggungJawab aplikasi = new DlgPenanggungJawab(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPenanggungJawab(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPeminjamPiutangActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPeminjamPiutang aplikasi = new KeuanganPeminjamPiutang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganPeminjamPiutang(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPiutangLainLainActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangPeminjamanUang aplikasi = new KeuanganPiutangPeminjamanUang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganPiutangPeminjamanUang(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBPJSTaskIDMobileJKNActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSTaskIDMobileJKN aplikasi = new BPJSTaskIDMobileJKN(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSTaskIDMobileJKN(this, false));
     }
 
     private void btnBayarPiutangLainLainActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPiutangPeminjamanUang aplikasi = new KeuanganBayarPiutangPeminjamanUang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganBayarPiutangPeminjamanUang(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPembayaranAkunBayar4ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerAKunBayar4 aplikasi = new DlgPembayaranPerAKunBayar4(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPembayaranPerAKunBayar4(this, false));
     }
 
     private void btnStokAkhirFarmasiPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryStokAkhirFarmasiPerTanggal aplikasi = new InventoryStokAkhirFarmasiPerTanggal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryStokAkhirFarmasiPerTanggal(this, false));
     }
 
     private void btnRiwayatKamarPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        RMRiwayatKamarPasien aplikasi = new RMRiwayatKamarPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMRiwayatKamarPasien(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditKepatuhanAPDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditKepatuhanAPD aplikasi = new DlgAuditKepatuhanAPD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditKepatuhanAPD(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnUjiFungsiKFRActionPerformed(java.awt.event.ActionEvent evt) {
-        RMUjiFungsiKFR aplikasi = new RMUjiFungsiKFR(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMUjiFungsiKFR(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKategoriPengeluaranHarianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKategoriPengeluaran aplikasi = new DlgKategoriPengeluaran(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgKategoriPengeluaran(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKategoriPemasukanLianActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKategoriPemasukan aplikasi = new DlgKategoriPemasukan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgKategoriPemasukan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPembayaranAkunBayar5ActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPembayaranPerAKunBayar5 aplikasi = new DlgPembayaranPerAKunBayar5(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPembayaranPerAKunBayar5(this, false));
     }
 
     private void btnRuangOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRuangOperasi aplikasi = new DlgRuangOperasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgRuangOperasi(this, false), aplikasi -> {
             aplikasi.emptTeks();
             aplikasi.isCek();
         });
     }
 
     private void btnJasaTindakanPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganJasaTindakan aplikasi = new KeuanganJasaTindakan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganJasaTindakan(this, false));
     }
 
     private void btnTelaahResepActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryTelaahResep aplikasi = new InventoryTelaahResep(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new InventoryTelaahResep(this, false), aplikasi -> {
             aplikasi.emptTeks();
             aplikasi.isCek();
         });
     }
 
     private void btnPermintaanResepPulangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPermintaanResepPulang aplikasi = new DlgDaftarPermintaanResepPulang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgDaftarPermintaanResepPulang(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.tampil();
         });
     }
 
     private void btnRekapJasaDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRekapJmDokter rbtindakandokter = new KeuanganRekapJmDokter(this, false);
-        showForm(rbtindakandokter, () -> {
+        showForm(() -> new KeuanganRekapJmDokter(this, false), rbtindakandokter -> {
             rbtindakandokter.isCek();
         });
     }
 
     private void btnStatusDataRMActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgStatusDataRM aplikasi = new DlgStatusDataRM(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgStatusDataRM(this, false));
     }
 
     private void btnRingkasanBiayaObatPasienPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryRingkasanBiayaObatPasienPerTanggal aplikasi = new InventoryRingkasanBiayaObatPasienPerTanggal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new InventoryRingkasanBiayaObatPasienPerTanggal(this, false));
     }
 
     private void btnMasterMasalahKeperawatanIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanIGD form = new MasterMasalahKeperawatanIGD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanIGD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanIGD aplikasi = new RMPenilaianAwalKeperawatanIGD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanIGD(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8710,40 +7913,33 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBPJSReferensiDPHOApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiDPHO form = new ApotekBPJSCekReferensiDPHO(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiDPHO(this, false));
     }
 
     private void btnBPJSReferensiPoliApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiPoli form = new ApotekBPJSCekReferensiPoli(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiPoli(this, false));
     }
 
     private void btnBayarJMDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarJMDokter form = new KeuanganBayarJMDokter(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganBayarJMDokter(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnBPJSReferensiFaskesApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiFaskes form = new ApotekBPJSCekReferensiFaskes(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiFaskes(this, false));
     }
 
     private void btnBPJSReferensiSpesialistikApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiSpesialistik form = new ApotekBPJSCekReferensiSpesialistik(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiSpesialistik(this, false));
     }
 
     private void btnPembayaranBRIVAActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBRIVA form = new DlgLhtBRIVA(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtBRIVA(this, false));
     }
 
     private void btnPenilaianAwalKeperawatanRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRanap aplikasi = new RMPenilaianAwalKeperawatanRanap(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRanap(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8751,134 +7947,113 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnAkunBayarHutangActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAkunBayarHutang form = new DlgAkunBayarHutang(this, false);
-        showForm(form);
+        showForm(() -> new DlgAkunBayarHutang(this, false));
     }
 
     private void btnNilaiPenerimaanVendorFarmasiPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryNilaiPenerimaanVendorFarmasiPerBulan form = new InventoryNilaiPenerimaanVendorFarmasiPerBulan(this, false);
-        showForm(form);
+        showForm(() -> new InventoryNilaiPenerimaanVendorFarmasiPerBulan(this, false));
     }
 
     private void btnMasterRencanaKeperawatanActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatan form = new MasterRencanaKeperawatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLaporanTahunanIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanTahunanIGD aplikasi = new LaporanTahunanIGD(this, true);
-        showForm(aplikasi, () -> {
+        showForm(() -> new LaporanTahunanIGD(this, true), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnObatBHPTidakBergerakActionPerformed(java.awt.event.ActionEvent evt) {
-        InventoryObatBHPTidakBergerak aplikasi = new InventoryObatBHPTidakBergerak(this, true);
-        showForm(aplikasi, () -> aplikasi.isCek());
+        showForm(() -> new InventoryObatBHPTidakBergerak(this, true), aplikasi -> aplikasi.isCek());
     }
 
     private void btnRingkasanHutangVendorFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanHutangVendorFarmasi aplikasi = new KeuanganRingkasanHutangVendorFarmasi(this, true);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRingkasanHutangVendorFarmasi(this, true));
     }
 
     private void btnNilaiPenerimaanVendorNonMedisPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        IPSRSNilaiPenerimaanVendorNonMedisPerBulan form = new IPSRSNilaiPenerimaanVendorNonMedisPerBulan(this, false);
-        showForm(form);
+        showForm(() -> new IPSRSNilaiPenerimaanVendorNonMedisPerBulan(this, false));
     }
 
     private void btnRingkasanHutangVendorBarangNonMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanHutangVendorNonMedis aplikasi = new KeuanganRingkasanHutangVendorNonMedis(this, true);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRingkasanHutangVendorNonMedis(this, true));
     }
 
     private void btnAnggotaPolriDirawatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAnggotaPolriDirawat form = new DlgAnggotaPolriDirawat(this, false);
-        showForm(form);
+        showForm(() -> new DlgAnggotaPolriDirawat(this, false));
     }
 
     private void btnDaftarPasienRanapPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDaftarPasienRanapPolri form = new DlgDaftarPasienRanapPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDaftarPasienRanapPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSOAPRalanAnggotaPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSOAPRalanAggotaPolri form = new DlgSOAPRalanAggotaPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSOAPRalanAggotaPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSOAPRanapAnggotaPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSOAPRanapAggotaPolri form = new DlgSOAPRanapAggotaPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSOAPRanapAggotaPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLaporanPenyakitPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLaporanPenyakitPolri form = new DlgLaporanPenyakitPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgLaporanPenyakitPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLaporanPenyakitTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLaporanPenyakitTNI form = new DlgLaporanPenyakitTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgLaporanPenyakitTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanAnak form = new MasterRencanaKeperawatanAnak(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanAnak(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnJumlahPengunjungRalanPolriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJumlahPengunjungRalanPolri form = new DlgJumlahPengunjungRalanPolri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJumlahPengunjungRalanPolri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiIGD form = new RMDataCatatanObservasiIGD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiIGD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiRanap form = new RMDataCatatanObservasiRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiRanapKebidananActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiRanapKebidanan form = new RMDataCatatanObservasiRanapKebidanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiRanapKebidanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiRanapPostPartumActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiRanapPostPartum form = new RMDataCatatanObservasiRanapPostPartum(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiRanapPostPartum(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalMedisRalanTHTActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanTHT aplikasi = new RMPenilaianAwalMedisRalanTHT(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanTHT(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8886,15 +8061,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnAuditCuciTanganMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditCuciTanganMedis aplikasi = new DlgAuditCuciTanganMedis(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditCuciTanganMedis(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianPsikologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPsikologi aplikasi = new RMPenilaianPsikologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianPsikologi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -8902,108 +8075,93 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRuangAuditKepatuhanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRuangAuditKepatuhan ktginventaris = new DlgRuangAuditKepatuhan(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new DlgRuangAuditKepatuhan(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnAuditPembuanganLimbahActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPembuanganLimbah aplikasi = new DlgAuditPembuanganLimbah(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPembuanganLimbah(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditPembuanganBendaTajamActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPembuanganBendaTajam aplikasi = new DlgAuditPembuanganBendaTajam(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPembuanganBendaTajam(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditPenangananDarahActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPenangananDarah aplikasi = new DlgAuditPenangananDarah(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPenangananDarah(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditPengelolaanLinenKotorActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPengelolaanLinenKotor aplikasi = new DlgAuditPengelolaanLinenKotor(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPengelolaanLinenKotor(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditPenempatanPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPenempatanPasien aplikasi = new DlgAuditPenempatanPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPenempatanPasien(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditKamarJenazahActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditKamarJenazah aplikasi = new DlgAuditKamarJenazah(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditKamarJenazah(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditBundleIADPActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditBundleIADP aplikasi = new DlgAuditBundleIADP(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditBundleIADP(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditBundleIDOActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditBundleIDO aplikasi = new DlgAuditBundleIDO(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditBundleIDO(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditFasilitasKebersihanTanganActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditFasilitasKebersihanTangan aplikasi = new DlgAuditFasilitasKebersihanTangan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditFasilitasKebersihanTangan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditFasilitasAPDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditFasilitasAPD aplikasi = new DlgAuditFasilitasAPD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditFasilitasAPD(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditPembuanganLimbahCairInfeksiusActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditPembuanganLimbahCairInfeksius aplikasi = new DlgAuditPembuanganLimbahCairInfeksius(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditPembuanganLimbahCairInfeksius(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditSterilisasiAlatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditSterilisasiAlat aplikasi = new DlgAuditSterilisasiAlat(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditSterilisasiAlat(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPersetujuanPenolakanTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPersetujuanPenolakanTindakan aplikasi = new SuratPersetujuanPenolakanTindakan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPersetujuanPenolakanTindakan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.setTampil();
         });
     }
 
     private void btnPenilaianAwalMedisRalanPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanPsikiatrik aplikasi = new RMPenilaianAwalMedisRalanPsikiatrik(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanPsikiatrik(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9011,39 +8169,33 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnAuditBundleISKActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditBundleISK aplikasi = new DlgAuditBundleISK(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditBundleISK(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditBundlePLABSIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditBundlePLABSI aplikasi = new DlgAuditBundlePLABSI(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditBundlePLABSI(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAuditBundleVAPActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgAuditBundleVAP aplikasi = new DlgAuditBundleVAP(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgAuditBundleVAP(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnAkunRekeningHtHBankPapuaActionPerformed(java.awt.event.ActionEvent evt) {
-        AkunRekeningBankPapua form = new AkunRekeningBankPapua(this, false);
-        showForm(form);
+        showForm(() -> new AkunRekeningBankPapua(this, false));
     }
 
     private void btnPembayaranBankPapuaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBankPapua form = new DlgLhtBankPapua(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtBankPapua(this, false));
     }
 
     private void btnPenilaianAwalMedisRalanPenyakitDalamActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanPenyakitDalam aplikasi = new RMPenilaianAwalMedisRalanPenyakitDalam(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanPenyakitDalam(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9051,8 +8203,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanMataActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanMata aplikasi = new RMPenilaianAwalMedisRalanMata(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanMata(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9060,8 +8211,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanNeurologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanNeurologi aplikasi = new RMPenilaianAwalMedisRalanNeurologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanNeurologi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9069,8 +8219,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanOrthopediActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanOrthopedi aplikasi = new RMPenilaianAwalMedisRalanOrthopedi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanOrthopedi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9078,8 +8227,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanBedahActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanBedah aplikasi = new RMPenilaianAwalMedisRalanBedah(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanBedah(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9087,78 +8235,67 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSOAPRalanAnggotaTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSOAPRalanAggotaTNI form = new DlgSOAPRalanAggotaTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSOAPRalanAggotaTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSOAPRanapAnggotaTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgSOAPRanapAggotaTNI form = new DlgSOAPRanapAggotaTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgSOAPRanapAggotaTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnJumlahPengunjungRalanTNIActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgJumlahPengunjungRalanTNI form = new DlgJumlahPengunjungRalanTNI(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgJumlahPengunjungRalanTNI(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanKeperawatanRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanKeperawatanRanap form = new RMDataCatatanKeperawatanRanap(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanKeperawatanRanap(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanKeperawatanRalanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanKeperawatanRalan form = new RMDataCatatanKeperawatanRalan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanKeperawatanRalan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanGigiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanGigi form = new MasterRencanaKeperawatanGigi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanGigi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanMataActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanMata form = new MasterRencanaKeperawatanMata(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanMata(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanIGDActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanIGD form = new MasterRencanaKeperawatanIGD(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanIGD(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterMasalahKeperawatanPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanPsikiatri form = new MasterMasalahKeperawatanPsikiatri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanPsikiatri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanPsikiatri form = new MasterRencanaKeperawatanPsikiatri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanPsikiatri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanRalanPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRalanPsikiatri aplikasi = new RMPenilaianAwalKeperawatanRalanPsikiatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRalanPsikiatri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9166,24 +8303,21 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPemantauanPEWSAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPemantauanPEWS aplikasi = new RMPemantauanPEWS(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPemantauanPEWS(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPemantauanPEWSDewasaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPemantauanEWSD aplikasi = new RMPemantauanEWSD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPemantauanEWSD(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnMasterTemplateHasilRadiologiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTemplateHasilRadiologi form = new MasterTemplateHasilRadiologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTemplateHasilRadiologi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9191,15 +8325,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnLaporanBulananIRJActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanBulananIRJ aplikasi = new LaporanBulananIRJ(this, true);
-        showForm(aplikasi, () -> {
+        showForm(() -> new LaporanBulananIRJ(this, true), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMasterTemplatePemeriksaanDokterActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTemplatePemeriksaanDokter form = new MasterTemplatePemeriksaanDokter(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTemplatePemeriksaanDokter(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9207,8 +8339,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianPreOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPreOperasi form = new RMPenilaianPreOperasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMPenilaianPreOperasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9216,8 +8347,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianPreAnastesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPreAnastesi form = new RMPenilaianPreAnastesi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMPenilaianPreAnastesi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9225,44 +8355,38 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPersetujuanPulangAtasPermintanSendiriActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPulangAtasPermintaanSendiri aplikasi = new SuratPulangAtasPermintaanSendiri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPulangAtasPermintaanSendiri(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPerencanaanPemulanganActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPerencanaanPemulangan aplikasi = new RMPerencanaanPemulangan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPerencanaanPemulangan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.setTampil();
         });
     }
 
     private void btnPenilaianRisikoJatuhDewasaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanRisikoJatuhDewasa aplikasi = new RMPenilaianLanjutanRisikoJatuhDewasa(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanRisikoJatuhDewasa(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianRisikoJatuhAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanRisikoJatuhAnak aplikasi = new RMPenilaianLanjutanRisikoJatuhAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanRisikoJatuhAnak(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianRisikoJatuhLansiaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanRisikoJatuhLansia aplikasi = new RMPenilaianLanjutanRisikoJatuhLansia(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanRisikoJatuhLansia(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianAwalMedisRalanGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanGeriatri aplikasi = new RMPenilaianAwalMedisRalanGeriatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanGeriatri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9270,8 +8394,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianTambahanGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianTambahanGeriatri aplikasi = new RMPenilaianTambahanGeriatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianTambahanGeriatri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9279,16 +8402,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningNutrisiDewasaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningNutrisiDewasa aplikasi = new RMSkriningNutrisiDewasa(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningNutrisiDewasa(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnHasilPemeriksaanUSGActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanUSG aplikasi = new RMHasilPemeriksaanUSG(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMHasilPemeriksaanUSG(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9296,307 +8417,261 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningNutrisiLansiaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningNutrisiLansia aplikasi = new RMSkriningNutrisiLansia(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningNutrisiLansia(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSkriningNutrisiAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningNutrisiAnak aplikasi = new RMSkriningNutrisiAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningNutrisiAnak(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnAkunRekeningHtHBankJabarActionPerformed(java.awt.event.ActionEvent evt) {
-        AkunRekeningBankJabar form = new AkunRekeningBankJabar(this, false);
-        showForm(form);
+        showForm(() -> new AkunRekeningBankJabar(this, false));
     }
 
     private void btnPembayaranBankJabarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBankJabar form = new DlgLhtBankJabar(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtBankJabar(this, false));
     }
 
     private void btnPernyataanPasienUmumActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPernyataanPasienUmum aplikasi = new SuratPernyataanPasienUmum(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPernyataanPasienUmum(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKonselingFarmasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMKonselingFarmasi aplikasi = new RMKonselingFarmasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMKonselingFarmasi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPelayananInformasiObatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPermintaanPelayananInformasiObat aplikasi = new DlgPermintaanPelayananInformasiObat(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPermintaanPelayananInformasiObat(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPersetujuanUmumActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPersetujuanUmum aplikasi = new SuratPersetujuanUmum(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPersetujuanUmum(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnTransferPasienAntarRuangActionPerformed(java.awt.event.ActionEvent evt) {
-        RMTransferPasienAntarRuang aplikasi = new RMTransferPasienAntarRuang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMTransferPasienAntarRuang(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.setTampil();
         });
     }
 
     private void btnReferensiDokterSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatReferensiPraktisi aplikasi = new SatuSehatReferensiPraktisi(this, false);
-        showForm(aplikasi);
+        showForm(() -> new SatuSehatReferensiPraktisi(this, false));
     }
 
     private void btnReferensiPasienSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatReferensiPasien aplikasi = new SatuSehatReferensiPasien(this, false);
-        showForm(aplikasi);
+        showForm(() -> new SatuSehatReferensiPasien(this, false));
     }
 
     private void btnMappingOrganisasiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingOrganisasi aplikasi = new SatuSehatMapingOrganisasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingOrganisasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMappingLokasiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingLokasi aplikasi = new SatuSehatMapingLokasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingLokasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimEncounterSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimEncounter aplikasi = new SatuSehatKirimEncounter(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimEncounter(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimEpisodeOfCareSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimEpisodeOfCare aplikasi = new SatuSehatKirimEpisodeOfCare(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimEpisodeOfCare(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnCatatanCekGDSActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanCekGDS aplikasi = new RMDataCatatanCekGDS(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataCatatanCekGDS(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimConditionSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimCondition aplikasi = new SatuSehatKirimCondition(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimCondition(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnChecklistPreOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistPreOperasi aplikasi = new RMChecklistPreOperasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistPreOperasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimObservationTTVSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimObservationTTV aplikasi = new SatuSehatKirimObservationTTV(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimObservationTTV(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSignInSebelumAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSignInSebelumAnastesi aplikasi = new RMSignInSebelumAnastesi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSignInSebelumAnastesi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimProcedureSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimProcedure aplikasi = new SatuSehatKirimProcedure(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimProcedure(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnOperasiPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgOperasiPerBulan aplikasi = new DlgOperasiPerBulan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgOperasiPerBulan(this, false));
     }
 
     private void btnTimeOutSebelumInsisiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMTimeOutSebelumInsisi aplikasi = new RMTimeOutSebelumInsisi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMTimeOutSebelumInsisi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurBarang form = new DapurBarang(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurBarang(this, false), form -> {
             form.emptTeks();
             form.onCari();
         });
     }
 
     private void btnSignOutSebelumMenutupLukaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSignOutSebelumMenutupLuka aplikasi = new RMSignOutSebelumMenutupLuka(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSignOutSebelumMenutupLuka(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnOpnameDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurInputStok form = new DapurInputStok(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurInputStok(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuplierDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurSuplier form = new DapurSuplier(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurSuplier(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingVaksinSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingVaksin aplikasi = new SatuSehatMapingVaksin(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingVaksin(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimVaksinSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimVaksin aplikasi = new SatuSehatKirimVaksin(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimVaksin(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPembelianDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurPembelian pembelian = new DapurPembelian(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new DapurPembelian(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnChecklistPostOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistPostOperasi aplikasi = new RMChecklistPostOperasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistPostOperasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPengeluaranDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurPengeluaran pengeluaran = new DapurPengeluaran(this, false);
-        showForm(pengeluaran, () -> {
+        showForm(() -> new DapurPengeluaran(this, false), pengeluaran -> {
             pengeluaran.isCek();
         });
     }
 
     private void btnRiwayatBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRiwayatBarang sirkulasi = new DapurRiwayatBarang(this, false);
-        showForm(sirkulasi, () -> {
+        showForm(() -> new DapurRiwayatBarang(this, false), sirkulasi -> {
             sirkulasi.isCek();
         });
     }
 
     private void btnPermintaanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurPermintaan form = new DapurPermintaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurPermintaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRBiayaDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRBiayaHarian form = new DapurRBiayaHarian(this, false);
-        showForm(form);
+        showForm(() -> new DapurRBiayaHarian(this, false));
     }
 
     private void btnRekapPengadaanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRHPembelian form = new DapurRHPembelian(this, false);
-        showForm(form);
+        showForm(() -> new DapurRHPembelian(this, false));
     }
 
     private void btnLimbahB3MedisCairActionPerformed(java.awt.event.ActionEvent evt) {
-        KeslingLimbahB3MedisCair form = new KeslingLimbahB3MedisCair(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeslingLimbahB3MedisCair(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnGrafikLimbahB3MedisCairPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahB3CairPertanggal aplikasi = new GrafikKeslingLimbahB3CairPertanggal(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahB3CairPertanggal(this, true));
     }
 
     private void btnGrafikLimbahB3MedisCairPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        GrafikKeslingLimbahB3CairBulan aplikasi = new GrafikKeslingLimbahB3CairBulan(this, true);
-        showForm(aplikasi);
+        showForm(() -> new GrafikKeslingLimbahB3CairBulan(this, true));
     }
 
     private void btnRekapBiayaRegistrasiActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRekapBiayaRegistrasi aplikasi = new DlgRekapBiayaRegistrasi(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRekapBiayaRegistrasi(this, false));
     }
 
     private void btnRekonsiliasiObatActionPerformed(java.awt.event.ActionEvent evt) {
-        RMCariRekonsiliasiObat aplikasi = new RMCariRekonsiliasiObat(this, false);
-        showForm(aplikasi);
+        showForm(() -> new RMCariRekonsiliasiObat(this, false));
     }
 
     private void btnKirimClinicalImpressionSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimClinicalImpression aplikasi = new SatuSehatKirimClinicalImpression(this, false);
-        showForm(aplikasi);
+        showForm(() -> new SatuSehatKirimClinicalImpression(this, false));
     }
 
     private void btnPenilaianPasienTerminalActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPasienTerminal aplikasi = new RMPenilaianPasienTerminal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new RMPenilaianPasienTerminal(this, false));
     }
 
     private void btnPersetujuanRawatInapActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPersetujuanRawatInap aplikasi = new SuratPersetujuanRawatInap(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPersetujuanRawatInap(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnMonitoringReaksiTranfusiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataMonitoringReaksiTranfusi aplikasi = new RMDataMonitoringReaksiTranfusi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataMonitoringReaksiTranfusi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianKorbanKekerasanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianKorbanKekerasan aplikasi = new RMPenilaianKorbanKekerasan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianKorbanKekerasan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9604,16 +8679,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningManagerPelayananPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningMPP aplikasi = new RMSkriningMPP(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningMPP(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSkriningMPPFormAActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningMPPFormA aplikasi = new RMSkriningMPPFormA(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningMPPFormA(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9621,16 +8694,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningMPPFormBActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningMPPFormB aplikasi = new RMSkriningMPPFormB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMSkriningMPPFormB(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianPasienPenyakitMenularActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPasienPenyakitMenular aplikasi = new RMPenilaianPasienPenyakitMenular(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianPasienPenyakitMenular(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9638,61 +8709,53 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnEdukasiPasienKeluargaRJActionPerformed(java.awt.event.ActionEvent evt) {
-        RMEdukasiPasienKeluargaRawatJalan aplikasi = new RMEdukasiPasienKeluargaRawatJalan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMEdukasiPasienKeluargaRawatJalan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnBPJSAntreanPerTanggalMobileJKNActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSAntreanPerTanggal aplikasi = new BPJSAntreanPerTanggal(this, false);
-        showForm(aplikasi);
+        showForm(() -> new BPJSAntreanPerTanggal(this, false));
     }
 
     private void btnPenilaianTambahanBunuhDiriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianTambahanBunuhDiri aplikasi = new RMPenilaianTambahanBunuhDiri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianTambahanBunuhDiri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianTambahanPerilakuKekerasanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianTambahanPerilakuKekerasan aplikasi = new RMPenilaianTambahanPerilakuKekerasan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianTambahanPerilakuKekerasan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianTambahanMelarikanDiriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianTambahanMelarikanDiri aplikasi = new RMPenilaianTambahanMelarikanDiri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianTambahanMelarikanDiri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPersetujuanPenundaanPelayananActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPersetujuanPenundaanPelayanan aplikasi = new SuratPersetujuanPenundaanPelayanan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPersetujuanPenundaanPelayanan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSisaDietPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanSisaDietPasien aplikasi = new LaporanSisaDietPasien(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new LaporanSisaDietPasien(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianAwalMedisRalanBedahMulutActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanBedahMulut aplikasi = new RMPenilaianAwalMedisRalanBedahMulut(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanBedahMulut(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9700,8 +8763,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianPasienKeracunanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPasienKeracunan aplikasi = new RMPenilaianPasienKeracunan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianPasienKeracunan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9709,38 +8771,33 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPemantauanMEOWSActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPemantauanMEOWS aplikasi = new RMPemantauanMEOWS(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPemantauanMEOWS(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnCatatanADIMEGiziActionPerformed(java.awt.event.ActionEvent evt) {
-        RMCatatanADIMEGizi form = new RMCatatanADIMEGizi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMCatatanADIMEGizi(this, false), form -> {
             form.isCek();
             form.tampil();
         });
     }
 
     private void btnMasterMasalahKeperawatanGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanGeriatri form = new MasterMasalahKeperawatanGeriatri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanGeriatri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanGeriatri form = new MasterRencanaKeperawatanGeriatri(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanGeriatri(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanRalanGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRalanGeriatri aplikasi = new RMPenilaianAwalKeperawatanRalanGeriatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRalanGeriatri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9748,50 +8805,43 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnChecklistKriteriaMasukHCUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaMasukHCU aplikasi = new RMChecklistKriteriaMasukHCU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaMasukHCU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnChecklistKriteriaKeluarHCUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaKeluarHCU aplikasi = new RMChecklistKriteriaKeluarHCU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaKeluarHCU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianRisikoDekubitusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianRisikoDekubitus aplikasi = new RMPenilaianRisikoDekubitus(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianRisikoDekubitus(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMasterMenolakAnjuranMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMenolakAnjuranMedis form = new MasterMenolakAnjuranMedis(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMenolakAnjuranMedis(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenolakanAnjuranMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPenolakanAnjuranMedis aplikasi = new SuratPenolakanAnjuranMedis(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPenolakanAnjuranMedis(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnLaporanTahunanPenolakanAnjuranMedisActionPerformed(java.awt.event.ActionEvent evt) {
-        LaporanTahunanPAM aplikasi = new LaporanTahunanPAM(this, true);
-        showForm(aplikasi, () -> {
+        showForm(() -> new LaporanTahunanPAM(this, true), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMasterTemplateLaporanOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTemplateLaporanOperasi form = new MasterTemplateLaporanOperasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTemplateLaporanOperasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9799,8 +8849,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnDokumentasiTindakanESWLActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilTindakanESWL form = new RMHasilTindakanESWL(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilTindakanESWL(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -9808,88 +8857,75 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnChecklistKriteriaMasukICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaMasukICU aplikasi = new RMChecklistKriteriaMasukICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaMasukICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnChecklistKriteriaKeluarICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaKeluarICU aplikasi = new RMChecklistKriteriaKeluarICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaKeluarICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnDataFollowUpDBDActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataFollowUpDBD aplikasi = new RMDataFollowUpDBD(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataFollowUpDBD(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPengajuanBiayaKuanganActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPengajuanBiaya form = new KeuanganPengajuanBiaya(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganPengajuanBiaya(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianRisikoJatuhNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianRisikoJatuhNeonatus aplikasi = new RMPenilaianRisikoJatuhNeonatus(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianRisikoJatuhNeonatus(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPemeriksaanFisikRalanPerPenyakitActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPemeriksaanFisikRalanPerPenyakit aplikasi = new DlgPemeriksaanFisikRalanPerPenyakit(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgPemeriksaanFisikRalanPerPenyakit(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianRisikoJatuhGeriatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanRisikoJatuhGeriatri aplikasi = new RMPenilaianLanjutanRisikoJatuhGeriatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanRisikoJatuhGeriatri(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPersetujuanPengajuanBiayaActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPersetujuanPengajuanBiaya aplikasi = new KeuanganPersetujuanPengajuanBiaya(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganPersetujuanPengajuanBiaya(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPemantauanEWSNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPemantauanEWSNeonatus aplikasi = new RMPemantauanEWSNeonatus(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPemantauanEWSNeonatus(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnValidasiPersetujuanPengajuanBiayaActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiPersetujuanPengajuanBiaya aplikasi = new KeuanganValidasiPersetujuanPengajuanBiaya(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganValidasiPersetujuanPengajuanBiaya(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnRiwayatPerawatanICareActionPerformed(java.awt.event.ActionEvent evt) {
-        ICareRiwayatPerawatan aplikasi = new ICareRiwayatPerawatan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new ICareRiwayatPerawatan(this, false));
     }
 
     private void btnRekapPengajuanBiayaActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRekapPengajuanBiaya aplikasi = new KeuanganRekapPengajuanBiaya(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRekapPengajuanBiaya(this, false));
     }
 
     private void btnPenilaianAwalMedisRalanKulitKelaminActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanKulitDanKelamin aplikasi = new RMPenilaianAwalMedisRalanKulitDanKelamin(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanKulitDanKelamin(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9897,23 +8933,20 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHostToHostBankMandiriActionPerformed(java.awt.event.ActionEvent evt) {
-        AkunRekeningBankMandiri aplikasi = new AkunRekeningBankMandiri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new AkunRekeningBankMandiri(this, false), aplikasi -> {
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianLevelKecemasanRanapAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLevelKecemasanRanapAnak aplikasi = new RMPenilaianLevelKecemasanRanapAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLevelKecemasanRanapAnak(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianAwalMedisHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisHemodialisa aplikasi = new RMPenilaianAwalMedisHemodialisa(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisHemodialisa(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9921,22 +8954,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianRisikoJatuhPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanRisikoJatuhPsikiatri aplikasi = new RMPenilaianLanjutanRisikoJatuhPsikiatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanRisikoJatuhPsikiatri(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianLanjutanSkriningFungsionalActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianLanjutanSkriningFungsional aplikasi = new RMPenilaianLanjutanSkriningFungsional(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianLanjutanSkriningFungsional(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianAwalMedisRalanRehabMedikActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanRehabMedik aplikasi = new RMPenilaianAwalMedisRalanRehabMedik(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanRehabMedik(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9944,8 +8974,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnTemplatePersetujuanPenolakanTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTemplatePersetujuanPenolakanTindakan aplikasi = new MasterTemplatePersetujuanPenolakanTindakan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new MasterTemplatePersetujuanPenolakanTindakan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9953,8 +8982,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanIGDPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisIGDPsikiatri aplikasi = new RMPenilaianAwalMedisIGDPsikiatri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisIGDPsikiatri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -9962,38 +8990,32 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBPJSReferensiSettingPPKApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiSettingPPK form = new ApotekBPJSCekReferensiSettingPPK(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiSettingPPK(this, false));
     }
 
     private void btnBPJSReferensiObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSCekReferensiObat form = new ApotekBPJSCekReferensiObat(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSCekReferensiObat(this, false));
     }
 
     private void btnPembayaranBankMandiriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtBankMandiri form = new DlgLhtBankMandiri(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtBankMandiri(this, false));
     }
 
     private void btnBPJSMapingObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSMapingObat form = new ApotekBPJSMapingObat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new ApotekBPJSMapingObat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianUlangNyeriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianUlangNyeri aplikasi = new RMPenilaianUlangNyeri(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianUlangNyeri(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianTerapiWicaraActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianTerapiWicara aplikasi = new RMPenilaianTerapiWicara(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianTerapiWicara(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10001,26 +9023,22 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPengkajianRestrainActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPengkajianRestrain aplikasi = new RMPengkajianRestrain(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPengkajianRestrain(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnBPJSKunjunganSEPApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSKunjunganSEP form = new ApotekBPJSKunjunganSEP(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSKunjunganSEP(this, false));
     }
 
     private void btnBPJSMonitoringKlaimApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSMonitoringKlaim form = new ApotekBPJSMonitoringKlaim(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSMonitoringKlaim(this, false));
     }
 
     private void btnPenilaianAwalMedisRalanParuActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanParu aplikasi = new RMPenilaianAwalMedisRalanParu(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanParu(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10028,13 +9046,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBPJSDaftarPelayananObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSDaftarPelayananObat form = new ApotekBPJSDaftarPelayananObat(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSDaftarPelayananObat(this, false));
     }
 
     private void btnCatatanPersalinanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMCatatanPersalinan aplikasi = new RMCatatanPersalinan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMCatatanPersalinan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10042,32 +9058,28 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkorAldrettePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMMonitoringAldrettePascaAnestesi aplikasi = new RMMonitoringAldrettePascaAnestesi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMMonitoringAldrettePascaAnestesi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSkorStewardPascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMMonitoringStewardPascaAnestesi aplikasi = new RMMonitoringStewardPascaAnestesi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMMonitoringStewardPascaAnestesi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSkorBromagePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMMonitoringBromagePascaAnestesi aplikasi = new RMMonitoringBromagePascaAnestesi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMMonitoringBromagePascaAnestesi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPenilaianPreInduksiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPreInduksi form = new RMPenilaianPreInduksi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMPenilaianPreInduksi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10075,8 +9087,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilUSGUrologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanUSGUrologi form = new RMHasilPemeriksaanUSGUrologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanUSGUrologi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10084,8 +9095,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilUSGGynecologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanUSGGynecologi form = new RMHasilPemeriksaanUSGGynecologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanUSGGynecologi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10093,8 +9103,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilPemeriksaanEKGActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanEKG form = new RMHasilPemeriksaanEKG(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanEKG(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10102,41 +9111,35 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKirimDietSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimDiet aplikasi = new SatuSehatKirimDiet(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimDiet(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMappingObatSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingObatAlkes aplikasi = new SatuSehatMapingObatAlkes(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingObatAlkes(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnRingkasanPengadaanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanPengadaanBarang aplikasi = new DapurRingkasanPengadaanBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanPengadaanBarang(this, false));
     }
 
     private void btnKirimMedicationSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimMedication aplikasi = new SatuSehatKirimMedication(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimMedication(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimMedicationRequestSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimMedicationRequest aplikasi = new SatuSehatKirimMedicationRequest(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimMedicationRequest(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenatalaksanaanTerapiOkupasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenatalaksanaanTerapiOkupasi form = new RMPenatalaksanaanTerapiOkupasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMPenatalaksanaanTerapiOkupasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10144,15 +9147,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKirimMedicationDispenseSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimMedicationDispense aplikasi = new SatuSehatKirimMedicationDispense(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimMedicationDispense(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnHasilUSGNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanUSGNeonatus form = new RMHasilPemeriksaanUSGNeonatus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanUSGNeonatus(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10160,8 +9161,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilEndoskopiFaringLaringActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilEndoskopiFaringLaring form = new RMHasilEndoskopiFaringLaring(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilEndoskopiFaringLaring(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10169,22 +9169,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnMappingRadiologiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingRadiologi aplikasi = new SatuSehatMapingRadiologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingRadiologi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimServiceRequestRadiologiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimServiceRequestRadiologi aplikasi = new SatuSehatKirimServiceRequestRadiologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimServiceRequestRadiologi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnHasilEndoskopiHidungActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilEndoskopiHidung form = new RMHasilEndoskopiHidung(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilEndoskopiHidung(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10192,29 +9189,25 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKirimSpecimenRadiologiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimSpecimenRadiologi aplikasi = new SatuSehatKirimSpecimenRadiologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimSpecimenRadiologi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnMasterMasalahKeperawatanNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterMasalahKeperawatanNeonatus form = new MasterMasalahKeperawatanNeonatus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterMasalahKeperawatanNeonatus(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMasterRencanaKeperawatanNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterRencanaKeperawatanNeonatus form = new MasterRencanaKeperawatanNeonatus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterRencanaKeperawatanNeonatus(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanRanapNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRanapNeonatus aplikasi = new RMPenilaianAwalKeperawatanRanapNeonatus(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRanapNeonatus(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10222,22 +9215,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnKirimObservationRadiologiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimObservationRadiologi aplikasi = new SatuSehatKirimObservationRadiologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimObservationRadiologi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimDiagnosticReportSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimDiagnosticReportRadiologi aplikasi = new SatuSehatKirimDiagnosticReportRadiologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimDiagnosticReportRadiologi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnHasilEndoskopiTelingaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilEndoskopiTelinga form = new RMHasilEndoskopiTelinga(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilEndoskopiTelinga(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10245,86 +9235,73 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnMappingLaboratSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingLaborat aplikasi = new SatuSehatMapingLaborat(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingLaborat(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimServiceRequestLabPKSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimServiceRequestLabPK aplikasi = new SatuSehatKirimServiceRequestLabPK(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimServiceRequestLabPK(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimServiceRequestLabMBSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimServiceRequestLabMB aplikasi = new SatuSehatKirimServiceRequestLabMB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimServiceRequestLabMB(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimSpecimenLabPKSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimSpecimenLabPK aplikasi = new SatuSehatKirimSpecimenLabPK(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimSpecimenLabPK(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimSpecimenLabMBSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimSpecimenLabMB aplikasi = new SatuSehatKirimSpecimenLabMB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimSpecimenLabMB(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimObservationLabPKSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimObservationLabPK aplikasi = new SatuSehatKirimObservationLabPK(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimObservationLabPK(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimObservationLabMBSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimObservationLabMB aplikasi = new SatuSehatKirimObservationLabMB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimObservationLabMB(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimDiagnosticReportLabPKSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimDiagnosticReportLabPK aplikasi = new SatuSehatKirimDiagnosticReportLabPK(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimDiagnosticReportLabPK(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimDiagnosticReportLabMBSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimDiagnosticReportLabMB aplikasi = new SatuSehatKirimDiagnosticReportLabMB(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimDiagnosticReportLabMB(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKepatuhanKelengkapanKeselamatanBedahActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKepatuhanKelengkapanKeselamatanBedah aplikasi = new DlgKepatuhanKelengkapanKeselamatanBedah(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgKepatuhanKelengkapanKeselamatanBedah(this, false));
     }
 
     private void btnNilaiPiutangPerJenisBayarPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganNilaiPiutangPerJenisBayarPerBulan aplikasi = new KeuanganNilaiPiutangPerJenisBayarPerBulan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganNilaiPiutangPerJenisBayarPerBulan(this, false));
     }
 
     private void btnRingkasanPiutangPerJenisBayarActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanPiutangPerJensBayar aplikasi = new KeuanganRingkasanPiutangPerJensBayar(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRingkasanPiutangPerJensBayar(this, false));
     }
 
     private void btnPenilaianPasienImunitasRendahActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPasienImunitasRendah aplikasi = new RMPenilaianPasienImunitasRendah(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianPasienImunitasRendah(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10332,164 +9309,138 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnCatatanKeseimbanganCairanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanKeseimbanganCairan aplikasi = new RMDataCatatanKeseimbanganCairan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataCatatanKeseimbanganCairan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnCatatanObservasiCHBPActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiCHBP form = new RMDataCatatanObservasiCHBP(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiCHBP(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiInduksiPersalinanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiInduksiPersalinan form = new RMDataCatatanObservasiInduksiPersalinan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiInduksiPersalinan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSKPKategoriPenilaianActionPerformed(java.awt.event.ActionEvent evt) {
-        SKPKategoriPenilaian form = new SKPKategoriPenilaian(this, false);
-        showForm(form);
+        showForm(() -> new SKPKategoriPenilaian(this, false));
     }
 
     private void btnSKPKriteriaPenilaianActionPerformed(java.awt.event.ActionEvent evt) {
-        SKPKriteriaPenilaian form = new SKPKriteriaPenilaian(this, false);
-        showForm(form);
+        showForm(() -> new SKPKriteriaPenilaian(this, false));
     }
 
     private void btnReferensiPoliMobileJKNFKTPActionPerformed(java.awt.event.ActionEvent evt) {
-        MobileJKNFKTPReferensiPoli form = new MobileJKNFKTPReferensiPoli(this, false);
-        showForm(form);
+        showForm(() -> new MobileJKNFKTPReferensiPoli(this, false));
     }
 
     private void btnReferensiDokterMobileJKNFKTPActionPerformed(java.awt.event.ActionEvent evt) {
-        MobileJKNFKTPReferensiDokter form = new MobileJKNFKTPReferensiDokter(this, false);
-        showForm(form);
+        showForm(() -> new MobileJKNFKTPReferensiDokter(this, false));
     }
 
     private void btnSKPPenilaianPegawaiActionPerformed(java.awt.event.ActionEvent evt) {
-        SKPPenilaianPegawai form = new SKPPenilaianPegawai(this, false);
-        showForm(form, () -> {
+        showForm(() -> new SKPPenilaianPegawai(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMandiriMetodePembayaranActionPerformed(java.awt.event.ActionEvent evt) {
-        MandiriMetodePembayaran form = new MandiriMetodePembayaran(this, false);
-        showForm(form);
+        showForm(() -> new MandiriMetodePembayaran(this, false));
     }
 
     private void btnMandiriBankTujuanTRansferActionPerformed(java.awt.event.ActionEvent evt) {
-        MandiriBankTujuanTransfer form = new MandiriBankTujuanTransfer(this, false);
-        showForm(form);
+        showForm(() -> new MandiriBankTujuanTransfer(this, false));
     }
 
     private void btnPembayaranPihakKe3BankMandiriActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgLhtPembayaranPihakKe3BankMandiri form = new DlgLhtPembayaranPihakKe3BankMandiri(this, false);
-        showForm(form);
+        showForm(() -> new DlgLhtPembayaranPihakKe3BankMandiri(this, false));
     }
 
     private void btnMandiriKodeTransaksiTujuanTRansferActionPerformed(java.awt.event.ActionEvent evt) {
-        MandiriKodeTransaksiTujuanTransfer form = new MandiriKodeTransaksiTujuanTransfer(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MandiriKodeTransaksiTujuanTransfer(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSKPRekapitulasiPenilaianActionPerformed(java.awt.event.ActionEvent evt) {
-        SKPRekapitulasiPenilaianPegawai form = new SKPRekapitulasiPenilaianPegawai(this, false);
-        showForm(form);
+        showForm(() -> new SKPRekapitulasiPenilaianPegawai(this, false));
     }
 
     private void btnPCareReferensiAlergiActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiAlergi form = new PCareCekReferensiAlergi(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiAlergi(this, false));
     }
 
     private void btnPCareReferensiPrognosaActionPerformed(java.awt.event.ActionEvent evt) {
-        PCareCekReferensiPrognosa form = new PCareCekReferensiPrognosa(this, false);
-        showForm(form);
+        showForm(() -> new PCareCekReferensiPrognosa(this, false));
     }
 
     private void btnKonsultasiMedikActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPermintaanKonsultasiMedik form = new DlgPermintaanKonsultasiMedik(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPermintaanKonsultasiMedik(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDataSasaranUsiaProduktifActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataSasaranUsiaProduktif form = new DlgDataSasaranUsiaProduktif(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDataSasaranUsiaProduktif(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnDataSasaranUsiaLansiaActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDataSasaranUsiaLansia form = new DlgDataSasaranUsiaLansia(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgDataSasaranUsiaLansia(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningMerokokUsiaSekolahActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningMerokokUsiaSekolahRemaja form = new RMSkriningMerokokUsiaSekolahRemaja(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningMerokokUsiaSekolahRemaja(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningKekerasanPadaPerempuanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKekerasanPadaPerempuan form = new RMSkriningKekerasanPadaPerempuan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKekerasanPadaPerempuan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningObesitasActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningObesitas form = new RMSkriningObesitas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningObesitas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningRisikoKankerPayudaraActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningRisikoKankerPayudara form = new RMSkriningRisikoKankerPayudara(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningRisikoKankerPayudara(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningRisikoKankerParuActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningRisikoKankerParu form = new RMSkriningRisikoKankerParu(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningRisikoKankerParu(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningKesehatanGigiMulutRemajaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKesehatanGigiMulutRemaja form = new RMSkriningKesehatanGigiMulutRemaja(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKesehatanGigiMulutRemaja(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningTBCActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningTBC form = new RMSkriningTBC(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningTBC(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPenilaianAwalKeperawatanRanapBayiAnakActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalKeperawatanRanapBayiAnak aplikasi = new RMPenilaianAwalKeperawatanRanapBayiAnak(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalKeperawatanRanapBayiAnak(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10497,29 +9448,25 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnBookingMCUPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgBookingMCUPerusahaan form = new DlgBookingMCUPerusahaan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgBookingMCUPerusahaan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiRestrainNonFramakologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiRestrainNonFarmakologi form = new RMDataCatatanObservasiRestrainNonFarmakologi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiRestrainNonFarmakologi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiVentilatorActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiVentilator form = new RMDataCatatanObservasiVentilator(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiVentilator(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanAnastesiSedasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMCatatanAnastesiSedasi form = new RMCatatanAnastesiSedasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMCatatanAnastesiSedasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10527,188 +9474,158 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningPUMAActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningPUMA form = new RMSkriningPUMA(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningPUMA(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnKirimCarePlanSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimCarePlan aplikasi = new SatuSehatKirimCarePlan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new SatuSehatKirimCarePlan(this, false));
     }
 
     private void btnKirimMedicationStatementSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimMedicationStatement aplikasi = new SatuSehatKirimMedicationStatement(this, false);
-        showForm(aplikasi);
+        showForm(() -> new SatuSehatKirimMedicationStatement(this, false));
     }
 
     private void btnSkriningAdiksiNikotinActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningAdiksiNikotin form = new RMSkriningAdiksiNikotin(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningAdiksiNikotin(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningThalassemiaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningTalasemia form = new RMSkriningTalasemia(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningTalasemia(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningInstrumenSDQActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningInstrumenSDQ form = new RMSkriningInstrumenSDQ(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningInstrumenSDQ(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningInstrumenSRQActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningSRQ form = new RMSkriningSRQ(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningSRQ(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnChecklistPemberianFibrinolitikActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistPemberianFibrinolitik form = new RMChecklistPemberianFibrinolitik(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMChecklistPemberianFibrinolitik(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningKankerKolorektalActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKankerKolorektal form = new RMSkriningKankerKolorektal(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKankerKolorektal(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenerimaanBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurPemesanan pembelian = new DapurPemesanan(this, false);
-        showForm(pembelian, () -> {
+        showForm(() -> new DapurPemesanan(this, false), pembelian -> {
             pembelian.isCek();
         });
     }
 
     private void btnBayarPesanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPemesananDapur bayarpesan = new KeuanganBayarPemesananDapur(this, false);
-        showForm(bayarpesan, () -> {
+        showForm(() -> new KeuanganBayarPemesananDapur(this, false), bayarpesan -> {
             bayarpesan.tampil2();
         });
     }
 
     private void btnHutangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganHutangDapurBelumLunas form = new KeuanganHutangDapurBelumLunas(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganHutangDapurBelumLunas(this, false));
     }
 
     private void btnTagihanHutangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganTagihanDapur form = new KeuanganTagihanDapur(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganTagihanDapur(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnValidasiTagihanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganValidasiTagihanDapur form = new KeuanganValidasiTagihanDapur(this, false);
-        showForm(form);
+        showForm(() -> new KeuanganValidasiTagihanDapur(this, false));
     }
 
     private void btnSuratPemesananDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurSuratPemesanan form = new DapurSuratPemesanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurSuratPemesanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPengajuanBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurPengajuan form = new DapurPengajuan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurPengajuan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnReturBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurReturBeli form = new DapurReturBeli(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DapurReturBeli(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnHibahDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurHibah hibah = new DapurHibah(this, false);
-        showForm(hibah, () -> {
+        showForm(() -> new DapurHibah(this, false), hibah -> {
             hibah.isCek();
         });
     }
 
     private void btnRingkasanPenerimaanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanPenerimaanBarang aplikasi = new DapurRingkasanPenerimaanBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanPenerimaanBarang(this, false));
     }
 
     private void btnRingkasanPengajuanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanPengajuanBarang aplikasi = new DapurRingkasanPengajuanBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanPengajuanBarang(this, false));
     }
 
     private void btnRingkasanPemesananDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanPemesananBarang aplikasi = new DapurRingkasanPemesananBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanPemesananBarang(this, false));
     }
 
     private void btnRingkasanReturBeliDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanReturBeliBarang aplikasi = new DapurRingkasanReturBeliBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanReturBeliBarang(this, false));
     }
 
     private void btnRingkasanStokKeluarDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurRingkasanStokKeluarBarang aplikasi = new DapurRingkasanStokKeluarBarang(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DapurRingkasanStokKeluarBarang(this, false));
     }
 
     private void btnStokKeluarDapurPerTanggalActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurStokKeluarBarangPerTanggal form = new DapurStokKeluarBarangPerTanggal(this, false);
-        showForm(form);
+        showForm(() -> new DapurStokKeluarBarangPerTanggal(this, false));
     }
 
     private void btnSirkulasiDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurSirkulasiBarang form = new DapurSirkulasiBarang(this, false);
-        showForm(form);
+        showForm(() -> new DapurSirkulasiBarang(this, false));
     }
 
     private void btnSirkulasiDapur2ActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurSirkulasiBarang2 form = new DapurSirkulasiBarang2(this, false);
-        showForm(form);
+        showForm(() -> new DapurSirkulasiBarang2(this, false));
     }
 
     private void btnVerifikasiPenerimaanDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurVerifikasiPenerimaan form = new DapurVerifikasiPenerimaan(this, false);
-        showForm(form);
+        showForm(() -> new DapurVerifikasiPenerimaan(this, false));
     }
 
     private void btnNilaiPenerimaanVendorDapurPerBulanActionPerformed(java.awt.event.ActionEvent evt) {
-        DapurNilaiPenerimaanVendorPerBulan form = new DapurNilaiPenerimaanVendorPerBulan(this, false);
-        showForm(form);
+        showForm(() -> new DapurNilaiPenerimaanVendorPerBulan(this, false));
     }
 
     private void btnRingkasanHutangVendorBarangDapurActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanHutangVendorDapur aplikasi = new KeuanganRingkasanHutangVendorDapur(this, true);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRingkasanHutangVendorDapur(this, true));
     }
 
     private void btnPenilaianPsikologiKlinisActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianPsikologiKlinis aplikasi = new RMPenilaianPsikologiKlinis(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianPsikologiKlinis(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10716,8 +9633,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRanapNeonatusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRanapNeonatus aplikasi = new RMPenilaianAwalMedisRanapNeonatus(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRanapNeonatus(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10725,26 +9641,22 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianDerajatDehidrasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianDerajatDehidrasi aplikasi = new RMPenilaianDerajatDehidrasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianDerajatDehidrasi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnRingkasanJasaTindakanPasienActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganRingkasanJasaTindakan aplikasi = new KeuanganRingkasanJasaTindakan(this, false);
-        showForm(aplikasi);
+        showForm(() -> new KeuanganRingkasanJasaTindakan(this, false));
     }
 
     private void btnPendapatanPerAkunActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPendapatanPerAKun aplikasi = new DlgPendapatanPerAKun(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPendapatanPerAKun(this, false));
     }
 
     private void btnHasilPemeriksaanECHOActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanEcho form = new RMHasilPemeriksaanEcho(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanEcho(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10752,18 +9664,15 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnRl13KetersediaanKamarActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRL13KetersediaanTempatTidur aplikasi = new DlgRL13KetersediaanTempatTidur(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgRL13KetersediaanTempatTidur(this, false));
     }
 
     private void btnPendapatanPerAkunClosingActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPendapatanPerAKunClosing aplikasi = new DlgPendapatanPerAKunClosing(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPendapatanPerAKunClosing(this, false));
     }
 
     private void btnPenilaianBayiBaruLahirActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianBayiBaruLahir aplikasi = new RMPenilaianBayiBaruLahir(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianBayiBaruLahir(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10771,20 +9680,17 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPengeluaranPengeluaranActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPengeluaranPengeluaran aplikasi = new DlgPengeluaranPengeluaran(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPengeluaranPengeluaran(this, false));
     }
 
     private void btnSkriningDiabetesMelitusActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningDiabetesMelitus form = new RMSkriningDiabetesMelitus(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningDiabetesMelitus(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLaporanTindakanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMLaporanTindakan aplikasi = new RMLaporanTindakan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMLaporanTindakan(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10792,16 +9698,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPelaksanaanInformasiEdukasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPelaksanaanInformasiEdukasi aplikasi = new RMPelaksanaanInformasiEdukasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPelaksanaanInformasiEdukasi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnLayananKedokteranFisikRehabilitasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMLayananKedokteranFisikRehabilitasi aplikasi = new RMLayananKedokteranFisikRehabilitasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMLayananKedokteranFisikRehabilitasi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -10809,93 +9713,80 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSkriningKesehatanGigiMulutBalitaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKesehatanGigiMulutBalita form = new RMSkriningKesehatanGigiMulutBalita(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKesehatanGigiMulutBalita(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningAnemiaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningAnemia form = new RMSkriningAnemia(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningAnemia(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPermintaanLayananProgramKFRActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgCariPermintaanLayananProgramKFR form = new DlgCariPermintaanLayananProgramKFR(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgCariPermintaanLayananProgramKFR(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLayananProgramKFRActionPerformed(java.awt.event.ActionEvent evt) {
-        RMLayananProgramKFR aplikasi = new RMLayananProgramKFR(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMLayananProgramKFR(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSkriningHipertensiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningHipertensi form = new RMSkriningHipertensi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningHipertensi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningKesehatanPenglihatanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKesehatanPenglihatan form = new RMSkriningKesehatanPenglihatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKesehatanPenglihatan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanObservasiHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiHemodialisa form = new RMDataCatatanObservasiHemodialisa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiHemodialisa(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningKesehatanGigiMulutDewasaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKesehatanGigiMulutDewasa form = new RMSkriningKesehatanGigiMulutDewasa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKesehatanGigiMulutDewasa(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningRisikoKankerServiksActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningRisikoKankerServiks form = new RMSkriningRisikoKankerServiks(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningRisikoKankerServiks(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanCairanHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanCairanHemodialisa form = new RMDataCatatanCairanHemodialisa(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanCairanHemodialisa(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningKesehatanGigiMulutLansiaActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningKesehatanGigiMulutLansia form = new RMSkriningKesehatanGigiMulutLansia(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningKesehatanGigiMulutLansia(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningIndraPendengaranActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningIndraPendengaran form = new RMSkriningIndraPendengaran(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningIndraPendengaran(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnCatatanPengkajianPaskaOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMCatatanPengkajianPaskaOperasi form = new RMCatatanPengkajianPaskaOperasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMCatatanPengkajianPaskaOperasi(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10903,35 +9794,30 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnSirkulasiInventarisCSSDActionPerformed(java.awt.event.ActionEvent evt) {
-        InventarisSirkulasiCSSD ktginventaris = new InventarisSirkulasiCSSD(this, false);
-        showForm(ktginventaris, () -> {
+        showForm(() -> new InventarisSirkulasiCSSD(this, false), ktginventaris -> {
             ktginventaris.isCek();
             ktginventaris.emptTeks();
         });
     }
 
     private void btnSkriningFrailtySyndromeActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningFrailtySyndrome form = new RMSkriningFrailtySyndrome(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningFrailtySyndrome(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLamaPelayananCSSDActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPelayananCSSD aplikasi = new DlgPelayananCSSD(this, false);
-        showForm(aplikasi);
+        showForm(() -> new DlgPelayananCSSD(this, false));
     }
 
     private void btnCatatanObservasiBayiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiBayi form = new RMDataCatatanObservasiBayi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiBayi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRiwayatSuratPeringatanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgRiwayatSuratPeringatan form = new DlgRiwayatSuratPeringatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgRiwayatSuratPeringatan(this, false), form -> {
             try {
                 form.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/" + "penggajian/loginriwayatsuratperingatan.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");
             } catch (Exception ex) {
@@ -10941,57 +9827,49 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnMasterKesimpulanAnjuranMCUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMMasterKesimpulanAnjuranMCU form = new RMMasterKesimpulanAnjuranMCU(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMMasterKesimpulanAnjuranMCU(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnKategoriPiutangJasaPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgKategoriPiutangJasaPerusahaan aplikasi = new DlgKategoriPiutangJasaPerusahaan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new DlgKategoriPiutangJasaPerusahaan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPiutangJasaPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangJasaPerusahaan aplikasi = new KeuanganPiutangJasaPerusahaan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganPiutangJasaPerusahaan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBayarPiutangJasaPerusahaanActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarPiutangJasaPerusahaan aplikasi = new KeuanganBayarPiutangJasaPerusahaan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganBayarPiutangJasaPerusahaan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPiutangJasaPerusahaanBelumLunasActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangJasaPerusahaanBelumLunas form = new KeuanganPiutangJasaPerusahaanBelumLunas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganPiutangJasaPerusahaanBelumLunas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnPiutangPeminjamanUangBelumLunasActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPiutangPeminjamanUangBelumLunas form = new KeuanganPiutangPeminjamanUangBelumLunas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganPiutangPeminjamanUangBelumLunas(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnChecklistKesiapanAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKesiapanAnestesi aplikasi = new RMChecklistKesiapanAnestesi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKesiapanAnestesi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnHasilPemeriksaanSlitLampActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanSlitLamp form = new RMHasilPemeriksaanSlitLamp(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanSlitLamp(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -10999,8 +9877,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilPemeriksaanOCTActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanOCT form = new RMHasilPemeriksaanOCT(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanOCT(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -11008,99 +9885,85 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPoliAsalPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPoliAsalPasienRanap form = new DlgPoliAsalPasienRanap(this, false);
-        showForm(form);
+        showForm(() -> new DlgPoliAsalPasienRanap(this, false));
     }
 
     private void btnPemberiHutangLainActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganPemberiHutangLain aplikasi = new KeuanganPemberiHutangLain(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganPemberiHutangLain(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnDokterAsalPasienRanapActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgDokterAsalPasienRanap form = new DlgDokterAsalPasienRanap(this, false);
-        showForm(form);
+        showForm(() -> new DlgDokterAsalPasienRanap(this, false));
     }
 
     private void btnBebanHutangLainActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBebanHutangLain form = new KeuanganBebanHutangLain(this, false);
-        showForm(form, () -> {
+        showForm(() -> new KeuanganBebanHutangLain(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnRekapKeluarDutaParkingActionPerformed(java.awt.event.ActionEvent evt) {
-        DutaParkingRekapKeluar form = new DutaParkingRekapKeluar(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DutaParkingRekapKeluar(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSuratKeteranganLayakTerbangActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganLayakTerbang aplikasi = new SuratKeteranganLayakTerbang(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratKeteranganLayakTerbang(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnBayarBebanHutangLainActionPerformed(java.awt.event.ActionEvent evt) {
-        KeuanganBayarBebanHutangLain aplikasi = new KeuanganBayarBebanHutangLain(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new KeuanganBayarBebanHutangLain(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnPersetujuanPemeriksaanHIVActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPersetujuanPemeriksaanHIV aplikasi = new SuratPersetujuanPemeriksaanHIV(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPersetujuanPemeriksaanHIV(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSkriningInstrumenACRSActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningInstrumenACRS form = new RMSkriningInstrumenACRS(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningInstrumenACRS(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSuratPernyataanMemilihDPJPActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPernyataanMemilihDPJP aplikasi = new SuratPernyataanMemilihDPJP(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPernyataanMemilihDPJP(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSkriningInstrumenMentalEmosionalActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningInstrumenMentalEmosional form = new RMSkriningInstrumenMentalEmosional(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningInstrumenMentalEmosional(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnChecklistKriteriaMasukNICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaMasukNICU aplikasi = new RMChecklistKriteriaMasukNICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaMasukNICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnChecklistKriteriaKeluarNICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaKeluarNICU aplikasi = new RMChecklistKriteriaKeluarNICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaKeluarNICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPenilaianAwalMedisRanapPsikiatriActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRanapPsikiatrik aplikasi = new RMPenilaianAwalMedisRanapPsikiatrik(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRanapPsikiatrik(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -11108,70 +9971,61 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnLabKeslingPelangganActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingPelanggan form = new LabKeslingPelanggan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingPelanggan(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnChecklistKriteriaMasukPICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaMasukPICU aplikasi = new RMChecklistKriteriaMasukPICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaMasukPICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnChecklistKriteriaKeluarPICUActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaKeluarPICU aplikasi = new RMChecklistKriteriaKeluarPICU(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaKeluarPICU(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnLabKeslingSampelBakuMutuActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingMasterSampelBakuMutu form = new LabKeslingMasterSampelBakuMutu(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingMasterSampelBakuMutu(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningInstrumenAMTActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningInstrumenAMT form = new RMSkriningInstrumenAMT(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningInstrumenAMT(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnLabKeslingParameterPengujianActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingParameterPengujian form = new LabKeslingParameterPengujian(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingParameterPengujian(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnLabKeslingNilaiNormalBakuMutuActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingNilaiNormalBakuMutu form = new LabKeslingNilaiNormalBakuMutu(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingNilaiNormalBakuMutu(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnSkriningPneumoniaSeverityIndexActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningPneumoniaSeverityIndex form = new RMSkriningPneumoniaSeverityIndex(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningPneumoniaSeverityIndex(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenilaianAwalMedisRalanJantungActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanJantung aplikasi = new RMPenilaianAwalMedisRalanJantung(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanJantung(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -11179,8 +10033,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnPenilaianAwalMedisRalanUrologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRalanUrologi aplikasi = new RMPenilaianAwalMedisRalanUrologi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRalanUrologi(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -11188,8 +10041,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilPemeriksaanTreadmillActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanTreadmill form = new RMHasilPemeriksaanTreadmill(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanTreadmill(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -11197,8 +10049,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnHasilPemeriksaanECHOPediatrikActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanEchoPediatrik form = new RMHasilPemeriksaanEchoPediatrik(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanEchoPediatrik(this, false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -11206,31 +10057,27 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnMasterTemplateInformasiEdukasiActionPerformed(java.awt.event.ActionEvent evt) {
-        MasterTemplateInformasiEdukasi form = new MasterTemplateInformasiEdukasi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new MasterTemplateInformasiEdukasi(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningInstrumenESATActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningInstrumenESAT form = new RMSkriningInstrumenESAT(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningInstrumenESAT(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnLabKeslingPermintaanPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingPermintaanPengujianSampel form = new LabKeslingPermintaanPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingPermintaanPengujianSampel(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnPenilaianAwalMedisRanapJantungActionPerformed(java.awt.event.ActionEvent evt) {
-        RMPenilaianAwalMedisRanapJantung aplikasi = new RMPenilaianAwalMedisRanapJantung(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMPenilaianAwalMedisRanapJantung(this, false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
             aplikasi.setTampil();
@@ -11238,285 +10085,242 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
 
     private void btnEEksekutifActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgEEksekutif admin = new DlgEEksekutif(this, false);
-        showForm(admin, () -> {
+        showForm(() -> new DlgEEksekutif(this, false), admin -> {
             admin.emptTeks();
         });
     }
 
     private void btnLabKeslingPengujianSampelTidakDapatDilayaniActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariPermintaanPengujianSampelTidakDapatDilayani form = new LabKeslingCariPermintaanPengujianSampelTidakDapatDilayani(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariPermintaanPengujianSampelTidakDapatDilayani(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingPengujianSampelDapatDilayaniActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariPermintaanPengujianSampelDapatDilayani form = new LabKeslingCariPermintaanPengujianSampelDapatDilayani(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariPermintaanPengujianSampelDapatDilayani(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingPenugasanPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariPenugasanPengujianSampel form = new LabKeslingCariPenugasanPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariPenugasanPengujianSampel(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingHasilPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariHasilPengujianSampel form = new LabKeslingCariHasilPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariHasilPengujianSampel(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingVerifikasiPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariVerifikasiPengujianSampel form = new LabKeslingCariVerifikasiPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariVerifikasiPengujianSampel(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingValidasiPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingCariValidasiPengujianSampel form = new LabKeslingCariValidasiPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingCariValidasiPengujianSampel(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingRekapPelayananActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingRekapPelayanan form = new LabKeslingRekapPelayanan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingRekapPelayanan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingPembyaranPengujianSampelActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingPembayaranPengujianSampel form = new LabKeslingPembayaranPengujianSampel(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingPembayaranPengujianSampel(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnLabKeslingRekapPembayaranActionPerformed(java.awt.event.ActionEvent evt) {
-        LabKeslingRekapPembayaran form = new LabKeslingRekapPembayaran(this, false);
-        showForm(form, () -> {
+        showForm(() -> new LabKeslingRekapPembayaran(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnSkriningCURB65ActionPerformed(java.awt.event.ActionEvent evt) {
-        RMSkriningCURB65 form = new RMSkriningCURB65(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMSkriningCURB65(this, false), form -> {
             form.isCek();
             form.emptTeks();
         });
     }
 
     private void btnBPJSPotensiPRBActionPerformed(java.awt.event.ActionEvent evt) {
-        BPJSPotensiPRB form = new BPJSPotensiPRB(this, false);
-        showForm(form);
+        showForm(() -> new BPJSPotensiPRB(this, false));
     }
 
     private void btnBPJSRiwayatPelayananObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSRiwayatPelayananObat form = new ApotekBPJSRiwayatPelayananObat(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSRiwayatPelayananObat(this, false));
     }
 
     private void btnSkriningGiziKehamilanActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataSkriningGiziKehamilan form = new RMDataSkriningGiziKehamilan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataSkriningGiziKehamilan(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnBPJSRekapPesertaPRBObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSRekapPesertaPRB form = new ApotekBPJSRekapPesertaPRB(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSRekapPesertaPRB(this, false));
     }
 
     private void btnSuratSerahTerimaBarangAnggotaTubuhActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratSerahTerimaBarangAnggotaTubuh aplikasi = new SuratSerahTerimaBarangAnggotaTubuh(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratSerahTerimaBarangAnggotaTubuh(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnPCRAICRAJenisAktivitasProyekActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAJenisAktivitasProyek form = new PCRAICRAJenisAktivitasProyek(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAJenisAktivitasProyek(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRALokasiKelompokRisikoActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRALokasiKelompokRisikoArea form = new PCRAICRALokasiKelompokRisikoArea(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRALokasiKelompokRisikoArea(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRAKelasRisikoPencegahanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAKelasRisikoPencegahan form = new PCRAICRAKelasRisikoPencegahan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAKelasRisikoPencegahan(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRATindakanPengendalianActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRATindakanPengendalian form = new PCRAICRATindakanPengendalian(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRATindakanPengendalian(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRAIdentifikasiRisikoInfeksiActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAIdentifikasiRisikoInfeksi form = new PCRAICRAIdentifikasiRisikoInfeksi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAIdentifikasiRisikoInfeksi(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRAIdentifikasiRisikoKeselamatanActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAIdentifikasiRisikoKeselamatan form = new PCRAICRAIdentifikasiRisikoKeselamatan(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAIdentifikasiRisikoKeselamatan(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRAIdentifikasiRisikoKebakaranActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAIdentifikasiRisikoKebakaran form = new PCRAICRAIdentifikasiRisikoKebakaran(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAIdentifikasiRisikoKebakaran(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnPCRAICRAIdentifikasiRisikoUtilitasActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAIdentifikasiRisikoUtilitas form = new PCRAICRAIdentifikasiRisikoUtilitas(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAIdentifikasiRisikoUtilitas(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnBPJSResepObatApotekActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSResepObat form = new ApotekBPJSResepObat(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSResepObat(this, false));
     }
 
     private void btnObatApolApotekBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSDaftarResepObat form = new ApotekBPJSDaftarResepObat(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSDaftarResepObat(this, false));
     }
 
     private void btnPermintaanResepIterasiApotekBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        ApotekBPJSDaftarPermintaanResepIterasi form = new ApotekBPJSDaftarPermintaanResepIterasi(this, false);
-        showForm(form);
+        showForm(() -> new ApotekBPJSDaftarPermintaanResepIterasi(this, false));
     }
 
     private void btnPCRAICRAPengkajianRisikoPraKonstruksiActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAPengkajianRisikoPraKonstruksi form = new PCRAICRAPengkajianRisikoPraKonstruksi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAPengkajianRisikoPraKonstruksi(this, false), form -> {
             form.setTampil();
         });
     }
 
     private void btnPCRAICRAPersyaratanHarusDipenuhiActionPerformed(java.awt.event.ActionEvent evt) {
-        PCRAICRAPersyaratanHarusDipenuhi form = new PCRAICRAPersyaratanHarusDipenuhi(this, false);
-        showForm(form, () -> {
+        showForm(() -> new PCRAICRAPersyaratanHarusDipenuhi(this, false), form -> {
             form.emptTeks();
         });
     }
 
     private void btnKirimQRTelaahFarmasiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimQRTelaahFarmasi aplikasi = new SatuSehatKirimQRTelaahFarmasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimQRTelaahFarmasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKirimAllergiSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatKirimAllergyIntolerance aplikasi = new SatuSehatKirimAllergyIntolerance(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatKirimAllergyIntolerance(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnKonsultasiPerawatActionPerformed(java.awt.event.ActionEvent evt) {
-        DlgPermintaanKonsultasiPerawat form = new DlgPermintaanKonsultasiPerawat(this, false);
-        showForm(form, () -> {
+        showForm(() -> new DlgPermintaanKonsultasiPerawat(this, false), form -> {
             form.isCek();
         });
     }
 
     private void btnMappingProsedurSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        SmartKlaimBPJSMappingProsedur form = new SmartKlaimBPJSMappingProsedur(this, false);
-        showForm(form);
+        showForm(() -> new SmartKlaimBPJSMappingProsedur(this, false));
     }
 
     private void btnMappingPenyakitSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        SmartKlaimBPJSMappingPenyakit form = new SmartKlaimBPJSMappingPenyakit(this, false);
-        showForm(form);
+        showForm(() -> new SmartKlaimBPJSMappingPenyakit(this, false));
     }
 
     private void btnKirimFHIRSmartKlaimBPJSActionPerformed(java.awt.event.ActionEvent evt) {
-        SmartKlaimBPJSKirimFHIR form = new SmartKlaimBPJSKirimFHIR(this, false);
-        showForm(form);
+        showForm(() -> new SmartKlaimBPJSKirimFHIR(this, false));
     }
 
     private void btnSuratPermintaanBinrohtalActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPermintaanBinrohtal aplikasi = new SuratPermintaanBinrohtal(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPermintaanBinrohtal(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratPermintaanPerlindunganDariKekerasanActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPermintaanPerlindunganDariKekerasan aplikasi = new SuratPermintaanPerlindunganDariKekerasan(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPermintaanPerlindunganDariKekerasan(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratPermohonanPrivasiActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPermohonanPrivasi aplikasi = new SuratPermohonanPrivasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPermohonanPrivasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratPermintaanSecondOpinionActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPermintaanSecondOpinion aplikasi = new SuratPermintaanSecondOpinion(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPermintaanSecondOpinion(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratKeteranganBerobatActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratKeteranganBerobat aplikasi = new SuratKeteranganBerobat(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratKeteranganBerobat(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnSuratPenolakanResusitasiActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPenolakanResusitasi aplikasi = new SuratPenolakanResusitasi(this, false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPenolakanResusitasi(this, false), aplikasi -> {
             aplikasi.isCek();
         });
     }
 
     private void btnCatatanObservasiRuangOperasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataCatatanObservasiRuangOperasi form=new RMDataCatatanObservasiRuangOperasi(this,false);
-        showForm(form, () -> {
+        showForm(() -> new RMDataCatatanObservasiRuangOperasi(this,false), form -> {
             form.isCek();
         });
     }
 
     private void btnHasilUSGAbdomenActionPerformed(java.awt.event.ActionEvent evt) {
-        RMHasilPemeriksaanUSGAbdomen form=new RMHasilPemeriksaanUSGAbdomen(this,false);
-        showForm(form, () -> {
+        showForm(() -> new RMHasilPemeriksaanUSGAbdomen(this,false), form -> {
             form.isCek();
             form.emptTeks();
             form.setTampil();
@@ -11524,73 +10328,63 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
     
     private void btnIntervensiNyeriFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataIntervensiNyeriFarmakologi aplikasi=new RMDataIntervensiNyeriFarmakologi(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataIntervensiNyeriFarmakologi(this,false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
     
     private void btnIntervensiNyeriNonFarmakologiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMDataIntervensiNyeriNonFarmakologi aplikasi=new RMDataIntervensiNyeriNonFarmakologi(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMDataIntervensiNyeriNonFarmakologi(this,false), aplikasi -> {
             aplikasi.isCek();
             aplikasi.emptTeks();
         });
     }
 
     private void btnSuratPengajuanCutiPerawatanActionPerformed(java.awt.event.ActionEvent evt) {
-        SuratPengajuanCutiPerawatan aplikasi=new SuratPengajuanCutiPerawatan(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SuratPengajuanCutiPerawatan(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnChecklistKriteriaMasukIsolasiActionPerformed(java.awt.event.ActionEvent evt) {
-        RMChecklistKriteriaMasukIsolasi aplikasi=new RMChecklistKriteriaMasukIsolasi(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new RMChecklistKriteriaMasukIsolasi(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifTindakanRalanKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTindakanRalanKPTL aplikasi=new SatuSehatMapingTindakanRalanKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTindakanRalanKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifTindakanRanapKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTindakanRanapKPTL aplikasi=new SatuSehatMapingTindakanRanapKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTindakanRanapKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifTindakanRadiologiKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTindakanRadiologiKPTL aplikasi=new SatuSehatMapingTindakanRadiologiKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTindakanRadiologiKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifTindakanLabKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTindakanLaboratKPTL aplikasi=new SatuSehatMapingTindakanLaboratKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTindakanLaboratKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifTindakanOperasiKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTindakanOperasiKPTL aplikasi=new SatuSehatMapingTindakanOperasiKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTindakanOperasiKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
     
     private void btnMapingTarifKamarKPTLSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
-        SatuSehatMapingTarifKamarKPTL aplikasi=new SatuSehatMapingTarifKamarKPTL(this,false);
-        showForm(aplikasi, () -> {
+        showForm(() -> new SatuSehatMapingTarifKamarKPTL(this,false), aplikasi -> {
             aplikasi.isCek();
         });
     }
@@ -11905,11 +10699,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         }
     }
 
-    private void showForm(javax.swing.JDialog form, Runnable setup) {
+    private <T extends javax.swing.JDialog> void showForm(java.util.function.Supplier<T> formSupplier, java.util.function.Consumer<T> setup) {
         this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
         isTutup();
+        T form = formSupplier.get();
         if (setup != null) {
-            setup.run();
+            setup.accept(form);
         }
         form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
@@ -11918,8 +10713,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
-    private void showForm(javax.swing.JDialog form) {
-        showForm(form, null);
+    private <T extends javax.swing.JDialog> void showForm(java.util.function.Supplier<T> formSupplier) {
+        showForm(formSupplier, null);
     }
 
     private void setToolbar() {
