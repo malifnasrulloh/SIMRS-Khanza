@@ -82,8 +82,10 @@ date_default_timezone_set("Asia/Bangkok");
             width: 4.5vw;
             height: 4.5vw;
             border-radius: 50%;
-            border: 0.2vw solid rgba(255, 255, 255, 0.55);
-            object-fit: cover;
+            border: 0.2vw solid rgba(255, 255, 255, 0.9);
+            background: #ffffff;
+            padding: 0.2vw;
+            object-fit: contain;
         }
 
         .hospital-name {

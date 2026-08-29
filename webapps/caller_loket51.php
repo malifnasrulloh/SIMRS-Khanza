@@ -14,7 +14,7 @@ $setting = mysqli_fetch_array(bukaquery("select setting.nama_instansi,setting.al
 <html lang="id">
 
 <head>
-    <title>Web Caller – Loket Pendaftaran (51-Series)</title>
+    <title>Web Caller – Loket Pendaftaran</title>
     <link rel="icon" href="conf/assets/img/rs.png" type="image/x-icon">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
