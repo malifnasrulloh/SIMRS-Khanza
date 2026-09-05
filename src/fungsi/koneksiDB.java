@@ -173,6 +173,16 @@ public class koneksiDB {
         return var;
     }
 
+    public static String HOSTWEBTERAS() {
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var = EnkripsiAES.decrypt(prop.getProperty("HOSTWEBTERAS"));
+        } catch (Exception e) {
+            var = "";
+        }
+        return var;
+    }
+
     public static String DATABASE() {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);

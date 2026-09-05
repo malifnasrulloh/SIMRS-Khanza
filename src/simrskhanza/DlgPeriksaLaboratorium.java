@@ -2934,6 +2934,10 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         tampilLICA(order);
     }
     
+    public void setOrderTeras(String order,String norawat,String posisi){
+        setOrderLICA(order,norawat,posisi);
+    }
+    
     public void setOrderSOFTMEDIX(String order,String norawat,String posisi){
         noorder=order;
         TNoRw.setText(norawat);
