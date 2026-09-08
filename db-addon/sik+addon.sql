@@ -756,11 +756,11 @@ DROP TABLE IF EXISTS `audit_bundle_iadp`;
 CREATE TABLE `audit_bundle_iadp` (
   `tanggal` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
-  `handhygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `apd` enum('Ya','Tidak') DEFAULT NULL,
-  `skin_antiseptik` enum('Ya','Tidak') DEFAULT NULL,
-  `lokasi_iv` enum('Ya','Tidak') DEFAULT NULL,
-  `perawatan_rutin` enum('Ya','Tidak') DEFAULT NULL,
+  `handhygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `apd` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `skin_antiseptik` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `lokasi_iv` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `perawatan_rutin` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`nik`),
   KEY `nik` (`nik`),
   CONSTRAINT `audit_bundle_iadp_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -777,10 +777,10 @@ DROP TABLE IF EXISTS `audit_bundle_ido`;
 CREATE TABLE `audit_bundle_ido` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `pencukuran_rambut` enum('Ya','Tidak') DEFAULT NULL,
-  `antibiotik` enum('Ya','Tidak') DEFAULT NULL,
-  `temperature` enum('Ya','Tidak') DEFAULT NULL,
-  `sugar` enum('Ya','Tidak') DEFAULT NULL,
+  `pencukuran_rambut` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `antibiotik` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `temperature` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `sugar` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_bundle_ido_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -797,14 +797,14 @@ DROP TABLE IF EXISTS `audit_bundle_isk`;
 CREATE TABLE `audit_bundle_isk` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `pemasangan_sesuai_indikasi` enum('Ya','Tidak') DEFAULT NULL,
-  `hand_hygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `menggunakan_apd_yang_tepat` enum('Ya','Tidak') DEFAULT NULL,
-  `pemasangan_menggunakan_alat_steril` enum('Ya','Tidak') DEFAULT NULL,
-  `segera_dilepas_setelah_tidak_diperlukan` enum('Ya','Tidak') DEFAULT NULL,
-  `pengisian_balon_sesuai_petunjuk` enum('Ya','Tidak') DEFAULT NULL,
-  `fiksasi_kateter_dengan_plester` enum('Ya','Tidak') DEFAULT NULL,
-  `urinebag_menggantung_tidak_menyentuh_lantai` enum('Ya','Tidak') DEFAULT NULL,
+  `pemasangan_sesuai_indikasi` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `hand_hygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `menggunakan_apd_yang_tepat` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pemasangan_menggunakan_alat_steril` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `segera_dilepas_setelah_tidak_diperlukan` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pengisian_balon_sesuai_petunjuk` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `fiksasi_kateter_dengan_plester` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `urinebag_menggantung_tidak_menyentuh_lantai` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`) USING BTREE,
   CONSTRAINT `audit_bundle_isk_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -821,16 +821,16 @@ DROP TABLE IF EXISTS `audit_bundle_plabsi`;
 CREATE TABLE `audit_bundle_plabsi` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `sebelum_melakukan_hand_hygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `menggunakan_apd_lengkap` enum('Ya','Tidak') DEFAULT NULL,
-  `lokasi_pemasangan_sesuai` enum('Ya','Tidak') DEFAULT NULL,
-  `alat_yang_digunakan_steril` enum('Ya','Tidak') DEFAULT NULL,
-  `pembersihan_kulit` enum('Ya','Tidak') DEFAULT NULL,
-  `setelah_melakukan_hand_hygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `perawatan_dressing_infus` enum('Ya','Tidak') DEFAULT NULL,
-  `spoit_yang_digunakan_disposible` enum('Ya','Tidak') DEFAULT NULL,
-  `memberi_tanggal_dan_jam_pemasangan_infus` enum('Ya','Tidak') DEFAULT NULL,
-  `set_infus_setiap_72jam` enum('Ya','Tidak') DEFAULT NULL,
+  `sebelum_melakukan_hand_hygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `menggunakan_apd_lengkap` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `lokasi_pemasangan_sesuai` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `alat_yang_digunakan_steril` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pembersihan_kulit` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setelah_melakukan_hand_hygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `perawatan_dressing_infus` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `spoit_yang_digunakan_disposible` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `memberi_tanggal_dan_jam_pemasangan_infus` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `set_infus_setiap_72jam` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`) USING BTREE,
   CONSTRAINT `audit_bundle_plabsi_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -847,14 +847,14 @@ DROP TABLE IF EXISTS `audit_bundle_vap`;
 CREATE TABLE `audit_bundle_vap` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `posisi_kepala` enum('Ya','Tidak') DEFAULT NULL,
-  `pengkajian_setiap_hari` enum('Ya','Tidak') DEFAULT NULL,
-  `hand_hygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `oral_hygiene` enum('Ya','Tidak') DEFAULT NULL,
-  `suction_manajemen_sekresi` enum('Ya','Tidak') DEFAULT NULL,
-  `profilaksis_peptic_ulcer` enum('Ya','Tidak') DEFAULT NULL,
-  `dvt_profiklasisi` enum('Ya','Tidak') DEFAULT NULL,
-  `penggunaan_apd_sesuai` enum('Ya','Tidak') DEFAULT NULL,
+  `posisi_kepala` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pengkajian_setiap_hari` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `hand_hygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `oral_hygiene` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `suction_manajemen_sekresi` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `profilaksis_peptic_ulcer` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `dvt_profiklasisi` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `penggunaan_apd_sesuai` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`) USING BTREE,
   CONSTRAINT `audit_bundle_vap_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -871,11 +871,11 @@ DROP TABLE IF EXISTS `audit_cuci_tangan_medis`;
 CREATE TABLE `audit_cuci_tangan_medis` (
   `tanggal` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
-  `sebelum_menyentuh_pasien` enum('Ya','Tidak') DEFAULT NULL,
-  `sebelum_tehnik_aseptik` enum('Ya','Tidak') DEFAULT NULL,
-  `setelah_terpapar_cairan_tubuh_pasien` enum('Ya','Tidak') DEFAULT NULL,
-  `setelah_kontak_dengan_pasien` enum('Ya','Tidak') DEFAULT NULL,
-  `setelah_kontak_dengan_lingkungan_pasien` enum('Ya','Tidak') DEFAULT NULL,
+  `sebelum_menyentuh_pasien` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `sebelum_tehnik_aseptik` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setelah_terpapar_cairan_tubuh_pasien` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setelah_kontak_dengan_pasien` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setelah_kontak_dengan_lingkungan_pasien` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`nik`),
   KEY `nik` (`nik`),
   CONSTRAINT `audit_cuci_tangan_medis_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -892,12 +892,12 @@ DROP TABLE IF EXISTS `audit_fasilitas_apd`;
 CREATE TABLE `audit_fasilitas_apd` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_fasilitas_apd_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -914,15 +914,15 @@ DROP TABLE IF EXISTS `audit_fasilitas_kebersihan_tangan`;
 CREATE TABLE `audit_fasilitas_kebersihan_tangan` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
-  `audit7` enum('Ya','Tidak') DEFAULT NULL,
-  `audit8` enum('Ya','Tidak') DEFAULT NULL,
-  `audit9` enum('Ya','Tidak') NOT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit7` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit8` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit9` enum('Ya','Tidak','NA') NOT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_fasilitas_kebersihan_tangan_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -938,14 +938,14 @@ DROP TABLE IF EXISTS `audit_kamar_jenazah`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audit_kamar_jenazah` (
   `tanggal` datetime NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
-  `audit7` enum('Ya','Tidak') DEFAULT NULL,
-  `audit8` enum('Ya','Tidak') DEFAULT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit7` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit8` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -961,12 +961,12 @@ CREATE TABLE `audit_kepatuhan_apd` (
   `nik` varchar(20) NOT NULL,
   `tindakan` varchar(50) NOT NULL,
   `tanggal` datetime NOT NULL,
-  `topi` enum('Ya','Tidak') DEFAULT NULL,
-  `masker` enum('Ya','Tidak') DEFAULT NULL,
-  `kacamata` enum('Ya','Tidak') DEFAULT NULL,
-  `sarungtangan` enum('Ya','Tidak') DEFAULT NULL,
-  `apron` enum('Ya','Tidak') DEFAULT NULL,
-  `sepatu` enum('Ya','Tidak') DEFAULT NULL,
+  `topi` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `masker` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `kacamata` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `sarungtangan` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `apron` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `sepatu` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`nik`,`tindakan`,`tanggal`),
   CONSTRAINT `audit_kepatuhan_apd_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -982,12 +982,12 @@ DROP TABLE IF EXISTS `audit_pembuangan_benda_tajam`;
 CREATE TABLE `audit_pembuangan_benda_tajam` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `setiap_injeksi_needle_langsung_dimasukkan_safety_box` enum('Ya','Tidak') DEFAULT NULL,
-  `setiap_pemasangan_iv_canula_langsung_dimasukkan_safety_box` enum('Ya','Tidak') DEFAULT NULL,
-  `setiap_benda_tajam_jarum_dimasukkan_safety_box` enum('Ya','Tidak') DEFAULT NULL,
-  `safety_box_tigaperempat_diganti` enum('Ya','Tidak') DEFAULT NULL,
-  `safety_box_keadaan_bersih` enum('Ya','Tidak') DEFAULT NULL,
-  `saftey_box_tertutup_setelah_digunakan` enum('Ya','Tidak') DEFAULT NULL,
+  `setiap_injeksi_needle_langsung_dimasukkan_safety_box` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setiap_pemasangan_iv_canula_langsung_dimasukkan_safety_box` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `setiap_benda_tajam_jarum_dimasukkan_safety_box` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `safety_box_tigaperempat_diganti` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `safety_box_keadaan_bersih` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `saftey_box_tertutup_setelah_digunakan` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_pembuangan_benda_tajam_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1004,14 +1004,14 @@ DROP TABLE IF EXISTS `audit_pembuangan_limbah`;
 CREATE TABLE `audit_pembuangan_limbah` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `pemisahan_limbah_oleh_penghasil_limbah` enum('Ya','Tidak') DEFAULT NULL,
-  `limbah_infeksius_dimasukkan_kantong_kuning` enum('Ya','Tidak') DEFAULT NULL,
-  `limbah_noninfeksius_dimasukkan_kantong_hitam` enum('Ya','Tidak') DEFAULT NULL,
-  `limbah_tigaperempat_diikat` enum('Ya','Tidak') DEFAULT NULL,
-  `limbah_segera_dibawa_kepembuangan_sementara` enum('Ya','Tidak') DEFAULT NULL,
-  `kotak_sampah_dalam_kondisi_bersih` enum('Ya','Tidak') DEFAULT NULL,
-  `pembersihan_tempat_sampah_dengan_desinfekten` enum('Ya','Tidak') DEFAULT NULL,
-  `pembersihan_penampungan_sementara_dengan_desinfekten` enum('Ya','Tidak') DEFAULT NULL,
+  `pemisahan_limbah_oleh_penghasil_limbah` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `limbah_infeksius_dimasukkan_kantong_kuning` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `limbah_noninfeksius_dimasukkan_kantong_hitam` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `limbah_tigaperempat_diikat` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `limbah_segera_dibawa_kepembuangan_sementara` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `kotak_sampah_dalam_kondisi_bersih` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pembersihan_tempat_sampah_dengan_desinfekten` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pembersihan_penampungan_sementara_dengan_desinfekten` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_pembuangan_limbah_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1028,12 +1028,12 @@ DROP TABLE IF EXISTS `audit_pembuangan_limbah_cair_infeksius`;
 CREATE TABLE `audit_pembuangan_limbah_cair_infeksius` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_pembuangan_limbah_cair_infeksius_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1050,12 +1050,12 @@ DROP TABLE IF EXISTS `audit_penanganan_darah`;
 CREATE TABLE `audit_penanganan_darah` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `menggunakan_apd_waktu_membuang_darah` enum('Ya','Tidak') DEFAULT NULL,
-  `komponen_darah_tidak_ada_dilantai` enum('Ya','Tidak') DEFAULT NULL,
-  `membuang_darah_pada_tempat_ditentukan` enum('Ya','Tidak') DEFAULT NULL,
-  `pembersihan_areal_tumbahan_darah` enum('Ya','Tidak') DEFAULT NULL,
-  `apd_dibuang_di_limbah_infeksius` enum('Ya','Tidak') DEFAULT NULL,
-  `melakukan_kebersihan_tangan_setelah_prosedur` enum('Ya','Tidak') DEFAULT NULL,
+  `menggunakan_apd_waktu_membuang_darah` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `komponen_darah_tidak_ada_dilantai` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `membuang_darah_pada_tempat_ditentukan` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `pembersihan_areal_tumbahan_darah` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `apd_dibuang_di_limbah_infeksius` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `melakukan_kebersihan_tangan_setelah_prosedur` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_penanganan_darah_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1072,15 +1072,15 @@ DROP TABLE IF EXISTS `audit_penempatan_pasien`;
 CREATE TABLE `audit_penempatan_pasien` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
-  `audit7` enum('Ya','Tidak') DEFAULT NULL,
-  `audit8` enum('Ya','Tidak') DEFAULT NULL,
-  `audit9` enum('Ya','Tidak') DEFAULT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit7` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit8` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit9` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_penempatan_pasien_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1097,14 +1097,14 @@ DROP TABLE IF EXISTS `audit_pengelolaan_linen_kotor`;
 CREATE TABLE `audit_pengelolaan_linen_kotor` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
-  `audit7` enum('Ya','Tidak') DEFAULT NULL,
-  `audit8` enum('Ya','Tidak') DEFAULT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit7` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit8` enum('Ya','Tidak','NA') DEFAULT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_pengelolaan_linen_kotor_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1121,17 +1121,17 @@ DROP TABLE IF EXISTS `audit_sterilisasi_alat`;
 CREATE TABLE `audit_sterilisasi_alat` (
   `tanggal` datetime NOT NULL,
   `id_ruang` varchar(5) NOT NULL,
-  `audit1` enum('Ya','Tidak') DEFAULT NULL,
-  `audit2` enum('Ya','Tidak') DEFAULT NULL,
-  `audit3` enum('Ya','Tidak') DEFAULT NULL,
-  `audit4` enum('Ya','Tidak') DEFAULT NULL,
-  `audit5` enum('Ya','Tidak') DEFAULT NULL,
-  `audit6` enum('Ya','Tidak') DEFAULT NULL,
-  `audit7` enum('Ya','Tidak') DEFAULT NULL,
-  `audit8` enum('Ya','Tidak') DEFAULT NULL,
-  `audit9` enum('Ya','Tidak') NOT NULL,
-  `audit10` enum('Ya','Tidak') NOT NULL,
-  `audit11` enum('Ya','Tidak') NOT NULL,
+  `audit1` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit2` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit3` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit4` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit5` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit6` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit7` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit8` enum('Ya','Tidak','NA') DEFAULT NULL,
+  `audit9` enum('Ya','Tidak','NA') NOT NULL,
+  `audit10` enum('Ya','Tidak','NA') NOT NULL,
+  `audit11` enum('Ya','Tidak','NA') NOT NULL,
   PRIMARY KEY (`tanggal`,`id_ruang`),
   KEY `id_ruang` (`id_ruang`),
   CONSTRAINT `audit_sterilisasi_alat_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `ruang_audit_kepatuhan` (`id_ruang`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -3958,6 +3958,31 @@ CREATE TABLE `checklist_kriteria_keluar_icu` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `checklist_kriteria_keluar_isolasi`
+--
+
+DROP TABLE IF EXISTS `checklist_kriteria_keluar_isolasi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `checklist_kriteria_keluar_isolasi` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `gejala_membaik` enum('Ya','Tidak','Tidak Berlaku') NOT NULL,
+  `tidak_ada_indikasi_transmisi` enum('Ya','Tidak','Tidak Berlaku') NOT NULL,
+  `hasil_penunjang_memenuhi` enum('Ya','Tidak','Tidak Berlaku') NOT NULL,
+  `kriteria_pedoman_terpenuhi` enum('Ya','Tidak','Tidak Berlaku') NOT NULL,
+  `persetujuan_dpjp` enum('Ya','Tidak') NOT NULL,
+  `keputusan` enum('Keluar Isolasi','Lanjut Isolasi') NOT NULL,
+  `alasan` varchar(500) DEFAULT NULL,
+  `nik` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`no_rawat`,`tanggal`),
+  KEY `nik` (`nik`),
+  CONSTRAINT `checklist_kriteria_keluar_isolasi_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `checklist_kriteria_keluar_isolasi_ibfk_2` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `checklist_kriteria_keluar_nicu`
 --
 
@@ -5038,6 +5063,17 @@ CREATE TABLE `data_triase_igd` (
   `suhu` varchar(5) NOT NULL,
   `saturasi_o2` varchar(3) NOT NULL,
   `nyeri` varchar(5) NOT NULL,
+  `id_observation_cara_masuk` varchar(40) DEFAULT NULL,
+  `id_observation_alat_transportasi` varchar(40) DEFAULT NULL,
+  `id_observation_alasan_kedatangan` varchar(40) DEFAULT NULL,
+  `id_observation_macam_kasus` varchar(40) DEFAULT NULL,
+  `id_observation_tekanan_darah` varchar(40) DEFAULT NULL,
+  `id_observation_nadi` varchar(40) DEFAULT NULL,
+  `id_observation_pernapasan` varchar(40) DEFAULT NULL,
+  `id_observation_suhu` varchar(40) DEFAULT NULL,
+  `id_observation_saturasi_o2` varchar(40) DEFAULT NULL,
+  `id_observation_nyeri` varchar(40) DEFAULT NULL,
+  `id_composition` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`),
   KEY `kode_kasus` (`kode_kasus`),
   CONSTRAINT `data_triase_igd_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5055,10 +5091,11 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala1`;
 CREATE TABLE `data_triase_igddetail_skala1` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala1` varchar(3) NOT NULL,
+  `id_observation_skala1` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_skala1`),
   KEY `data_triase_igddetail_skala1_ibfk_1` (`kode_skala1`),
   CONSTRAINT `data_triase_igddetail_skala1_ibfk_1` FOREIGN KEY (`kode_skala1`) REFERENCES `master_triase_skala1` (`kode_skala1`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_triase_igddetail_skala1_ibfk_2` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `data_triase_igddetail_skala1_ibfk_2` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5072,9 +5109,10 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala2`;
 CREATE TABLE `data_triase_igddetail_skala2` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala2` varchar(3) NOT NULL,
+  `id_observation_skala2` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_skala2`),
   KEY `kode_skala2` (`kode_skala2`),
-  CONSTRAINT `data_triase_igddetail_skala2_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_triase_igddetail_skala2_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_triase_igddetail_skala2_ibfk_2` FOREIGN KEY (`kode_skala2`) REFERENCES `master_triase_skala2` (`kode_skala2`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5089,9 +5127,10 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala3`;
 CREATE TABLE `data_triase_igddetail_skala3` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala3` varchar(3) NOT NULL,
+  `id_observation_skala3` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_skala3`),
   KEY `kode_skala3` (`kode_skala3`),
-  CONSTRAINT `data_triase_igddetail_skala3_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_triase_igddetail_skala3_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_triase_igddetail_skala3_ibfk_2` FOREIGN KEY (`kode_skala3`) REFERENCES `master_triase_skala3` (`kode_skala3`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5106,9 +5145,10 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala4`;
 CREATE TABLE `data_triase_igddetail_skala4` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala4` varchar(3) NOT NULL,
+  `id_observation_skala4` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_skala4`),
   KEY `kode_skala4` (`kode_skala4`),
-  CONSTRAINT `data_triase_igddetail_skala4_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_triase_igddetail_skala4_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_triase_igddetail_skala4_ibfk_2` FOREIGN KEY (`kode_skala4`) REFERENCES `master_triase_skala4` (`kode_skala4`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5123,9 +5163,10 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala5`;
 CREATE TABLE `data_triase_igddetail_skala5` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala5` varchar(3) NOT NULL,
+  `id_observation_skala5` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_skala5`),
   KEY `kode_skala5` (`kode_skala5`),
-  CONSTRAINT `data_triase_igddetail_skala5_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_triase_igddetail_skala5_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_triase_igddetail_skala5_ibfk_2` FOREIGN KEY (`kode_skala5`) REFERENCES `master_triase_skala5` (`kode_skala5`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -5145,6 +5186,10 @@ CREATE TABLE `data_triase_igdprimer` (
   `plan` enum('Ruang Resusitasi','Ruang Kritis') NOT NULL,
   `tanggaltriase` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
+  `id_observation_keluhan_utama` varchar(40) DEFAULT NULL,
+  `id_observation_kebutuhan_khusus` varchar(40) DEFAULT NULL,
+  `id_observation_catatan` varchar(40) DEFAULT NULL,
+  `id_careplan_keputusan` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`),
   KEY `nip` (`nik`),
   CONSTRAINT `data_triase_igdprimer_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5166,6 +5211,9 @@ CREATE TABLE `data_triase_igdsekunder` (
   `plan` enum('Zona Kuning','Zona Hijau') NOT NULL,
   `tanggaltriase` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
+  `id_clinicalimpression_anamnesa` varchar(40) DEFAULT NULL,
+  `id_observation_catatan` varchar(40) DEFAULT NULL,
+  `id_careplan_keputusan` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`),
   KEY `nip` (`nik`),
   CONSTRAINT `data_triase_igdsekunder_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -9548,7 +9596,7 @@ CREATE TABLE `kabupaten` (
   `nm_kab` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kab`),
   UNIQUE KEY `nm_kab` (`nm_kab`)
-) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=556 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9763,7 +9811,7 @@ CREATE TABLE `kecamatan` (
   `nm_kec` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kec`),
   UNIQUE KEY `nm_kec` (`nm_kec`)
-) ENGINE=InnoDB AUTO_INCREMENT=822 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=824 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9793,7 +9841,7 @@ CREATE TABLE `kelurahan` (
   `nm_kel` varchar(60) NOT NULL,
   PRIMARY KEY (`kd_kel`),
   UNIQUE KEY `nm_kel` (`nm_kel`)
-) ENGINE=InnoDB AUTO_INCREMENT=1101010319 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1101010321 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11972,7 +12020,7 @@ CREATE TABLE `operasi` (
   `no_rawat` varchar(17) NOT NULL,
   `tgl_operasi` datetime NOT NULL,
   `jenis_anasthesi` varchar(8) NOT NULL,
-  `kategori` enum('-','Ringan','Ringan Cito','Ringan Khusus','Ringan Khusus Cito','Ringan Khusus Cito Ganda','Sedang Cito','Sedang Khusus','Sedang Khusus Cito','Sedang Khusus Cito Ganda','Besar Cito','Besar Khusus','Besar Khusus Cito','Besar Khusus Cito Ganda','Khusus','Besar','Sedang','Kecil','Elektive','Emergency') DEFAULT NULL,
+  `kategori` enum('-','Ringan','Ringan Cito','Ringan Khusus','Ringan Khusus Cito','Ringan Khusus Cito Ganda','Sedang Cito','Sedang Khusus','Sedang Khusus Cito','Sedang Khusus Cito Ganda','Besar Cito','Besar Khusus','Besar Khusus Cito','Besar Khusus Cito Ganda','Khusus','Besar','Sedang','Kecil','Elektive','Emergency','Besar Ganda','Besar Khusus Ganda','Sedang Ganda','Sedang Khusus Ganda') DEFAULT NULL,
   `operator1` varchar(20) NOT NULL,
   `operator2` varchar(20) NOT NULL,
   `operator3` varchar(20) NOT NULL,
@@ -12124,7 +12172,7 @@ DROP TABLE IF EXISTS `paket_operasi`;
 CREATE TABLE `paket_operasi` (
   `kode_paket` varchar(15) NOT NULL,
   `nm_perawatan` varchar(80) NOT NULL,
-  `kategori` enum('Kebidanan','Operasi') DEFAULT NULL,
+  `kategori` enum('Kebidanan','Operasi','Operasi Kecil','Operasi Sedang','Operasi Besar','Operasi Khusus') DEFAULT NULL,
   `operator1` double NOT NULL,
   `operator2` double NOT NULL,
   `operator3` double NOT NULL,
@@ -20947,7 +20995,7 @@ CREATE TABLE `propinsi` (
   `nm_prop` varchar(30) NOT NULL,
   PRIMARY KEY (`kd_prop`),
   UNIQUE KEY `nm_prop` (`nm_prop`)
-) ENGINE=InnoDB AUTO_INCREMENT=641 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -23218,6 +23266,25 @@ CREATE TABLE `satu_sehat_medicationstatement_racikan` (
   KEY `kode_brng` (`kode_brng`),
   CONSTRAINT `satu_sehat_medicationstatement_racikan_ibfk_1` FOREIGN KEY (`no_resep`) REFERENCES `resep_obat` (`no_resep`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `satu_sehat_medicationstatement_racikan_ibfk_2` FOREIGN KEY (`kode_brng`) REFERENCES `databarang` (`kode_brng`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `satu_sehat_nutritionorder`
+--
+
+DROP TABLE IF EXISTS `satu_sehat_nutritionorder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `satu_sehat_nutritionorder` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `id_nutritionorder` varchar(64) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'active',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`no_rawat`,`tanggal`),
+  KEY `idx_id_nutritionorder` (`id_nutritionorder`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -29047,6 +29114,7 @@ CREATE TABLE `template_laboratorium` (
   `nilai_rujukan_la` varchar(30) NOT NULL,
   `nilai_rujukan_pd` varchar(30) NOT NULL,
   `nilai_rujukan_pa` varchar(30) NOT NULL,
+  `method` varchar(30) NOT NULL,
   `bagian_rs` double NOT NULL,
   `bhp` double NOT NULL,
   `bagian_perujuk` double NOT NULL,
@@ -29656,7 +29724,7 @@ CREATE TABLE `temporary_booking_registrasi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -29856,7 +29924,7 @@ CREATE TABLE `temporary_lama_pelayanan_radiologi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=1159 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1166 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -31175,7 +31243,7 @@ DROP TABLE IF EXISTS `trackersql`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trackersql` (
   `tanggal` datetime NOT NULL,
-  `sqle` text NOT NULL,
+  `sqle` longtext NOT NULL,
   `usere` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -32494,6 +32562,11 @@ CREATE TABLE `user` (
   `satu_sehat_mapping_kptl_tindakan_laborat` enum('true','false') DEFAULT NULL,
   `satu_sehat_mapping_kptl_tindakan_operasi` enum('true','false') DEFAULT NULL,
   `satu_sehat_mapping_kptl_tarif_kamar` enum('true','false') DEFAULT NULL,
+  `checklist_kriteria_keluar_isolasi` enum('true','false') DEFAULT NULL,
+  `satu_sehat_tanda_tangan_elektronik` enum('true','false') DEFAULT NULL,
+  `satu_sehat_kirim_composition` enum('true','false') DEFAULT NULL,
+  `ringkasan_hutang_vendor_inventaris` enum('true','false') DEFAULT NULL,
+  `ringkasan_beban_hutang_lain` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
   `manajemen` enum('true','false') DEFAULT NULL,
   PRIMARY KEY (`id_user`)
@@ -33186,4 +33259,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-08-01 15:51:08
+-- Dump completed on 2026-09-08 12:50:15

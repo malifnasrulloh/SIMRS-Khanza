@@ -1365,4 +1365,9 @@ public final class akses {
     public static boolean getsatu_sehat_mapping_kptl_tindakan_laborat(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_laborat);}
     public static boolean getsatu_sehat_mapping_kptl_tindakan_operasi(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tindakan_operasi);}
     public static boolean getsatu_sehat_mapping_kptl_tarif_kamar(){return hakAkses.get(EnumAkses.satu_sehat_mapping_kptl_tarif_kamar);}
+    public static boolean getchecklist_kriteria_keluar_isolasi(){return hakAkses.get(EnumAkses.checklist_kriteria_keluar_isolasi);}
+    public static boolean getsatu_sehat_tanda_tangan_elektronik(){return hakAkses.get(EnumAkses.satu_sehat_tanda_tangan_elektronik);}
+    public static boolean getsatu_sehat_kirim_composition(){return hakAkses.get(EnumAkses.satu_sehat_kirim_composition);}
+    public static boolean getringkasan_hutang_vendor_inventaris(){return hakAkses.get(EnumAkses.ringkasan_hutang_vendor_inventaris);}
+    public static boolean getringkasan_beban_hutang_lain(){return hakAkses.get(EnumAkses.ringkasan_beban_hutang_lain);}
 }

@@ -613,7 +613,7 @@
 					<font fontName="Tahoma" size="8" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{rencana}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{rencana}.equals("")?$F{rencana}:$P{rencana}+$F{rencana})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="5" y="480" width="246" height="72" uuid="3e7b7f0c-3ef9-41f5-a51a-d93d1d79a4d0">

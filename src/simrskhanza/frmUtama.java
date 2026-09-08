@@ -911,6 +911,7 @@ import rekammedis.RMCatatanPersalinan;
 import rekammedis.RMChecklistKesiapanAnestesi;
 import rekammedis.RMChecklistKriteriaKeluarHCU;
 import rekammedis.RMChecklistKriteriaKeluarICU;
+import rekammedis.RMChecklistKriteriaKeluarIsolasi;
 import rekammedis.RMChecklistKriteriaKeluarNICU;
 import rekammedis.RMChecklistKriteriaKeluarPICU;
 import rekammedis.RMChecklistKriteriaMasukHCU;
@@ -1091,6 +1092,10 @@ import rekammedis.RMTimeOutSebelumInsisi;
 import rekammedis.RMTransferPasienAntarRuang;
 import rekammedis.RMTriaseIGD;
 import rekammedis.RMUjiFungsiKFR;
+import bridging.SatuSehatBridgingTTE;
+import bridging.SatuSehatKirimCompositionRME;
+import keuangan.KeuanganRingkasanBebanHutangLain;
+import keuangan.KeuanganRingkasanHutangVendorAsetInventaris;
 import setting.DlgAdmin;
 import setting.DlgBiayaHarian;
 import setting.DlgBiayaSekaliMasuk;
@@ -10389,6 +10394,32 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         });
     }
 
+    private void btnChecklistKriteriaKeluarIsolasiActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMChecklistKriteriaKeluarIsolasi(this,false), aplikasi -> {
+            aplikasi.isCek();
+        });
+    }
+    
+    private void btnBridgingTTESatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new SatuSehatBridgingTTE(this,false), aplikasi -> {
+            aplikasi.isCek();
+        });
+    }
+    
+    private void btnBridgingCompositionRMESatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new SatuSehatKirimCompositionRME(this,false), aplikasi -> {
+            aplikasi.isCek();
+        });
+    }
+    
+    private void btnRingkasanHutangVendorAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {   
+        showForm(() -> new KeuanganRingkasanHutangVendorAsetInventaris(this,false));
+    }
+
+    private void btnRingkasanBebanHutangLainActionPerformed(java.awt.event.ActionEvent evt) {   
+        showForm(() -> new KeuanganRingkasanBebanHutangLain(this,false));
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -10648,7 +10679,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPCRAICRAPersyaratanHarusDipenuhi, btnKirimQRTelaahFarmasiSatuSehat, btnKirimAllergiSatuSehat, btnKonsultasiPerawat, btnKirimEpisodeOfCareSatuSehat, btnMappingProsedurSmartKlaimBPJS, btnMappingPenyakitSmartKlaimBPJS, btnKirimFHIRSmartKlaimBPJS,
             btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi,
             btnHasilUSGAbdomen,btnIntervensiNyeriFarmakologi,btnIntervensiNyeriNonFarmakologi,btnSuratPengajuanCutiPerawatan,btnChecklistKriteriaMasukIsolasi,btnMapingTarifTindakanRalanKPTLSatuSehat,
-            btnMapingTarifTindakanRanapKPTLSatuSehat,btnMapingTarifTindakanRadiologiKPTLSatuSehat,btnMapingTarifTindakanLabKPTLSatuSehat,btnMapingTarifTindakanOperasiKPTLSatuSehat,btnMapingTarifKamarKPTLSatuSehat;
+            btnMapingTarifTindakanRanapKPTLSatuSehat,btnMapingTarifTindakanRadiologiKPTLSatuSehat,btnMapingTarifTindakanLabKPTLSatuSehat,btnMapingTarifTindakanOperasiKPTLSatuSehat,btnMapingTarifKamarKPTLSatuSehat,
+            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain;
 
     public void isWall() {
         try {
@@ -11884,6 +11916,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
             addMenu(akses.getbayar_pemesanan_iventaris(), btnBayarPemesananInventaris);
 
+            addMenu(akses.getringkasan_hutang_vendor_inventaris(), btnRingkasanHutangVendorAsetInventaris);
+
             addMenu(akses.getringkasan_hutang_vendor_dapur(), btnRingkasanHutangVendorBarangDapur);
 
             addMenu(akses.gethutang_dapur(), btnHutangDapur);
@@ -11905,6 +11939,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getpemberi_hutang_lain(), btnPemberiHutangLain);
 
             addMenu(akses.getbeban_hutang_lain(), btnBebanHutangLain);
+
+            addMenu(akses.getringkasan_beban_hutang_lain(), btnRingkasanBebanHutangLain);
 
             addMenu(akses.getbayar_beban_hutang_lain(), btnBayarBebanHutangLain);
 
@@ -12260,6 +12296,10 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsatu_sehat_mapping_kptl_tindakan_operasi(), btnMapingTarifTindakanOperasiKPTLSatuSehat);
 
             addMenu(akses.getsatu_sehat_mapping_kptl_tarif_kamar(), btnMapingTarifKamarKPTLSatuSehat);
+
+            addMenu(akses.getsatu_sehat_kirim_composition(), btnBridgingCompositionRMESatuSehat);
+
+            addMenu(akses.getsatu_sehat_tanda_tangan_elektronik(), btnBridgingTTESatuSehat);
 
             addMenu(akses.getsatu_sehat_mapping_radiologi(), btnMappingRadiologiSatuSehat);
 
@@ -12672,6 +12712,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getchecklist_kriteria_keluar_icu(), btnChecklistKriteriaKeluarICU);
 
             addMenu(akses.getchecklist_kriteria_masuk_isolasi(), btnChecklistKriteriaMasukIsolasi);
+
+            addMenu(akses.getchecklist_kriteria_keluar_isolasi(), btnChecklistKriteriaKeluarIsolasi);
 
             addMenu(akses.getperencanaan_pemulangan(), btnPerencanaanPemulangan);
 
@@ -15758,6 +15800,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
         btnChecklistKriteriaMasukIsolasi = createMenuButton("/48x48/isolation-2.png", "Check List Kriteria Masuk Isolasi", "btnChecklistKriteriaMasukIsolasi", this::btnChecklistKriteriaMasukIsolasiActionPerformed);
 
+        btnChecklistKriteriaKeluarIsolasi = createMenuButton("/48x48/isolation.png", "Check List Kriteria Keluar Isolasi", "btnChecklistKriteriaKeluarIsolasi", this::btnChecklistKriteriaKeluarIsolasiActionPerformed);
+
         btnMapingTarifTindakanRalanKPTLSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Ralan KPTL Satu Sehat", "btnMapingTarifTindakanRalanKPTLSatuSehat", this::btnMapingTarifTindakanRalanKPTLSatuSehatActionPerformed);
 
         btnMapingTarifTindakanRanapKPTLSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tindakan Ranap KPTL Satu Sehat", "btnMapingTarifTindakanRanapKPTLSatuSehat", this::btnMapingTarifTindakanRanapKPTLSatuSehatActionPerformed);
@@ -15770,5 +15814,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
         btnMapingTarifKamarKPTLSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Tarif Kamar KPTL Satu Sehat", "btnMapingTarifKamarKPTLSatuSehat", this::btnMapingTarifKamarKPTLSatuSehatActionPerformed);
 
+        btnBridgingTTESatuSehat = createMenuButton("/48x48/satusehat.png", "Bridging TTE Satu Sehat", "btnBridgingTTESatuSehat", this::btnBridgingTTESatuSehatActionPerformed);
+
+        btnBridgingCompositionRMESatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Composition Satu Sehat", "btnBridgingCompositionRMESatuSehat", this::btnBridgingCompositionRMESatuSehatActionPerformed);
+
+        btnRingkasanHutangVendorAsetInventaris = createMenuButton("/48x48/9016847_cleaning_kitchen_covid-19_virus_pandemic_icon.png", "Ringkasan Hutang Vendor Aset/Inventaris", "btnRingkasanHutangVendorAsetInventaris", this::btnRingkasanHutangVendorAsetInventarisActionPerformed);
+
+        btnRingkasanBebanHutangLain = createMenuButton("/48x48/debt_2780190.png", "Ringkasan Beban Hutang Lain", "btnRingkasanBebanHutangLain", this::btnRingkasanBebanHutangLainActionPerformed);
     }
 }

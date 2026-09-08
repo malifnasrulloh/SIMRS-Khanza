@@ -833,7 +833,7 @@ public final class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
         FormInput.add(jLabel4);
         jLabel4.setBounds(0, 42, 96, 23);
 
-        Kategori.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Kebidanan", "Operasi" }));
+        Kategori.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Kebidanan", "Operasi", "Operasi Kecil", "Operasi Sedang", "Operasi Besar", "Operasi Khusus" }));
         Kategori.setName("Kategori"); // NOI18N
         Kategori.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {

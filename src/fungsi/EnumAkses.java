@@ -1224,6 +1224,11 @@ public enum EnumAkses {
     satu_sehat_mapping_kptl_tindakan_laborat("[L]Mapping Tindakan Laborat KPTL Satu Sehat"),
     satu_sehat_mapping_kptl_tindakan_operasi("[L]Mapping Tindakan Operasi KPTL Satu Sehat"),
     satu_sehat_mapping_kptl_tarif_kamar("[L]Mapping Tarif Kamar KPTL Satu Sehat"),
+    checklist_kriteria_keluar_isolasi("[M]Check List Kriteria Keluar Isolasi"),
+    satu_sehat_tanda_tangan_elektronik("[L]Bridging TTE Satu Sehat"),
+    satu_sehat_kirim_composition("[L]Kirim Composition Satu Sehat"),
+    ringkasan_hutang_vendor_inventaris("[K]Ringkasan Hutang Vendor Aset/Inventaris"),
+    ringkasan_beban_hutang_lain("[K]Ringkasan Beban Hutang Lain"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat");

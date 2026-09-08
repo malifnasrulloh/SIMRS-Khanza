@@ -15,3 +15,6 @@ MODIFY COLUMN `sampel_display` varchar(1000) CHARACTER SET latin1 COLLATE latin1
 
 ALTER TABLE `trackersql`
 MODIFY COLUMN `sqle` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL AFTER `tanggal`;
+
+ALTER TABLE `paket_operasi` 
+MODIFY COLUMN `kategori` enum('Kebidanan','Operasi','Operasi Kecil','Operasi Sedang','Operasi Besar','Operasi Khusus') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `nm_perawatan`;
