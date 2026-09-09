@@ -38,21 +38,18 @@ public class LokalisCanvas extends JDialog {
         if (koneksi != null && noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
             try {
                 String sql = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-                PreparedStatement ps = koneksi.prepareStatement(sql);
-                ps.setString(1, noRawat);
-                ps.setString(2, jenisForm);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    String lokasi = rs.getString("lokasi_gambar");
-                    rs.close();
-                    ps.close();
-                    if (lokasi != null && !lokasi.trim().isEmpty()) {
-                        String urlPath = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
-                        return new URL(urlPath).openStream();
+                try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+                    ps.setString(1, noRawat);
+                    ps.setString(2, jenisForm);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            String lokasi = rs.getString("lokasi_gambar");
+                            if (lokasi != null && !lokasi.trim().isEmpty()) {
+                                String urlPath = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                                return new URL(urlPath).openStream();
+                            }
+                        }
                     }
-                } else {
-                    rs.close();
-                    ps.close();
                 }
             } catch (Exception e) {
                 // Fallback to default resource
@@ -73,20 +70,17 @@ public class LokalisCanvas extends JDialog {
         if (koneksi != null && noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
             try {
                 String sql = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-                PreparedStatement ps = koneksi.prepareStatement(sql);
-                ps.setString(1, noRawat);
-                ps.setString(2, jenisForm);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    String lokasi = rs.getString("lokasi_gambar");
-                    rs.close();
-                    ps.close();
-                    if (lokasi != null && !lokasi.trim().isEmpty()) {
-                        return "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+                    ps.setString(1, noRawat);
+                    ps.setString(2, jenisForm);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            String lokasi = rs.getString("lokasi_gambar");
+                            if (lokasi != null && !lokasi.trim().isEmpty()) {
+                                return "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                            }
+                        }
                     }
-                } else {
-                    rs.close();
-                    ps.close();
                 }
             } catch (Exception e) {
                 // Fallback
@@ -94,6 +88,143 @@ public class LokalisCanvas extends JDialog {
         }
         URL res = LokalisCanvas.class.getResource(defaultResource);
         return res != null ? res.toString() : "";
+    }
+
+    public static String getLokalisUrl(Connection koneksi, String noRawat, String jenisForm) {
+        return getLokalisUrl(koneksi, noRawat, jenisForm, "");
+    }
+
+    /**
+     * Loads the saved Lokalis image from server or falls back to default resource / fallback URL,
+     * updating the provided PanelGlass background.
+     */
+    public static void loadGambar(Connection koneksi, String noRawat, String jenisForm, usu.widget.glass.PanelGlass panel, String defaultResource, String fallbackUrl) {
+        if (panel == null) return;
+        try {
+            if (koneksi != null && noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
+                String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
+                try (PreparedStatement psG = koneksi.prepareStatement(query)) {
+                    psG.setString(1, noRawat);
+                    psG.setString(2, jenisForm);
+                    try (ResultSet rsG = psG.executeQuery()) {
+                        if (rsG.next()) {
+                            String lokasi = rsG.getString("lokasi_gambar");
+                            if (lokasi != null && !lokasi.trim().isEmpty()) {
+                                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                                java.net.URLConnection conn = new URL(path).openConnection();
+                                conn.setUseCaches(false);
+                                try (InputStream in = conn.getInputStream()) {
+                                    BufferedImage img = ImageIO.read(in);
+                                    if (img != null) {
+                                        panel.setBackgroundImage(new ImageIcon(img));
+                                        panel.repaint();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (defaultResource != null && !defaultResource.trim().isEmpty()) {
+                URL res = LokalisCanvas.class.getResource(defaultResource);
+                if (res != null) {
+                    panel.setBackgroundImage(new ImageIcon(res));
+                    panel.repaint();
+                    return;
+                }
+            }
+            if (fallbackUrl != null && !fallbackUrl.trim().isEmpty()) {
+                java.net.URLConnection conn = new URL(fallbackUrl).openConnection();
+                conn.setUseCaches(false);
+                try (InputStream in = conn.getInputStream()) {
+                    BufferedImage img = ImageIO.read(in);
+                    if (img != null) {
+                        panel.setBackgroundImage(new ImageIcon(img));
+                        panel.repaint();
+                        return;
+                    }
+                } catch (Exception ignored) {}
+            }
+            panel.repaint();
+        } catch (Exception e) {
+            System.out.println("Error loading gambar lokalis: " + e);
+            if (defaultResource != null && !defaultResource.trim().isEmpty()) {
+                try {
+                    URL res = LokalisCanvas.class.getResource(defaultResource);
+                    if (res != null) {
+                        panel.setBackgroundImage(new ImageIcon(res));
+                        panel.repaint();
+                        return;
+                    }
+                } catch (Exception ignored) {}
+            }
+            if (fallbackUrl != null && !fallbackUrl.trim().isEmpty()) {
+                try {
+                    java.net.URLConnection conn = new URL(fallbackUrl).openConnection();
+                    conn.setUseCaches(false);
+                    try (InputStream in = conn.getInputStream()) {
+                        BufferedImage img = ImageIO.read(in);
+                        if (img != null) {
+                            panel.setBackgroundImage(new ImageIcon(img));
+                            panel.repaint();
+                        }
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+    }
+
+    public static void loadGambar(Connection koneksi, String noRawat, String jenisForm, usu.widget.glass.PanelGlass panel, String defaultResource) {
+        loadGambar(koneksi, noRawat, jenisForm, panel, defaultResource, "");
+    }
+
+    /**
+     * Deletes the saved Lokalis image both from the server storage and database,
+     * and resets the provided PanelGlass to default resource / fallback URL.
+     */
+    public static void hapusGambar(Connection koneksi, String noRawat, String jenisForm, usu.widget.glass.PanelGlass panel, String defaultResource, String fallbackUrl) {
+        if (noRawat != null && !noRawat.trim().isEmpty() && jenisForm != null && !jenisForm.trim().isEmpty()) {
+            // 1. Call web service to unlink physical file and remove DB row
+            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+                HttpPost post = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/pages/upload/service.php");
+                post.setHeader("Content-Type", "application/json");
+                post.addHeader("username", koneksiDB.USERHYBRIDWEB());
+                post.addHeader("password", koneksiDB.PASHYBRIDWEB());
+
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode node = mapper.createObjectNode();
+                node.put("action", "delete");
+                node.put("norawat", noRawat);
+                node.put("jenisform", jenisForm);
+                post.setEntity(new StringEntity(mapper.writeValueAsString(node)));
+                try (CloseableHttpResponse response = httpClient.execute(post)) {
+                    // Handled by service
+                }
+            } catch (Exception e) {
+                System.out.println("Error calling delete service for lokalis: " + e);
+            }
+
+            // 2. Direct database delete as fallback
+            if (koneksi != null) {
+                try (PreparedStatement ps = koneksi.prepareStatement("DELETE FROM gambar_lokalis WHERE no_rawat=? AND jenis_form=?")) {
+                    ps.setString(1, noRawat);
+                    ps.setString(2, jenisForm);
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    System.out.println("Error deleting from gambar_lokalis: " + e);
+                }
+            }
+        }
+
+        // 3. Reset panel UI back to default template
+        if (panel != null) {
+            loadGambar(koneksi, "", jenisForm, panel, defaultResource, fallbackUrl);
+        }
+    }
+
+    public static void hapusGambar(Connection koneksi, String noRawat, String jenisForm, usu.widget.glass.PanelGlass panel, String defaultResource) {
+        hapusGambar(koneksi, noRawat, jenisForm, panel, defaultResource, "");
     }
 
     private final Connection koneksi;
@@ -215,19 +346,26 @@ public class LokalisCanvas extends JDialog {
     private void loadSavedOverlay() {
         try {
             String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, noRawat);
-            psG.setString(2, jenisForm);
-            ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                ImageIcon icon = new ImageIcon(new URL(path));
-                if (icon.getImage() != null && icon.getIconWidth() > 0) {
-                    this.savedOverlayImage = icon.getImage();
+            try (PreparedStatement psG = koneksi.prepareStatement(query)) {
+                psG.setString(1, noRawat);
+                psG.setString(2, jenisForm);
+                try (ResultSet rsG = psG.executeQuery()) {
+                    if (rsG.next()) {
+                        String lokasi = rsG.getString("lokasi_gambar");
+                        if (lokasi != null && !lokasi.trim().isEmpty()) {
+                            String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + lokasi;
+                            java.net.URLConnection conn = new URL(path).openConnection();
+                            conn.setUseCaches(false);
+                            try (InputStream in = conn.getInputStream()) {
+                                BufferedImage img = ImageIO.read(in);
+                                if (img != null) {
+                                    this.savedOverlayImage = img;
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            rsG.close();
-            psG.close();
         } catch (Exception e) {
             System.out.println("Error fetching saved lokalis overlay: " + e);
         }
@@ -311,6 +449,10 @@ public class LokalisCanvas extends JDialog {
         btnSave.addActionListener(e -> saveAndUpload());
         toolBar.add(btnSave);
 
+        JButton btnHapus = new JButton("Hapus");
+        btnHapus.addActionListener(e -> deleteLokalis());
+        toolBar.add(btnHapus);
+
         JButton btnClose = new JButton("Tutup");
         btnClose.addActionListener(e -> dispose());
         toolBar.add(btnClose);
@@ -318,6 +460,25 @@ public class LokalisCanvas extends JDialog {
         add(toolBar, BorderLayout.NORTH);
         pack();
         setLocationRelativeTo(null);
+    }
+
+    private void deleteLokalis() {
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Yakin ingin menghapus gambar lokalis ini dan kembali ke gambar awal?",
+            "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            try {
+                hapusGambar(koneksi, noRawat, jenisForm, null, "");
+                if (onSaveCallback != null) {
+                    onSaveCallback.run();
+                }
+                JOptionPane.showMessageDialog(this, "Gambar lokalis berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } finally {
+                setCursor(Cursor.getDefaultCursor());
+            }
+        }
     }
 
     private void saveAndUpload() {

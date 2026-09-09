@@ -39,7 +39,57 @@
                     $konten = trim(file_get_contents("php://input"));
                     $decode = json_decode($konten, true);
 
-                    if (empty($decode['file'])) {
+                    if (!empty($decode['action']) && $decode['action'] == 'delete') {
+                        if (empty($decode['norawat'])) {
+                            $response = array(
+                                'metadata' => array(
+                                    'message' => 'No.Rawat tidak boleh kosong',
+                                    'code'    => 201
+                                )
+                            );
+                            http_response_code(201);
+                        } else if (empty($decode['jenisform'])) {
+                            $response = array(
+                                'metadata' => array(
+                                    'message' => 'Jenis Form tidak boleh kosong',
+                                    'code'    => 201
+                                )
+                            );
+                            http_response_code(201);
+                        } else {
+                            $norawat   = validTeks3($decode['norawat']);
+                            $jenisform = validTeks3($decode['jenisform']);
+                            try {
+                                $konektor = bukakoneksi();
+                                $checkQuery = "SELECT lokasi_gambar FROM gambar_lokalis WHERE no_rawat='$norawat' AND jenis_form='$jenisform'";
+                                $result = mysqli_query($konektor, $checkQuery);
+                                if ($result && $row = mysqli_fetch_assoc($result)) {
+                                    $oldFileBasename = basename($row['lokasi_gambar']);
+                                    if (file_exists($oldFileBasename)) {
+                                        @unlink($oldFileBasename);
+                                    }
+                                }
+                                mysqli_close($konektor);
+
+                                bukaquery("DELETE FROM gambar_lokalis WHERE no_rawat='$norawat' AND jenis_form='$jenisform'");
+                                $response = array(
+                                    'metadata' => array(
+                                        'message' => 'Gambar Lokalis berhasil dihapus',
+                                        'code'    => 200
+                                    )
+                                );
+                                http_response_code(200);
+                            } catch(mysqli_sql_exception $e) {
+                                $response = array(
+                                    'metadata' => array(
+                                        'message' => 'Gagal menghapus gambar dari database: ' . $e->getMessage(),
+                                        'code'    => 201
+                                    )
+                                );
+                                http_response_code(201);
+                            }
+                        }
+                    } else if (empty($decode['file'])) {
                         $response = array(
                             'metadata' => array(
                                 'message' => 'File tidak boleh kosong',
@@ -75,7 +125,7 @@
                         $namafileAsli       = validTeks3(basename($decode['namafile']));
                         $namafileBersih     = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $namafileAsli);
                         $namafileTanpaExt   = pathinfo($namafileBersih, PATHINFO_FILENAME);
-                        $namafileFinal      = $namafileTanpaExt.'.png';
+                        $namafileFinal      = $namafileTanpaExt.'_'.time().'.png';
 
                         if (empty($namafileTanpaExt)) {
                             $response = array(

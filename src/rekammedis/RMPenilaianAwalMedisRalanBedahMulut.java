@@ -74,7 +74,7 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
                         null, true, koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", new javax.swing.ImageIcon(getClass().getResource("/picture/wajah2.png")),
-                        () -> loadGambar_PanelWall1()
+                        () -> LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", PanelWall1, "/picture/wajah2.png")
                     );
                     canvas.setVisible(true);
                 }
@@ -87,7 +87,7 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
                         null, true, koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", new javax.swing.ImageIcon(getClass().getResource("/picture/wajah1.png")),
-                        () -> loadGambar_PanelWall2()
+                        () -> LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", PanelWall2, "/picture/wajah1.png")
                     );
                     canvas.setVisible(true);
                 }
@@ -100,7 +100,7 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
                         null, true, koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", new javax.swing.ImageIcon(getClass().getResource("/picture/intraoral.png")),
-                        () -> loadGambar_PanelWall3()
+                        () -> LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", PanelWall3, "/picture/intraoral.png")
                     );
                     canvas.setVisible(true);
                 }
@@ -113,7 +113,7 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
                         null, true, koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", new javax.swing.ImageIcon(getClass().getResource("/picture/gigigeligi.png")),
-                        () -> loadGambar_PanelWall4()
+                        () -> LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", PanelWall4, "/picture/gigigeligi.png")
                     );
                     canvas.setVisible(true);
                 }
@@ -2837,10 +2837,10 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
     private void getData() {
         if(tbObat.getSelectedRow()!= -1){
             TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-            loadGambar_PanelWall1();
-            loadGambar_PanelWall2();
-            loadGambar_PanelWall3();
-            loadGambar_PanelWall4();
+            LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", PanelWall1, "/picture/wajah2.png");
+            LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", PanelWall2, "/picture/wajah1.png");
+            LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", PanelWall3, "/picture/intraoral.png");
+            LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", PanelWall4, "/picture/gigigeligi.png");
  
             TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
             TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
@@ -2992,10 +2992,10 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
-        loadGambar_PanelWall1();
-        loadGambar_PanelWall2();
-        loadGambar_PanelWall3();
-        loadGambar_PanelWall4();
+        LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", PanelWall1, "/picture/wajah2.png");
+        LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", PanelWall2, "/picture/wajah1.png");
+        LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", PanelWall3, "/picture/intraoral.png");
+        LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", PanelWall4, "/picture/gigigeligi.png");
     }
  
     public void setNoRm(String norwt,Date tgl2) {
@@ -3036,6 +3036,10 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
         if(Sequel.queryu2tf("delete from penilaian_medis_ralan_bedah_mulut where no_rawat=?",1,new String[]{
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
+                        LokalisCanvas.hapusGambar(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall2", PanelWall2, "/picture/wajah1.png");
+            LokalisCanvas.hapusGambar(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall1", PanelWall1, "/picture/wajah2.png");
+            LokalisCanvas.hapusGambar(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall3", PanelWall3, "/picture/intraoral.png");
+            LokalisCanvas.hapusGambar(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(), "rmpenilaianawalmedisralanbedahmulut_panelwall4", PanelWall4, "/picture/gigigeligi.png");
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText(""+tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -3164,90 +3168,6 @@ public final class RMPenilaianAwalMedisRalanBedahMulut extends javax.swing.JDial
     public void dispose() {
         executor.shutdownNow();
         super.dispose();
-    }
-
-    private void loadGambar_PanelWall1() {
-        try {
-            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, TNoRw.getText());
-            psG.setString(2, "rmpenilaianawalmedisralanbedahmulut_panelwall1");
-            java.sql.ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
-            } else {
-                PanelWall1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/wajah2.png")));
-            }
-            PanelWall1.repaint();
-            rsG.close();
-            psG.close();
-        } catch (Exception e) {
-            System.out.println("Error loading gambar lokalis PanelWall1: " + e);
-        }
-    }
-
-    private void loadGambar_PanelWall2() {
-        try {
-            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, TNoRw.getText());
-            psG.setString(2, "rmpenilaianawalmedisralanbedahmulut_panelwall2");
-            java.sql.ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
-            } else {
-                PanelWall2.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/wajah1.png")));
-            }
-            PanelWall2.repaint();
-            rsG.close();
-            psG.close();
-        } catch (Exception e) {
-            System.out.println("Error loading gambar lokalis PanelWall2: " + e);
-        }
-    }
-
-    private void loadGambar_PanelWall3() {
-        try {
-            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, TNoRw.getText());
-            psG.setString(2, "rmpenilaianawalmedisralanbedahmulut_panelwall3");
-            java.sql.ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                PanelWall3.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
-            } else {
-                PanelWall3.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/intraoral.png")));
-            }
-            PanelWall3.repaint();
-            rsG.close();
-            psG.close();
-        } catch (Exception e) {
-            System.out.println("Error loading gambar lokalis PanelWall3: " + e);
-        }
-    }
-
-    private void loadGambar_PanelWall4() {
-        try {
-            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, TNoRw.getText());
-            psG.setString(2, "rmpenilaianawalmedisralanbedahmulut_panelwall4");
-            java.sql.ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                PanelWall4.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
-            } else {
-                PanelWall4.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/gigigeligi.png")));
-            }
-            PanelWall4.repaint();
-            rsG.close();
-            psG.close();
-        } catch (Exception e) {
-            System.out.println("Error loading gambar lokalis PanelWall4: " + e);
-        }
     }
 
 }

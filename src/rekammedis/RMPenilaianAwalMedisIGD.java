@@ -73,7 +73,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
                 if (!TNoRw.getText().trim().equals("")) {
                     LokalisCanvas canvas = new LokalisCanvas(
                         null, true, koneksi, TNoRw.getText(), "rmpenilaianawalmedisigd_panelwall", new javax.swing.ImageIcon(getClass().getResource("/picture/semua.png")),
-                        () -> loadGambar_PanelWall()
+                        () -> LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisigd_panelwall", PanelWall, "/picture/semua.png")
                     );
                     canvas.setVisible(true);
                 }
@@ -2334,7 +2334,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     private void getData() {
         if(tbObat.getSelectedRow()!= -1){
             TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-            loadGambar_PanelWall();
+            LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisigd_panelwall", PanelWall, "/picture/semua.png");
  
             TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
             TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
@@ -2463,7 +2463,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println("Notif Cari Pasien : "+e);
         }
-        loadGambar_PanelWall();
+        LokalisCanvas.loadGambar(koneksi, TNoRw.getText(), "rmpenilaianawalmedisigd_panelwall", PanelWall, "/picture/semua.png");
     }
  
     public void setNoRm(String norwt,Date tgl2) {
@@ -2504,6 +2504,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         if(Sequel.queryu2tf("delete from penilaian_medis_igd where no_rawat=?",1,new String[]{
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
+                        LokalisCanvas.hapusGambar(koneksi, tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(), "rmpenilaianawalmedisigd_panelwall", PanelWall, "/picture/semua.png");
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText(""+tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -2616,27 +2617,6 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     public void dispose() {
         executor.shutdownNow();
         super.dispose();
-    }
-
-    private void loadGambar_PanelWall() {
-        try {
-            String query = "select lokasi_gambar from gambar_lokalis where no_rawat=? and jenis_form=?";
-            java.sql.PreparedStatement psG = koneksi.prepareStatement(query);
-            psG.setString(1, TNoRw.getText());
-            psG.setString(2, "rmpenilaianawalmedisigd_panelwall");
-            java.sql.ResultSet rsG = psG.executeQuery();
-            if (rsG.next()) {
-                String path = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/lokalis/" + rsG.getString("lokasi_gambar");
-                PanelWall.setBackgroundImage(new javax.swing.ImageIcon(new java.net.URL(path)));
-            } else {
-                PanelWall.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/picture/semua.png")));
-            }
-            PanelWall.repaint();
-            rsG.close();
-            psG.close();
-        } catch (Exception e) {
-            System.out.println("Error loading gambar lokalis PanelWall: " + e);
-        }
     }
 
 }
