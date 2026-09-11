@@ -4868,8 +4868,10 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                             try {
                                 System.out.println("Eksekusi URL : "+engine.getLocation());
                                  if(engine.getLocation().contains("SuksesKirim")){
-                                     WindowTerkirim.setLocationRelativeTo(null);
-                                     WindowTerkirim.setVisible(true);
+                                     SwingUtilities.invokeLater(() -> {
+                                         WindowTerkirim.setLocationRelativeTo(null);
+                                         WindowTerkirim.setVisible(true);
+                                     });
                                  }else if(engine.getLocation().contains("GagalKirim")){
                                      String pesan = "Gagal mengirim order ke TERAS LIS.";
                                      if(engine.getLocation().contains("pesan=")){
@@ -4877,19 +4879,24 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                                              pesan = java.net.URLDecoder.decode(engine.getLocation().split("pesan=")[1], "UTF-8");
                                          } catch (Exception ex) {}
                                      }
-                                     JOptionPane.showMessageDialog(null, pesan, "Informasi Bridging TERAS LIS", JOptionPane.ERROR_MESSAGE);
+                                     final String finalPesan = pesan;
+                                     SwingUtilities.invokeLater(() -> {
+                                         JOptionPane.showMessageDialog(null, finalPesan, "Informasi Bridging TERAS LIS", JOptionPane.ERROR_MESSAGE);
+                                     });
                                  }else if(engine.getLocation().contains("SuksesAmbilTeras")){
                                      String statusPosisi = (TabPilihRawat.getSelectedIndex()==0) ? "Ralan" : "Ranap";
-                                     JOptionPane.showMessageDialog(null, "Data hasil pemeriksaan berhasil ditarik dari TERAS LIS.\nSilahkan verifikasi dan simpan hasil.", "Informasi Bridging TERAS LIS", JOptionPane.INFORMATION_MESSAGE);
-                                     DlgPeriksaLaboratorium dlgro = new DlgPeriksaLaboratorium(null, false);
-                                     dlgro.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
-                                     dlgro.setLocationRelativeTo(internalFrame1);
-                                     dlgro.emptTeks();
-                                     dlgro.isCek();
-                                     dlgro.setOrderTeras(NoPermintaan, NoRawat, statusPosisi);
-                                     dlgro.setDokterPerujuk(KodeDokter, DokterPerujuk);
-                                     TeksKosong();
-                                     dlgro.setVisible(true);
+                                     SwingUtilities.invokeLater(() -> {
+                                         JOptionPane.showMessageDialog(null, "Data hasil pemeriksaan berhasil ditarik dari TERAS LIS.\nSilahkan verifikasi dan simpan hasil.", "Informasi Bridging TERAS LIS", JOptionPane.INFORMATION_MESSAGE);
+                                         DlgPeriksaLaboratorium dlgro = new DlgPeriksaLaboratorium(null, false);
+                                         dlgro.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                                         dlgro.setLocationRelativeTo(internalFrame1);
+                                         dlgro.emptTeks();
+                                         dlgro.isCek();
+                                         dlgro.setOrderTeras(NoPermintaan, NoRawat, statusPosisi);
+                                         dlgro.setDokterPerujuk(KodeDokter, DokterPerujuk);
+                                         TeksKosong();
+                                         dlgro.setVisible(true);
+                                     });
                                  }else if(engine.getLocation().contains("GagalAmbilTeras")){
                                      String pesan = "Gagal mengambil hasil dari TERAS LIS.";
                                      if(engine.getLocation().contains("pesan=")){
@@ -4897,7 +4904,10 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                                              pesan = java.net.URLDecoder.decode(engine.getLocation().split("pesan=")[1], "UTF-8");
                                          } catch (Exception ex) {}
                                      }
-                                     JOptionPane.showMessageDialog(null, pesan, "Informasi Bridging TERAS LIS", JOptionPane.WARNING_MESSAGE);
+                                     final String finalPesan = pesan;
+                                     SwingUtilities.invokeLater(() -> {
+                                         JOptionPane.showMessageDialog(null, finalPesan, "Informasi Bridging TERAS LIS", JOptionPane.WARNING_MESSAGE);
+                                     });
                                  }
                             } catch (Exception ex) {
                                 System.out.println("Notifikasi : "+ex);

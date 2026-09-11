@@ -1,6 +1,27 @@
 <?php
 require_once('conf/conf.php');
-date_default_timezone_set('Asia/Jayapura');
+date_default_timezone_set('Asia/Jakarta');
+
+// === Landing Page Guard (Mencegah loop refresh tak terhingga) ===
+if (isset($_GET['aksi'])) {
+    $aksi = htmlspecialchars($_GET['aksi']);
+    $pesan = isset($_GET['pesan']) ? htmlspecialchars($_GET['pesan']) : '';
+    echo "<!DOCTYPE html><html><head><title>$aksi</title></head><body><h3>Status: $aksi</h3><p>$pesan</p></body></html>";
+    exit;
+}
+
+// Helper untuk sanitasi nilai laboratorium tanpa merusak simbol medis (<, >, +, -, :, [], (), /, %, dll)
+function cleanLabValue($data) {
+    if ($data === null || $data === '') return '';
+    // 1. Decode HTML entities (&gt; -> >, &lt; -> <, &amp; -> &, dll)
+    $val = html_entity_decode($data, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    // 2. Tangani jika entitas tanpa titik koma seperti &gt40 atau &lt10
+    $val = str_ireplace(['&gt;', '&gt', '&lt;', '&lt', '&amp;', '&amp'], ['>', '>', '<', '<', '&', '&'], $val);
+    // 3. Sanitasi SQL injection: ganti petik satu dengan backtick (sesuai standar Khanza), hilangkan backslash dan newline
+    $val = str_replace("'", "`", $val);
+    $val = str_replace(["\\", "\r", "\n"], ["", "", ""], $val);
+    return trim($val);
+}
 
 // === 1. Ambil Token ===
 $curl = curl_init();
@@ -53,8 +74,9 @@ curl_close($curl2);
 $data_json = json_decode($response, true);
 $json_err = json_last_error_msg();
 
-bukaquery("INSERT INTO test(data) VALUES('len:".strlen($response ?? '')." json_err:".validTeks($json_err)."')");
 if ($curl_err) bukaquery("INSERT INTO test(data) VALUES('curl_err: ".validTeks($curl_err)."')");
+if ($json_err !== "No error") bukaquery("INSERT INTO test(data) VALUES('json_err: ".validTeks($json_err)."')");
+bukaquery("INSERT INTO test(data) VALUES('Response JSON: " . addslashes($response) . "')");
 
 // === 4. Proses Data Jika Ada Pemeriksaan ===
 if (isset($data_json['pemeriksaan']) && is_array($data_json['pemeriksaan'])) {
@@ -109,8 +131,8 @@ if (isset($data_json['pemeriksaan']) && is_array($data_json['pemeriksaan'])) {
         }
 
         // === 6. Upsert Saran & Kesan Lab (Q3B) ===
-        $saran = validTeks($data_json['order']['catatan']['analis'] ?? '');
-        $kesan = validTeks($data_json['order']['catatan']['pk'] ?? '');
+        $saran = cleanLabValue($data_json['order']['catatan']['analis'] ?? '');
+        $kesan = cleanLabValue($data_json['order']['catatan']['pk'] ?? '');
         $cek = fetch_assoc("SELECT * FROM saran_kesan_lab WHERE no_rawat='$norawat' AND tgl_periksa='$tgl' AND jam='$jam'");
         if ($cek) {
             bukaquery("UPDATE saran_kesan_lab SET saran='$saran', kesan='$kesan' WHERE no_rawat='$norawat' AND tgl_periksa='$tgl' AND jam='$jam'");
@@ -128,8 +150,8 @@ if (isset($data_json['pemeriksaan']) && is_array($data_json['pemeriksaan'])) {
         // SELECT temp1,temp2,temp3,temp4,temp5,temp6,temp7 FROM temporary_permintaan_lab WHERE temp7=? (id_template) AND temp1=? (noorder)
         // temp1 = noorder
         // temp2 = nama test
-        // temp3 = hasil
-        // temp4 = nilai rujukan (nilnor)
+        // temp3 = hasil (misal: >40, <10, 23)
+        // temp4 = nilai rujukan (nilnor, misal: 11.4-17.7, <200)
         // temp5 = satuan (UnitTest)
         // temp6 = keterangan (kombinasi [flag] has_ket sesuai Q2A)
         // temp7 = id_template
@@ -139,24 +161,23 @@ if (isset($data_json['pemeriksaan']) && is_array($data_json['pemeriksaan'])) {
             $id_template = $row['id_template'];
             if (!isset($map[$id_template])) continue;
             $val = $map[$id_template];
-            $hasilx = validTeks($val['hasil'] ?? '');
-            $nilnorx = $val['nilnor'] ?? '';
-            $nilnor = validTeks(str_replace("&lt;", "<", $nilnorx));
-            $namatest = validTeks($val['NmTestInd'] ?? '');
-            $satuan = validTeks($val['UnitTest'] ?? '');
+            $hasilx = cleanLabValue($val['hasil'] ?? '');
+            $nilnor = cleanLabValue($val['nilnor'] ?? '');
+            $namatest = cleanLabValue($val['NmTestInd'] ?? '');
+            $satuan = cleanLabValue($val['UnitTest'] ?? '');
             
-            // Q2A: Gabungkan flag dan has_ket
+            // Format flag & has_ket (Q1A: tanpa kurung siku)
             $flag = trim($val['flag'] ?? '');
             $has_ket = trim($val['has_ket'] ?? '');
             $keterangan = '';
             if (!empty($flag) && !empty($has_ket)) {
-                $keterangan = "[$flag] $has_ket";
+                $keterangan = "$flag $has_ket";
             } else if (!empty($flag)) {
-                $keterangan = "[$flag]";
+                $keterangan = $flag;
             } else if (!empty($has_ket)) {
                 $keterangan = $has_ket;
             }
-            $keterangan = validTeks($keterangan);
+            $keterangan = cleanLabValue($keterangan);
 
             bukaquery("INSERT INTO temporary_permintaan_lab VALUES ('$cnt_temp', '$noorder', '$namatest', '$hasilx', '$nilnor', '$satuan', '$keterangan', '$id_template', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')");
             $cnt_temp++;
@@ -167,7 +188,7 @@ if (isset($data_json['pemeriksaan']) && is_array($data_json['pemeriksaan'])) {
 } else {
     bukaquery("INSERT INTO test(data) VALUES('Data Hasil Pemeriksaan Tidak Ditemukan')");
     $pesan = urlencode("Data hasil pemeriksaan di TERAS LIS belum tersedia atau belum divalidasi.");
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=GagalAmbilTeras&pesan=$pesan'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=GagalAmbilTeras&pesan=$pesan'>";
     exit;
 }
 
@@ -177,8 +198,8 @@ bukaquery("INSERT INTO test(data) VALUES('[".date("Y-m-d H:i:s")."] Get Hasil Se
 // Tidak simpan langsung ke periksa_lab & detail_periksa_lab.
 // Redirect trigger DlgCariPermintaanLab.java untuk buka DlgPeriksaLaboratorium.java
 if (isset($data_json['status']) && $data_json['status']==1) {
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=SuksesAmbilTeras&noorder=$noorder'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=SuksesAmbilTeras&noorder=$noorder'>";
 } else if (strpos(strtolower($response), '"status": 1')!==false || strpos(strtolower($response), '"status":1')!==false) {
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=SuksesAmbilTeras&noorder=$noorder'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=SuksesAmbilTeras&noorder=$noorder'>";
 }
 ?>

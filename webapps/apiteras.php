@@ -1,6 +1,14 @@
 <?php
 require_once('conf/conf.php');
-date_default_timezone_set('Asia/Jayapura');
+date_default_timezone_set('Asia/Jakarta');
+
+// === Landing Page Guard (Mencegah loop refresh tak terhingga) ===
+if (isset($_GET['aksi'])) {
+    $aksi = htmlspecialchars($_GET['aksi']);
+    $pesan = isset($_GET['pesan']) ? htmlspecialchars($_GET['pesan']) : '';
+    echo "<!DOCTYPE html><html><head><title>$aksi</title></head><body><h3>Status: $aksi</h3><p>$pesan</p></body></html>";
+    exit;
+}
 
 // === 1. Ambil Token ===
 $curl = curl_init();
@@ -27,7 +35,7 @@ curl_close($curl);
 $token = json_decode($token_resp, true);
 if (empty($token['token'])) {
     $pesan = urlencode("Gagal autentikasi ke TERAS LIS: " . ($token_err ?: ($token['pesan'] ?? 'Token tidak valid')));
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=GagalKirim&pesan=$pesan'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=GagalKirim&pesan=$pesan'>";
     exit;
 }
 
@@ -134,7 +142,7 @@ while ($rsqrypermintaan = mysqli_fetch_array($qrypermintaan)) {
 
 if (empty($json)) {
     $pesan = urlencode("Data permintaan $nopermintaan tidak ditemukan di database.");
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=GagalKirim&pesan=$pesan'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=GagalKirim&pesan=$pesan'>";
     exit;
 }
 
@@ -166,10 +174,10 @@ bukaquery("INSERT INTO test(data) VALUES('Send Order $nopermintaan to TERAS: " .
 
 $pesan_resp = strtolower($response["pesan"] ?? "");
 if ((isset($response['status']) && $response['status'] == 1) || strpos($pesan_resp, 'created') !== false || strpos($pesan_resp, 'berhasil') !== false) {
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=SuksesKirim'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=SuksesKirim'>";
 } else {
     $err_msg = $response["pesan"] ?? $curl_err2 ?? "Unknown error dari TERAS";
     $pesan = urlencode("Gagal kirim order: " . $err_msg);
-    echo "<meta http-equiv='refresh' content='1;URL=?aksi=GagalKirim&pesan=$pesan'>";
+    echo "<meta http-equiv='refresh' content='0;URL=?aksi=GagalKirim&pesan=$pesan'>";
 }
 ?>
