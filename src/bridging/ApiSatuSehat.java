@@ -31,6 +31,11 @@ import org.springframework.http.HttpRequest;
 import java.util.Collections;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class ApiSatuSehat {        
     private static final long TOKEN_CACHE_MS = 60_000L;
@@ -117,11 +122,11 @@ public class ApiSatuSehat {
             public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws java.io.IOException {
                 try {
                     String bodyStr = new String(body, "UTF-8");
-                    Pattern pattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}:\\d{2})(?!\\+00:00|\\+0000|Z)(?:\\+07:00|\\+0700)?");
+                    Pattern pattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}:\\d{2}(?>\\.\\d+)?)(?!(?:\\.\\d+)?(?:Z|\\+00:?00|-00:?00))(\\s*[+-](?!00:?00)\\d{2}:?\\d{2})?");
                     Matcher matcher = pattern.matcher(bodyStr);
                     StringBuffer sb = new StringBuffer();
                     while (matcher.find()) {
-                        String matchedDateTime = matcher.group(1);
+                        String matchedDateTime = matcher.group(0);
                         String utcDateTime = convertLocalToUtc(matchedDateTime);
                         matcher.appendReplacement(sb, Matcher.quoteReplacement(utcDateTime));
                     }
@@ -141,22 +146,31 @@ public class ApiSatuSehat {
     public String convertLocalToUtc(String localDateTime) {
         try {
             if (localDateTime == null) return "";
-            localDateTime = localDateTime.trim();
-            if (localDateTime.contains(".")) {
-                localDateTime = localDateTime.split("\\.")[0];
+            String str = localDateTime.trim();
+            if (str.length() == 10) {
+                str += " 00:00:00";
+            } else if (str.length() == 16) {
+                str += ":00";
             }
-            if (localDateTime.length() == 16) {
-                localDateTime += ":00";
+            // Normalize space before offset: "2026-09-22 10:05:26 +07:00" -> "2026-09-22T10:05:26+07:00"
+            str = str.replaceAll("\\s+([+-])", "$1");
+            str = str.replace(" ", "T");
+
+            boolean hasOffset = str.matches(".*[+-]\\d{2}:?\\d{2}$");
+            OffsetDateTime odt;
+            if (hasOffset) {
+                if (str.matches(".*[+-]\\d{4}$")) {
+                    int len = str.length();
+                    str = str.substring(0, len - 2) + ":" + str.substring(len - 2);
+                }
+                odt = OffsetDateTime.parse(str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+            } else {
+                LocalDateTime ldt = LocalDateTime.parse(str, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                odt = ldt.atZone(ZoneId.of("Asia/Jakarta")).toOffsetDateTime();
             }
-            if (localDateTime.length() == 10) {
-                localDateTime += " 00:00:00";
-            }
-            java.text.SimpleDateFormat sdfInput = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            sdfInput.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Jakarta"));
-            java.util.Date date = sdfInput.parse(localDateTime.replace("T", " "));
-            java.text.SimpleDateFormat sdfOutput = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-            sdfOutput.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-            return sdfOutput.format(date);
+            OffsetDateTime utc = odt.withOffsetSameInstant(ZoneOffset.UTC);
+
+            return utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+00:00'"));
         } catch (Exception e) {
             return localDateTime.replaceAll(" ", "T") + "+00:00";
         }
