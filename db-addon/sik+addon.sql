@@ -5063,17 +5063,17 @@ CREATE TABLE `data_triase_igd` (
   `suhu` varchar(5) NOT NULL,
   `saturasi_o2` varchar(3) NOT NULL,
   `nyeri` varchar(5) NOT NULL,
-  `id_observation_cara_masuk` varchar(40) DEFAULT NULL,
-  `id_observation_alat_transportasi` varchar(40) DEFAULT NULL,
-  `id_observation_alasan_kedatangan` varchar(40) DEFAULT NULL,
-  `id_observation_macam_kasus` varchar(40) DEFAULT NULL,
-  `id_observation_tekanan_darah` varchar(40) DEFAULT NULL,
-  `id_observation_nadi` varchar(40) DEFAULT NULL,
-  `id_observation_pernapasan` varchar(40) DEFAULT NULL,
-  `id_observation_suhu` varchar(40) DEFAULT NULL,
-  `id_observation_saturasi_o2` varchar(40) DEFAULT NULL,
-  `id_observation_nyeri` varchar(40) DEFAULT NULL,
-  `id_composition` varchar(40) DEFAULT NULL,
+  `id_observation_cara_masuk` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_alat_transportasi` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_alasan_kedatangan` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_macam_kasus` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_tekanan_darah` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_nadi` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_pernapasan` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_suhu` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_saturasi_o2` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_nyeri` varchar(40) NOT NULL DEFAULT '',
+  `id_composition` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`),
   KEY `kode_kasus` (`kode_kasus`),
   CONSTRAINT `data_triase_igd_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5091,7 +5091,7 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala1`;
 CREATE TABLE `data_triase_igddetail_skala1` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala1` varchar(3) NOT NULL,
-  `id_observation_skala1` varchar(40) DEFAULT NULL,
+  `id_observation_skala1` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_skala1`),
   KEY `data_triase_igddetail_skala1_ibfk_1` (`kode_skala1`),
   CONSTRAINT `data_triase_igddetail_skala1_ibfk_1` FOREIGN KEY (`kode_skala1`) REFERENCES `master_triase_skala1` (`kode_skala1`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5109,7 +5109,7 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala2`;
 CREATE TABLE `data_triase_igddetail_skala2` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala2` varchar(3) NOT NULL,
-  `id_observation_skala2` varchar(40) DEFAULT NULL,
+  `id_observation_skala2` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_skala2`),
   KEY `kode_skala2` (`kode_skala2`),
   CONSTRAINT `data_triase_igddetail_skala2_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5127,7 +5127,7 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala3`;
 CREATE TABLE `data_triase_igddetail_skala3` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala3` varchar(3) NOT NULL,
-  `id_observation_skala3` varchar(40) DEFAULT NULL,
+  `id_observation_skala3` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_skala3`),
   KEY `kode_skala3` (`kode_skala3`),
   CONSTRAINT `data_triase_igddetail_skala3_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5145,7 +5145,7 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala4`;
 CREATE TABLE `data_triase_igddetail_skala4` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala4` varchar(3) NOT NULL,
-  `id_observation_skala4` varchar(40) DEFAULT NULL,
+  `id_observation_skala4` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_skala4`),
   KEY `kode_skala4` (`kode_skala4`),
   CONSTRAINT `data_triase_igddetail_skala4_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5163,7 +5163,7 @@ DROP TABLE IF EXISTS `data_triase_igddetail_skala5`;
 CREATE TABLE `data_triase_igddetail_skala5` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_skala5` varchar(3) NOT NULL,
-  `id_observation_skala5` varchar(40) DEFAULT NULL,
+  `id_observation_skala5` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_skala5`),
   KEY `kode_skala5` (`kode_skala5`),
   CONSTRAINT `data_triase_igddetail_skala5_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5186,10 +5186,10 @@ CREATE TABLE `data_triase_igdprimer` (
   `plan` enum('Ruang Resusitasi','Ruang Kritis') NOT NULL,
   `tanggaltriase` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
-  `id_observation_keluhan_utama` varchar(40) DEFAULT NULL,
-  `id_observation_kebutuhan_khusus` varchar(40) DEFAULT NULL,
-  `id_observation_catatan` varchar(40) DEFAULT NULL,
-  `id_careplan_keputusan` varchar(40) DEFAULT NULL,
+  `id_observation_keluhan_utama` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_kebutuhan_khusus` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_catatan` varchar(40) NOT NULL DEFAULT '',
+  `id_careplan_keputusan` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`),
   KEY `nip` (`nik`),
   CONSTRAINT `data_triase_igdprimer_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `data_triase_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5211,9 +5211,9 @@ CREATE TABLE `data_triase_igdsekunder` (
   `plan` enum('Zona Kuning','Zona Hijau') NOT NULL,
   `tanggaltriase` datetime NOT NULL,
   `nik` varchar(20) NOT NULL,
-  `id_clinicalimpression_anamnesa` varchar(40) DEFAULT NULL,
-  `id_observation_catatan` varchar(40) DEFAULT NULL,
-  `id_careplan_keputusan` varchar(40) DEFAULT NULL,
+  `id_clinicalimpression_anamnesa` varchar(40) NOT NULL DEFAULT '',
+  `id_observation_catatan` varchar(40) NOT NULL DEFAULT '',
+  `id_careplan_keputusan` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`no_rawat`),
   KEY `nip` (`nik`),
   CONSTRAINT `data_triase_igdsekunder_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `pegawai` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -32567,8 +32567,9 @@ CREATE TABLE `user` (
   `satu_sehat_kirim_composition` enum('true','false') DEFAULT NULL,
   `ringkasan_hutang_vendor_inventaris` enum('true','false') DEFAULT NULL,
   `ringkasan_beban_hutang_lain` enum('true','false') DEFAULT NULL,
-  `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
   `manajemen` enum('true','false') DEFAULT NULL,
+  `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
+  `satu_sehat_kirim_nutritionorder` enum('true','false') DEFAULT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -33259,4 +33260,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-09-08 12:50:15
+-- Dump completed on 2026-09-23 19:05:40

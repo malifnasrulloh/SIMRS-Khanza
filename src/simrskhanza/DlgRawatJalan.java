@@ -12236,6 +12236,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
+                    DTPTgl.setDate(new Date());
                 }else if(ChkJln.isSelected()==false){
                     nilai_jam =cmbJam.getSelectedIndex();
                     nilai_menit =cmbMnt.getSelectedIndex();
