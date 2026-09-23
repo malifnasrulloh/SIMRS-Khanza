@@ -1155,6 +1155,7 @@ public final class akses {
     public static boolean gethasil_pemeriksaan_ekg() {return hakAkses.get(EnumAkses.hasil_pemeriksaan_ekg);}
     public static boolean gethapus_edit_sep_bpjs() {return hakAkses.get(EnumAkses.hapus_edit_sep_bpjs);}
     public static boolean getsatu_sehat_kirim_diet() {return hakAkses.get(EnumAkses.satu_sehat_kirim_diet);}
+    public static boolean getsatu_sehat_kirim_nutritionorder() {return hakAkses.get(EnumAkses.satu_sehat_kirim_nutritionorder);}
     public static boolean getsatu_sehat_mapping_obat() {return hakAkses.get(EnumAkses.satu_sehat_mapping_obat);}
     public static boolean getdapur_ringkasan_pembelian() {return hakAkses.get(EnumAkses.dapur_ringkasan_pembelian);}
     public static boolean getsatu_sehat_kirim_medication() {return hakAkses.get(EnumAkses.satu_sehat_kirim_medication);}

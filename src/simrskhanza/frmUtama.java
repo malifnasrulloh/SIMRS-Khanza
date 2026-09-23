@@ -154,6 +154,7 @@ import bridging.SatuSehatKirimDiagnosticReportLabMB;
 import bridging.SatuSehatKirimDiagnosticReportLabPK;
 import bridging.SatuSehatKirimDiagnosticReportRadiologi;
 import bridging.SatuSehatKirimDiet;
+import bridging.SatuSehatKirimNutritionOrder;
 import bridging.SatuSehatKirimEncounter;
 import bridging.SatuSehatKirimEpisodeOfCare;
 import bridging.SatuSehatKirimMedication;
@@ -9121,6 +9122,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         });
     }
 
+    private void btnKirimNutritionOrderSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new SatuSehatKirimNutritionOrder(this, false), aplikasi -> {
+            aplikasi.isCek();
+        });
+    }
+
     private void btnMappingObatSatuSehatActionPerformed(java.awt.event.ActionEvent evt) {
         showForm(() -> new SatuSehatMapingObatAlkes(this, false), aplikasi -> {
             aplikasi.isCek();
@@ -10642,7 +10649,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnPenilaianAwalMedisRalanIGDPsikiatri, btnBPJSReferensiSettingPPKApotek, btnBPJSReferensiObatApotek, btnPembayaranBankMandiri, btnBPJSMapingObatApotek,
             btnPenilaianUlangNyeri, btnPenilaianTerapiWicara, btnPengkajianRestrain, btnBPJSKunjunganSEPApotek, btnBPJSMonitoringKlaimApotek, btnPenilaianAwalMedisRalanParu,
             btnBPJSDaftarPelayananObatApotek, btnCatatanKeperawatanRalan, btnCatatanPersalinan, btnSkorAldrettePascaAnestesi, btnSkorStewardPascaAnestesi,
-            btnSkorBromagePascaAnestesi, btnPenilaianPreInduksi, btnHasilUSGUrologi, btnHasilUSGGynecologi, btnHasilPemeriksaanEKG, btnKirimDietSatuSehat, btnMappingObatSatuSehat,
+            btnSkorBromagePascaAnestesi, btnPenilaianPreInduksi, btnHasilUSGUrologi, btnHasilUSGGynecologi, btnHasilPemeriksaanEKG, btnKirimDietSatuSehat, btnKirimNutritionOrderSatuSehat, btnMappingObatSatuSehat,
             btnRingkasanPengadaanDapur, btnKirimMedicationSatuSehat, btnKirimMedicationRequestSatuSehat, btnPenatalaksanaanTerapiOkupasi, btnKirimMedicationDispenseSatuSehat,
             btnHasilUSGNeonatus, btnHasilEndoskopiFaringLaring, btnMappingRadiologiSatuSehat, btnKirimServiceRequestRadiologiSatuSehat, btnHasilEndoskopiHidung, btnKirimSpecimenRadiologiSatuSehat,
             btnMasterMasalahKeperawatanNeonatus, btnMasterRencanaKeperawatanNeonatus, btnPenilaianAwalKeperawatanRanapNeonatus, btnKirimObservationRadiologiSatuSehat,
@@ -12270,6 +12277,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsatu_sehat_kirim_clinicalimpression(), btnKirimClinicalImpressionSatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_diet(), btnKirimDietSatuSehat);
+
+            addMenu(akses.getsatu_sehat_kirim_nutritionorder(), btnKirimNutritionOrderSatuSehat);
 
             addMenu(akses.getsatu_sehat_mapping_obat(), btnMappingObatSatuSehat);
 
@@ -15423,6 +15432,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnHasilPemeriksaanECHO = createMenuButton("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png", "Hasil Pemeriksaan ECHO", "btnHasilPemeriksaanECHO", this::btnHasilPemeriksaanECHOActionPerformed);
 
         btnKirimDietSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Diet Satu Sehat", "btnKirimDietSatuSehat", this::btnKirimDietSatuSehatActionPerformed);
+
+        btnKirimNutritionOrderSatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Nutrition Order Satu Sehat", "btnKirimNutritionOrderSatuSehat", this::btnKirimNutritionOrderSatuSehatActionPerformed);
 
         btnMappingObatSatuSehat = createMenuButton("/48x48/satusehat.png", "Mapping Obat/Alkes/BHP Satu Sehat", "btnMappingObatSatuSehat", this::btnMappingObatSatuSehatActionPerformed);
 

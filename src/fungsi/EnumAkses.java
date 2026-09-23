@@ -1231,7 +1231,8 @@ public enum EnumAkses {
     ringkasan_beban_hutang_lain("[K]Ringkasan Beban Hutang Lain"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
-    satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat");
+    satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat"),
+    satu_sehat_kirim_nutritionorder("[L]Kirim Nutrition Order Satu Sehat");
 
     private final String alias;
     private final String dbTableColumn;
