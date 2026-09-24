@@ -1115,6 +1115,7 @@ import setting.DlgSetHargaKamar;
 import setting.DlgSetHargaObatRalan;
 import setting.DlgSetHargaObatRanap;
 import setting.DlgSetHargaToko;
+import setting.DlgSetResepPerCaraBayar;
 import setting.DlgSetInputParsial;
 import setting.DlgSetKamarInap;
 import setting.DlgSetKeterlambatan;
@@ -3666,7 +3667,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {
         showForm(() -> new DlgAdmin(this, false), admin -> {
-            admin.tampil();
             admin.emptTeks();
         });
     }
@@ -10427,6 +10427,10 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         showForm(() -> new KeuanganRingkasanBebanHutangLain(this,false));
     }
 
+    private void btnSetResepPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {   
+        showForm(() -> new DlgSetResepPerCaraBayar(this,false));
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -10687,7 +10691,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi,
             btnHasilUSGAbdomen,btnIntervensiNyeriFarmakologi,btnIntervensiNyeriNonFarmakologi,btnSuratPengajuanCutiPerawatan,btnChecklistKriteriaMasukIsolasi,btnMapingTarifTindakanRalanKPTLSatuSehat,
             btnMapingTarifTindakanRanapKPTLSatuSehat,btnMapingTarifTindakanRadiologiKPTLSatuSehat,btnMapingTarifTindakanLabKPTLSatuSehat,btnMapingTarifTindakanOperasiKPTLSatuSehat,btnMapingTarifKamarKPTLSatuSehat,
-            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain;
+            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain,btnSetResepPerCaraBayar;
 
     public void isWall() {
         try {
@@ -13385,6 +13389,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getjam_diet_pasien(), btnJamDietPasien);
 
             addMenu(akses.getruang_ok(), btnRuangOperasi);
+
+            addMenu(akses.getset_resep_per_cara_bayar(), btnSetResepPerCaraBayar);
     }
 
     private widget.ButtonBig createMenuButton(String iconPath, String text, String name, java.awt.Dimension preferedSize, java.awt.event.ActionListener actionListener) {
@@ -15832,5 +15838,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnRingkasanHutangVendorAsetInventaris = createMenuButton("/48x48/9016847_cleaning_kitchen_covid-19_virus_pandemic_icon.png", "Ringkasan Hutang Vendor Aset/Inventaris", "btnRingkasanHutangVendorAsetInventaris", this::btnRingkasanHutangVendorAsetInventarisActionPerformed);
 
         btnRingkasanBebanHutangLain = createMenuButton("/48x48/debt_2780190.png", "Ringkasan Beban Hutang Lain", "btnRingkasanBebanHutangLain", this::btnRingkasanBebanHutangLainActionPerformed);
+
+        btnSetResepPerCaraBayar = createMenuButton("/48x48/medicament_18179836.png", "Set Resep Per Cara Bayar", "btnSetResepPerCaraBayar", this::btnSetResepPerCaraBayarActionPerformed);
     }
 }

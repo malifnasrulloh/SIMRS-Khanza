@@ -1371,4 +1371,6 @@ public final class akses {
     public static boolean getsatu_sehat_kirim_composition(){return hakAkses.get(EnumAkses.satu_sehat_kirim_composition);}
     public static boolean getringkasan_hutang_vendor_inventaris(){return hakAkses.get(EnumAkses.ringkasan_hutang_vendor_inventaris);}
     public static boolean getringkasan_beban_hutang_lain(){return hakAkses.get(EnumAkses.ringkasan_beban_hutang_lain);}
+    public static boolean getset_resep_per_cara_bayar(){return hakAkses.get(EnumAkses.set_resep_per_cara_bayar);}
+    public static boolean getskrining_tolac(){return hakAkses.get(EnumAkses.skrining_tolac);}
 }

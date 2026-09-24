@@ -1229,6 +1229,8 @@ public enum EnumAkses {
     satu_sehat_kirim_composition("[L]Kirim Composition Satu Sehat"),
     ringkasan_hutang_vendor_inventaris("[K]Ringkasan Hutang Vendor Aset/Inventaris"),
     ringkasan_beban_hutang_lain("[K]Ringkasan Beban Hutang Lain"),
+    set_resep_per_cara_bayar("[U]Set Resep Per Cara Bayar"),
+    skrining_tolac("[M]Skrining TOLAC"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat"),

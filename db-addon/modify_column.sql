@@ -54,9 +54,11 @@ ALTER TABLE `data_triase_igdprimer`
 MODIFY COLUMN `id_observation_keluhan_utama` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `nik`,
 MODIFY COLUMN `id_observation_kebutuhan_khusus` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_keluhan_utama`,
 MODIFY COLUMN `id_observation_catatan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_kebutuhan_khusus`,
-MODIFY COLUMN `id_careplan_keputusan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_catatan`;
+MODIFY COLUMN `id_careplan_keputusan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_catatan`,
+MODIFY COLUMN `id_observation_skala` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_careplan_keputusan`;
 
 ALTER TABLE `data_triase_igdsekunder`
 MODIFY COLUMN `id_clinicalimpression_anamnesa` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `nik`,
 MODIFY COLUMN `id_observation_catatan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_clinicalimpression_anamnesa`,
-MODIFY COLUMN `id_careplan_keputusan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_catatan`;
+MODIFY COLUMN `id_careplan_keputusan` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_observation_catatan`,
+MODIFY COLUMN `id_observation_skala` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '' AFTER `id_careplan_keputusan`;

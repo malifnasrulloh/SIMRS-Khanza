@@ -672,7 +672,10 @@ public final class SatuSehatKirimObservationRadiologi extends javax.swing.JDialo
                                         "\"reference\": \"ImagingStudy/"+tbObat.getValueAt(i,23).toString()+"\"" +
                                     "}" +
                                 "]," +
-                                "\"valueString\": \""+tbObat.getValueAt(i,11).toString().replaceAll("\\r\\n|\\r|\\n","<br>").replaceAll("\t", " ")+"\"" +
+                                "\"specimen\": {" +
+                                    "\"reference\": \"Specimen/"+tbObat.getValueAt(i,13).toString()+"\"" +
+                                "}," +
+                                "\"valueString\": \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\"" +
                             "}";  
                         System.out.println("URL : "+link+"/Observation");
                         System.out.println("Request JSON : "+json);
@@ -787,6 +790,9 @@ public final class SatuSehatKirimObservationRadiologi extends javax.swing.JDialo
                                         "\"reference\": \"ImagingStudy/"+tbObat.getValueAt(i,23).toString()+"\"" +
                                     "}" +
                                 "]," +
+                                "\"specimen\": {" +
+                                    "\"reference\": \"Specimen/"+tbObat.getValueAt(i,13).toString()+"\"" +
+                                "}," +
                                 "\"valueString\": \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\"" +
                             "}";                        
                         System.out.println("URL : "+link+"/Observation/"+tbObat.getValueAt(i,18).toString());
