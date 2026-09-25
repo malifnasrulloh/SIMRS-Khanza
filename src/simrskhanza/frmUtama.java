@@ -222,6 +222,7 @@ import dapur.DapurStokKeluarBarangPerTanggal;
 import dapur.DapurSuplier;
 import dapur.DapurSuratPemesanan;
 import dapur.DapurVerifikasiPenerimaan;
+import fungsi.NotifikasiEngine;
 import fungsi.akses;
 import fungsi.autoLogout;
 import fungsi.batasInput;
@@ -1120,6 +1121,7 @@ import setting.DlgSetInputParsial;
 import setting.DlgSetKamarInap;
 import setting.DlgSetKeterlambatan;
 import setting.DlgSetNota;
+import setting.DlgSetNotifikasi;
 import setting.DlgSetOtoLokasi;
 import setting.DlgSetOtoRalan;
 import setting.DlgSetPenjabLab;
@@ -1354,6 +1356,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnToolKamnap = new widget.ButtonBig();
         BtnToolKasir = new widget.ButtonBig();
         jSeparator7 = new javax.swing.JSeparator();
+        BtnNotifikasi = new widget.ButtonBig();
         BtnLog = new widget.ButtonBig();
         BtnClose = new widget.ButtonBig();
         internalFrame4 = new widget.InternalFrame();
@@ -1843,6 +1846,23 @@ public class frmUtama extends javax.swing.JFrame {
         jSeparator7.setOpaque(true);
         jSeparator7.setPreferredSize(new java.awt.Dimension(1, 36));
         internalFrame1.add(jSeparator7);
+
+        BtnNotifikasi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/bell24.png"))); // NOI18N
+        BtnNotifikasi.setText("0");
+        BtnNotifikasi.setToolTipText("Pemberitahuan Masuk");
+        BtnNotifikasi.setEnabled(false);
+        BtnNotifikasi.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        BtnNotifikasi.setIconTextGap(4);
+        BtnNotifikasi.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        BtnNotifikasi.setName("BtnNotifikasi"); // NOI18N
+        BtnNotifikasi.setPreferredSize(new java.awt.Dimension(72, 38));
+        BtnNotifikasi.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+        BtnNotifikasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnNotifikasiActionPerformed(evt);
+            }
+        });
+        internalFrame1.add(BtnNotifikasi);
 
         BtnLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/login2.png"))); // NOI18N
         BtnLog.setMnemonic('L');
@@ -2884,6 +2904,10 @@ public class frmUtama extends javax.swing.JFrame {
         BtnMenu.setEnabled(false);
         akses.setLogOut();
         autoLogout.stop();
+        BtnNotifikasi.setText("0");
+        BtnNotifikasi.setForeground(new java.awt.Color(50, 50, 50));
+        BtnNotifikasi.setEnabled(false);
+        NotifikasiEngine.stop();
         isTutup();
     }
 
@@ -2894,6 +2918,7 @@ public class frmUtama extends javax.swing.JFrame {
     }
 
     private void autoLogoutFlow() {
+        NotifikasiEngine.stop();
         doLogOut();
         System.exit(0);
     }
@@ -2941,6 +2966,7 @@ public class frmUtama extends javax.swing.JFrame {
                         Sequel.menyimpan("tracker", "'Admin Utama',current_date(),current_time()", "Login");
                     }
                     autoLogout.start(this, this::autoLogoutFlow);
+                    startNotificationEngine();
                 } else if (akses.getjml2() >= 1) {
                     BtnMenu.setEnabled(true);
                     DlgLogin.dispose();
@@ -2993,6 +3019,7 @@ public class frmUtama extends javax.swing.JFrame {
                         Sequel.menyimpan("tracker", "'" + edAdmin.getText() + "',current_date(),current_time()", "Login");
                     }
                     autoLogout.start(this, this::autoLogoutFlow);
+                    startNotificationEngine();
                 } else if ((akses.getjml1() == 0) && (akses.getjml2() == 0)) {
                     JOptionPane.showMessageDialog(null, "Maaf, Gagal login. ID User atau password ada yang salah ...!");
                     BtnToolReg.setEnabled(false);
@@ -3911,6 +3938,57 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
 
     private void btnRalanMasukActionPerformed(java.awt.event.ActionEvent evt) {
         showForm(() -> new DlgPembayaranRalan(this, false));
+    }
+
+    private void btnSetNotifikasiActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new DlgSetNotifikasi(this, false), notifikasi -> {
+            notifikasi.emptTeks();
+        });
+    }
+
+    private void BtnNotifikasiActionPerformed(java.awt.event.ActionEvent evt) {
+        DlgPemberitahuan notif = new DlgPemberitahuan(this, false, this::bukaMenuNotifikasi);
+        notif.tampil();
+        notif.setSize(780, 420);
+        notif.setLocationRelativeTo(this);
+        notif.setVisible(true);
+    }
+
+    public void bukaMenuNotifikasi(String sourceTable, String sourcePk) {
+        if ("permintaan_lab".equalsIgnoreCase(sourceTable)) {
+            if (akses.getadmin() || akses.getpermintaan_lab()) {
+                btnPermintaanLabActionPerformed(null);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Maaf, Anda tidak memiliki hak akses ke menu Permintaan Lab!");
+            }
+        } else if ("resep_obat".equalsIgnoreCase(sourceTable)) {
+            if (akses.getadmin() || akses.getresep_dokter() || akses.getberi_obat()) {
+                btnDaftarPermintaanResepActionPerformed(null);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Maaf, Anda tidak memiliki hak akses ke menu Resep Obat!");
+            }
+        } else if ("permintaan_radiologi".equalsIgnoreCase(sourceTable)) {
+            if (akses.getadmin() || akses.getpermintaan_radiologi()) {
+                btnPermintaanRadiologiActionPerformed(null);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Maaf, Anda tidak memiliki hak akses ke menu Permintaan Radiologi!");
+            }
+        }
+    }
+
+    private void startNotificationEngine() {
+        BtnNotifikasi.setEnabled(true);
+        NotifikasiEngine.start(lblUser.getText(), akses.getkode(), count -> {
+            if (count > 0) {
+                BtnNotifikasi.setText("" + count);
+                BtnNotifikasi.setForeground(new java.awt.Color(204, 0, 0));
+                BtnNotifikasi.setToolTipText(count + " Pemberitahuan Menunggu Respon");
+            } else {
+                BtnNotifikasi.setText("0");
+                BtnNotifikasi.setForeground(new java.awt.Color(50, 50, 50));
+                BtnNotifikasi.setToolTipText("Tidak Ada Pemberitahuan");
+            }
+        });
     }
 
     private void btnSetupAplikasiActionPerformed(java.awt.event.ActionEvent evt) {
@@ -10444,6 +10522,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.Button BtnCancel;
     private widget.ButtonBig BtnClose;
     private widget.ButtonBig BtnLog;
+    private widget.ButtonBig BtnNotifikasi;
     private widget.Button BtnLogin;
     private widget.ButtonBig BtnMenu;
     private widget.ButtonBig BtnToolJualObat;
@@ -10555,6 +10634,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.ScrollPane scrollPane1;
     private widget.ScrollPane scrollPane2;
     // End of variables declaration//GEN-END:variables
+    private widget.ButtonBig btnSetNotifikasi;
     private widget.ButtonBig btnDataPenjualan, btnInputPenjualan, btnDataPenyerahanDarah, btnResepObatDepan, btnBarcode, btnICD, btnObat, btnObatPenyakit, btnKamar, btnTindakanRalan, btnDokter, btnPegawai, btnPasien, btnRegistrasi, btnRalan, btnKamarInap, btnRanap, btnResepObat, btnRujukPasien, btnBeriObat, btnPasienMati, btnAdmin, btnVakum, btnDisplay, btnSetupHarga, btnSuplier, btnJnsBarang, btnKonversi, btnSatuan, btnCashFlow, btnBubes, btnPostingJurnal, btnRekeningTahun, btnRekening, btnPembelian, btnPenjualan, btnPiutang, btnBayarPiutang, btnOpname, btnReturBeli, btnReturJual, btnSirkulasi, btnKeuntungan, btnLabaRugi, btnReturPiutang, btnAnalisaKamar, btnRHDOkter, btnRBDokter, btnTagihanMasuk, btnResume, btnDiet, btnRHParamedis, btnRBParamedis, btnKasir, btnLahir, btnSetBiayaHarian, btnJenisInventaris, btnKategoriInventaris, btnLihatPiutang, btnLaboratorium, btnRalanMasuk, btnSetupAplikasi, btnSetOtoRalan, btnRanapMasuk, btnProdusenInventaris, btnSetBiayaMasukSekali, btnPaketOperasi, btnTagihanOperasi, BtnJadwal, btnMerkInventaris, btnRuangInventaris, btnBarangInventaris, btnInventaris, btnSirkulasiInventaris, btnFrekuensiRalan, btnFrekuensiRanap, btnSetupOtoLokasi, btnTagihanPoli, btnRujukMasuk, btnTracker, btnTindakanRanap, btnSetupJamInap, btnStokObatPasien, btnTarifLab, btnSetPenjab, btnTagihanObatPoli, btnTagihanObatBangsal, btnReturPasien, btnKeuntunganObatRanap, btnPenggajian, btnRekapPresensi, btnRekapHarian, btnRekapBulanan, btnDeposit, btnSetupRM, btnResepPulang, btnSetupTarif, btnBarangIpsrs, btnPembelianIpsrs, btnPengeluaranIpsrs, btnRHMasukIpsrs, btnRHKeluarIpsrs, btnRBiayaIpsrs, btnTarifRadiologi, btnPeriksaRadiologi, btnTagihanRalanPerhari, btnTagihanRanapPerhari, btnSetupEmbalase, btnSirkulasiBerkas, btnObatPasienRalan, btnObatPasienRanap, btnPemesanan, btnPengeluaran, btnTambahanBiaya, btnPotonganBiaya, btnJMDetailDokter, btnIGD, btnBarcodeRalan, btnBarcodeRanap, btnSetObatRalan, btnSetObatRanap, btnPenyakitPD3I, btnSurveilansPD3I, btnSurveilansRalan, btnDiagnosa, btnSurveilansRanap, btnPnyTakMenularRanap, btnPnyTakMenularRalan, btnKunjunganRalan, btnRl32, btnRl33, btnRl37, btnRl38, btnTagihanDokter, btnSMS, btnSidikJari, btnJamPresensi, btnJadwalPegawai, btnJenisParkir, btnBarcodeParkir, btnParkirMasuk, btnSetupNota, BtnDpjp, btnMutasiBarang, btnRl34, btnRl36, btnfee_bacaan_ekg, btnfee_rujukan_rontgen, btnfee_rujukan_ranap, btnfee_ralan, btnakun_bayar, btnbayar_pemesanan, btnObatPasienPeresep, btnJenisIpsrs, btnPemasukanLain, btnPengaturanRekening, btnJadwalTambahan, btnClosingKasir, btnKeterlambatanPresensi, btnSetHargaKamar, btnRekapPershift, btnCekBPJSNik, btnCekBPJSKartu, btnCekBPJSRiwayatRujukanPCare, btnRekapPresensi2, btnObatPerCaraBayar, btnKunjunganRanap, btnPaymentPoint, btnCekBPJSNomorRujukanPCare, btnICD9, btnDaruratStok, btnRetensiRM, btnTemporaryPresensi, btnJurnalHarian, btnSirkulasi2, btnCekBPJSDiagnosa, btnCekBPJSPoli, btnIndustriFarmasi, btnRHJasaSarana, btnRBJasaSarana, btnRHPaketBHP, btnRBPaketBHP, btnPiutangBelumLunas, btnCekBPJSFaskes, btnBPJSSEP, btnPengambilanUTD, btnTarifUtd, btnPengambilanUTD2, btnUTDMedisRusak, btnPengambilanPenunjangUTD, btnPengambilanPenunjangUTD2, btnUTDPenunjangRusak, btnSuplierIPSRS, btnUTDDonorDarah, btnMonitoringKlaim, btnUTDCekalDarah, btnUTDKomponenDarah, btnUTDStokDarah, btnUTDPemisahanDarah, btnHarianKamar, btnRincianPiutangPasien, btnKeuntunganObat2, btnReklasifikasiRalan, btnReklasifikasiRanap, btnUTDPenyerahanDarah, btnHutangObat, btnRiwayatBarangMedis, btnSensusHarianPoli, btnRl4a, btnAplicareReferensiKamar, btnAplicareKetersediaanKamar, btnInaCBGKlaimBaruOtomatis, btnInaCBGKlaimBaruManual, btnInaCBGCoderNIK, btnMutasiBerkas, btnAkunPiutang, btnRHKSO, btnRBKSO, btnRHMenejemen, btnRBMenejemen, btnCekEligibilitasInhealth, btnReferensiKamarInhealth, btnCekInhealthPoli, btnCekInhealthFaskes, btnInhealthSJP, btnPiutangRalan, btnPiutangRanap, btnPiutangPerCaraBayar, btnLamaPelayananRalan, btnCatatanPasien, btnRl4b, btnRl4asebab, btnRl4bsebab, btnDataHAIs, btnHarianHAIs, btnBulananHAIs, btnHitungBor, btnPerusahaan, btnDaftarPermintaanResep, btnLamaPelayananApotek, btnHitungAlos, btnDetailTindakan, btnRekapPoliAnak, btnGrafikKunjunganPoli, btnGrafikKunjunganPerDokter, btnGrafikKunjunganPerPekerjaan, btnGrafikKunjunganPerPendidikan, btnGrafikKunjunganPerTahun, btnBerkasDigitalPerawatan, btnPnyMenularRanap, btnPnyMenularRalan, btnGrafikKunjunganPerBulan, btnGrafikKunjunganPerTanggal, btnGrafikDemografiRegistrasi, btnGrafikStatusRegPerTahun, btnGrafikStatusRegPerTahun2, btnGrafikStatusRegPerBulan, btnGrafikStatusRegPerBulan2, btnGrafikStatusRegPerTanggal, btnGrafikStatusRegPerTanggal2, btnGrafikStatusRegBatalPerTahun, btnGrafikStatusRegBatalPerBulan, btnCekPCareDiagnosa, btnGrafikStatusRegBatalPerTanggal, btnKategoriBarang, btnGolonganBarang, btnObatPerTanggal, btnPenjualanPerTanggal, btnCekPCareKesadaran, btnPembatalanPeriksaDokter, btnPembayaranPerUnit, btnRekapPembayaranPerUnit, btnGrafikKunjunganPerCarabayar, btnPengadaanIPSRSPerTanggal, btnStokKeluarIPSRSPerTanggal, btnGrafikKunjunganRanapPerTahun, btnCekPCareRujukan, btnGrafikLabRalanPerTahun, btnGrafikRadRalanPerTahun, btnCekEntryRalan, btnInaCBGKlaimBaruManual2, btnPermintaanMedis, btnRingkasanPermintaanMedis, btnSuratPemesananMedis, btnPermintaanNonMedis, btnRekapPermintaanNonMedis, btnSuratPemesananNonMedis, btnGrafikPerPerujuk, btnCekReferensiProsedurBPJS, btnCekReferensiKelasRawatBPJS, btnCekReferensiDokterBPJS, btnCekReferensiSpesialistikBPJS, btnCekReferensiRuangRawatBPJS, btnCekReferensiCaraKeluarBPJS, btnCekReferensiPascaPulangBPJS, btnDetailVKOK, btnCekBPJSNomorRujukanRS, btnCekBPJSRujukanKartuPCare, btnCekBPJSRujukanKartuRS, btnRujukanKeluarBPJS, btnGrafikLabRalanPerBulan, btnStokKeluarMedis, btnGrafikRadRalanPerBulan, btnJMDetailDokter2, btnPengaduan, btnGrafikLabRalanPerHari, btnGrafikRadRalanPerHari, btnSensusHarianRalan, btnMetodeRacik, btnPembayaranAkunBayar, btnPenggunaObatResep, btnRekapPenerimaanObat, btnMasterBerkasPegawai, btnBerkasPegawai, btnRiwayatJabatan, btnRiwayatPendidikan, btnRiwayatNaikGaji, btnKegiatanIlmiah, btnRiwayatPenghargaan, btnRiwayatPenelitian, btnPenerimaanNonMedis, btnBayarPesanNonMedis, btnHutangNonMedis, btnRekapPenerimaanNonMedis, btnInsidenKeselamatan, btnInsidenKeselamatanPasien, btnGrafikKejadianIKPPerTahun, btnGrafikKejadianIKPPerBulan, btnGrafikKejadianIKPPerTanggal, btnRiwayatBatch, btnGrafikKejadianIKPPerJenis, btnGrafikKejadianIKPPerDampak, btnPiutangPerAkunPiutang, btnGrafikKunjunganPerAgama, btnGrafikKunjunganPerUmur, btnSuku, btnBahasa, btnGolonganTNI, btnSatuanTNI, btnJabatanTNI, btnPangkatTNI, btnGolonganPolri, btnSatuanPolri, btnJabatanPolri, btnPangkatPolri, btnCacatFisik, btnGrafikKunjunganPerSuku, btnGrafikKunjunganPerBahasa, btnJadwalOperasi, btnMapingPoliBPJS, btnGrafikKunjunganPerCacat, btnBarangCSSD, btnSKDPBPJS, btnBookingRegistrasi, btnCekReferensiPropinsiBPJS, btnCekReferensiKabupatenBPJS, btnCekReferensiKecamatanBPJS, btnCekReferensiDokterDPJPBPJS, btnCekBPJSRiwayatRujukanRS, btnCekBPJSTanggalRujukan, btnPermintaanLab, btnPermintaanRadiologi, btnSuratIndeks, btnSuratMap, btnSuratAlmari, btnSuratRak, btnSuratRuang, btnSuratKlasifikasi, btnSuratStatus, btnSuratSifat, btnSuratBalas, btnSuratMasuk, btnPCareReferensiDokter, btnPCareReferensiPoli, btnPCareReferensiProvider, btnPCareReferensiStatusPulang, btnPCareReferensiSpesialis, btnPCareReferensiSubspesialis, btnPCareReferensiSarana, btnPCareReferensiKhusus, btnPCareReferensiObat, btnPCareReferensiTindakan, btnPCareFaskesSubspesialis, btnPCareFaskesAlihRawat, btnPCareFaskesThalasemia, btnPCareMapingObat, btnPCareMapingTindakan, btnPCareClubProlanis, btnPCareMapingPoli, btnPCareKegiatanKelompok, btnPCareMapingTindakanRanap, btnPCarePesertaKegiatanKelompok, btnSirkulasi3, btnPCarePendaftaran, btnPCareMapingDokter, btnRanapPerRuang, btnPenyakitRanapCaraBayar, btnAnggotaMiliterDirawat, btnSetInputParsial, btnLamaPelayananRadiologi, btnLamaPelayananLab, btnCekSEP, btnSuratKeluar, btnKegiatanFarmasi, btnOpnameIPSRS, btnSirkulasiNonMedis, btnRekapLabPerTahun, btnPerujukLabPerTahun, btnRekapRadiologiPerTahun, btnPerujukRadiologiPerTahun, btnJumlahPorsiDiet, btnJumlahMacamDiet, btnPaymentPoint2, btnPembayaranAkunBayar2, btnHAIsBangsal, btnPPNObat, btnSaldoAkunPerBulan, btnDisplayApotek, btnCekSisruteFaskes, btnCekSisruteAlasanRujuk, btnCekSisruteDiagnosa, btnRujukanMasukSisrute, btnRujukanKeluarSisrute, btnCekBPJSSKDP, btnDataBatch, btnKunjunganLabRalan, btnKunjunganLabRanap, btnKunjunganRadRalan, btnKunjunganRadRanap, btnPCareBeriObat, btnPCareBeriTindakan, btnPembayaranAkunBayar3, btnPasswordAsuransi, btnDataSITT, btnSiranapKetersediaanKamar, btnGrafikTBLaporanPeriode, btnGrafikTBRujukan, btnGrafikTBRiwayat, btnGrafikTBTipeDiagnosis, btnGrafikTBSTatusHIV, btnGrafikTBSkoringAnak, btnGrafikTBKonfirmasiSkoring5, btnGrafikTBKonfirmasiSkoring6, btnGrafikTBSumberObat, btnGrafikTBHasilAkhirPengobatan, btnGrafikTBHasilTesHIV, btnKadaluarsaBatch, btnSisaStok, btnObatPerResep, btnPemakaianAirPDAM, btnLimbahB3Medis, btnGrafikPemakaianAirPDAMPerTanggal, btnGrafikPemakaianAirPDAMPerBulan, btnGrafikLimbahB3MedisPerTanggal, btnGrafikLimbahB3MedisPerBulan, btnLimbahDomestik, btnGrafikLimbahDomestikPerTanggal, btnLaboratoriumPA, btnLaboratoriumMB, btnKategoriPerpustakaan, btnRuangPerpustakaan, btnJenisPerpustakaan, btnPengarangPerpustakaan, btnPenerbitPerpustakaan,
             btnKoleksiPerpustakaan, btnInventarisPerpustakaan, btnPengaturanPeminjamanPerpustakaan, btnDendaPerpustakaan, btnAnggotaPerpustakaan,
             btnPeminjamanPerpustakaan, btnBayarDendaPerpustakaan, btnPenelitianPerpustakaan, btnEbookPerpustakaan, btnCariEbook, btnPestControl,
@@ -10763,7 +10843,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private void setToolbar() {
         if (internalFrame1.getWidth() < (BtnMenu.getWidth() + BtnToolReg.getWidth() + btnToolIGD.getWidth()
                 + btnToolLab.getWidth() + btnToolRad.getWidth() + BtnToolJualObat.getWidth() + BtnToolKamnap.getWidth()
-                + BtnToolKasir.getWidth() + BtnLog.getWidth() + BtnClose.getWidth() + 8)) {
+                + BtnToolKasir.getWidth() + BtnNotifikasi.getWidth() + BtnLog.getWidth() + BtnClose.getWidth() + 8)) {
             internalFrame1.setSize(new Dimension(PanelUtama.getWidth(), 90));
         } else {
             internalFrame1.setSize(new Dimension(PanelUtama.getWidth(), 44));
@@ -13334,6 +13414,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private void populateMenuPengaturanAplikasi() {
             addMenu(akses.getaplikasi(), btnSetupAplikasi);
 
+            addMenu(akses.getadmin(), btnSetNotifikasi);
+
             addMenu(akses.getadmin(), btnAdmin);
 
             addMenu(akses.getsetup_pjlab(), btnSetPenjab);
@@ -13532,6 +13614,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnRalanMasuk = createMenuButton("/48x48/1404047007_02.png", "Pembayaran Ralan", "btnRalanMasuk", this::btnRalanMasukActionPerformed);
 
         btnSetupAplikasi = createMenuButton("/48x48/local_network.png", "Set Aplikasi", "btnSetupAplikasi", this::btnSetupAplikasiActionPerformed);
+
+        btnSetNotifikasi = createMenuButton("/48x48/6427999_alarm_clock_hour_time_icon.png", "Set Notifikasi", "btnSetNotifikasi", this::btnSetNotifikasiActionPerformed);
 
         btnSetOtoRalan = createMenuButton("/48x48/stethoscope (1).png", "Set Oto Ralan", "btnSetOtoRalan", this::btnSetOtoRalanActionPerformed);
 
