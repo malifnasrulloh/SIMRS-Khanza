@@ -11925,6 +11925,47 @@ CREATE TABLE `nota_jalan` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `notification_queue`
+--
+
+DROP TABLE IF EXISTS `notification_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification_queue` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nik` varchar(20) NOT NULL,
+  `event_type` varchar(50) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payload`)),
+  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  `source_table` varchar(50) DEFAULT NULL,
+  `source_pk` varchar(100) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_nik_created` (`nik`,`id`),
+  KEY `idx_source` (`source_table`,`source_pk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `notifikasi_user`
+--
+
+DROP TABLE IF EXISTS `notifikasi_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notifikasi_user` (
+  `id_user` varchar(50) NOT NULL,
+  `lab_request` enum('true','false') DEFAULT 'false',
+  `prescription_request` enum('true','false') DEFAULT 'false',
+  `radiology_request` enum('true','false') DEFAULT 'false',
+  `suara_bell` enum('true','false') DEFAULT 'true',
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `obat_penyakit`
 --
 
@@ -19976,6 +20017,88 @@ CREATE TABLE `permintaan_lab` (
   CONSTRAINT `permintaan_lab_ibfk_3` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_ins_permintaan_lab
+AFTER INSERT ON permintaan_lab
+FOR EACH ROW
+BEGIN
+  DECLARE v_nm_pasien VARCHAR(100) DEFAULT 'Unknown';
+
+  IF NEW.tgl_sampel = '0000-00-00' OR NEW.tgl_sampel IS NULL THEN
+    SELECT COALESCE(p.nm_pasien, 'Unknown') INTO v_nm_pasien
+    FROM reg_periksa rp LEFT JOIN pasien p ON p.no_rkm_medis = rp.no_rkm_medis
+    WHERE rp.no_rawat = NEW.no_rawat LIMIT 1;
+
+    INSERT INTO notification_queue (nik, event_type, title, body, payload, created_at, source_table, source_pk)
+    VALUES (
+      'LAB', 'lab_request', 'Permintaan Lab Baru',
+      CONCAT('Permintaan lab untuk pasien ', COALESCE(v_nm_pasien, 'Unknown'), ' (', NEW.no_rawat, ')'),
+      JSON_OBJECT('noorder', NEW.noorder, 'no_rawat', NEW.no_rawat, 'nm_pasien', COALESCE(v_nm_pasien, 'Unknown'), 'diagnosa_klinis', COALESCE(NEW.diagnosa_klinis, '')),
+      NOW(3), 'permintaan_lab', NEW.noorder
+    );
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_upd_permintaan_lab
+AFTER UPDATE ON permintaan_lab
+FOR EACH ROW
+BEGIN
+  IF (OLD.tgl_sampel = '0000-00-00' OR OLD.tgl_sampel IS NULL)
+     AND NEW.tgl_sampel IS NOT NULL
+     AND NEW.tgl_sampel <> '0000-00-00' THEN
+    UPDATE notification_queue
+    SET deleted_at = NOW(3)
+    WHERE source_table = 'permintaan_lab' AND source_pk = NEW.noorder AND deleted_at IS NULL;
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_del_permintaan_lab
+AFTER DELETE ON permintaan_lab
+FOR EACH ROW
+BEGIN
+  UPDATE notification_queue
+  SET deleted_at = NOW(3)
+  WHERE source_table = 'permintaan_lab' AND source_pk = OLD.noorder AND deleted_at IS NULL;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `permintaan_labmb`
@@ -20224,6 +20347,88 @@ CREATE TABLE `permintaan_radiologi` (
   CONSTRAINT `permintaan_radiologi_ibfk_3` FOREIGN KEY (`dokter_perujuk`) REFERENCES `dokter` (`kd_dokter`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_ins_permintaan_radiologi
+AFTER INSERT ON permintaan_radiologi
+FOR EACH ROW
+BEGIN
+  DECLARE v_nm_pasien VARCHAR(100) DEFAULT 'Unknown';
+
+  IF NEW.tgl_sampel = '0000-00-00' OR NEW.tgl_sampel IS NULL THEN
+    SELECT COALESCE(p.nm_pasien, 'Unknown') INTO v_nm_pasien
+    FROM reg_periksa rp LEFT JOIN pasien p ON p.no_rkm_medis = rp.no_rkm_medis
+    WHERE rp.no_rawat = NEW.no_rawat LIMIT 1;
+
+    INSERT INTO notification_queue (nik, event_type, title, body, payload, created_at, source_table, source_pk)
+    VALUES (
+      'RADIOLOGI', 'radiology_request', 'Permintaan Radiologi Baru',
+      CONCAT('Permintaan radiologi untuk pasien ', COALESCE(v_nm_pasien, 'Unknown'), ' (', NEW.no_rawat, ')'),
+      JSON_OBJECT('noorder', NEW.noorder, 'no_rawat', NEW.no_rawat, 'nm_pasien', COALESCE(v_nm_pasien, 'Unknown')),
+      NOW(3), 'permintaan_radiologi', NEW.noorder
+    );
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_upd_permintaan_radiologi
+AFTER UPDATE ON permintaan_radiologi
+FOR EACH ROW
+BEGIN
+  IF (OLD.tgl_sampel = '0000-00-00' OR OLD.tgl_sampel IS NULL)
+     AND NEW.tgl_sampel IS NOT NULL
+     AND NEW.tgl_sampel <> '0000-00-00' THEN
+    UPDATE notification_queue
+    SET deleted_at = NOW(3)
+    WHERE source_table = 'permintaan_radiologi' AND source_pk = NEW.noorder AND deleted_at IS NULL;
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_del_permintaan_radiologi
+AFTER DELETE ON permintaan_radiologi
+FOR EACH ROW
+BEGIN
+  UPDATE notification_queue
+  SET deleted_at = NOW(3)
+  WHERE source_table = 'permintaan_radiologi' AND source_pk = OLD.noorder AND deleted_at IS NULL;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `permintaan_ranap`
@@ -21679,6 +21884,88 @@ CREATE TABLE `resep_obat` (
   CONSTRAINT `resep_obat_ibfk_4` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_ins_resep_obat
+AFTER INSERT ON resep_obat
+FOR EACH ROW
+BEGIN
+  DECLARE v_nm_pasien VARCHAR(100) DEFAULT 'Unknown';
+
+  IF NEW.tgl_perawatan = '0000-00-00' OR NEW.tgl_perawatan IS NULL THEN
+    SELECT COALESCE(p.nm_pasien, 'Unknown') INTO v_nm_pasien
+    FROM reg_periksa rp LEFT JOIN pasien p ON p.no_rkm_medis = rp.no_rkm_medis
+    WHERE rp.no_rawat = NEW.no_rawat LIMIT 1;
+
+    INSERT INTO notification_queue (nik, event_type, title, body, payload, created_at, source_table, source_pk)
+    VALUES (
+      'FARMASI', 'prescription_request', 'Resep Belum Tervalidasi',
+      CONCAT('Resep baru untuk pasien ', COALESCE(v_nm_pasien, 'Unknown'), ' (No. Resep: ', NEW.no_resep, ')'),
+      JSON_OBJECT('no_resep', NEW.no_resep, 'no_rawat', NEW.no_rawat, 'nm_pasien', COALESCE(v_nm_pasien, 'Unknown')),
+      NOW(3), 'resep_obat', NEW.no_resep
+    );
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_upd_resep_obat
+AFTER UPDATE ON resep_obat
+FOR EACH ROW
+BEGIN
+  IF (OLD.tgl_perawatan = '0000-00-00' OR OLD.tgl_perawatan IS NULL)
+     AND NEW.tgl_perawatan IS NOT NULL
+     AND NEW.tgl_perawatan <> '0000-00-00' THEN
+    UPDATE notification_queue
+    SET deleted_at = NOW(3)
+    WHERE source_table = 'resep_obat' AND source_pk = NEW.no_resep AND deleted_at IS NULL;
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_uca1400_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_notif_del_resep_obat
+AFTER DELETE ON resep_obat
+FOR EACH ROW
+BEGIN
+  UPDATE notification_queue
+  SET deleted_at = NOW(3)
+  WHERE source_table = 'resep_obat' AND source_pk = OLD.no_resep AND deleted_at IS NULL;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `resep_pulang`
@@ -23564,6 +23851,33 @@ CREATE TABLE `satu_sehat_questionresponse_telaah_farmasi` (
   `id_questionresponse` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_resep`),
   CONSTRAINT `satu_sehat_questionresponse_telaah_farmasi_ibfk_1` FOREIGN KEY (`no_resep`) REFERENCES `resep_obat` (`no_resep`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `satu_sehat_rme_akses`
+--
+
+DROP TABLE IF EXISTS `satu_sehat_rme_akses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `satu_sehat_rme_akses` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `no_rawat` varchar(17) NOT NULL,
+  `id_pasien_satusehat` varchar(30) NOT NULL,
+  `id_praktisi_satusehat` varchar(30) NOT NULL,
+  `shlink_id` varchar(100) DEFAULT NULL,
+  `shlink_url` text NOT NULL,
+  `consent_id` varchar(100) DEFAULT NULL,
+  `tipe_akses` enum('NORMAL','EMERGENCY') NOT NULL DEFAULT 'NORMAL',
+  `alasan_darurat` varchar(255) DEFAULT NULL,
+  `nama_pengantar` varchar(100) DEFAULT NULL,
+  `waktu_akses` datetime NOT NULL,
+  `expired_at` datetime NOT NULL,
+  `user_akses` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_no_rawat` (`no_rawat`),
+  KEY `idx_expired` (`expired_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -32640,6 +32954,7 @@ CREATE TABLE `user` (
   `manajemen` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_nutritionorder` enum('true','false') DEFAULT NULL,
+  `satu_sehat_rme` enum('true','false') DEFAULT 'false',
   PRIMARY KEY (`id_user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -33330,4 +33645,4 @@ CREATE TABLE `zis_keterangan_ukuran_rumah_penerima_dankes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-09-24 18:29:51
+-- Dump completed on 2026-09-28 10:49:47

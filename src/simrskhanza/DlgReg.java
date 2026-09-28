@@ -971,6 +971,7 @@ public final class DlgReg extends javax.swing.JDialog {
         MnRiwayatPerawatanICareNoKartu = new javax.swing.JMenuItem();
         MnRiwayatPerawatanICareNIK1 = new javax.swing.JMenuItem();
         MnRiwayatPerawatanICareNoKartu1 = new javax.swing.JMenuItem();
+        MnSatuSehatRME = new javax.swing.JMenuItem();
         MenuInputData = new javax.swing.JMenu();
         ppCatatanPasien = new javax.swing.JMenuItem();
         ppBerkasDigital = new javax.swing.JMenuItem();
@@ -4584,6 +4585,21 @@ public final class DlgReg extends javax.swing.JDialog {
         MnRiwayatPerawatanICareNoKartu1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MnRiwayatPerawatanICareNoKartu1ActionPerformed(evt);
+            }
+        });
+
+        MnSatuSehatRME.setBackground(new java.awt.Color(255, 255, 254));
+        MnSatuSehatRME.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSatuSehatRME.setForeground(new java.awt.Color(50, 50, 50));
+        MnSatuSehatRME.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSatuSehatRME.setText("Satu Sehat RME");
+        MnSatuSehatRME.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnSatuSehatRME.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnSatuSehatRME.setName("MnSatuSehatRME"); // NOI18N
+        MnSatuSehatRME.setPreferredSize(new java.awt.Dimension(320, 26));
+        MnSatuSehatRME.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnSatuSehatRMEActionPerformed(evt);
             }
         });
 
@@ -14456,6 +14472,27 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         }
     }//GEN-LAST:event_MnRiwayatPerawatanICareNoKartu1ActionPerformed
 
+    private void MnSatuSehatRMEActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TNoReg.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan mengklik data pada table...!!!");
+            tbPetugas.requestFocus();
+        }else{
+            if(tbPetugas.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                akses.setform("DlgReg");
+                bridging.SatuSehatRMEView rmeView = new bridging.SatuSehatRMEView(this, false);
+                rmeView.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+                rmeView.setLocationRelativeTo(internalFrame1);
+                rmeView.setPasien(TNoRw.getText(), KdDokter.getText());
+                rmeView.setVisible(true);
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }
+
     private void MnPenilaianAwalMedisHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianAwalMedisHemodialisaActionPerformed
         if(tabMode.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, data registrasi sudah habis...!!!!");
@@ -16975,6 +17012,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private javax.swing.JMenuItem MnRiwayatPerawatanICareNIK1;
     private javax.swing.JMenuItem MnRiwayatPerawatanICareNoKartu;
     private javax.swing.JMenuItem MnRiwayatPerawatanICareNoKartu1;
+    private javax.swing.JMenuItem MnSatuSehatRME;
     private javax.swing.JMenuItem MnRujuk;
     private javax.swing.JMenuItem MnRujukMasuk;
     private javax.swing.JMenuItem MnRujukSisrute;
@@ -17817,6 +17855,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnRiwayatPerawatanICareNoKartu1.setEnabled(akses.getriwayat_perawatan_icare_bpjs());
         MnRiwayatPerawatanICareNIK.setEnabled(akses.getriwayat_perawatan_icare_bpjs());
         MnRiwayatPerawatanICareNIK1.setEnabled(akses.getriwayat_perawatan_icare_bpjs());
+        MnSatuSehatRME.setEnabled(akses.getsatu_sehat_rme());
         MnPenilaianAwalMedisHemodialisa.setEnabled(akses.getpenilaian_medis_ralan_hemodialisa());
         MnPenilaianRisikoJatuhPsikiatri.setEnabled(akses.getpenilaian_lanjutan_resiko_jatuh_psikiatri());
         MnPenilaianLanjutanSkriningFungsional.setEnabled(akses.getpenilaian_lanjutan_skrining_fungsional());
@@ -19584,6 +19623,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnBridging.add(MnRiwayatPerawatanICareNoKartu);
         MnBridging.add(MnRiwayatPerawatanICareNIK1);
         MnBridging.add(MnRiwayatPerawatanICareNoKartu1);
+        MnBridging.add(MnSatuSehatRME);
         
         MnPenilaianLain.add(MnPenilaianTambahanGeriatri);
         MnPenilaianLain.add(MnPenilaianTambahanBunuhDiri);

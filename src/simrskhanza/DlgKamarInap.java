@@ -626,6 +626,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         ppPerawatanCorona = new javax.swing.JMenuItem();
         MnTeridentifikasiTB = new javax.swing.JMenuItem();
         MnPCare = new javax.swing.JMenuItem();
+        MnSatuSehatRME = new javax.swing.JMenuItem();
         MenuInputData = new javax.swing.JMenu();
         ppCatatanPasien = new javax.swing.JMenuItem();
         ppDataHAIs = new javax.swing.JMenuItem();
@@ -3728,6 +3729,21 @@ public class DlgKamarInap extends javax.swing.JDialog {
         MnPCare.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MnPCareActionPerformed(evt);
+            }
+        });
+
+        MnSatuSehatRME.setBackground(new java.awt.Color(255, 255, 254));
+        MnSatuSehatRME.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSatuSehatRME.setForeground(new java.awt.Color(50, 50, 50));
+        MnSatuSehatRME.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSatuSehatRME.setText("Satu Sehat RME");
+        MnSatuSehatRME.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnSatuSehatRME.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnSatuSehatRME.setName("MnSatuSehatRME"); // NOI18N
+        MnSatuSehatRME.setPreferredSize(new java.awt.Dimension(230, 26));
+        MnSatuSehatRME.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnSatuSehatRMEActionPerformed(evt);
             }
         });
 
@@ -11474,6 +11490,34 @@ public class DlgKamarInap extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_MnPCareActionPerformed
+
+    private void MnSatuSehatRMEActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan mengklik data pada table...!!!");
+            tbKamIn.requestFocus();
+        }else{
+            if(tbKamIn.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                String kdDokter = Sequel.cariIsi("select dpjp_ranap.kd_dokter from dpjp_ranap where dpjp_ranap.no_rawat=? limit 1", TNoRwCari.getText());
+                if(kdDokter.equals("")){
+                    kdDokter = Sequel.cariIsi("select reg_periksa.kd_dokter from reg_periksa where reg_periksa.no_rawat=?", TNoRwCari.getText());
+                }
+                akses.setform("DlgKamarInap");
+                bridging.SatuSehatRMEView rmeView = new bridging.SatuSehatRMEView(this, false);
+                rmeView.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+                rmeView.setLocationRelativeTo(internalFrame1);
+                rmeView.setPasien(TNoRwCari.getText(), kdDokter);
+                rmeView.setVisible(true);
+                this.setCursor(Cursor.getDefaultCursor());
+            }else{
+                JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan mengklik data pada table...!!!");
+                tbKamIn.requestFocus();
+            }
+        }
+    }
 
     private void MnBarcode2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnBarcode2ActionPerformed
         if(TPasien.getText().trim().equals("")){
@@ -19549,6 +19593,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
     private javax.swing.JMenuItem MnBarcode;
     private javax.swing.JMenuItem MnBarcode1;
     private javax.swing.JMenuItem MnBarcode2;
+    private javax.swing.JMenuItem MnSatuSehatRME;
     private javax.swing.JMenuItem MnBarcodeRM9;
     private javax.swing.JMenuItem MnBilling;
     private javax.swing.JMenuItem MnCatatanCekGDS;
@@ -20339,7 +20384,8 @@ public class DlgKamarInap extends javax.swing.JDialog {
         ppAsuhanGizi.setEnabled(akses.getasuhan_gizi());
         ppPasienCorona.setEnabled(akses.getpasien_corona());
         ppPerawatanCorona.setEnabled(akses.getpasien_corona());
-        MnPCare.setEnabled(akses.getbridging_pcare_daftar()); 
+        MnPCare.setEnabled(akses.getbridging_pcare_daftar());
+        MnSatuSehatRME.setEnabled(akses.getsatu_sehat_rme()); 
         ppMonitoringAsuhanGizi.setEnabled(akses.getmonitoring_asuhan_gizi()); 
         MnHemodialisa.setEnabled(akses.gethemodialisa()); 
         MnPenjualan1.setEnabled(akses.getpenjualan_obat()); 
@@ -21454,6 +21500,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         MenuBPJS.add(ppPerawatanCorona);
         MenuBPJS.add(MnTeridentifikasiTB);
         MenuBPJS.add(MnPCare);
+        MenuBPJS.add(MnSatuSehatRME);
         
         MnPenilaianLain.add(MnPenilaianTambahanGeriatri);
         MnPenilaianLain.add(MnPenilaianTambahanBunuhDiri);
