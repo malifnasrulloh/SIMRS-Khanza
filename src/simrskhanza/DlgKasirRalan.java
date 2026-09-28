@@ -667,6 +667,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         MnRiwayatPerawatanICareNIK1 = new javax.swing.JMenuItem();
         MnRiwayatPerawatanICareNoKartu1 = new javax.swing.JMenuItem();
         MnSatuSehatRME = new javax.swing.JMenuItem();
+        MnSatuSehatKYC = new javax.swing.JMenuItem();
         MenuInputData = new javax.swing.JMenu();
         ppCatatanPasien = new javax.swing.JMenuItem();
         ppBerkasDigital = new javax.swing.JMenuItem();
@@ -3811,6 +3812,21 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         MnSatuSehatRME.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MnSatuSehatRMEActionPerformed(evt);
+            }
+        });
+
+        MnSatuSehatKYC.setBackground(new java.awt.Color(255, 255, 254));
+        MnSatuSehatKYC.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSatuSehatKYC.setForeground(new java.awt.Color(50, 50, 50));
+        MnSatuSehatKYC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSatuSehatKYC.setText("Satu Sehat KYC");
+        MnSatuSehatKYC.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnSatuSehatKYC.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnSatuSehatKYC.setName("MnSatuSehatKYC"); // NOI18N
+        MnSatuSehatKYC.setPreferredSize(new java.awt.Dimension(320, 26));
+        MnSatuSehatKYC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnSatuSehatKYCActionPerformed(evt);
             }
         });
 
@@ -13777,6 +13793,30 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
 
+    private void MnSatuSehatKYCActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tabModekasir.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan mengklik data pada table...!!!");
+            tbKasirRalan.requestFocus();
+        }else{
+            if(tbKasirRalan.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                akses.setform("DlgKasirRalan");
+                String noRkmMedis = Sequel.cariIsi("select no_rkm_medis from reg_periksa where no_rawat=?", TNoRw.getText());
+                String nmPasien = Sequel.cariIsi("select nm_pasien from pasien where no_rkm_medis=?", noRkmMedis);
+                String noKtp = Sequel.cariIsi("select no_ktp from pasien where no_rkm_medis=?", noRkmMedis);
+                bridging.SatuSehatKYCView kycView = new bridging.SatuSehatKYCView(this, false);
+                kycView.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+                kycView.setLocationRelativeTo(internalFrame1);
+                kycView.setPasien(noRkmMedis, nmPasien, noKtp);
+                kycView.setVisible(true);
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }
+
     private void MnPenilaianAwalMedisRalanHemodialisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianAwalMedisRalanHemodialisaActionPerformed
         if(tabModekasir.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
@@ -16289,6 +16329,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem MnRiwayatPerawatanICareNoKartu;
     private javax.swing.JMenuItem MnRiwayatPerawatanICareNoKartu1;
     private javax.swing.JMenuItem MnSatuSehatRME;
+    private javax.swing.JMenuItem MnSatuSehatKYC;
     private javax.swing.JMenuItem MnRujuk;
     private javax.swing.JMenuItem MnRujukSisrute;
     private javax.swing.JMenu MnRujukan;
@@ -16835,6 +16876,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         MnRiwayatPerawatanICareNIK.setEnabled(akses.getriwayat_perawatan_icare_bpjs());
         MnRiwayatPerawatanICareNIK1.setEnabled(akses.getriwayat_perawatan_icare_bpjs());
         MnSatuSehatRME.setEnabled(akses.getsatu_sehat_rme());
+        MnSatuSehatKYC.setEnabled(akses.getsatu_sehat_kyc());
         MnPenilaianAwalMedisRalanHemodialisa.setEnabled(akses.getpenilaian_medis_ralan_hemodialisa());
         MnPenilaianRisikoJatuhPsikiatri.setEnabled(akses.getpenilaian_lanjutan_resiko_jatuh_psikiatri());
         MnPenilaianLanjutanSkriningFungsional.setEnabled(akses.getpenilaian_lanjutan_skrining_fungsional());
@@ -18864,6 +18906,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         MnBridging.add(MnRiwayatPerawatanICareNIK1);
         MnBridging.add(MnRiwayatPerawatanICareNoKartu1);
         MnBridging.add(MnSatuSehatRME);
+        MnBridging.add(MnSatuSehatKYC);
         
         MnPenilaianLain.add(MnPenilaianTambahanGeriatri);
         MnPenilaianLain.add(MnPenilaianTambahanBunuhDiri);

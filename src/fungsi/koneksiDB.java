@@ -1890,6 +1890,16 @@ public class koneksiDB {
         return var == null ? "" : var;
     }
 
+    public static String URLSATUSEHATKYC() {
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            var = prop.getProperty("URLSATUSEHATKYC");
+        } catch (Exception e) {
+            var = "";
+        }
+        return var == null ? "" : var;
+    }
+
     public static String IDORGBPJSSATUSEHAT() {
         try {
             prop.loadFromXML(new FileInputStream("setting/database.xml"));

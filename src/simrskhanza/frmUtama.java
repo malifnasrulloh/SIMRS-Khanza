@@ -10496,6 +10496,10 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             aplikasi.isCek();
         });
     }
+
+    private void btnSatuSehatKYCActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new bridging.SatuSehatKYCView(this, false));
+    }
     
     private void btnRingkasanHutangVendorAsetInventarisActionPerformed(java.awt.event.ActionEvent evt) {   
         showForm(() -> new KeuanganRingkasanHutangVendorAsetInventaris(this,false));
@@ -10771,7 +10775,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi,
             btnHasilUSGAbdomen,btnIntervensiNyeriFarmakologi,btnIntervensiNyeriNonFarmakologi,btnSuratPengajuanCutiPerawatan,btnChecklistKriteriaMasukIsolasi,btnMapingTarifTindakanRalanKPTLSatuSehat,
             btnMapingTarifTindakanRanapKPTLSatuSehat,btnMapingTarifTindakanRadiologiKPTLSatuSehat,btnMapingTarifTindakanLabKPTLSatuSehat,btnMapingTarifTindakanOperasiKPTLSatuSehat,btnMapingTarifKamarKPTLSatuSehat,
-            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain,btnSetResepPerCaraBayar;
+            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnSatuSehatKYC,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain,btnSetResepPerCaraBayar;
 
     public void isWall() {
         try {
@@ -12391,6 +12395,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getsatu_sehat_mapping_kptl_tarif_kamar(), btnMapingTarifKamarKPTLSatuSehat);
 
             addMenu(akses.getsatu_sehat_kirim_composition(), btnBridgingCompositionRMESatuSehat);
+
+            addMenu(akses.getsatu_sehat_kyc(), btnSatuSehatKYC);
 
             addMenu(akses.getsatu_sehat_tanda_tangan_elektronik(), btnBridgingTTESatuSehat);
 
@@ -15918,6 +15924,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnBridgingTTESatuSehat = createMenuButton("/48x48/satusehat.png", "Bridging TTE Satu Sehat", "btnBridgingTTESatuSehat", this::btnBridgingTTESatuSehatActionPerformed);
 
         btnBridgingCompositionRMESatuSehat = createMenuButton("/48x48/satusehat.png", "Kirim Composition Satu Sehat", "btnBridgingCompositionRMESatuSehat", this::btnBridgingCompositionRMESatuSehatActionPerformed);
+
+        btnSatuSehatKYC = createMenuButton("/48x48/satusehat.png", "Verifikasi Profil KYC Satu Sehat", "btnSatuSehatKYC", this::btnSatuSehatKYCActionPerformed);
 
         btnRingkasanHutangVendorAsetInventaris = createMenuButton("/48x48/9016847_cleaning_kitchen_covid-19_virus_pandemic_icon.png", "Ringkasan Hutang Vendor Aset/Inventaris", "btnRingkasanHutangVendorAsetInventaris", this::btnRingkasanHutangVendorAsetInventarisActionPerformed);
 

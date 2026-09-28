@@ -664,6 +664,7 @@ public class DlgPasien extends javax.swing.JDialog {
         ppCatatanPasien = new javax.swing.JMenuItem();
         ppGabungRM = new javax.swing.JMenuItem();
         ppPasienCorona = new javax.swing.JMenuItem();
+        MnSatuSehatKYC = new javax.swing.JMenuItem();
         buttonGroup1 = new javax.swing.ButtonGroup();
         Kd2 = new widget.TextBox();
         DlgDemografi = new javax.swing.JDialog();
@@ -1722,6 +1723,22 @@ public class DlgPasien extends javax.swing.JDialog {
             }
         });
         jPopupMenu1.add(ppPasienCorona);
+
+        MnSatuSehatKYC.setBackground(new java.awt.Color(255, 255, 254));
+        MnSatuSehatKYC.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSatuSehatKYC.setForeground(new java.awt.Color(50, 50, 50));
+        MnSatuSehatKYC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSatuSehatKYC.setText("Satu Sehat KYC");
+        MnSatuSehatKYC.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnSatuSehatKYC.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnSatuSehatKYC.setName("MnSatuSehatKYC"); // NOI18N
+        MnSatuSehatKYC.setPreferredSize(new java.awt.Dimension(220, 26));
+        MnSatuSehatKYC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnSatuSehatKYCActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnSatuSehatKYC);
 
         Kd2.setName("Kd2"); // NOI18N
         Kd2.setPreferredSize(new java.awt.Dimension(207, 23));
@@ -8355,6 +8372,28 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         }
     }//GEN-LAST:event_ppPasienCoronaBtnPrintActionPerformed
 
+    private void MnSatuSehatKYCActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(tbPasien.getSelectedRow()!= -1){
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            akses.setform("DlgPasien");
+            String noRkmMedis = tbPasien.getValueAt(tbPasien.getSelectedRow(), 1).toString();
+            String namaPasien = tbPasien.getValueAt(tbPasien.getSelectedRow(), 2).toString();
+            String noKtp = tbPasien.getValueAt(tbPasien.getSelectedRow(), 3).toString();
+            bridging.SatuSehatKYCView kycView = new bridging.SatuSehatKYCView(this, false);
+            kycView.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+            kycView.setLocationRelativeTo(internalFrame1);
+            kycView.setPasien(noRkmMedis, namaPasien, noKtp);
+            kycView.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }else{
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan mengklik data pasien pada table...!!!");
+            tbPasien.requestFocus();
+        }
+    }
+
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
         switch (TabRawat.getSelectedIndex()) {
             case 1:
@@ -8996,6 +9035,7 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     private javax.swing.JMenuItem ppGrafikjkbayi;
     private javax.swing.JMenuItem ppKelahiranBayi;
     private javax.swing.JMenuItem ppPasienCorona;
+    private javax.swing.JMenuItem MnSatuSehatKYC;
     private javax.swing.JMenuItem ppRegistrasi;
     private javax.swing.JMenuItem ppRegistrasi1;
     private javax.swing.JMenuItem ppRegistrasi2;
@@ -9999,6 +10039,7 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         ppRiwayat.setEnabled(akses.getresume_pasien());
         ppCatatanPasien.setEnabled(akses.getcatatan_pasien());
         ppPasienCorona.setEnabled(akses.getpasien_corona());
+        MnSatuSehatKYC.setEnabled(akses.getsatu_sehat_kyc());
         asalform=akses.getform();
     }
 

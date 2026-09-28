@@ -61,12 +61,6 @@ public class SatuSehatRMEView extends JDialog {
     private static final int POLLING_INTERVAL_MS = 5000;
     private static final int MAX_POLLING_SECONDS = 90;
 
-    // Shared JCEF runtime
-    private static CefApp cefApp;
-    private static boolean cefInitialized = false;
-    private static boolean cefFailed = false;
-    private static String cefFailReason = "";
-
     private final sekuel Sequel = new sekuel();
     private final validasi Valid = new validasi();
     private final SatuSehatRMEApi api = new SatuSehatRMEApi();
@@ -516,18 +510,8 @@ public class SatuSehatRMEView extends JDialog {
     private void cleanupOnClose() {
         stopPolling();
         if (cefBrowser != null) {
-            try {
-                cefBrowser.close(true);
-            } catch (Exception ignored) {
-            }
+            SatuSehatBrowserManager.safeCloseBrowser(cefBrowser);
             cefBrowser = null;
-        }
-        if (cefClient != null) {
-            try {
-                cefClient.dispose();
-            } catch (Exception ignored) {
-            }
-            cefClient = null;
         }
     }
 
@@ -892,7 +876,7 @@ public class SatuSehatRMEView extends JDialog {
                     }
 
                     // Open emergency consent form in browser automatically for the clinical team
-                    openUrlInBrowser(currentVerificationUrl);
+                    SatuSehatBrowserManager.openInAppModeOrBrowser(currentVerificationUrl, this);
 
                     lblPollingStatus.setText("Form darurat Kemenkes dibuka. Silakan lengkapi konfirmasi darurat di web.");
                     startPolling();
@@ -972,39 +956,13 @@ public class SatuSehatRMEView extends JDialog {
         return LocalDateTime.now().plusHours(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    private synchronized static void initCefApp() {
-        if (cefInitialized || cefFailed) return;
-        try {
-            CefAppBuilder builder = new CefAppBuilder();
-            File installDir = new File("jcef-bundle");
-            builder.setInstallDir(installDir);
-
-            // Configure cache path to prevent singleton warning
-            File cacheDir = new File("cache" + File.separator + "jcef");
-            if (!cacheDir.exists()) {
-                cacheDir.mkdirs();
-            }
-            builder.getCefSettings().cache_path = cacheDir.getAbsolutePath();
-            builder.getCefSettings().windowless_rendering_enabled = false;
-            builder.addJcefArgs("--disable-gpu-vsync");
-
-            cefApp = builder.build();
-            cefInitialized = true;
-            System.out.println("JCEF Chromium App initialized successfully!");
-        } catch (Throwable t) {
-            cefFailed = true;
-            cefFailReason = t.getMessage();
-            System.err.println("JCEF initialization failed, falling back to external browser: " + t.getMessage());
-        }
-    }
-
     private void loadChromiumOrFallback(String url) {
-        initCefApp();
+        CefApp app = SatuSehatBrowserManager.getCefApp();
 
-        if (cefInitialized && cefApp != null) {
+        if (app != null) {
             try {
                 if (cefClient == null) {
-                    cefClient = cefApp.createClient();
+                    cefClient = app.createClient();
                 }
                 if (cefBrowser == null) {
                     cefBrowser = cefClient.createBrowser(url, false, false);
@@ -1035,97 +993,7 @@ public class SatuSehatRMEView extends JDialog {
             JOptionPane.showMessageDialog(this, "Tautan Smart Health Link belum tersedia.");
             return;
         }
-        openUrlInBrowser(currentShlinkUrl);
-    }
-
-    private void openUrlInBrowser(String url) {
-        // Try Chromium App Mode (--app=) first for clean frameless desktop app experience
-        boolean openedInAppMode = false;
-        String os = System.getProperty("os.name", "").toLowerCase();
-
-        try {
-            if (os.contains("win")) {
-                String localAppData = System.getenv("LOCALAPPDATA");
-                String progFiles = System.getenv("PROGRAMFILES");
-                String progFilesX86 = System.getenv("PROGRAMFILES(X86)");
-
-                java.util.List<String> candidatePaths = new java.util.ArrayList<>();
-                if (progFiles != null) {
-                    candidatePaths.add(progFiles + "\\Google\\Chrome\\Application\\chrome.exe");
-                    candidatePaths.add(progFiles + "\\Microsoft\\Edge\\Application\\msedge.exe");
-                    candidatePaths.add(progFiles + "\\BraveSoftware\\Brave-Browser\\Application\\brave.exe");
-                }
-                if (progFilesX86 != null) {
-                    candidatePaths.add(progFilesX86 + "\\Google\\Chrome\\Application\\chrome.exe");
-                    candidatePaths.add(progFilesX86 + "\\Microsoft\\Edge\\Application\\msedge.exe");
-                    candidatePaths.add(progFilesX86 + "\\BraveSoftware\\Brave-Browser\\Application\\brave.exe");
-                }
-                if (localAppData != null) {
-                    candidatePaths.add(localAppData + "\\Google\\Chrome\\Application\\chrome.exe");
-                    candidatePaths.add(localAppData + "\\Microsoft\\Edge\\Application\\msedge.exe");
-                    candidatePaths.add(localAppData + "\\BraveSoftware\\Brave-Browser\\Application\\brave.exe");
-                }
-                // Standard fallbacks
-                candidatePaths.add("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
-                candidatePaths.add("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-                candidatePaths.add("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe");
-                candidatePaths.add("C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe");
-
-                for (String p : candidatePaths) {
-                    File f = new File(p);
-                    if (f.exists() && f.canExecute()) {
-                        Runtime.getRuntime().exec(new String[]{p, "--app=" + url, "--window-size=1200,800"});
-                        openedInAppMode = true;
-                        break;
-                    }
-                }
-            } else if (os.contains("linux")) {
-                String[] candidateCommands = {
-                    "google-chrome", "google-chrome-stable", "chromium-browser", "chromium",
-                    "microsoft-edge", "microsoft-edge-stable", "brave-browser", "brave"
-                };
-                for (String cmd : candidateCommands) {
-                    try {
-                        Process p = Runtime.getRuntime().exec(new String[]{"which", cmd});
-                        if (p.waitFor() == 0) {
-                            Runtime.getRuntime().exec(new String[]{cmd, "--app=" + url, "--window-size=1200,800"});
-                            openedInAppMode = true;
-                            break;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                }
-            } else if (os.contains("mac")) {
-                String[] macApps = { "Google Chrome", "Microsoft Edge", "Brave Browser", "Chromium" };
-                for (String appName : macApps) {
-                    File appFile = new File("/Applications/" + appName + ".app");
-                    if (appFile.exists()) {
-                        Runtime.getRuntime().exec(new String[]{"open", "-a", appName, "--args", "--app=" + url, "--window-size=1200,800"});
-                        openedInAppMode = true;
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ignored) {
-        }
-
-        if (openedInAppMode) {
-            return;
-        }
-
-        // Standard OS default browser fallback (supports Firefox, Opera, Safari, Vivaldi, etc.)
-        try {
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI(url));
-            } else {
-                StringSelection sel = new StringSelection(url);
-                getToolkit().getSystemClipboard().setContents(sel, sel);
-                JOptionPane.showMessageDialog(this,
-                    "Browser otomatis tidak didukung pada sistem ini.\nTautan telah disalin ke clipboard:\n" + url);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal membuka browser: " + e.getMessage());
-        }
+        SatuSehatBrowserManager.openInAppModeOrBrowser(currentShlinkUrl, this);
     }
 
     private void showDetailPayloadDialog() {
