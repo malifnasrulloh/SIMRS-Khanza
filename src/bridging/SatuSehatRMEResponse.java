@@ -144,4 +144,12 @@ public class SatuSehatRMEResponse {
     public void setRawResponseBody(String rawResponseBody) {
         this.rawResponseBody = rawResponseBody != null ? rawResponseBody : "";
     }
+
+    public boolean isConsentRequired() {
+        return "CONSENT_REQUIRED".equalsIgnoreCase(errorCode) || statusCode == 403;
+    }
+
+    public boolean isDuplicateKeyError() {
+        return "DUPLICATE_KEY_ERROR".equalsIgnoreCase(errorCode);
+    }
 }

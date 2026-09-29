@@ -42,8 +42,11 @@ public class SatuSehatBrowserManager {
         }
 
         try {
-            CefAppBuilder builder = new CefAppBuilder();
             File installDir = new File("jcef-bundle");
+            // Self-healing: if jcef-bundle was interrupted or lacks install.lock, clean up temp files
+            cleanIncompleteInstallDir(installDir);
+
+            CefAppBuilder builder = new CefAppBuilder();
             builder.setInstallDir(installDir);
 
             // Configure cache directory
@@ -76,6 +79,47 @@ public class SatuSehatBrowserManager {
         }
     }
 
+    private static void cleanIncompleteInstallDir(File installDir) {
+        if (installDir == null || !installDir.exists()) {
+            return;
+        }
+        try {
+            File[] files = installDir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.getName().endsWith(".temp") || f.getName().endsWith(".tmp")) {
+                        try {
+                            f.delete();
+                            System.out.println("SatuSehatBrowserManager: Removed incomplete temporary file: " + f.getName());
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+            File installLock = new File(installDir, "install.lock");
+            File metaJson = new File(installDir, "build_meta.json");
+            // If install.lock or build_meta.json is missing, previous extraction failed
+            if (!installLock.exists() || !metaJson.exists()) {
+                System.out.println("SatuSehatBrowserManager: Incomplete or broken JCEF bundle detected. Resetting for clean extraction...");
+                deleteRecursively(installDir);
+                installDir.mkdirs();
+            }
+        } catch (Throwable t) {
+            System.err.println("SatuSehatBrowserManager: Error during installDir cleanup: " + t.getMessage());
+        }
+    }
+
+    private static void deleteRecursively(File file) {
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        file.delete();
+    }
+
     public static boolean isJcefAvailable() {
         return getCefApp() != null;
     }
@@ -92,15 +136,33 @@ public class SatuSehatBrowserManager {
         }
     }
 
-    public static boolean openInAppModeOrBrowser(String url, Component parent) {
+    public static void safeTerminateProcess(Process process) {
+        if (process != null) {
+            try {
+                if (process.isAlive()) {
+                    process.destroy();
+                    try {
+                        if (!process.waitFor(500, java.util.concurrent.TimeUnit.MILLISECONDS)) {
+                            process.destroyForcibly();
+                        }
+                    } catch (InterruptedException e) {
+                        process.destroyForcibly();
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            } catch (Throwable ignored) {}
+        }
+    }
+
+    public static Process launchAppModeOrBrowser(String url, Component parent) {
         if (url == null || url.trim().isEmpty()) {
             if (parent != null) {
                 JOptionPane.showMessageDialog(parent, "Tautan URL belum tersedia.");
             }
-            return false;
+            return null;
         }
 
-        boolean openedInAppMode = false;
+        Process process = null;
         String os = System.getProperty("os.name", "").toLowerCase();
 
         try {
@@ -122,8 +184,7 @@ public class SatuSehatBrowserManager {
                 for (String path : candidatePaths) {
                     File exe = new File(path);
                     if (exe.exists() && exe.canExecute()) {
-                        new ProcessBuilder(path, "--app=" + url, "--window-size=1100,750").start();
-                        openedInAppMode = true;
+                        process = new ProcessBuilder(path, "--app=" + url, "--window-size=1100,750").start();
                         break;
                     }
                 }
@@ -136,8 +197,7 @@ public class SatuSehatBrowserManager {
                 for (String bin : macApps) {
                     File exe = new File(bin);
                     if (exe.exists()) {
-                        new ProcessBuilder(bin, "--app=" + url, "--window-size=1100,750").start();
-                        openedInAppMode = true;
+                        process = new ProcessBuilder(bin, "--app=" + url, "--window-size=1100,750").start();
                         break;
                     }
                 }
@@ -147,8 +207,7 @@ public class SatuSehatBrowserManager {
                     try {
                         Process p = new ProcessBuilder("which", bin).start();
                         if (p.waitFor() == 0) {
-                            new ProcessBuilder(bin, "--app=" + url, "--window-size=1100,750").start();
-                            openedInAppMode = true;
+                            process = new ProcessBuilder(bin, "--app=" + url, "--window-size=1100,750").start();
                             break;
                         }
                     } catch (Exception ignored) {}
@@ -158,19 +217,22 @@ public class SatuSehatBrowserManager {
             System.err.println("Gagal meluncurkan browser App Mode: " + t.getMessage());
         }
 
-        if (!openedInAppMode) {
+        if (process == null) {
             try {
                 if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     Desktop.getDesktop().browse(new URI(url));
-                    return true;
                 }
             } catch (Throwable t) {
                 if (parent != null) {
                     JOptionPane.showMessageDialog(parent, "Gagal membuka browser eksternal: " + t.getMessage());
                 }
-                return false;
             }
         }
-        return openedInAppMode;
+        return process;
+    }
+
+    public static boolean openInAppModeOrBrowser(String url, Component parent) {
+        Process p = launchAppModeOrBrowser(url, parent);
+        return p != null || (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
     }
 }

@@ -58,6 +58,8 @@ import widget.panelisi;
 public class SatuSehatRMEView extends JDialog {
     private static final String CARD_VERIFY = "CARD_VERIFY";
     private static final String CARD_VIEWER = "CARD_VIEWER";
+    private static final String VERIFY_MODE_WEB = "VERIFY_MODE_WEB";
+    private static final String VERIFY_MODE_QR = "VERIFY_MODE_QR";
     private static final int POLLING_INTERVAL_MS = 5000;
     private static final int MAX_POLLING_SECONDS = 90;
 
@@ -74,6 +76,11 @@ public class SatuSehatRMEView extends JDialog {
     // Verify card components
     private JLabel lblStatusPasien;
     private JLabel lblStatusDokter;
+    private CardLayout verifyCardLayout;
+    private JPanel pnlVerifyCards;
+    private JPanel pnlVerifyBrowserContainer;
+    private Button btnSwitchToQr;
+    private Button btnSwitchToWeb;
     private JLabel lblQrImage;
     private JTextField txtVerificationUrl;
     private JLabel lblPollingStatus;
@@ -81,7 +88,12 @@ public class SatuSehatRMEView extends JDialog {
     private Button btnPeriksaManual;
     private Button btnEmergencyBypass;
     private Button btnSalinUrlConsent;
+    private Button btnBukaBrowserConsent;
     private Button btnDetailPayload;
+
+    // Verify JCEF instance
+    private CefBrowser cefVerifyBrowser;
+    private Component cefVerifyComponent;
 
     // Viewer card components
     private JLabel lblViewerTitle;
@@ -152,6 +164,15 @@ public class SatuSehatRMEView extends JDialog {
         }
     }
 
+    private ImageIcon safeIcon(String path) {
+        try {
+            java.net.URL url = getClass().getResource(path);
+            return url != null ? new ImageIcon(url) : null;
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
     private void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -183,9 +204,9 @@ public class SatuSehatRMEView extends JDialog {
     }
 
     private JPanel buildVerifyPanel() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel panel = new JPanel(new BorderLayout(8, 8));
         panel.setBackground(new Color(250, 252, 254));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
         // Top info header
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -199,7 +220,7 @@ public class SatuSehatRMEView extends JDialog {
 
         JPanel infoGrid = new JPanel(new GridBagLayout());
         infoGrid.setOpaque(false);
-        infoGrid.setBorder(BorderFactory.createEmptyBorder(8, 0, 10, 0));
+        infoGrid.setBorder(BorderFactory.createEmptyBorder(6, 0, 8, 0));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 5, 2, 5);
@@ -217,28 +238,149 @@ public class SatuSehatRMEView extends JDialog {
         headerPanel.add(infoGrid, BorderLayout.CENTER);
         panel.add(headerPanel, BorderLayout.NORTH);
 
-        // Center: QR Code and instructions
+        // Center: CardLayout containing Web Form (Default) and QR Code
+        verifyCardLayout = new CardLayout();
+        pnlVerifyCards = new JPanel(verifyCardLayout);
+        pnlVerifyCards.setOpaque(false);
+
+        pnlVerifyCards.add(buildVerifyWebPanel(), VERIFY_MODE_WEB);
+        pnlVerifyCards.add(buildVerifyQrPanel(), VERIFY_MODE_QR);
+
+        panel.add(pnlVerifyCards, BorderLayout.CENTER);
+
+        // South: Status, progress bar, and action buttons
+        JPanel southPanel = new JPanel(new BorderLayout(5, 5));
+        southPanel.setOpaque(false);
+
+        JPanel statusRow = new JPanel();
+        statusRow.setLayout(new BoxLayout(statusRow, BoxLayout.Y_AXIS));
+        statusRow.setOpaque(false);
+        statusRow.setBorder(BorderFactory.createEmptyBorder(4, 5, 4, 5));
+
+        lblPollingStatus = new JLabel("Menunggu persetujuan pasien...");
+        lblPollingStatus.setAlignmentX(CENTER_ALIGNMENT);
+        lblPollingStatus.setFont(new Font("Tahoma", Font.ITALIC, 11));
+        lblPollingStatus.setForeground(new Color(80, 90, 100));
+        statusRow.add(lblPollingStatus);
+        statusRow.add(Box.createVerticalStrut(3));
+
+        progressBar = new JProgressBar();
+        progressBar.setMaximumSize(new Dimension(350, 12));
+        progressBar.setIndeterminate(true);
+        progressBar.setAlignmentX(CENTER_ALIGNMENT);
+        statusRow.add(progressBar);
+
+        southPanel.add(statusRow, BorderLayout.NORTH);
+
+        panelisi bottomPanel = new panelisi();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 6));
+
+        btnPeriksaManual = new Button();
+        btnPeriksaManual.setIcon(safeIcon("/picture/refresh.png"));
+        btnPeriksaManual.setText("Periksa Persetujuan");
+        btnPeriksaManual.setPreferredSize(new Dimension(160, 30));
+
+        btnEmergencyBypass = new Button();
+        btnEmergencyBypass.setIcon(safeIcon("/picture/011.png"));
+        btnEmergencyBypass.setText("Bypass Darurat (Emergency)");
+        btnEmergencyBypass.setPreferredSize(new Dimension(210, 30));
+        btnEmergencyBypass.setForeground(new Color(160, 30, 30));
+
+        btnDetailPayload = new Button();
+        btnDetailPayload.setText("Detail Payload");
+        btnDetailPayload.setPreferredSize(new Dimension(120, 30));
+
+        btnBukaBrowserConsent = new Button();
+        btnBukaBrowserConsent.setIcon(safeIcon("/picture/190.png"));
+        btnBukaBrowserConsent.setText("Buka di Browser Luar");
+        btnBukaBrowserConsent.setPreferredSize(new Dimension(165, 30));
+
+        Button btnBatal = new Button();
+        btnBatal.setIcon(safeIcon("/picture/exit.png"));
+        btnBatal.setText("Batal / Tutup");
+        btnBatal.setPreferredSize(new Dimension(120, 30));
+        btnBatal.addActionListener(e -> dispose());
+
+        bottomPanel.add(btnPeriksaManual);
+        bottomPanel.add(btnEmergencyBypass);
+        bottomPanel.add(btnDetailPayload);
+        bottomPanel.add(btnBukaBrowserConsent);
+        bottomPanel.add(btnBatal);
+
+        southPanel.add(bottomPanel, BorderLayout.SOUTH);
+        panel.add(southPanel, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    private JPanel buildVerifyWebPanel() {
+        JPanel pnl = new JPanel(new BorderLayout(5, 5));
+        pnl.setOpaque(false);
+        pnl.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+        JPanel topBanner = new JPanel(new BorderLayout(5, 5));
+        topBanner.setOpaque(false);
+
+        JLabel lblHint = new JLabel("<html><b>Mode Input Kode Akses:</b> Masukkan <b>6 digit Kode Akses</b> dari SATUSEHAT Mobile pasien pada formulir web di bawah:</html>");
+        lblHint.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblHint.setForeground(new Color(40, 60, 80));
+        topBanner.add(lblHint, BorderLayout.WEST);
+
+        btnSwitchToQr = new Button();
+        btnSwitchToQr.setIcon(safeIcon("/picture/accept.png"));
+        btnSwitchToQr.setText("Peralihkan ke Pindai QR Code");
+        btnSwitchToQr.setPreferredSize(new Dimension(215, 28));
+        btnSwitchToQr.addActionListener(e -> verifyCardLayout.show(pnlVerifyCards, VERIFY_MODE_QR));
+        topBanner.add(btnSwitchToQr, BorderLayout.EAST);
+
+        pnl.add(topBanner, BorderLayout.NORTH);
+
+        pnlVerifyBrowserContainer = new JPanel(new BorderLayout());
+        pnlVerifyBrowserContainer.setBackground(Color.WHITE);
+        pnlVerifyBrowserContainer.setBorder(BorderFactory.createLineBorder(new Color(215, 225, 235), 1));
+        pnlVerifyBrowserContainer.add(buildVerifyFallbackPanel(), BorderLayout.CENTER);
+        pnl.add(pnlVerifyBrowserContainer, BorderLayout.CENTER);
+
+        return pnl;
+    }
+
+    private JPanel buildVerifyQrPanel() {
+        JPanel pnl = new JPanel(new BorderLayout(5, 5));
+        pnl.setOpaque(false);
+        pnl.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+        JPanel topBanner = new JPanel(new BorderLayout(5, 5));
+        topBanner.setOpaque(false);
+
+        JLabel lblHint = new JLabel("<html><b>Mode Pindai QR Code:</b> Pasien memindai QR Code menggunakan aplikasi SATUSEHAT Mobile:</html>");
+        lblHint.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblHint.setForeground(new Color(40, 60, 80));
+        topBanner.add(lblHint, BorderLayout.WEST);
+
+        btnSwitchToWeb = new Button();
+        btnSwitchToWeb.setIcon(safeIcon("/picture/190.png"));
+        btnSwitchToWeb.setText("Kembali ke Form Kode Akses (Web)");
+        btnSwitchToWeb.setPreferredSize(new Dimension(245, 28));
+        btnSwitchToWeb.addActionListener(e -> verifyCardLayout.show(pnlVerifyCards, VERIFY_MODE_WEB));
+        topBanner.add(btnSwitchToWeb, BorderLayout.EAST);
+
+        pnl.add(topBanner, BorderLayout.NORTH);
+
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel lblPetunjuk = new JLabel("Arahkan pasien untuk memindai QR Code di bawah ini menggunakan SATUSEHAT Mobile:");
-        lblPetunjuk.setAlignmentX(CENTER_ALIGNMENT);
-        lblPetunjuk.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        centerPanel.add(lblPetunjuk);
-        centerPanel.add(Box.createVerticalStrut(10));
-
         lblQrImage = new JLabel();
         lblQrImage.setAlignmentX(CENTER_ALIGNMENT);
         lblQrImage.setPreferredSize(new Dimension(260, 260));
+        lblQrImage.setMaximumSize(new Dimension(260, 260));
         lblQrImage.setBorder(BorderFactory.createLineBorder(new Color(210, 220, 230), 1));
         lblQrImage.setHorizontalAlignment(SwingConstants.CENTER);
         lblQrImage.setText("Membuat tautan persetujuan...");
         centerPanel.add(lblQrImage);
-        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(Box.createVerticalStrut(12));
 
-        // URL copy row
         JPanel urlRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         urlRow.setOpaque(false);
         txtVerificationUrl = new JTextField(40);
@@ -250,55 +392,82 @@ public class SatuSehatRMEView extends JDialog {
         urlRow.add(txtVerificationUrl);
         urlRow.add(btnSalinUrlConsent);
         centerPanel.add(urlRow);
-        centerPanel.add(Box.createVerticalStrut(10));
 
-        lblPollingStatus = new JLabel("Menunggu persetujuan pasien...");
-        lblPollingStatus.setAlignmentX(CENTER_ALIGNMENT);
-        lblPollingStatus.setFont(new Font("Tahoma", Font.ITALIC, 12));
-        lblPollingStatus.setForeground(new Color(80, 90, 100));
-        centerPanel.add(lblPollingStatus);
-        centerPanel.add(Box.createVerticalStrut(5));
+        pnl.add(centerPanel, BorderLayout.CENTER);
 
-        progressBar = new JProgressBar();
-        progressBar.setMaximumSize(new Dimension(350, 14));
-        progressBar.setIndeterminate(true);
-        progressBar.setAlignmentX(CENTER_ALIGNMENT);
-        centerPanel.add(progressBar);
+        return pnl;
+    }
 
-        panel.add(centerPanel, BorderLayout.CENTER);
+    private JPanel buildVerifyFallbackPanel() {
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBackground(new Color(250, 252, 254));
+        card.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
 
-        // Bottom action buttons
-        panelisi bottomPanel = new panelisi();
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 8));
+        JLabel lblHeader = new JLabel("Formulir Verifikasi Kode Akses SATUSEHAT");
+        lblHeader.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblHeader.setForeground(new Color(40, 60, 80));
+        lblHeader.setAlignmentX(CENTER_ALIGNMENT);
+        card.add(lblHeader);
+        card.add(Box.createVerticalStrut(10));
 
-        btnPeriksaManual = new Button();
-        btnPeriksaManual.setIcon(new ImageIcon(getClass().getResource("/picture/refresh.png")));
-        btnPeriksaManual.setText("Periksa Persetujuan");
-        btnPeriksaManual.setPreferredSize(new Dimension(160, 30));
+        JLabel lblMsg = new JLabel("<html><center>Memuat formulir verifikasi Kemenkes SATUSEHAT...<br>Jika formulir belum tampil, silakan tunggu atau buka melalui peramban web eksternal.</center></html>");
+        lblMsg.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblMsg.setForeground(new Color(90, 100, 110));
+        lblMsg.setAlignmentX(CENTER_ALIGNMENT);
+        card.add(lblMsg);
+        card.add(Box.createVerticalStrut(20));
 
-        btnEmergencyBypass = new Button();
-        btnEmergencyBypass.setIcon(new ImageIcon(getClass().getResource("/picture/011.png")));
-        btnEmergencyBypass.setText("Bypass Darurat (Emergency)");
-        btnEmergencyBypass.setPreferredSize(new Dimension(210, 30));
-        btnEmergencyBypass.setForeground(new Color(160, 30, 30));
+        Button btnOpenExt = new Button();
+        btnOpenExt.setText("Buka Form di Browser Eksternal (Chrome/Edge)");
+        btnOpenExt.setPreferredSize(new Dimension(300, 32));
+        btnOpenExt.setMaximumSize(new Dimension(300, 32));
+        btnOpenExt.setAlignmentX(CENTER_ALIGNMENT);
+        btnOpenExt.addActionListener(e -> openVerificationInExternalBrowser());
+        card.add(btnOpenExt);
 
-        btnDetailPayload = new Button();
-        btnDetailPayload.setText("Detail Payload");
-        btnDetailPayload.setPreferredSize(new Dimension(130, 30));
+        return card;
+    }
 
-        Button btnBatal = new Button();
-        btnBatal.setIcon(new ImageIcon(getClass().getResource("/picture/exit.png")));
-        btnBatal.setText("Batal / Tutup");
-        btnBatal.setPreferredSize(new Dimension(120, 30));
-        btnBatal.addActionListener(e -> dispose());
+    private void loadVerifyBrowserOrFallback(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return;
+        }
 
-        bottomPanel.add(btnPeriksaManual);
-        bottomPanel.add(btnEmergencyBypass);
-        bottomPanel.add(btnDetailPayload);
-        bottomPanel.add(btnBatal);
+        CefApp app = SatuSehatBrowserManager.getCefApp();
+        if (app != null) {
+            try {
+                if (cefClient == null) {
+                    cefClient = app.createClient();
+                }
+                if (cefVerifyBrowser == null) {
+                    cefVerifyBrowser = cefClient.createBrowser(url, false, false);
+                    cefVerifyComponent = cefVerifyBrowser.getUIComponent();
+                    pnlVerifyBrowserContainer.removeAll();
+                    pnlVerifyBrowserContainer.add(cefVerifyComponent, BorderLayout.CENTER);
+                    pnlVerifyBrowserContainer.revalidate();
+                    pnlVerifyBrowserContainer.repaint();
+                } else {
+                    cefVerifyBrowser.loadURL(url);
+                }
+                return;
+            } catch (Throwable t) {
+                System.err.println("Error displaying CefBrowser for verification: " + t.getMessage());
+            }
+        }
 
-        panel.add(bottomPanel, BorderLayout.SOUTH);
-        return panel;
+        pnlVerifyBrowserContainer.removeAll();
+        pnlVerifyBrowserContainer.add(buildVerifyFallbackPanel(), BorderLayout.CENTER);
+        pnlVerifyBrowserContainer.revalidate();
+        pnlVerifyBrowserContainer.repaint();
+    }
+
+    private void openVerificationInExternalBrowser() {
+        if (currentVerificationUrl == null || currentVerificationUrl.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tautan verifikasi belum tersedia.");
+            return;
+        }
+        SatuSehatBrowserManager.openInAppModeOrBrowser(currentVerificationUrl, this);
     }
 
     private JPanel buildViewerPanel() {
@@ -311,19 +480,19 @@ public class SatuSehatRMEView extends JDialog {
 
         lblViewerTitle = new JLabel(" SATUSEHAT Rekam Medis Elektronik Nasional");
         lblViewerTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblViewerTitle.setIcon(new ImageIcon(getClass().getResource("/picture/category.png")));
+        lblViewerTitle.setIcon(safeIcon("/picture/category.png"));
         topToolbar.add(lblViewerTitle, BorderLayout.WEST);
 
         JPanel toolButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 2));
         toolButtons.setOpaque(false);
 
         btnBukaBrowser = new Button();
-        btnBukaBrowser.setIcon(new ImageIcon(getClass().getResource("/picture/190.png")));
+        btnBukaBrowser.setIcon(safeIcon("/picture/190.png"));
         btnBukaBrowser.setText("Buka di Browser Eksternal (Chrome/Edge)");
         btnBukaBrowser.setPreferredSize(new Dimension(270, 28));
 
         btnRefreshViewer = new Button();
-        btnRefreshViewer.setIcon(new ImageIcon(getClass().getResource("/picture/refresh.png")));
+        btnRefreshViewer.setIcon(safeIcon("/picture/refresh.png"));
         btnRefreshViewer.setText("Muat Ulang");
         btnRefreshViewer.setPreferredSize(new Dimension(110, 28));
 
@@ -340,7 +509,7 @@ public class SatuSehatRMEView extends JDialog {
         btnKembaliQr.setPreferredSize(new Dimension(110, 28));
 
         Button btnTutupViewer = new Button();
-        btnTutupViewer.setIcon(new ImageIcon(getClass().getResource("/picture/exit.png")));
+        btnTutupViewer.setIcon(safeIcon("/picture/exit.png"));
         btnTutupViewer.setText("Tutup");
         btnTutupViewer.setPreferredSize(new Dimension(85, 28));
         btnTutupViewer.addActionListener(e -> dispose());
@@ -449,7 +618,7 @@ public class SatuSehatRMEView extends JDialog {
         card.add(Box.createVerticalStrut(20));
 
         Button btnBukaUlang = new Button();
-        btnBukaUlang.setIcon(new ImageIcon(getClass().getResource("/picture/190.png")));
+        btnBukaUlang.setIcon(safeIcon("/picture/190.png"));
         btnBukaUlang.setText("Buka Kembali di Browser (Chrome/Edge)");
         btnBukaUlang.setPreferredSize(new Dimension(300, 36));
         btnBukaUlang.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -461,6 +630,7 @@ public class SatuSehatRMEView extends JDialog {
     }
 
     private void setupListeners() {
+        btnBukaBrowserConsent.addActionListener(e -> openVerificationInExternalBrowser());
         btnPeriksaManual.addActionListener(e -> checkConsentStatusManual());
         btnEmergencyBypass.addActionListener(e -> handleEmergencyBypass());
         btnDetailPayload.addActionListener(e -> showDetailPayloadDialog());
@@ -509,9 +679,15 @@ public class SatuSehatRMEView extends JDialog {
 
     private void cleanupOnClose() {
         stopPolling();
+        if (cefVerifyBrowser != null) {
+            SatuSehatBrowserManager.safeCloseBrowser(cefVerifyBrowser);
+            cefVerifyBrowser = null;
+            cefVerifyComponent = null;
+        }
         if (cefBrowser != null) {
             SatuSehatBrowserManager.safeCloseBrowser(cefBrowser);
             cefBrowser = null;
+            cefComponent = null;
         }
     }
 
@@ -531,8 +707,8 @@ public class SatuSehatRMEView extends JDialog {
         lblStatusPasien.setText("Pasien: " + nmPasien + " (RM: " + noRkmMedis + " | NIK: " + (noKtpPasien.isEmpty() ? "-" : noKtpPasien) + ")");
         lblStatusDokter.setText("Dokter: " + nmDokter + " (IHS: " + (ihsDokter.isEmpty() ? "Belum Terdaftar" : ihsDokter) + ")");
 
-        // Check if there is an active valid session in database
-        String cachedUrl = findActiveSession(this.noRawat);
+        // Check if there is an active valid session in database (cross-encounter for same patient & doctor)
+        String cachedUrl = findActiveSession(this.noRawat, this.ihsPasien, this.ihsDokter);
         if (cachedUrl != null && !cachedUrl.isEmpty()) {
             this.currentShlinkUrl = cachedUrl;
             updateViewerCard(cachedUrl, this.currentConsentId, this.currentExpiry);
@@ -659,22 +835,29 @@ public class SatuSehatRMEView extends JDialog {
         }
     }
 
-    private String findActiveSession(String noRawat) {
+    private String findActiveSession(String noRawat, String ihsPasien, String ihsDokter) {
         String activeUrl = null;
         ensureConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             ps = koneksi.prepareStatement(
-                 "select shlink_url, consent_id, expired_at from satu_sehat_rme_akses " +
-                 "where no_rawat=? and expired_at > NOW() " +
+                 "select no_rawat, shlink_url, consent_id, expired_at from satu_sehat_rme_akses " +
+                 "where (no_rawat=? or (id_pasien_satusehat=? and id_praktisi_satusehat=? and id_pasien_satusehat != '' and id_praktisi_satusehat != '')) " +
+                 "and expired_at > NOW() " +
                  "order by id desc limit 1");
             ps.setString(1, noRawat);
+            ps.setString(2, ihsPasien != null ? ihsPasien : "");
+            ps.setString(3, ihsDokter != null ? ihsDokter : "");
             rs = ps.executeQuery();
             if (rs.next()) {
                 activeUrl = rs.getString("shlink_url");
                 this.currentConsentId = rs.getString("consent_id");
                 this.currentExpiry = rs.getString("expired_at");
+                String foundNoRawat = rs.getString("no_rawat");
+                if (foundNoRawat != null && !foundNoRawat.equals(noRawat) && !noRawat.isEmpty()) {
+                    linkActiveSessionToCurrentRawat(noRawat, ihsPasien, ihsDokter, activeUrl, this.currentConsentId, this.currentExpiry);
+                }
             }
         } catch (Exception e) {
             System.out.println("Error findActiveSession: " + e);
@@ -685,53 +868,139 @@ public class SatuSehatRMEView extends JDialog {
         return activeUrl;
     }
 
+    private void linkActiveSessionToCurrentRawat(String noRawat, String ihsPasien, String ihsDokter, String shlinkUrl, String consentId, String expiredAt) {
+        ensureConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = koneksi.prepareStatement(
+                "insert into satu_sehat_rme_akses (" +
+                "no_rawat, id_pasien_satusehat, id_praktisi_satusehat, shlink_id, shlink_url, " +
+                "consent_id, tipe_akses, alasan_darurat, nama_pengantar, waktu_akses, expired_at, user_akses" +
+                ") values (?, ?, ?, '', ?, ?, 'NORMAL', 'Reused Active Session', '', NOW(), ?, ?)");
+            ps.setString(1, noRawat);
+            ps.setString(2, ihsPasien != null ? ihsPasien : "");
+            ps.setString(3, ihsDokter != null ? ihsDokter : "");
+            ps.setString(4, shlinkUrl);
+            ps.setString(5, consentId);
+            ps.setString(6, expiredAt);
+            ps.setString(7, akses.getkode() != null ? akses.getkode() : "system");
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error linkActiveSessionToCurrentRawat: " + e);
+        } finally {
+            if (ps != null) try { ps.close(); } catch (Exception ignored) {}
+        }
+    }
+
+    private void renderQrCode(String url) {
+        try {
+            BufferedImage qrImg = qrRenderer.render(url, 260);
+            lblQrImage.setText("");
+            lblQrImage.setIcon(new ImageIcon(qrImg));
+        } catch (Exception qre) {
+            lblQrImage.setIcon(null);
+            lblQrImage.setText("Gagal merender QR: " + qre.getMessage());
+        }
+    }
+
     private void initiateConsentHealthLink() {
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        lblPollingStatus.setText("Menghubungi SATUSEHAT untuk membuat Consent Health Link...");
+        lblPollingStatus.setText("Memeriksa persetujuan akses SATUSEHAT...");
         progressBar.setVisible(true);
 
-        SwingUtilities.invokeLater(() -> {
+        new Thread(() -> {
             try {
-                SatuSehatRMEResponse res = api.createConsentHealthLink(
+                // 1. Optimistic fast-path check: Is consent already granted?
+                SatuSehatRMEResponse checkRes = api.openSmartHealthLink(
                     ihsPasien, nmPasien, ihsDokter, nmDokter, orgId, orgName
                 );
-                this.lastResponse = res;
-                this.lastRequestBody = res.getRawRequestBody();
-                this.lastResponseBody = res.getRawResponseBody();
+                this.lastResponse = checkRes;
+                this.lastRequestBody = checkRes.getRawRequestBody();
+                this.lastResponseBody = checkRes.getRawResponseBody();
 
-                setCursor(Cursor.getDefaultCursor());
-
-                if (res.isSuccess() && !res.getVerificationUrl().isEmpty()) {
-                    this.currentVerificationUrl = res.getVerificationUrl();
-                    txtVerificationUrl.setText(currentVerificationUrl);
-
-                    // Render QR Code
-                    try {
-                        BufferedImage qrImg = qrRenderer.render(currentVerificationUrl, 260);
-                        lblQrImage.setText("");
-                        lblQrImage.setIcon(new ImageIcon(qrImg));
-                    } catch (Exception qre) {
-                        lblQrImage.setIcon(null);
-                        lblQrImage.setText("Gagal merender QR: " + qre.getMessage());
-                    }
-
-                    startPolling();
-                } else {
-                    lblQrImage.setIcon(null);
-                    lblQrImage.setText("Gagal membuat tautan persetujuan");
-                    lblPollingStatus.setText("Gagal: " + res.getMessage());
-                    progressBar.setVisible(false);
-                    JOptionPane.showMessageDialog(this,
-                        "Gagal membuat Consent Health Link SATUSEHAT:\n" + res.getMessage() +
-                        (res.getErrorCode().isEmpty() ? "" : " (" + res.getErrorCode() + ")"),
-                        "Pemberitahuan SATUSEHAT", JOptionPane.ERROR_MESSAGE);
+                if (checkRes.isSuccess() && !checkRes.getShlinkUrl().isEmpty()) {
+                    SwingUtilities.invokeLater(() -> {
+                        setCursor(Cursor.getDefaultCursor());
+                        progressBar.setVisible(false);
+                        handleAccessGranted(checkRes, "NORMAL", "", "");
+                    });
+                    return;
                 }
+
+                // 2. Consent not yet granted, create new consent link
+                SwingUtilities.invokeLater(() -> {
+                    lblPollingStatus.setText("Menyiapkan QR Code persetujuan SATUSEHAT...");
+                });
+
+                SatuSehatRMEResponse chlRes = api.createConsentHealthLink(
+                    ihsPasien, nmPasien, ihsDokter, nmDokter, orgId, orgName
+                );
+                this.lastResponse = chlRes;
+                this.lastRequestBody = chlRes.getRawRequestBody();
+                this.lastResponseBody = chlRes.getRawResponseBody();
+
+                SwingUtilities.invokeLater(() -> {
+                    setCursor(Cursor.getDefaultCursor());
+
+                    if (chlRes.isSuccess() && !chlRes.getVerificationUrl().isEmpty()) {
+                        this.currentVerificationUrl = chlRes.getVerificationUrl();
+                        txtVerificationUrl.setText(currentVerificationUrl);
+
+                        renderQrCode(currentVerificationUrl);
+                        loadVerifyBrowserOrFallback(currentVerificationUrl);
+                        if (verifyCardLayout != null && pnlVerifyCards != null) {
+                            verifyCardLayout.show(pnlVerifyCards, VERIFY_MODE_WEB);
+                        }
+                        lblPollingStatus.setText("Form kode akses siap. Masukkan 6 digit kode dari SATUSEHAT Mobile...");
+                        startPolling();
+                    } else if (chlRes.isDuplicateKeyError()) {
+                        // 3. Duplicate key error: ticket already launched in Kemenkes MongoDB
+                        // Check /shl again in case patient approved
+                        new Thread(() -> {
+                            SatuSehatRMEResponse retryShl = api.openSmartHealthLink(
+                                ihsPasien, nmPasien, ihsDokter, nmDokter, orgId, orgName
+                            );
+                            SwingUtilities.invokeLater(() -> {
+                                if (retryShl.isSuccess() && !retryShl.getShlinkUrl().isEmpty()) {
+                                    handleAccessGranted(retryShl, "NORMAL", "", "");
+                                } else if (!chlRes.getVerificationUrl().isEmpty()) {
+                                    // Render reconstructed QR code and load embedded browser
+                                    this.currentVerificationUrl = chlRes.getVerificationUrl();
+                                    txtVerificationUrl.setText(currentVerificationUrl);
+                                    renderQrCode(currentVerificationUrl);
+                                    loadVerifyBrowserOrFallback(currentVerificationUrl);
+                                    if (verifyCardLayout != null && pnlVerifyCards != null) {
+                                        verifyCardLayout.show(pnlVerifyCards, VERIFY_MODE_WEB);
+                                    }
+                                    lblPollingStatus.setText("Melanjutkan sesi persetujuan aktif. Form kode akses web siap...");
+                                    startPolling();
+                                } else {
+                                    lblQrImage.setIcon(null);
+                                    lblQrImage.setText("Tiket persetujuan telah aktif di SATUSEHAT Mobile");
+                                    lblPollingStatus.setText("Sesi persetujuan telah terdaftar di ponsel pasien. Silakan minta pasien membuka SATUSEHAT Mobile.");
+                                    progressBar.setVisible(false);
+                                }
+                            });
+                        }).start();
+                    } else {
+                        lblQrImage.setIcon(null);
+                        lblQrImage.setText("Gagal membuat tautan persetujuan");
+                        lblPollingStatus.setText("Gagal: " + chlRes.getMessage());
+                        progressBar.setVisible(false);
+                        JOptionPane.showMessageDialog(this,
+                            "Gagal membuat Consent Health Link SATUSEHAT:\n" + chlRes.getMessage() +
+                            (chlRes.getErrorCode().isEmpty() ? "" : " (" + chlRes.getErrorCode() + ")"),
+                            "Pemberitahuan SATUSEHAT", JOptionPane.ERROR_MESSAGE);
+                    }
+                });
             } catch (Exception e) {
-                setCursor(Cursor.getDefaultCursor());
-                lblPollingStatus.setText("Kesalahan: " + e.getMessage());
-                progressBar.setVisible(false);
+                SwingUtilities.invokeLater(() -> {
+                    setCursor(Cursor.getDefaultCursor());
+                    lblPollingStatus.setText("Kesalahan: " + e.getMessage());
+                    progressBar.setVisible(false);
+                });
             }
-        });
+        }).start();
     }
 
     private void startPolling() {
@@ -800,7 +1069,8 @@ public class SatuSehatRMEView extends JDialog {
                     JOptionPane.showMessageDialog(this,
                         "Pasien belum menyetujui akses rekam medis di SATUSEHAT Mobile.\nPastikan pasien telah memindai QR Code dan memilih 'Setujui'.",
                         "Persetujuan Belum Diberikan", JOptionPane.INFORMATION_MESSAGE);
-                    lblPollingStatus.setText("Persetujuan belum diberikan pasien.");
+                    lblPollingStatus.setText("Persetujuan belum diberikan pasien. Melanjutkan pemantauan status...");
+                    startPolling();
                 } else {
                     JOptionPane.showMessageDialog(this,
                         "Respons SATUSEHAT:\n" + res.getMessage() +
@@ -866,19 +1136,13 @@ public class SatuSehatRMEView extends JDialog {
                     this.currentVerificationUrl = res.getVerificationUrl();
                     txtVerificationUrl.setText(currentVerificationUrl);
 
-                    try {
-                        BufferedImage qrImg = qrRenderer.render(currentVerificationUrl, 260);
-                        lblQrImage.setText("");
-                        lblQrImage.setIcon(new ImageIcon(qrImg));
-                    } catch (Exception qre) {
-                        lblQrImage.setIcon(null);
-                        lblQrImage.setText("Gagal merender QR: " + qre.getMessage());
+                    renderQrCode(currentVerificationUrl);
+                    loadVerifyBrowserOrFallback(currentVerificationUrl);
+                    if (verifyCardLayout != null && pnlVerifyCards != null) {
+                        verifyCardLayout.show(pnlVerifyCards, VERIFY_MODE_WEB);
                     }
 
-                    // Open emergency consent form in browser automatically for the clinical team
-                    SatuSehatBrowserManager.openInAppModeOrBrowser(currentVerificationUrl, this);
-
-                    lblPollingStatus.setText("Form darurat Kemenkes dibuka. Silakan lengkapi konfirmasi darurat di web.");
+                    lblPollingStatus.setText("Form darurat Kemenkes dimuat. Silakan lengkapi konfirmasi darurat di web.");
                     startPolling();
                 } else {
                     JOptionPane.showMessageDialog(this,
@@ -927,6 +1191,16 @@ public class SatuSehatRMEView extends JDialog {
         }
 
         updateViewerCard(currentShlinkUrl, currentConsentId, expiredAtDb);
+        if (cefVerifyBrowser != null) {
+            SatuSehatBrowserManager.safeCloseBrowser(cefVerifyBrowser);
+            cefVerifyBrowser = null;
+            cefVerifyComponent = null;
+        }
+        toFront();
+        requestFocus();
+        try {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+        } catch (Throwable ignored) {}
         cardLayout.show(mainCardPanel, CARD_VIEWER);
         loadChromiumOrFallback(currentShlinkUrl);
     }

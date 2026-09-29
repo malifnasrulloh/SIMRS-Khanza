@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fungsi.koneksiDB;
 import java.io.FileInputStream;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,7 @@ import org.springframework.web.client.HttpStatusCodeException;
  */
 public class SatuSehatRMEApi {
     private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final Pattern DUP_KEY_PATTERN = Pattern.compile("shlinkID:\\s*\\\\?\"?([a-fA-F0-9]+)\\\\?\"?");
     private final ApiSatuSehat apiSatuSehat;
     private final String baseUrl;
 
@@ -41,6 +44,12 @@ public class SatuSehatRMEApi {
             return "https://api-satusehat-stg.dto.kemkes.go.id/ssrme/v2/ntl";
         }
         return "https://api-satusehat.kemkes.go.id/ssrme/v2/ntl";
+    }
+
+    public static String getVerificationBaseUrl(String baseUrl) {
+        boolean isStaging = baseUrl != null && (baseUrl.contains("-stg") || baseUrl.contains("dto.kemkes.go.id"));
+        return isStaging ? "https://satusehat-stg.dto.kemkes.go.id/rekammedis/consent?launch="
+                         : "https://satusehat.kemkes.go.id/rekammedis/consent?launch=";
     }
 
     public static String buildPayload(String patientId, String patientName, String practitionerId,
@@ -133,6 +142,21 @@ public class SatuSehatRMEApi {
                 res.setErrorCode("CONSENT_REQUIRED");
             }
 
+            // Detect Duplicate Key Error from MongoDB (E11000 duplicate key error)
+            String rawMsg = res.getMessage();
+            if (rawMsg != null && (rawMsg.contains("duplicate key error") || rawMsg.contains("E11000") || rawMsg.contains("uq_rme_consent_launch_shlink_id"))) {
+                res.setErrorCode("DUPLICATE_KEY_ERROR");
+                Matcher m = DUP_KEY_PATTERN.matcher(rawMsg);
+                if (m.find()) {
+                    String extractedShlinkId = m.group(1);
+                    res.setShlinkId(extractedShlinkId);
+                    boolean isStg = (jsonResponse != null && jsonResponse.contains("-stg")) || (rawMsg != null && rawMsg.contains("-stg"));
+                    String verifyBase = isStg ? "https://satusehat-stg.dto.kemkes.go.id/rekammedis/consent?launch="
+                                              : "https://satusehat.kemkes.go.id/rekammedis/consent?launch=";
+                    res.setVerificationUrl(verifyBase + extractedShlinkId);
+                }
+            }
+
         } catch (Exception e) {
             res.setSuccess(false);
             res.setMessage("Gagal membaca respons: " + e.getMessage());
@@ -216,6 +240,9 @@ public class SatuSehatRMEApi {
             System.out.println("===============================================================");
 
             SatuSehatRMEResponse res = parseResponse(response.getStatusCode().value(), responseBody);
+            if (res.isDuplicateKeyError() && !res.getShlinkId().isEmpty()) {
+                res.setVerificationUrl(getVerificationBaseUrl(baseUrl) + res.getShlinkId());
+            }
             res.setRawRequestBody(jsonPayload);
             res.setRawResponseBody(responseBody);
             return res;
@@ -228,6 +255,9 @@ public class SatuSehatRMEApi {
             System.out.println("===============================================================");
 
             SatuSehatRMEResponse res = parseResponse(e.getStatusCode().value(), responseBody);
+            if (res.isDuplicateKeyError() && !res.getShlinkId().isEmpty()) {
+                res.setVerificationUrl(getVerificationBaseUrl(baseUrl) + res.getShlinkId());
+            }
             res.setRawRequestBody(jsonPayload);
             res.setRawResponseBody(responseBody);
             return res;
