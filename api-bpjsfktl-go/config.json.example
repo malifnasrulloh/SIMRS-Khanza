@@ -1,0 +1,25 @@
+{
+  "server": {
+    "port": 8088,
+    "read_timeout_seconds": 15,
+    "write_timeout_seconds": 15
+  },
+  "database": {
+    "driver": "mysql",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "",
+    "dbname": "sik_temps",
+    "max_open_conns": 50,
+    "max_idle_conns": 25,
+    "conn_max_lifetime_minutes": 5
+  },
+  "jwt": {
+    "secret_key": "123!!abc**",
+    "expiration_seconds": 3660
+  },
+  "cache": {
+    "sync_interval_minutes": 5
+  }
+}
