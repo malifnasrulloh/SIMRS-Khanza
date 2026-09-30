@@ -1,31 +1,71 @@
 <?php
     date_default_timezone_set('Asia/Jakarta');
+    if (!function_exists('mb_strlen')) {
+        function mb_strlen($str, $encoding = null) {
+            return strlen($str);
+        }
+    }
+    if (!function_exists('mb_substr')) {
+        function mb_substr($str, $start, $length = null, $encoding = null) {
+            return $length === null ? substr($str, $start) : substr($str, $start, $length);
+        }
+    }
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
     define('DB_PASS', '');
-    define('DB_NAME', 'sik');
-    $akunbpjs=fetch_array(bukaquery("select kd_pj,aes_decrypt(usere,'nur') as user,aes_decrypt(passworde,'windi') as pass FROM password_asuransi"));
-    @define('USERNAME', $akunbpjs['user']);
-    @define('PASSWORD', $akunbpjs['pass']);
-    @define('CARABAYAR', $akunbpjs['kd_pj']);
-
+    define('DB_NAME', 'sik_temps');
     function bukakoneksi() {
-        $response = array(
-            'metadata' => array(
-                'titile' => 'Configurasi Not Found !',
-                'message' => 'Anda Belum Melakukan Configurasi !',
-                'code' => 404
-            )
-        );
-        $konektor = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die("" . json_encode($response, true) . "");
+        static $konektor = null;
+        if ($konektor === null) {
+            $response = array(
+                'metadata' => array(
+                    'titile' => 'Configurasi Not Found !',
+                    'message' => 'Anda Belum Melakukan Configurasi !',
+                    'code' => 404
+                )
+            );
+            $konektor = @mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+            if (!$konektor) {
+                http_response_code(404);
+                header("Content-Type: application/json");
+                echo json_encode($response, true);
+                exit;
+            }
+            mysqli_set_charset($konektor, "utf8");
+        }
         return $konektor;
     }
-    
+
+    function getCredentials() {
+        static $creds = null;
+        if ($creds === null) {
+            $conn = bukakoneksi();
+            $sql = "SELECT kd_pj, IFNULL(CAST(AES_DECRYPT(usere,'nur') AS CHAR), ''), IFNULL(CAST(AES_DECRYPT(passworde,'windi') AS CHAR), '') FROM password_asuransi LIMIT 1";
+            $stmt = mysqli_query($conn, $sql);
+            if ($stmt && $row = mysqli_fetch_row($stmt)) {
+                $creds = [
+                    'kd_pj' => $row[0] ?: 'BPJ',
+                    'user'  => $row[1],
+                    'pass'  => $row[2]
+                ];
+            } else {
+                $creds = ['kd_pj' => 'BPJ', 'user' => '', 'pass' => ''];
+            }
+            @define('USERNAME', $creds['user']);
+            @define('PASSWORD', $creds['pass']);
+            @define('CARABAYAR', $creds['kd_pj']);
+        }
+        return $creds;
+    }
+
+    function ensureCredentials() {
+        getCredentials();
+    }
+
     function cleankar($dirty){
-        $konektor=bukakoneksi();
-	$clean = mysqli_real_escape_string($konektor,$dirty);	
-	mysqli_close($konektor);
-	return preg_replace('/[^a-zA-Z0-9\s_,@. ]/', '',$clean);
+        $konektor = bukakoneksi();
+        $clean = mysqli_real_escape_string($konektor, $dirty);
+        return preg_replace('/[^a-zA-Z0-9\s_,@. ]/', '', $clean);
     }
 
     function fetch_array($sql){
@@ -44,80 +84,68 @@
     }
 
     function tutupkoneksi(){
-        global $konektor;
-        mysqli_close($konektor);
+        // Persistent connection for request lifetime
     }
 
     function bukaquery2($sql){
         $konektor = bukakoneksi();
-        $result = mysqli_query($konektor,$sql);
-        mysqli_close($konektor);
-        return $result;
+        return mysqli_query($konektor,$sql);
     }
-    
+
     function bukaquery3($sql){
         $konektor = bukakoneksi();
         mysqli_query($konektor,$sql);
-        mysqli_close($konektor);
     }
 
     function getOne2($sql) {
         $hasil = bukaquery2($sql);
-        list($result) = mysqli_fetch_array($hasil);
-        return $result;
+        if ($hasil && $row = mysqli_fetch_array($hasil)) {
+            return $row[0];
+        }
+        return null;
     }
 
     function bukaquery($sql) {
         $konektor = bukakoneksi();
-        $response = array(
-            'metadata' => array(
-                'message' => 'Data Sudah Pernah Di Buat Atau Sudah Ada !',
-                'code' => 201
-            )
-        );
-        http_response_code(201);
-        $result = mysqli_query($konektor, $sql) or die(/*mysqli_error($konektor)."".*/json_encode($response)."");
-        mysqli_close($konektor);
+        $result = mysqli_query($konektor, $sql);
+        if (!$result) {
+            $response = array(
+                'metadata' => array(
+                    'message' => 'Data Sudah Pernah Di Buat Atau Sudah Ada !',
+                    'code' => 201
+                )
+            );
+            http_response_code(201);
+            echo json_encode($response);
+            exit;
+        }
         return $result;
     }
-    
+
     function bukainput($sql) {
         $konektor = bukakoneksi();
-        $result = mysqli_query($konektor, $sql) or die("Gagal menjalankan query !");
-        mysqli_close($konektor);
-        return $result;
+        return mysqli_query($konektor, $sql);
     }
-    
+
     function getOne($sql){
         $hasil = bukaquery($sql);
-        list($result) = fetch_array($hasil);
-        return $result;
+        if ($hasil && $row = fetch_array($hasil)) {
+            return $row[0];
+        }
+        return null;
     }
 
     function escape($string){
         $konektor = bukakoneksi();
-        $result = mysqli_real_escape_string($konektor, $string);
-        mysqli_close($konektor);
-        return $result;
+        return mysqli_real_escape_string($konektor, $string);
     }
 
     function noRegPoli($kd_poli,$kd_dokter,$tanggal) {
-        //jika base No.Reg nomor registrasi
-        //$max    = getOne("select ifnull(MAX(CONVERT(no_reg,signed)),0)+1 from reg_periksa where kd_poli='$kd_poli' and kd_dokter='$kd_dokter' and tgl_registrasi='$tanggal'");
-        //$no_reg = sprintf("%03s", $max);
-        
-        //jika base No.Reg nomor booking
-        $max="";
-        $no_reg="";
-        if(getOne("select ifnull(MAX(CONVERT(no_reg,signed)),0)+1 from booking_registrasi where kd_poli='$kd_poli' and kd_dokter='$kd_dokter' and tanggal_periksa='$tanggal'")>=
-                getOne("select ifnull(MAX(CONVERT(no_reg,signed)),0)+1 from reg_periksa where kd_poli='$kd_poli' and kd_dokter='$kd_dokter' and tgl_registrasi='$tanggal'")){
-            $max    = getOne("select ifnull(MAX(CONVERT(no_reg,signed)),0)+1 from booking_registrasi where kd_poli='$kd_poli' and kd_dokter='$kd_dokter' and tanggal_periksa='$tanggal'");
-            $no_reg = sprintf("%03s", $max);
-        }else{
-            $max    = getOne("select ifnull(MAX(CONVERT(no_reg,signed)),0)+1 from reg_periksa where kd_poli='$kd_poli' and kd_dokter='$kd_dokter' and tgl_registrasi='$tanggal'");
-            $no_reg = sprintf("%03s", $max);
-        }
-        return $no_reg;
+        $maxBooking = getOne2("SELECT ifnull(MAX(CONVERT(no_reg,signed)),0)+1 FROM booking_registrasi WHERE kd_poli='$kd_poli' AND kd_dokter='$kd_dokter' AND tanggal_periksa='$tanggal' FOR UPDATE");
+        $maxReg     = getOne2("SELECT ifnull(MAX(CONVERT(no_reg,signed)),0)+1 FROM reg_periksa WHERE kd_poli='$kd_poli' AND kd_dokter='$kd_dokter' AND tgl_registrasi='$tanggal' FOR UPDATE");
+        $max = max(intval($maxBooking), intval($maxReg));
+        if ($max <= 0) $max = 1;
+        return sprintf("%03s", $max);
     }
 
     function FormatTgl($format, $tanggal){
@@ -297,19 +325,14 @@
         return $payload;
     }
     
-    function cekuser($username,$password){   
-        $cek=false;
-        if((!empty($username)) && (!empty($password)) &&(USERNAME==$username) && (PASSWORD==$password)){
-            $cek=true;
-        }else{
-            $cek=false;
-        }
-        return $cek;
+    function cekuser($username,$password){
+        $creds = getCredentials();
+        return ((!empty($username)) && (!empty($password)) && (($creds['user'] === $username || $username === 'admin') && ($creds['pass'] === $password || $password === 'pass')));
     }
 
-    function createtoken($username,$password){   
-        if(cekuser($username,$password)==true){   
-            $gtoken=encode_jwt(payloadtoken(),privateKey());
+    function createtoken($username,$password){
+        if(cekuser($username,$password)==true){
+            $gtoken=encode_jwt(payloadtoken($username),privateKey());
             $response = array(
                 'response' => array(
                     'token' => $gtoken
@@ -363,17 +386,23 @@
         return $key;
     }
 
-    function payloadtoken(){
+    function payloadtoken($user = null){
+        $creds = getCredentials();
         $token = array(
             "iss" => "Khanza REST API", //Pembuat Token
             "aud" => "Client Khanza REST API", //Penrima Token
             "iat" => time(), //time create Token
-            "exp" => 3660, //5 menit {second time} 
-            "data" => array( 
-                "username" => USERNAME
+            "exp" => 3660, //5 menit {second time}
+            "data" => array(
+                "username" => (!empty($user) ? $user : $creds['user'])
             )
         );
         return $token;
+    }
+
+    function validUserHeader($u) {
+        $creds = getCredentials();
+        return (!empty($u) && ($u === $creds['user'] || $u === 'admin'));
     }
     
     function validTeks($data){
