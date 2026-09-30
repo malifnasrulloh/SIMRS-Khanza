@@ -1660,6 +1660,9 @@ public class frmUtama extends javax.swing.JFrame {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
         });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -3102,6 +3105,13 @@ private void BtnToolKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     }//GEN-LAST:event_BtnToolKasirActionPerformed
 
 private void BtnToolRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnToolRegActionPerformed
+    Window existing = findExistingForm(DlgReg.class);
+    if (existing != null) {
+        existing.setVisible(true);
+        existing.toFront();
+        existing.requestFocus();
+        return;
+    }
     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     isTutup();
     DlgReg reg = new DlgReg(this, false);
@@ -3114,10 +3124,25 @@ private void BtnToolRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_BtnToolRegActionPerformed
 
 private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
-    if (this.getState() == 1) {
-        isTutup();
+    // Tetap pertahankan form dialog dan input pengguna saat aplikasi diminimalkan atau berpindah jendela
+    if (this.getState() == java.awt.Frame.NORMAL) {
+        formWindowActivated(null);
     }
 }//GEN-LAST:event_formWindowStateChanged
+
+    public void formWindowActivated(java.awt.event.WindowEvent evt) {
+        Window[] wins = Window.getWindows();
+        Window topDialog = null;
+        for (Window win : wins) {
+            if (win instanceof JDialog && win.isDisplayable() && win.isVisible()) {
+                win.toFront();
+                topDialog = win;
+            }
+        }
+        if (topDialog != null) {
+            topDialog.requestFocus();
+        }
+    }
 
 private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnGantiPasswordBtnLogActionPerformed
     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -10824,6 +10849,16 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
                 win.dispose();
             }
         }
+    }
+
+    public Window findExistingForm(Class<? extends javax.swing.JDialog> formClass) {
+        Window[] wins = Window.getWindows();
+        for (Window win : wins) {
+            if (win.isDisplayable() && win.isVisible() && formClass.isInstance(win)) {
+                return win;
+            }
+        }
+        return null;
     }
 
     private <T extends javax.swing.JDialog> void showForm(java.util.function.Supplier<T> formSupplier, java.util.function.Consumer<T> setup) {

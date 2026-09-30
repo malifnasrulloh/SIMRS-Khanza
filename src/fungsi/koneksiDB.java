@@ -8,6 +8,10 @@ package fungsi;
 import AESsecurity.EnkripsiAES;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.io.FileInputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,6 +29,10 @@ public class koneksiDB {
 
     private static String var = "";
     private static volatile Connection connection;
+    private static volatile Connection proxyConnection;
+    private static volatile boolean shuttingDown = false;
+    private static volatile long lastActivity = System.currentTimeMillis();
+    private static volatile Thread heartbeatThread;
     private static final MysqlDataSource dataSource = new MysqlDataSource();
     private static final Properties prop = new Properties();
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
@@ -33,51 +41,37 @@ public class koneksiDB {
     private static final long CHECK_INTERVAL = 40000;
 
     static {
-        Runtime.getRuntime().addShutdownHook(new Thread(koneksiDB::closeConnection));
+        Runtime.getRuntime().addShutdownHook(new Thread(koneksiDB::shutdown));
     }
 
     public static Connection condb() {
         try {
-            if (!initialized.get()) {
+            if (!initialized.get() || proxyConnection == null) {
                 synchronized (LOCK) {
-                    if (!initialized.get()) {
+                    if (!initialized.get() || proxyConnection == null) {
                         initDataSource();
                         reconnect();
+                        proxyConnection = (Connection) Proxy.newProxyInstance(
+                                koneksiDB.class.getClassLoader(),
+                                new Class<?>[]{Connection.class},
+                                new SmartConnectionInvocationHandler()
+                        );
+                        startHeartbeat();
                         initialized.set(true);
-                    }
-                }
-            }
-
-            long now = System.currentTimeMillis();
-            if (now - lastCheck > CHECK_INTERVAL) {
-                lastCheck = now;
-                if (!isConnectionAlive()) {
-                    synchronized (LOCK) {
-                        if (!isConnectionAlive()) {
-                            reconnect();
-                        }
-                    }
-                }
-            }
-
-            if (connection == null || connection.isClosed()) {
-                synchronized (LOCK) {
-                    if (connection == null || connection.isClosed()) {
-                        reconnect();
                     }
                 }
             }
         } catch (Exception e) {
             Logger.getLogger(koneksiDB.class.getName()).log(Level.SEVERE, null, e);
         }
-        return connection;
+        return proxyConnection;
     }
 
     private static void initDataSource() throws Exception {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
         }
-        dataSource.setURL("jdbc:mysql://" + EnkripsiAES.decrypt(prop.getProperty("HOST")) + ":" + EnkripsiAES.decrypt(prop.getProperty("PORT")) + "/" + EnkripsiAES.decrypt(prop.getProperty("DATABASE")) + "?zeroDateTimeBehavior=convertToNull&tcpKeepAlive=true&connectTimeout=100000&socketTimeout=600000&maintainTimeStats=false&autoReconnect=true");
+        dataSource.setURL("jdbc:mysql://" + EnkripsiAES.decrypt(prop.getProperty("HOST")) + ":" + EnkripsiAES.decrypt(prop.getProperty("PORT")) + "/" + EnkripsiAES.decrypt(prop.getProperty("DATABASE")) + "?zeroDateTimeBehavior=convertToNull&tcpKeepAlive=true&connectTimeout=100000&socketTimeout=600000&maintainTimeStats=false&autoReconnect=true&useSSL=false");
         dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USER")));
         dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PAS")));
         dataSource.setCachePreparedStatements(true);
@@ -105,6 +99,7 @@ public class koneksiDB {
     }
 
     private static void reconnect() throws SQLException {
+        shuttingDown = false;
         closeConnection();
         int retries = 5;
         while (retries > 0) {
@@ -152,6 +147,11 @@ public class koneksiDB {
         }
     }
 
+    public static void shutdown() {
+        shuttingDown = true;
+        closeConnection();
+    }
+
     public static void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -161,6 +161,215 @@ public class koneksiDB {
             Logger.getLogger(koneksiDB.class.getName()).log(Level.SEVERE, null, e);
         }
         connection = null;
+    }
+
+    private static void reconnectSilently() throws SQLException {
+        shuttingDown = false;
+        try {
+            if (connection != null && !connection.isClosed()) {
+                try {
+                    connection.close();
+                } catch (Exception ignored) {}
+            }
+        } catch (Exception ignored) {}
+        connection = dataSource.getConnection();
+        connection.setAutoCommit(true);
+        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        lastActivity = System.currentTimeMillis();
+    }
+
+    private static void startHeartbeat() {
+        if (heartbeatThread != null && heartbeatThread.isAlive()) {
+            return;
+        }
+        heartbeatThread = new Thread(() -> {
+            while (!shuttingDown) {
+                try {
+                    Thread.sleep(30000);
+                    if (shuttingDown) {
+                        break;
+                    }
+                    long idle = System.currentTimeMillis() - lastActivity;
+                    if (idle >= 25000 && connection != null) {
+                        synchronized (LOCK) {
+                            if (!isConnectionAlive()) {
+                                try {
+                                    reconnectSilently();
+                                } catch (Exception ignored) {}
+                            }
+                        }
+                    }
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (Exception ignored) {}
+            }
+        }, "koneksiDB-Heartbeat");
+        heartbeatThread.setDaemon(true);
+        heartbeatThread.start();
+    }
+
+    public static void forceClosePhysicalForTesting() throws SQLException {
+        synchronized (LOCK) {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        }
+    }
+
+    public static boolean isPhysicalConnected() {
+        return connection != null && isConnectionAlive();
+    }
+
+    private static boolean isConnectionFailure(Throwable t) {
+        if (t == null) {
+            return false;
+        }
+        String msg = t.getMessage();
+        if (msg != null) {
+            String lower = msg.toLowerCase();
+            if (lower.contains("communications link failure")
+                    || lower.contains("connection closed")
+                    || lower.contains("statement closed")
+                    || lower.contains("connection reset")
+                    || lower.contains("broken pipe")
+                    || lower.contains("socket closed")
+                    || lower.contains("socket write error")
+                    || lower.contains("eofexception")
+                    || lower.contains("no operations allowed after connection closed")
+                    || lower.contains("no operations allowed after statement closed")) {
+                return true;
+            }
+        }
+        if (t instanceof SQLException) {
+            String sqlState = ((SQLException) t).getSQLState();
+            if (sqlState != null && sqlState.startsWith("08")) {
+                return true;
+            }
+        }
+        return isConnectionFailure(t.getCause());
+    }
+
+    private static class SmartConnectionInvocationHandler implements InvocationHandler {
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            String methodName = method.getName();
+
+            if ("close".equals(methodName)) {
+                if (shuttingDown) {
+                    synchronized (LOCK) {
+                        if (connection != null && !connection.isClosed()) {
+                            connection.close();
+                        }
+                    }
+                }
+                return null;
+            }
+
+            if ("isClosed".equals(methodName)) {
+                return shuttingDown && (connection == null || connection.isClosed());
+            }
+
+            if ("isValid".equals(methodName)) {
+                synchronized (LOCK) {
+                    if (connection == null || connection.isClosed()) {
+                        try {
+                            reconnectSilently();
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    }
+                    return isConnectionAlive();
+                }
+            }
+
+            if ("equals".equals(methodName)) {
+                return proxy == (args != null && args.length > 0 ? args[0] : null);
+            }
+
+            if ("hashCode".equals(methodName)) {
+                return System.identityHashCode(proxy);
+            }
+
+            if ("unwrap".equals(methodName)) {
+                Class<?> iface = (Class<?>) args[0];
+                if (iface.isInstance(proxy)) {
+                    return proxy;
+                }
+                if (connection != null && iface.isInstance(connection)) {
+                    return connection;
+                }
+                throw new SQLException("Cannot unwrap to " + iface.getName());
+            }
+
+            if ("isWrapperFor".equals(methodName)) {
+                Class<?> iface = (Class<?>) args[0];
+                return iface.isInstance(proxy) || (connection != null && iface.isInstance(connection));
+            }
+
+            // Ensure physical connection is alive before query
+            synchronized (LOCK) {
+                if (connection == null || connection.isClosed() || !isConnectionAlive()) {
+                    reconnectSilently();
+                }
+            }
+
+            lastActivity = System.currentTimeMillis();
+
+            try {
+                return method.invoke(connection, args);
+            } catch (InvocationTargetException ite) {
+                Throwable cause = ite.getCause();
+                if (cause instanceof SQLException && isConnectionFailure(cause)) {
+                    long[] backoffs = {0, 1000, 2000};
+                    for (long delay : backoffs) {
+                        if (delay > 0) {
+                            try {
+                                Thread.sleep(delay);
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                break;
+                            }
+                        }
+                        try {
+                            synchronized (LOCK) {
+                                reconnectSilently();
+                            }
+                            if (connection != null && !connection.isClosed()) {
+                                lastActivity = System.currentTimeMillis();
+                                return method.invoke(connection, args);
+                            }
+                        } catch (Exception retryEx) {
+                            // continue to next retry
+                        }
+                    }
+
+                    int choice = JOptionPane.showOptionDialog(
+                            null,
+                            "Koneksi ke server database terputus.\nPastikan jaringan/WiFi terhubung.",
+                            "Koneksi Database Terputus",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null,
+                            new String[]{"Coba Lagi", "Batal"},
+                            "Coba Lagi"
+                    );
+
+                    if (choice == 0) {
+                        synchronized (LOCK) {
+                            reconnectSilently();
+                        }
+                        if (connection != null && !connection.isClosed()) {
+                            lastActivity = System.currentTimeMillis();
+                            return method.invoke(connection, args);
+                        }
+                    }
+
+                    throw cause;
+                }
+                throw cause != null ? cause : ite;
+            }
+        }
     }
 
     public static String HOST() {
