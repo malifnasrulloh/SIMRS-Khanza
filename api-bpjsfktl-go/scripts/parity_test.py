@@ -44,53 +44,56 @@ def main():
     # 2. Status Antrean
     test_endpoint("2. POST /statusantrean (valid clinic)", "POST", "/statusantrean",
                   auth_headers, {
-                      "kodepoli": "INT",
-                      "kodedokter": "470937",
+                      "kodepoli": "BED",
+                      "kodedokter": "217354",
                       "tanggalperiksa": "2026-10-05",
-                      "jampraktek": "08:00-12:00"
+                      "jampraktek": "08:00-09:30"
                   }, 200)
 
-    # 4. Ambil Antrean (Patient Not Found -> 202)
+    # 3. Ambil Antrean (Patient Not Found -> 202)
     test_endpoint("3. POST /ambilantrean (unknown patient -> 202)", "POST", "/ambilantrean",
                   auth_headers, {
                       "nomorkartu": "9999999999999",
                       "nik": "9999999999999999",
                       "nohp": "08123456789",
-                      "kodepoli": "INT",
+                      "kodepoli": "BED",
                       "norm": "999999",
                       "tanggalperiksa": "2026-10-05",
-                      "kodedokter": "470937",
-                      "jampraktek": "08:00-12:00",
+                      "kodedokter": "217354",
+                      "jampraktek": "08:00-09:30",
                       "jeniskunjungan": "1",
                       "nomorreferensi": "REFTEST9999"
                   }, 202)
 
-    # 5. Checkin Antrean (Unknown Booking -> 201)
+    # 4. Checkin Antrean (Unknown Booking -> 201)
     test_endpoint("4. POST /checkinantrean (unknown booking)", "POST", "/checkinantrean",
                   auth_headers, {
                       "kodebooking": "NONEXISTENT123",
                       "waktu": 1790730000000
                   }, 201)
 
-    # 6. Batal Antrean (Unknown Booking -> 201)
+    # 5. Batal Antrean (Unknown Booking -> 201)
     test_endpoint("5. POST /batalantrean (unknown booking)", "POST", "/batalantrean",
                   auth_headers, {
                       "kodebooking": "NONEXISTENT123",
                       "keterangan": "Batal uji coba"
                   }, 201)
 
-    # 7. Sisa Antrean (Unknown Booking -> 201)
+    # 6. Sisa Antrean (Unknown Booking -> 201)
     test_endpoint("6. POST /sisaantrean (unknown booking)", "POST", "/sisaantrean",
                   auth_headers, {
                       "kodebooking": "NONEXISTENT123"
                   }, 201)
 
-    # 8. Jadwal Operasi RS
+    # 7. Jadwal Operasi RS
+    import time
+    today_str = time.strftime("%Y-%m-%d")
+    next_week_str = time.strftime("%Y-%m-%d", time.localtime(time.time() + 7 * 86400))
     test_endpoint("7. POST /jadwaloperasirs", "POST", "/jadwaloperasirs",
                   auth_headers, {
-                      "tanggalawal": "2026-01-01",
-                      "tanggalakhir": "2026-12-31"
-                  }, 200)
+                      "tanggalawal": today_str,
+                      "tanggalakhir": next_week_str
+                  }, 201)
 
     # 9. Jadwal Operasi Pasien (No records -> 201)
     test_endpoint("8. POST /jadwaloperasipasien (unknown patient)", "POST", "/jadwaloperasipasien",

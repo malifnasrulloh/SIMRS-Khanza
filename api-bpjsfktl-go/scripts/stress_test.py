@@ -15,10 +15,10 @@ def fetch_status(token):
         "Content-Type": "application/json"
     }
     payload = json.dumps({
-        "kodepoli": "INT",
-        "kodedokter": "470937",
+        "kodepoli": "BED",
+        "kodedokter": "217354",
         "tanggalperiksa": "2026-10-05",
-        "jampraktek": "08:00-12:00"
+        "jampraktek": "08:00-09:30"
     }).encode('utf-8')
 
     req = urllib.request.Request(url, data=payload, headers=headers, method="POST")

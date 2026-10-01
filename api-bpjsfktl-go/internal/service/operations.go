@@ -20,11 +20,22 @@ func calculateCheckinDiffMinutes(schedTime time.Time, checkinTimeMillis int64) i
 }
 
 func (s *OperationsService) CheckinQueue(bookingCode string, checkinTimeMillis int64) (int, string, error) {
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		loc = time.Local
+	}
+
+	checkinDate := time.UnixMilli(checkinTimeMillis).In(loc).Format("2006-01-02")
+	today := time.Now().In(loc).Format("2006-01-02")
+	if today > checkinDate {
+		return 201, "Waktu Checkin tidak berlaku mundur", nil
+	}
+
 	var noRawat, tglPeriksa, status, validasi, jamPraktek string
 	query := `SELECT no_rawat, tanggalperiksa, status, validasi, LEFT(jampraktek, 5)
 		FROM referensi_mobilejkn_bpjs WHERE nobooking = ? LIMIT 1`
 
-	err := s.db.QueryRow(query, bookingCode).Scan(&noRawat, &tglPeriksa, &status, &validasi, &jamPraktek)
+	err = s.db.QueryRow(query, bookingCode).Scan(&noRawat, &tglPeriksa, &status, &validasi, &jamPraktek)
 	if err == sql.ErrNoRows {
 		return 201, "Data Booking tidak ditemukan", nil
 	}
@@ -40,11 +51,6 @@ func (s *OperationsService) CheckinQueue(bookingCode string, checkinTimeMillis i
 	}
 	if status != "Belum" {
 		return 201, "Status booking tidak valid", nil
-	}
-
-	loc, err := time.LoadLocation("Asia/Jakarta")
-	if err != nil {
-		loc = time.Local
 	}
 
 	schedTime, err := time.ParseInLocation("2006-01-02 15:04", fmt.Sprintf("%s %s", tglPeriksa, jamPraktek), loc)
@@ -216,11 +222,20 @@ type FarmasiResult struct {
 }
 
 func (s *OperationsService) AmbilAntreanFarmasi(bookingCode string) (*FarmasiResult, int, string, error) {
-	var noRawat, status string
-	query := `SELECT no_rawat, status FROM referensi_mobilejkn_bpjs WHERE nobooking = ? LIMIT 1`
-	err := s.db.QueryRow(query, bookingCode).Scan(&noRawat, &status)
+	var noRawat, status, validasi string
+	query := `SELECT no_rawat, status, validasi FROM referensi_mobilejkn_bpjs WHERE nobooking = ? LIMIT 1`
+	err := s.db.QueryRow(query, bookingCode).Scan(&noRawat, &status, &validasi)
 	if err == sql.ErrNoRows {
 		return nil, 201, "Data Booking tidak ditemukan", nil
+	}
+	if err != nil {
+		return nil, 401, "Gagal membaca booking", err
+	}
+	if status == "Batal" {
+		return nil, 201, fmt.Sprintf("Booking Anda Sudah Dibatalkan pada tanggal %s", validasi), nil
+	}
+	if status == "Gagal" {
+		return nil, 201, "No.Booking Anda Bermasalah, Hubungi Admnistrator..", nil
 	}
 	if status == "Belum" {
 		return nil, 201, "Anda Belum Melakukan Checkin", nil
@@ -271,6 +286,9 @@ func (s *OperationsService) GetStatusAntreanFarmasi(bookingCode string) (*Status
 
 	if status == "Batal" {
 		return nil, 201, fmt.Sprintf("Booking Anda Sudah Dibatalkan pada tanggal %s", validasi), nil
+	}
+	if status == "Gagal" {
+		return nil, 201, "No.Booking Anda Bermasalah, Hubungi Admnistrator..", nil
 	}
 	if status == "Belum" {
 		return nil, 201, "Anda Belum Melakukan Checkin", nil

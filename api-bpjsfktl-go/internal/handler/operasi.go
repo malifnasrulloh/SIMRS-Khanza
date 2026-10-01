@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"api-bpjsfktl-go/internal/model"
 	"api-bpjsfktl-go/internal/store"
@@ -29,8 +30,17 @@ func (h *OperasiHandler) HandleJadwalOperasiRS(w http.ResponseWriter, r *http.Re
 		model.WriteError(w, 201, "Tanggal Awal tidak boleh kosong")
 		return
 	}
+	today := time.Now().Format("2006-01-02")
+	if body.TanggalAwal < today {
+		model.WriteError(w, 201, "Tanggal Awal tidak berlaku mundur")
+		return
+	}
 	if body.TanggalAkhir == "" {
 		model.WriteError(w, 201, "Tanggal Akhir tidak boleh kosong")
+		return
+	}
+	if body.TanggalAkhir < today {
+		model.WriteError(w, 201, "Tanggal Akhir tidak berlaku mundur")
 		return
 	}
 	if body.TanggalAwal > body.TanggalAkhir {

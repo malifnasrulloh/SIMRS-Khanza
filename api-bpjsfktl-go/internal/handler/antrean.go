@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"api-bpjsfktl-go/internal/cache"
 	"api-bpjsfktl-go/internal/model"
@@ -52,6 +53,11 @@ func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Requ
 		model.WriteError(w, 201, "Tanggal tidak boleh kosong")
 		return
 	}
+	today := time.Now().Format("2006-01-02")
+	if req.TanggalPeriksa < today {
+		model.WriteError(w, 201, "Tanggal Periksa tidak berlaku")
+		return
+	}
 	if req.JamPraktek == "" {
 		model.WriteError(w, 201, "Jam Praktek tidak boleh kosong")
 		return
@@ -72,20 +78,21 @@ func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	startTime := req.JamPraktek[:5]
+	endTime := req.JamPraktek[6:11]
+	sched, found := h.cache.GetSchedule(getHari(req.TanggalPeriksa), rsDoctor, rsClinic, startTime, endTime)
+	if !found || sched.Quota <= 0 {
+		model.WriteError(w, 201, "Pendaftaran ke Poli ini tidak tersedia")
+		return
+	}
+
 	status, err := h.repo.GetStatusAntrean(rsClinic, rsDoctor, req.TanggalPeriksa)
 	if err != nil {
 		model.WriteError(w, 401, "Gagal mengambil status antrean")
 		return
 	}
 
-	startTime := req.JamPraktek[:5]
-	endTime := req.JamPraktek[6:11]
-	sched, found := h.cache.GetSchedule(getHari(req.TanggalPeriksa), rsDoctor, rsClinic, startTime, endTime)
-	quota := 0
-	if found {
-		quota = sched.Quota
-	}
-
+	quota := sched.Quota
 	sisaKuota := quota - status.TotalAntrean
 	if sisaKuota < 0 {
 		sisaKuota = 0
@@ -146,6 +153,11 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 		model.WriteError(w, 201, "Tanggal tidak boleh kosong")
 		return
 	}
+	today := time.Now().Format("2006-01-02")
+	if req.TanggalPeriksa < today {
+		model.WriteError(w, 201, "Tanggal Periksa tidak berlaku mundur")
+		return
+	}
 	if req.JamPraktek == "" {
 		model.WriteError(w, 201, "Jam Praktek tidak boleh kosong")
 		return
@@ -156,6 +168,10 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 	}
 	if req.JenisKunjungan == "" {
 		model.WriteError(w, 201, "Jenis Kunjungan tidak boleh kosong")
+		return
+	}
+	if req.JenisKunjungan != "1" && req.JenisKunjungan != "2" && req.JenisKunjungan != "3" && req.JenisKunjungan != "4" {
+		model.WriteError(w, 201, "Jenis Kunjungan tidak ditemukan")
 		return
 	}
 	if req.NomorReferensi == "" {
