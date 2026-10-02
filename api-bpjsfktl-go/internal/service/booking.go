@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"api-bpjsfktl-go/internal/cache"
+	"api-bpjsfktl-go/internal/model"
 	"api-bpjsfktl-go/internal/store"
 )
 
@@ -50,16 +51,16 @@ func (s *BookingService) CalculateNoReg(clinicRS, doctorRS, date string) (string
 }
 
 type BookingParams struct {
-	NomorKartu     string `json:"nomorkartu"`
-	NIK            string `json:"nik"`
-	NoHP           string `json:"nohp"`
-	KodePoli       string `json:"kodepoli"`
-	Norm           string `json:"norm"`
-	TanggalPeriksa string `json:"tanggalperiksa"`
-	KodeDokter     string `json:"kodedokter"`
-	JamPraktek     string `json:"jampraktek"`
-	JenisKunjungan string `json:"jeniskunjungan"`
-	NomorReferensi string `json:"nomorreferensi"`
+	NomorKartu     model.FlexibleString `json:"nomorkartu"`
+	NIK            model.FlexibleString `json:"nik"`
+	NoHP           model.FlexibleString `json:"nohp"`
+	KodePoli       model.FlexibleString `json:"kodepoli"`
+	Norm           model.FlexibleString `json:"norm"`
+	TanggalPeriksa model.FlexibleString `json:"tanggalperiksa"`
+	KodeDokter     model.FlexibleString `json:"kodedokter"`
+	JamPraktek     model.FlexibleString `json:"jampraktek"`
+	JenisKunjungan model.FlexibleString `json:"jeniskunjungan"`
+	NomorReferensi model.FlexibleString `json:"nomorreferensi"`
 }
 
 type BookingResult struct {
@@ -81,6 +82,7 @@ type BookingResult struct {
 type PatientInfo struct {
 	NoRkmMedis string
 	Nama       string
+	NoKTP      string
 	TglDaftar  string
 	NamaKlg    string
 	AlamatPj   string
@@ -95,52 +97,85 @@ type PatientInfo struct {
 }
 
 func (s *BookingService) FindPatient(nik, noKartu string) (*PatientInfo, error) {
-	query := `SELECT no_rkm_medis, nm_pasien, tgl_daftar, namakeluarga, alamatpj,
+	baseQuery := `SELECT no_rkm_medis, nm_pasien, IFNULL(no_ktp, ''), tgl_daftar, namakeluarga, alamatpj,
 		kelurahanpj, kecamatanpj, kabupatenpj, propinsipj, keluarga,
 		TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) as tahun,
 		(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12)) as bulan,
 		TIMESTAMPDIFF(DAY, DATE_ADD(DATE_ADD(tgl_lahir, INTERVAL TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) YEAR), INTERVAL TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12) MONTH), CURDATE()) as hari
-		FROM pasien WHERE no_ktp = ? AND no_peserta = ? LIMIT 1`
+		FROM pasien `
 
 	var p PatientInfo
-	err := s.db.QueryRow(query, nik, noKartu).Scan(
-		&p.NoRkmMedis, &p.Nama, &p.TglDaftar, &p.NamaKlg, &p.AlamatPj,
-		&p.Kelurahan, &p.Kecamatan, &p.Kabupaten, &p.Propinsi, &p.Keluarga,
-		&p.UmurTahun, &p.UmurBulan, &p.UmurHari,
-	)
+	var err error
+	matchedByPesertaOnly := false
+
+	if nik != "" {
+		err = s.db.QueryRow(baseQuery+`WHERE no_ktp = ? AND no_peserta = ? LIMIT 1`, nik, noKartu).Scan(
+			&p.NoRkmMedis, &p.Nama, &p.NoKTP, &p.TglDaftar, &p.NamaKlg, &p.AlamatPj,
+			&p.Kelurahan, &p.Kecamatan, &p.Kabupaten, &p.Propinsi, &p.Keluarga,
+			&p.UmurTahun, &p.UmurBulan, &p.UmurHari,
+		)
+	}
+
+	if nik == "" || err == sql.ErrNoRows {
+		err = s.db.QueryRow(baseQuery+`WHERE no_peserta = ? LIMIT 1`, noKartu).Scan(
+			&p.NoRkmMedis, &p.Nama, &p.NoKTP, &p.TglDaftar, &p.NamaKlg, &p.AlamatPj,
+			&p.Kelurahan, &p.Kecamatan, &p.Kabupaten, &p.Propinsi, &p.Keluarga,
+			&p.UmurTahun, &p.UmurBulan, &p.UmurHari,
+		)
+		matchedByPesertaOnly = true
+	}
+
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, fmt.Errorf("find patient: %w", err)
 	}
+
+	// Auto-enrichment: If patient was matched by BPJS card alone and currently has a placeholder NIK ('', '-', '0'),
+	// and a valid 16-digit NIK has now been supplied, update the hospital database.
+	if matchedByPesertaOnly && len(nik) == 16 && (p.NoKTP == "" || p.NoKTP == "-" || p.NoKTP == "0") {
+		_, _ = s.db.Exec(`UPDATE pasien SET no_ktp = ? WHERE no_rkm_medis = ? AND (no_ktp = '' OR no_ktp = '-' OR no_ktp = '0')`, nik, p.NoRkmMedis)
+		p.NoKTP = nik
+	}
+
 	return &p, nil
 }
 
 func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, string, error) {
+	tglPeriksa := req.TanggalPeriksa.String()
+	jamPraktek := req.JamPraktek.String()
+	kdPoli := req.KodePoli.String()
+	kdDokter := req.KodeDokter.String()
+	nik := req.NIK.String()
+	noKartu := req.NomorKartu.String()
+	noRef := req.NomorReferensi.String()
+	noHP := req.NoHP.String()
+	jenisKunjungan := req.JenisKunjungan.String()
+
 	// Past date check
 	today := time.Now().Format("2006-01-02")
-	if req.TanggalPeriksa < today {
+	if tglPeriksa < today {
 		return nil, 201, "Pendaftaran ke Poli ini sudah tutup", nil
 	}
 
 	// JamPraktek length check
-	if len(req.JamPraktek) < 11 || req.JamPraktek[5] != '-' {
+	if len(jamPraktek) < 11 || jamPraktek[5] != '-' {
 		return nil, 201, "Jam Praktek tidak sesuai", nil
 	}
 
 	// 1. Resolve mappings
-	rsClinic, ok := s.cache.GetClinicMapping(req.KodePoli)
+	rsClinic, ok := s.cache.GetClinicMapping(kdPoli)
 	if !ok {
 		return nil, 201, "Poli tidak ditemukan", nil
 	}
-	rsDoctor, ok := s.cache.GetDoctorMapping(req.KodeDokter)
+	rsDoctor, ok := s.cache.GetDoctorMapping(kdDokter)
 	if !ok {
 		return nil, 201, "Dokter tidak ditemukan", nil
 	}
 
 	// 2. Validate patient exists
-	patient, err := s.FindPatient(req.NIK, req.NomorKartu)
+	patient, err := s.FindPatient(nik, noKartu)
 	if err != nil {
 		return nil, 401, "Gagal memverifikasi data pasien", err
 	}
@@ -149,7 +184,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	}
 
 	// 3. Acquire Tier-1 In-Process Sharded Mutex
-	mu := s.getMutex(rsClinic, rsDoctor, req.TanggalPeriksa)
+	mu := s.getMutex(rsClinic, rsDoctor, tglPeriksa)
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -157,7 +192,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	var dupCount int
 	dupRefQuery := `SELECT COUNT(nomorreferensi) FROM referensi_mobilejkn_bpjs
 		WHERE (status = 'Belum' OR status = 'Checkin') AND nomorreferensi = ?`
-	_ = s.db.QueryRow(dupRefQuery, req.NomorReferensi).Scan(&dupCount)
+	_ = s.db.QueryRow(dupRefQuery, noRef).Scan(&dupCount)
 	if dupCount > 0 {
 		return nil, 201, "Anda sudah terdaftar dalam antrian menggunakan nomor referensi yang sama", nil
 	}
@@ -167,7 +202,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 		INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis
 		WHERE reg_periksa.kd_poli = ? AND reg_periksa.kd_dokter = ?
 		AND reg_periksa.tgl_registrasi = ? AND pasien.no_peserta = ?`
-	_ = s.db.QueryRow(dupBookingQuery, rsClinic, rsDoctor, req.TanggalPeriksa, req.NomorKartu).Scan(&dupBookingCount)
+	_ = s.db.QueryRow(dupBookingQuery, rsClinic, rsDoctor, tglPeriksa, noKartu).Scan(&dupBookingCount)
 	if dupBookingCount > 0 {
 		return nil, 201, "Nomor Antrean hanya dapat diambil 1 kali pada Tanggal, Dokter dan Poli yang sama", nil
 	}
@@ -183,15 +218,15 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	var bookedCount int
 	lockQuotaQuery := `SELECT COUNT(no_rawat) FROM reg_periksa
 		WHERE kd_poli = ? AND kd_dokter = ? AND tgl_registrasi = ? FOR UPDATE`
-	err = tx.QueryRow(lockQuotaQuery, rsClinic, rsDoctor, req.TanggalPeriksa).Scan(&bookedCount)
+	err = tx.QueryRow(lockQuotaQuery, rsClinic, rsDoctor, tglPeriksa).Scan(&bookedCount)
 	if err != nil {
 		return nil, 401, "Gagal memeriksa kuota antrean", err
 	}
 
 	// Fetch quota from jadwal
-	startTime := req.JamPraktek[:5]
-	endTime := req.JamPraktek[6:11]
-	sched, found := s.cache.GetSchedule(GetHariIndo(req.TanggalPeriksa), rsDoctor, rsClinic, startTime, endTime)
+	startTime := jamPraktek[:5]
+	endTime := jamPraktek[6:11]
+	sched, found := s.cache.GetSchedule(GetHariIndo(tglPeriksa), rsDoctor, rsClinic, startTime, endTime)
 	if !found || sched.Quota <= 0 {
 		return nil, 201, "Pendaftaran ke Poli ini tidak tersedia", nil
 	}
@@ -201,7 +236,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	}
 
 	// Sequence generation
-	noRegStr, err := s.CalculateNoReg(rsClinic, rsDoctor, req.TanggalPeriksa)
+	noRegStr, err := s.CalculateNoReg(rsClinic, rsDoctor, tglPeriksa)
 	if err != nil {
 		return nil, 401, "Gagal menghitung nomor registrasi", err
 	}
@@ -209,19 +244,19 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 
 	var maxRawat int
 	err = tx.QueryRow(`SELECT ifnull(MAX(CONVERT(RIGHT(no_rawat,6), signed)), 0) + 1
-		FROM reg_periksa WHERE tgl_registrasi = ? FOR UPDATE`, req.TanggalPeriksa).Scan(&maxRawat)
+		FROM reg_periksa WHERE tgl_registrasi = ? FOR UPDATE`, tglPeriksa).Scan(&maxRawat)
 	if err != nil {
 		return nil, 401, "Gagal menghitung nomor rawat", err
 	}
-	noRawat := fmt.Sprintf("%s/%06d", strings.ReplaceAll(req.TanggalPeriksa, "-", "/"), maxRawat)
+	noRawat := fmt.Sprintf("%s/%06d", strings.ReplaceAll(tglPeriksa, "-", "/"), maxRawat)
 
 	var maxBooking int
 	err = tx.QueryRow(`SELECT ifnull(MAX(CONVERT(RIGHT(nobooking,6), signed)), 0) + 1
-		FROM referensi_mobilejkn_bpjs WHERE tanggalperiksa = ? FOR UPDATE`, req.TanggalPeriksa).Scan(&maxBooking)
+		FROM referensi_mobilejkn_bpjs WHERE tanggalperiksa = ? FOR UPDATE`, tglPeriksa).Scan(&maxBooking)
 	if err != nil {
 		return nil, 401, "Gagal menghitung nomor booking", err
 	}
-	noBooking := fmt.Sprintf("%s%06d", strings.ReplaceAll(req.TanggalPeriksa, "-", ""), maxBooking)
+	noBooking := fmt.Sprintf("%s%06d", strings.ReplaceAll(tglPeriksa, "-", ""), maxBooking)
 
 	// Compute status and waiting time
 	var statusPoli string = "Baru"
@@ -237,7 +272,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	}
 
 	waktuTungguMinutes := noRegInt * 5
-	parsedDate, _ := time.ParseInLocation("2006-01-02 15:04", fmt.Sprintf("%s %s", req.TanggalPeriksa, startTime), loc)
+	parsedDate, _ := time.ParseInLocation("2006-01-02 15:04", fmt.Sprintf("%s %s", tglPeriksa, startTime), loc)
 	estimasiMillis := parsedDate.Add(time.Duration(waktuTungguMinutes) * time.Minute).UnixMilli()
 
 	caraBayar := s.auth.CaraBayar
@@ -259,7 +294,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 
 	sttsDaftar := "0"
 	sttsDaftarText := "Lama"
-	if patient.TglDaftar == req.TanggalPeriksa {
+	if patient.TglDaftar == tglPeriksa {
 		sttsDaftar = "1"
 		sttsDaftarText = "Baru"
 	}
@@ -267,12 +302,21 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 	var regLamaCost float64
 	_ = tx.QueryRow(`SELECT registrasilama FROM poliklinik WHERE kd_poli = ?`, rsClinic).Scan(&regLamaCost)
 
+	nikToSave := nik
+	if nikToSave == "" {
+		if patient.NoKTP != "" && patient.NoKTP != "-" && patient.NoKTP != "0" {
+			nikToSave = patient.NoKTP
+		} else {
+			nikToSave = "-"
+		}
+	}
+
 	// Inserts
 	insertBookingQuery := `INSERT INTO referensi_mobilejkn_bpjs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Belum', '0000-00-00 00:00:00', 'Belum')`
 	_, err = tx.Exec(insertBookingQuery,
-		noBooking, noRawat, req.NomorKartu, req.NIK, req.NoHP, req.KodePoli,
-		sttsDaftar, patient.NoRkmMedis, req.TanggalPeriksa, req.KodeDokter, req.JamPraktek,
-		formatJenisKunjungan(req.JenisKunjungan), req.NomorReferensi,
+		noBooking, noRawat, noKartu, nikToSave, noHP, kdPoli,
+		sttsDaftar, patient.NoRkmMedis, tglPeriksa, kdDokter, jamPraktek,
+		formatJenisKunjungan(jenisKunjungan), noRef,
 		fmt.Sprintf("%s-%s", rsClinic, noRegStr), noRegStr, estimasiMillis,
 		sched.Quota-bookedCount-1, sched.Quota, sched.Quota-bookedCount-1, sched.Quota,
 	)
@@ -285,7 +329,7 @@ func (s *BookingService) BookQueue(req *BookingParams) (*BookingResult, int, str
 
 	insertRegQuery := `INSERT INTO reg_periksa VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Belum', ?, 'Ralan', ?, ?, ?, 'Belum Bayar', ?)`
 	_, err = tx.Exec(insertRegQuery,
-		noRegStr, noRawat, req.TanggalPeriksa, startTime+":00", rsDoctor,
+		noRegStr, noRawat, tglPeriksa, startTime+":00", rsDoctor,
 		patient.NoRkmMedis, rsClinic, patient.NamaKlg, pjAddress, patient.Keluarga,
 		regLamaCost, sttsDaftarText, caraBayar, umur, sttsUmur, statusPoli,
 	)

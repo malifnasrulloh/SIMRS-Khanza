@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"api-bpjsfktl-go/internal/model"
@@ -18,10 +17,7 @@ func NewPasienHandler(pasienSvc *service.PasienService) *PasienHandler {
 
 func (h *PasienHandler) HandlePasienBaru(w http.ResponseWriter, r *http.Request) {
 	var req service.PasienBaruParams
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &req)
 
 	if req.NomorKartu == "" {
 		model.WriteError(w, 201, "Nomor Kartu tidak boleh kosong")
@@ -31,13 +27,11 @@ func (h *PasienHandler) HandlePasienBaru(w http.ResponseWriter, r *http.Request)
 		model.WriteError(w, 201, "Nomor Kartu harus 13 digit")
 		return
 	}
-	if req.NIK == "" {
-		model.WriteError(w, 201, "NIK tidak boleh kosong ")
-		return
-	}
-	if len(req.NIK) != 16 {
-		model.WriteError(w, 201, "NIK harus 16 digit ")
-		return
+	if req.NIK != "" {
+		if len(req.NIK) != 16 {
+			model.WriteError(w, 201, "NIK harus 16 digit ")
+			return
+		}
 	}
 	if req.NomorKK == "" {
 		model.WriteError(w, 201, "Nomor KK tidak boleh kosong ")

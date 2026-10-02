@@ -25,8 +25,8 @@ func TestCheckinValidation(t *testing.T) {
 
 	opSvc := NewOperationsService(db)
 
-	// Test non-existent booking code
-	code, msg, err := opSvc.CheckinQueue("INVALIDBOOKING123", 1790730000000)
+	// Test non-existent booking code with future timestamp
+	code, msg, err := opSvc.CheckinQueue("INVALIDBOOKING123", time.Now().UnixMilli()+86400000)
 	if err != nil {
 		t.Fatalf("checkin error: %v", err)
 	}

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"api-bpjsfktl-go/internal/model"
@@ -18,18 +17,15 @@ func NewFarmasiHandler(opSvc *service.OperationsService) *FarmasiHandler {
 
 func (h *FarmasiHandler) HandleAmbilAntreanFarmasi(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		KodeBooking string `json:"kodebooking"`
+		KodeBooking model.FlexibleString `json:"kodebooking"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
 	if body.KodeBooking == "" {
 		model.WriteError(w, 201, "Kode Booking tidak boleh kosong")
 		return
 	}
 
-	res, code, msg, err := h.opSvc.AmbilAntreanFarmasi(body.KodeBooking)
+	res, code, msg, err := h.opSvc.AmbilAntreanFarmasi(body.KodeBooking.String())
 	if err != nil || code != 200 {
 		model.WriteError(w, code, msg)
 		return
@@ -39,18 +35,15 @@ func (h *FarmasiHandler) HandleAmbilAntreanFarmasi(w http.ResponseWriter, r *htt
 
 func (h *FarmasiHandler) HandleStatusAntreanFarmasi(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		KodeBooking string `json:"kodebooking"`
+		KodeBooking model.FlexibleString `json:"kodebooking"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
 	if body.KodeBooking == "" {
 		model.WriteError(w, 201, "Kode Booking tidak boleh kosong")
 		return
 	}
 
-	res, code, msg, err := h.opSvc.GetStatusAntreanFarmasi(body.KodeBooking)
+	res, code, msg, err := h.opSvc.GetStatusAntreanFarmasi(body.KodeBooking.String())
 	if err != nil || code != 200 {
 		model.WriteError(w, code, msg)
 		return

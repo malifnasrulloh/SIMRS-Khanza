@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
@@ -19,19 +18,20 @@ func NewOperasiHandler(repo *store.Repository) *OperasiHandler {
 
 func (h *OperasiHandler) HandleJadwalOperasiRS(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		TanggalAwal  string `json:"tanggalawal"`
-		TanggalAkhir string `json:"tanggalakhir"`
+		TanggalAwal  model.FlexibleString `json:"tanggalawal"`
+		TanggalAkhir model.FlexibleString `json:"tanggalakhir"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
+
 	if body.TanggalAwal == "" {
 		model.WriteError(w, 201, "Tanggal Awal tidak boleh kosong")
 		return
 	}
 	today := time.Now().Format("2006-01-02")
-	if body.TanggalAwal < today {
+	tglAwal := body.TanggalAwal.String()
+	tglAkhir := body.TanggalAkhir.String()
+
+	if tglAwal < today {
 		model.WriteError(w, 201, "Tanggal Awal tidak berlaku mundur")
 		return
 	}
@@ -39,16 +39,16 @@ func (h *OperasiHandler) HandleJadwalOperasiRS(w http.ResponseWriter, r *http.Re
 		model.WriteError(w, 201, "Tanggal Akhir tidak boleh kosong")
 		return
 	}
-	if body.TanggalAkhir < today {
+	if tglAkhir < today {
 		model.WriteError(w, 201, "Tanggal Akhir tidak berlaku mundur")
 		return
 	}
-	if body.TanggalAwal > body.TanggalAkhir {
+	if tglAwal > tglAkhir {
 		model.WriteError(w, 201, "Format tanggal awal harus lebih kecil dari tanggal akhir")
 		return
 	}
 
-	list, err := h.repo.GetJadwalOperasiRS(body.TanggalAwal, body.TanggalAkhir)
+	list, err := h.repo.GetJadwalOperasiRS(tglAwal, tglAkhir)
 	if err != nil {
 		model.WriteError(w, 401, "Gagal mengambil jadwal operasi")
 		return
@@ -63,22 +63,21 @@ func (h *OperasiHandler) HandleJadwalOperasiRS(w http.ResponseWriter, r *http.Re
 
 func (h *OperasiHandler) HandleJadwalOperasiPasien(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		NoPeserta string `json:"nopeserta"`
+		NoPeserta model.FlexibleString `json:"nopeserta"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
+
 	if body.NoPeserta == "" {
 		model.WriteError(w, 201, "Nomor Peserta tidak boleh kosong")
 		return
 	}
-	if len(body.NoPeserta) != 13 {
+	noPeserta := body.NoPeserta.String()
+	if len(noPeserta) != 13 {
 		model.WriteError(w, 201, "Nomor Peserta harus 13 digit")
 		return
 	}
 
-	list, err := h.repo.GetJadwalOperasiPasien(body.NoPeserta)
+	list, err := h.repo.GetJadwalOperasiPasien(noPeserta)
 	if err != nil {
 		model.WriteError(w, 401, "Gagal mengambil jadwal operasi pasien")
 		return

@@ -242,7 +242,7 @@
                                             )
                                         );
                                         http_response_code(201);
-                                    }else if (!preg_match("/^[0-9]{13}$/",$decode['nomorkartu'])){ 
+                                    }else if (!preg_match("/^[0-9]{13}$/",$decode['nomorkartu'])){
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'Format Nomor Kartu tidak sesuai',
@@ -250,23 +250,15 @@
                                             )
                                         );
                                         http_response_code(201);
-                                    }elseif (empty($decode['nik'])) { 
-                                        $response = array(
-                                            'metadata' => array(
-                                                'message' => 'NIK tidak boleh kosong ',
-                                                'code' => 201
-                                            )
-                                        ); 
-                                        http_response_code(201);
-                                    }elseif (strlen($decode['nik']) <> 16) { 
+                                    }else if (!empty($decode['nik']) && strlen($decode['nik']) <> 16) {
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'NIK harus 16 digit ',
                                                 'code' => 201
                                             )
-                                        ); 
+                                        );
                                         http_response_code(201);
-                                    }else if (!preg_match("/^[0-9]{16}$/",$decode['nik'])){ 
+                                    }else if (!empty($decode['nik']) && !preg_match("/^[0-9]{16}$/",$decode['nik'])){
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'Format NIK tidak sesuai',
@@ -574,7 +566,8 @@
                                                                                 $jeniskunjungan = "4 (Rujukan Antar RS)";
                                                                             }
 
-                                                                            $querybooking = bukaquery2("insert into referensi_mobilejkn_bpjs values('$nobooking','$no_rawat', '".validTeks4($decode['nomorkartu'],20)."', '".validTeks4($decode['nik'],20)."','".validTeks4($decode['nohp'],20)."','".validTeks4($decode['kodepoli'],20)."','$statusdaftar','$datapeserta[no_rkm_medis]','".validTeks4($decode['tanggalperiksa'],20)."','".validTeks4($decode['kodedokter'],20)."','".validTeks4($decode['jampraktek'],20)."','".$jeniskunjungan."','".validTeks4($decode['nomorreferensi'],30)."','".$kdpoli."-".$noReg."','$noReg','".(strtotime(validTeks4($decode['tanggalperiksa'],20).' '.$jadwal['jam_mulai'].'+'.$dilayani.' minute')* 1000)."','".($jadwal['kuota']-$sisakuota-1)."','$jadwal[kuota]','".($jadwal['kuota']-$sisakuota-1)."','$jadwal[kuota]','Belum','0000-00-00 00:00:00','Belum')");
+                                                                            $nikBooking = !empty($decode['nik']) ? validTeks4($decode['nik'],20) : (!empty($datapeserta['no_ktp']) && $datapeserta['no_ktp'] != '-' && $datapeserta['no_ktp'] != '0' ? $datapeserta['no_ktp'] : '-');
+                                                                            $querybooking = bukaquery2("insert into referensi_mobilejkn_bpjs values('$nobooking','$no_rawat', '".validTeks4($decode['nomorkartu'],20)."', '$nikBooking','".validTeks4($decode['nohp'],20)."','".validTeks4($decode['kodepoli'],20)."','$statusdaftar','$datapeserta[no_rkm_medis]','".validTeks4($decode['tanggalperiksa'],20)."','".validTeks4($decode['kodedokter'],20)."','".validTeks4($decode['jampraktek'],20)."','".$jeniskunjungan."','".validTeks4($decode['nomorreferensi'],30)."','".$kdpoli."-".$noReg."','$noReg','".(strtotime(validTeks4($decode['tanggalperiksa'],20).' '.$jadwal['jam_mulai'].'+'.$dilayani.' minute')* 1000)."','".($jadwal['kuota']-$sisakuota-1)."','$jadwal[kuota]','".($jadwal['kuota']-$sisakuota-1)."','$jadwal[kuota]','Belum','0000-00-00 00:00:00','Belum')");
                                                                             if ($querybooking) {
                                                                                 $query = bukaquery2("insert into reg_periksa values('$noReg', '$no_rawat', '".validTeks4($decode['tanggalperiksa'],20)."','".$jadwal['jam_mulai']."', '$kddokter', '$datapeserta[no_rkm_medis]', '$kdpoli', '$datapeserta[namakeluarga]', '$datapeserta[alamatpj], $datapeserta[kelurahanpj], $datapeserta[kecamatanpj], $datapeserta[kabupatenpj], $datapeserta[propinsipj]', '$datapeserta[keluarga]', '".getOne2("select registrasilama from poliklinik where kd_poli='$kdpoli'")."', 'Belum','".str_replace("0","Lama",str_replace("1","Baru",$statusdaftar))."','Ralan', '".CARABAYAR."', '$umur','$sttsumur','Belum Bayar', '$statuspoli')");
                                                                                 if ($query) {
@@ -1214,7 +1207,7 @@
                                             )
                                         );
                                         http_response_code(201);
-                                    }else if (!preg_match("/^[0-9]{13}$/",$decode['nomorkartu'])){ 
+                                    }else if (!preg_match("/^[0-9]{13}$/",$decode['nomorkartu'])){
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'Format Nomor Kartu tidak sesuai',
@@ -1222,23 +1215,15 @@
                                             )
                                         );
                                         http_response_code(201);
-                                    }elseif (empty($decode['nik'])) { 
-                                        $response = array(
-                                            'metadata' => array(
-                                                'message' => 'NIK tidak boleh kosong ',
-                                                'code' => 201
-                                            )
-                                        ); 
-                                        http_response_code(201);
-                                    }elseif (strlen($decode['nik']) <> 16) { 
+                                    }else if (!empty($decode['nik']) && strlen($decode['nik']) <> 16) {
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'NIK harus 16 digit ',
                                                 'code' => 201
                                             )
-                                        ); 
+                                        );
                                         http_response_code(201);
-                                    }else if (!preg_match("/^[0-9]{16}$/",$decode['nik'])){ 
+                                    }else if (!empty($decode['nik']) && !preg_match("/^[0-9]{16}$/",$decode['nik'])){
                                         $response = array(
                                             'metadata' => array(
                                                 'message' => 'Format NIK tidak sesuai',
@@ -1604,7 +1589,8 @@
                                                 bukaquery3("insert ignore into kabupaten values('0','".validTeks4($decode['namadati2'],30)."')");
                                                 bukaquery3("insert ignore into propinsi values('0','".validTeks4($decode['namaprop'],30)."')");
 
-                                                $query = bukaquery2("insert into pasien values('$norm','".validTeks4($decode['nama'],60)."','".validTeks4($decode['nik'],20)."','".validTeks4($decode['jeniskelamin'],20)."','-','".validTeks4($decode['tanggallahir'],20)."','-','".validTeks4($decode['alamat'],100)."','-','-','JOMBLO','-',current_date(),'".validTeks4($decode['nohp'],20)."','0','-','SAUDARA','-','".CARABAYAR."','".validTeks4($decode['nomorkartu'],20)."','".getOne2("select kelurahan.kd_kel from kelurahan where kelurahan.nm_kel='".validTeks4($decode['namakel'],30)."'")."','".getOne2("select kecamatan.kd_kec from kecamatan where kecamatan.nm_kec='".validTeks4($decode['namakec'],30)."'")."','".getOne2("select kabupaten.kd_kab from kabupaten where kabupaten.nm_kab='".validTeks4($decode['namadati2'],30)."'")."','-','".validTeks4($decode['alamat'],100)."','".validTeks4($decode['namakel'],30)."','".validTeks4($decode['namakec'],30)."','".validTeks4($decode['namadati2'],30)."','-','1','1','1','-','-','".getOne2("select propinsi.kd_prop from propinsi where propinsi.nm_prop='".validTeks4($decode['namaprop'],30)."'")."','".validTeks4($decode['namaprop'],30)."')");
+                                                $nikPasien = !empty($decode['nik']) ? validTeks4($decode['nik'],20) : '-';
+                                                $query = bukaquery2("insert into pasien values('$norm','".validTeks4($decode['nama'],60)."','$nikPasien','".validTeks4($decode['jeniskelamin'],20)."','-','".validTeks4($decode['tanggallahir'],20)."','-','".validTeks4($decode['alamat'],100)."','-','-','JOMBLO','-',current_date(),'".validTeks4($decode['nohp'],20)."','0','-','SAUDARA','-','".CARABAYAR."','".validTeks4($decode['nomorkartu'],20)."','".getOne2("select kelurahan.kd_kel from kelurahan where kelurahan.nm_kel='".validTeks4($decode['namakel'],30)."'")."','".getOne2("select kecamatan.kd_kec from kecamatan where kecamatan.nm_kec='".validTeks4($decode['namakec'],30)."'")."','".getOne2("select kabupaten.kd_kab from kabupaten where kabupaten.nm_kab='".validTeks4($decode['namadati2'],30)."'")."','-','".validTeks4($decode['alamat'],100)."','".validTeks4($decode['namakel'],30)."','".validTeks4($decode['namakec'],30)."','".validTeks4($decode['namadati2'],30)."','-','1','1','1','-','-','".getOne2("select propinsi.kd_prop from propinsi where propinsi.nm_prop='".validTeks4($decode['namaprop'],30)."'")."','".validTeks4($decode['namaprop'],30)."')");
                                                 if ($query) {
                                                     bukaquery2("delete from set_no_rkm_medis");
                                                     bukaquery2("insert into set_no_rkm_medis values('$norm')");
@@ -1629,7 +1615,7 @@
                                                     );
                                                     http_response_code(201);
                                                 }
-                                            } catch (Exception $e) {
+                                            } catch (Throwable $e) {
                                                 mysqli_rollback($conn);
                                                 $response = array(
                                                     'metadata' => array(

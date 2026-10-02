@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
@@ -28,18 +27,15 @@ func NewAntreanHandler(c *cache.MemoryCache, repo *store.Repository, bookingSvc 
 }
 
 type StatusAntreanReq struct {
-	KodePoli       string `json:"kodepoli"`
-	KodeDokter     string `json:"kodedokter"`
-	TanggalPeriksa string `json:"tanggalperiksa"`
-	JamPraktek     string `json:"jampraktek"`
+	KodePoli       model.FlexibleString `json:"kodepoli"`
+	KodeDokter     model.FlexibleString `json:"kodedokter"`
+	TanggalPeriksa model.FlexibleString `json:"tanggalperiksa"`
+	JamPraktek     model.FlexibleString `json:"jampraktek"`
 }
 
 func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Request) {
 	var req StatusAntreanReq
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &req)
 
 	if req.KodePoli == "" {
 		model.WriteError(w, 201, "Kode Poli tidak boleh kosong")
@@ -54,7 +50,7 @@ func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	today := time.Now().Format("2006-01-02")
-	if req.TanggalPeriksa < today {
+	if req.TanggalPeriksa.String() < today {
 		model.WriteError(w, 201, "Tanggal Periksa tidak berlaku")
 		return
 	}
@@ -62,31 +58,32 @@ func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Requ
 		model.WriteError(w, 201, "Jam Praktek tidak boleh kosong")
 		return
 	}
-	if len(req.JamPraktek) < 11 || req.JamPraktek[5] != '-' {
+	jamPraktek := req.JamPraktek.String()
+	if len(jamPraktek) < 11 || jamPraktek[5] != '-' {
 		model.WriteError(w, 201, "Jam Praktek tidak sesuai")
 		return
 	}
 
-	rsClinic, ok := h.cache.GetClinicMapping(req.KodePoli)
+	rsClinic, ok := h.cache.GetClinicMapping(req.KodePoli.String())
 	if !ok {
 		model.WriteError(w, 201, "Poli tidak ditemukan")
 		return
 	}
-	rsDoctor, ok := h.cache.GetDoctorMapping(req.KodeDokter)
+	rsDoctor, ok := h.cache.GetDoctorMapping(req.KodeDokter.String())
 	if !ok {
 		model.WriteError(w, 201, "Dokter tidak ditemukan")
 		return
 	}
 
-	startTime := req.JamPraktek[:5]
-	endTime := req.JamPraktek[6:11]
-	sched, found := h.cache.GetSchedule(getHari(req.TanggalPeriksa), rsDoctor, rsClinic, startTime, endTime)
+	startTime := jamPraktek[:5]
+	endTime := jamPraktek[6:11]
+	sched, found := h.cache.GetSchedule(getHari(req.TanggalPeriksa.String()), rsDoctor, rsClinic, startTime, endTime)
 	if !found || sched.Quota <= 0 {
 		model.WriteError(w, 201, "Pendaftaran ke Poli ini tidak tersedia")
 		return
 	}
 
-	status, err := h.repo.GetStatusAntrean(rsClinic, rsDoctor, req.TanggalPeriksa)
+	status, err := h.repo.GetStatusAntrean(rsClinic, rsDoctor, req.TanggalPeriksa.String())
 	if err != nil {
 		model.WriteError(w, 401, "Gagal mengambil status antrean")
 		return
@@ -116,10 +113,7 @@ func (h *AntreanHandler) HandleStatusAntrean(w http.ResponseWriter, r *http.Requ
 
 func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Request) {
 	var req service.BookingParams
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &req)
 
 	if req.NomorKartu == "" {
 		model.WriteError(w, 201, "Nomor Kartu tidak boleh kosong")
@@ -129,13 +123,11 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 		model.WriteError(w, 201, "Nomor Kartu harus 13 digit")
 		return
 	}
-	if req.NIK == "" {
-		model.WriteError(w, 201, "NIK tidak boleh kosong ")
-		return
-	}
-	if len(req.NIK) != 16 {
-		model.WriteError(w, 201, "NIK harus 16 digit ")
-		return
+	if req.NIK != "" {
+		if len(req.NIK) != 16 {
+			model.WriteError(w, 201, "NIK harus 16 digit ")
+			return
+		}
 	}
 	if req.NoHP == "" {
 		model.WriteError(w, 201, "No.HP tidak boleh kosong")
@@ -154,7 +146,7 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	today := time.Now().Format("2006-01-02")
-	if req.TanggalPeriksa < today {
+	if req.TanggalPeriksa.String() < today {
 		model.WriteError(w, 201, "Tanggal Periksa tidak berlaku mundur")
 		return
 	}
@@ -162,7 +154,8 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 		model.WriteError(w, 201, "Jam Praktek tidak boleh kosong")
 		return
 	}
-	if len(req.JamPraktek) < 11 || req.JamPraktek[5] != '-' {
+	jamPraktek := req.JamPraktek.String()
+	if len(jamPraktek) < 11 || jamPraktek[5] != '-' {
 		model.WriteError(w, 201, "Jam Praktek tidak sesuai")
 		return
 	}
@@ -170,7 +163,8 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 		model.WriteError(w, 201, "Jenis Kunjungan tidak boleh kosong")
 		return
 	}
-	if req.JenisKunjungan != "1" && req.JenisKunjungan != "2" && req.JenisKunjungan != "3" && req.JenisKunjungan != "4" {
+	jk := req.JenisKunjungan.String()
+	if jk != "1" && jk != "2" && jk != "3" && jk != "4" {
 		model.WriteError(w, 201, "Jenis Kunjungan tidak ditemukan")
 		return
 	}
@@ -194,13 +188,10 @@ func (h *AntreanHandler) HandleAmbilAntrean(w http.ResponseWriter, r *http.Reque
 
 func (h *AntreanHandler) HandleCheckinAntrean(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		KodeBooking string `json:"kodebooking"`
-		Waktu       int64  `json:"waktu"`
+		KodeBooking model.FlexibleString `json:"kodebooking"`
+		Waktu       model.FlexibleInt64  `json:"waktu"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
 	if body.KodeBooking == "" {
 		model.WriteError(w, 201, "Kode Booking tidak boleh kosong")
 		return
@@ -210,7 +201,7 @@ func (h *AntreanHandler) HandleCheckinAntrean(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	code, msg, err := h.opSvc.CheckinQueue(body.KodeBooking, body.Waktu)
+	code, msg, err := h.opSvc.CheckinQueue(body.KodeBooking.String(), body.Waktu.Int64())
 	if err != nil || code != 200 {
 		model.WriteError(w, code, msg)
 		return
@@ -220,13 +211,10 @@ func (h *AntreanHandler) HandleCheckinAntrean(w http.ResponseWriter, r *http.Req
 
 func (h *AntreanHandler) HandleBatalAntrean(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		KodeBooking string `json:"kodebooking"`
-		Keterangan  string `json:"keterangan"`
+		KodeBooking model.FlexibleString `json:"kodebooking"`
+		Keterangan  model.FlexibleString `json:"keterangan"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
 	if body.KodeBooking == "" {
 		model.WriteError(w, 201, "Kode Booking tidak boleh kosong")
 		return
@@ -236,7 +224,7 @@ func (h *AntreanHandler) HandleBatalAntrean(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	code, msg, err := h.opSvc.CancelQueue(body.KodeBooking, body.Keterangan)
+	code, msg, err := h.opSvc.CancelQueue(body.KodeBooking.String(), body.Keterangan.String())
 	if err != nil || code != 200 {
 		model.WriteError(w, code, msg)
 		return
@@ -246,18 +234,15 @@ func (h *AntreanHandler) HandleBatalAntrean(w http.ResponseWriter, r *http.Reque
 
 func (h *AntreanHandler) HandleSisaAntrean(w http.ResponseWriter, r *http.Request) {
 	var body struct {
-		KodeBooking string `json:"kodebooking"`
+		KodeBooking model.FlexibleString `json:"kodebooking"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		model.WriteError(w, 201, "Format JSON tidak valid")
-		return
-	}
+	model.DecodeBody(r, &body)
 	if body.KodeBooking == "" {
 		model.WriteError(w, 201, "Kode Booking tidak boleh kosong")
 		return
 	}
 
-	res, code, msg, err := h.opSvc.GetSisaAntrean(body.KodeBooking)
+	res, code, msg, err := h.opSvc.GetSisaAntrean(body.KodeBooking.String())
 	if err != nil || code != 200 {
 		model.WriteError(w, code, msg)
 		return

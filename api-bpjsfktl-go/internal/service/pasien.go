@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"api-bpjsfktl-go/internal/model"
 	"api-bpjsfktl-go/internal/store"
 )
 
@@ -18,24 +19,24 @@ func NewPasienService(db *sql.DB, auth *store.InsuranceAuth) *PasienService {
 }
 
 type PasienBaruParams struct {
-	NomorKartu   string `json:"nomorkartu"`
-	NIK          string `json:"nik"`
-	NomorKK      string `json:"nomorkk"`
-	Nama         string `json:"nama"`
-	JenisKelamin string `json:"jeniskelamin"`
-	TanggalLahir string `json:"tanggallahir"`
-	NoHP         string `json:"nohp"`
-	Alamat       string `json:"alamat"`
-	KodeProp     string `json:"kodeprop"`
-	NamaProp     string `json:"namaprop"`
-	KodeDati2    string `json:"kodedati2"`
-	NamaDati2    string `json:"namadati2"`
-	KodeKec      string `json:"kodekec"`
-	NamaKec      string `json:"namakec"`
-	KodeKel      string `json:"kodekel"`
-	NamaKel      string `json:"namakel"`
-	RW           string `json:"rw"`
-	RT           string `json:"rt"`
+	NomorKartu   model.FlexibleString `json:"nomorkartu"`
+	NIK          model.FlexibleString `json:"nik"`
+	NomorKK      model.FlexibleString `json:"nomorkk"`
+	Nama         model.FlexibleString `json:"nama"`
+	JenisKelamin model.FlexibleString `json:"jeniskelamin"`
+	TanggalLahir model.FlexibleString `json:"tanggallahir"`
+	NoHP         model.FlexibleString `json:"nohp"`
+	Alamat       model.FlexibleString `json:"alamat"`
+	KodeProp     model.FlexibleString `json:"kodeprop"`
+	NamaProp     model.FlexibleString `json:"namaprop"`
+	KodeDati2    model.FlexibleString `json:"kodedati2"`
+	NamaDati2    model.FlexibleString `json:"namadati2"`
+	KodeKec      model.FlexibleString `json:"kodekec"`
+	NamaKec      model.FlexibleString `json:"namakec"`
+	KodeKel      model.FlexibleString `json:"kodekel"`
+	NamaKel      model.FlexibleString `json:"namakel"`
+	RW           model.FlexibleString `json:"rw"`
+	RT           model.FlexibleString `json:"rt"`
 }
 
 type SetUrutRM struct {
@@ -119,8 +120,25 @@ func (s *PasienService) calculateNextNoRM(tx *sql.Tx) (string, error) {
 }
 
 func (s *PasienService) RegisterPatient(req *PasienBaruParams) (string, int, string, error) {
+	nik := req.NIK.String()
+	noKartu := req.NomorKartu.String()
+	nama := req.Nama.String()
+	namaKel := req.NamaKel.String()
+	namaKec := req.NamaKec.String()
+	namaDati2 := req.NamaDati2.String()
+	namaProp := req.NamaProp.String()
+	alamat := req.Alamat.String()
+	noHP := req.NoHP.String()
+	jk := req.JenisKelamin.String()
+	tglLahir := req.TanggalLahir.String()
+
 	var existing int
-	err := s.db.QueryRow(`SELECT COUNT(no_rkm_medis) FROM pasien WHERE no_ktp = ? OR no_peserta = ?`, req.NIK, req.NomorKartu).Scan(&existing)
+	var err error
+	if nik != "" {
+		err = s.db.QueryRow(`SELECT COUNT(no_rkm_medis) FROM pasien WHERE no_ktp = ? OR no_peserta = ?`, nik, noKartu).Scan(&existing)
+	} else {
+		err = s.db.QueryRow(`SELECT COUNT(no_rkm_medis) FROM pasien WHERE no_peserta = ?`, noKartu).Scan(&existing)
+	}
 	if err == nil && existing > 0 {
 		return "", 201, "Pasien dengan NIK dan No.Kartu tersebut sudah terdaftar", nil
 	}
@@ -137,27 +155,32 @@ func (s *PasienService) RegisterPatient(req *PasienBaruParams) (string, int, str
 	}
 
 	// Upsert geographic masters
-	_, _ = tx.Exec(`INSERT IGNORE INTO kelurahan VALUES ('0', ?)`, req.NamaKel)
-	_, _ = tx.Exec(`INSERT IGNORE INTO kecamatan VALUES ('0', ?)`, req.NamaKec)
-	_, _ = tx.Exec(`INSERT IGNORE INTO kabupaten VALUES ('0', ?)`, req.NamaDati2)
-	_, _ = tx.Exec(`INSERT IGNORE INTO propinsi VALUES ('0', ?)`, req.NamaProp)
+	_, _ = tx.Exec(`INSERT IGNORE INTO kelurahan VALUES ('0', ?)`, namaKel)
+	_, _ = tx.Exec(`INSERT IGNORE INTO kecamatan VALUES ('0', ?)`, namaKec)
+	_, _ = tx.Exec(`INSERT IGNORE INTO kabupaten VALUES ('0', ?)`, namaDati2)
+	_, _ = tx.Exec(`INSERT IGNORE INTO propinsi VALUES ('0', ?)`, namaProp)
 
 	var kdKel, kdKec, kdKab, kdProp int
-	_ = tx.QueryRow(`SELECT kd_kel FROM kelurahan WHERE nm_kel = ? LIMIT 1`, req.NamaKel).Scan(&kdKel)
-	_ = tx.QueryRow(`SELECT kd_kec FROM kecamatan WHERE nm_kec = ? LIMIT 1`, req.NamaKec).Scan(&kdKec)
-	_ = tx.QueryRow(`SELECT kd_kab FROM kabupaten WHERE nm_kab = ? LIMIT 1`, req.NamaDati2).Scan(&kdKab)
-	_ = tx.QueryRow(`SELECT kd_prop FROM propinsi WHERE nm_prop = ? LIMIT 1`, req.NamaProp).Scan(&kdProp)
+	_ = tx.QueryRow(`SELECT kd_kel FROM kelurahan WHERE nm_kel = ? LIMIT 1`, namaKel).Scan(&kdKel)
+	_ = tx.QueryRow(`SELECT kd_kec FROM kecamatan WHERE nm_kec = ? LIMIT 1`, namaKec).Scan(&kdKec)
+	_ = tx.QueryRow(`SELECT kd_kab FROM kabupaten WHERE nm_kab = ? LIMIT 1`, namaDati2).Scan(&kdKab)
+	_ = tx.QueryRow(`SELECT kd_prop FROM propinsi WHERE nm_prop = ? LIMIT 1`, namaProp).Scan(&kdProp)
 
 	caraBayar := s.auth.CaraBayar
 	if caraBayar == "" {
 		caraBayar = "BPJ"
 	}
 
+	nikPasien := nik
+	if nikPasien == "" {
+		nikPasien = "-"
+	}
+
 	insertPasien := `INSERT INTO pasien VALUES (?, ?, ?, ?, '-', ?, '-', ?, '-', '-', 'JOMBLO', '-', CURRENT_DATE(), ?, '0', '-', 'SAUDARA', '-', ?, ?, ?, ?, ?, '-', ?, ?, ?, ?, '-', '1', '1', '1', '-', '-', ?, ?)`
 	_, err = tx.Exec(insertPasien,
-		norm, req.Nama, req.NIK, req.JenisKelamin, req.TanggalLahir, req.Alamat,
-		req.NoHP, caraBayar, req.NomorKartu, kdKel, kdKec, kdKab,
-		req.Alamat, req.NamaKel, req.NamaKec, req.NamaDati2, kdProp, req.NamaProp,
+		norm, nama, nikPasien, jk, tglLahir, alamat,
+		noHP, caraBayar, noKartu, kdKel, kdKec, kdKab,
+		alamat, namaKel, namaKec, namaDati2, kdProp, namaProp,
 	)
 	if err != nil {
 		return "", 401, "Gagal menyimpan pasien baru", err
