@@ -667,7 +667,7 @@ public final class SatuSehatKirimNutritionOrder extends javax.swing.JDialog {
                         // Pre-flight Duplicate Prevention check
                         String dupId = resolveDuplicateNutritionOrder(idpasien, idEncounter);
                         if (dupId != null && !dupId.isEmpty()) {
-                            if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?", "NutritionOrder", 4, new String[]{
+                            if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?,now(),now()", "NutritionOrder", 4, new String[]{
                                 noRawat, tanggalAdime, dupId, "active"
                             })) {
                                 SwingUtilities.invokeLater(() -> {
@@ -700,7 +700,7 @@ public final class SatuSehatKirimNutritionOrder extends javax.swing.JDialog {
                             response = root.path("id");
                             if (!response.asText().equals("")) {
                                 String responseId = response.asText();
-                                if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?", "NutritionOrder", 4, new String[]{
+                                if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?,now(),now()", "NutritionOrder", 4, new String[]{
                                     noRawat, tanggalAdime, responseId, "active"
                                 })) {
                                     SwingUtilities.invokeLater(() -> {
@@ -715,7 +715,7 @@ public final class SatuSehatKirimNutritionOrder extends javax.swing.JDialog {
                             // Conflict / Duplicate auto-recovery
                             String recId = resolveDuplicateNutritionOrder(idpasien, idEncounter);
                             if (recId != null && !recId.isEmpty()) {
-                                if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?", "NutritionOrder", 4, new String[]{
+                                if (Sequel.menyimpantf2("satu_sehat_nutritionorder", "?,?,?,?,now(),now()", "NutritionOrder", 4, new String[]{
                                     noRawat, tanggalAdime, recId, "active"
                                 })) {
                                     SwingUtilities.invokeLater(() -> {
