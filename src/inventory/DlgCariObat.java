@@ -412,10 +412,10 @@ public final class DlgCariObat extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Popup = new javax.swing.JPopupMenu();
-        ppBersihkan = new javax.swing.JMenuItem();
-        ppStok = new javax.swing.JMenuItem();
-        ppStok1 = new javax.swing.JMenuItem();
+        Popup = new widget.PopupMenu();
+        ppBersihkan = new widget.MenuItem();
+        ppStok = new widget.MenuItem();
+        ppStok1 = new widget.MenuItem();
         Kd2 = new widget.TextBox();
         TNoRw = new widget.TextBox();
         Tanggal = new widget.TextBox();
@@ -460,7 +460,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
         TPasien = new widget.TextBox();
         TNoRM = new widget.TextBox();
         LblNoRawat = new widget.TextBox();
-        TabRawat = new javax.swing.JTabbedPane();
+        TabRawat = new widget.TabPane();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
         jPanel3 = new javax.swing.JPanel();
@@ -535,8 +535,6 @@ public final class DlgCariObat extends javax.swing.JDialog {
 
         Popup.setName("Popup"); // NOI18N
 
-        ppBersihkan.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppBersihkan.setForeground(new java.awt.Color(50, 50, 50));
         ppBersihkan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
         ppBersihkan.setText("Bersihkan Jumlah");
         ppBersihkan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -550,8 +548,6 @@ public final class DlgCariObat extends javax.swing.JDialog {
         });
         Popup.add(ppBersihkan);
 
-        ppStok.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppStok.setForeground(new java.awt.Color(50, 50, 50));
         ppStok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
         ppStok.setText("Tampilkan Semua Stok");
         ppStok.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -565,8 +561,6 @@ public final class DlgCariObat extends javax.swing.JDialog {
         });
         Popup.add(ppStok);
 
-        ppStok1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppStok1.setForeground(new java.awt.Color(50, 50, 50));
         ppStok1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
         ppStok1.setText("Tampilkan Stok Lokasi Lain");
         ppStok1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -827,7 +821,6 @@ public final class DlgCariObat extends javax.swing.JDialog {
         ChkNoResep.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ChkNoResep.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         ChkNoResep.setName("ChkNoResep"); // NOI18N
-        ChkNoResep.setOpaque(false);
         ChkNoResep.setPreferredSize(new java.awt.Dimension(85, 23));
         ChkNoResep.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -844,10 +837,9 @@ public final class DlgCariObat extends javax.swing.JDialog {
         jLabel8.setBounds(4, 40, 65, 23);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07-05-2026" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "25-09-2026" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
-        DTPTgl.setOpaque(false);
         DTPTgl.setPreferredSize(new java.awt.Dimension(100, 23));
         DTPTgl.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -981,7 +973,6 @@ public final class DlgCariObat extends javax.swing.JDialog {
 
         TabRawat.setBackground(new java.awt.Color(255, 255, 253));
         TabRawat.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(241, 246, 236)));
-        TabRawat.setForeground(new java.awt.Color(50, 50, 50));
         TabRawat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         TabRawat.setName("TabRawat"); // NOI18N
         TabRawat.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2334,37 +2325,40 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     }//GEN-LAST:event_kdgudangKeyPressed
 
     private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGudangActionPerformed
-        if (lokasidepo == null || !lokasidepo.isDisplayable()) {
-            lokasidepo = new DlgCariBangsal(null, false);
-            lokasidepo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            lokasidepo.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    if (lokasidepo.getTable().getSelectedRow() != -1) {
-                        kdgudang.setText(lokasidepo.getTable().getValueAt(lokasidepo.getTable().getSelectedRow(), 0).toString());
-                        nmgudang.setText(lokasidepo.getTable().getValueAt(lokasidepo.getTable().getSelectedRow(), 1).toString());
+        if(ttl>0){
+            JOptionPane.showMessageDialog(null,"Maaf, silahkan bersihkan jumlah jika ingin mengganti lokasi depo...!!!");
+            TCari.requestFocus();
+        }else{
+            if (lokasidepo == null || !lokasidepo.isDisplayable()) {
+                lokasidepo=new DlgCariBangsal(null,false);
+                lokasidepo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                lokasidepo.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        if(lokasidepo.getTable().getSelectedRow()!= -1){
+                            kdgudang.setText(lokasidepo.getTable().getValueAt(lokasidepo.getTable().getSelectedRow(),0).toString());
+                            nmgudang.setText(lokasidepo.getTable().getValueAt(lokasidepo.getTable().getSelectedRow(),1).toString());
+                        }
+                        kdgudang.requestFocus();
+                        lokasidepo=null;
                     }
-                    kdgudang.requestFocus();
-                    lokasidepo = null;
-                }
-            });
+                });
 
-            lokasidepo.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
-            lokasidepo.setLocationRelativeTo(internalFrame1);
-        }
-        if (lokasidepo == null) {
-            return;
-        }
-        if (!lokasidepo.isVisible()) {
-            lokasidepo.isCek();
-            lokasidepo.emptTeks();
-        }
+                lokasidepo.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                lokasidepo.setLocationRelativeTo(internalFrame1);
+            }
+            if (lokasidepo == null) return;
+            if (!lokasidepo.isVisible()) {
+                lokasidepo.isCek();
+                lokasidepo.emptTeks();
+            }
 
-        if (lokasidepo.isVisible()) {
-            lokasidepo.toFront();
-            return;
+            if (lokasidepo.isVisible()) {
+                lokasidepo.toFront();
+                return;
+            }
+            lokasidepo.setVisible(true);
         }
-        lokasidepo.setVisible(true);
     }//GEN-LAST:event_BtnGudangActionPerformed
 
     private void tbObatPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tbObatPropertyChange
@@ -3138,7 +3132,7 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.ComboBox ObatTepatPasien;
     private widget.ComboBox ObatTepatWaktuPemberian;
     private widget.PanelBiasa PanelAccor;
-    private javax.swing.JPopupMenu Popup;
+    private widget.PopupMenu Popup;
     private widget.ComboBox ResepInteraksiObat;
     private widget.ComboBox ResepKontraIndikasiObat;
     private widget.ComboBox ResepTepatCaraPemberian;
@@ -3157,7 +3151,7 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.TextBox TNoRw;
     private widget.TextBox TPasien;
     private javax.swing.JTabbedPane TabData;
-    private javax.swing.JTabbedPane TabRawat;
+    private widget.TabPane TabRawat;
     private widget.TextBox Tanggal;
     private widget.Button btnPetugas;
     private widget.ComboBox cmbDtk;
@@ -3204,9 +3198,9 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.Label label9;
     private widget.TextBox nmgudang;
     private widget.panelisi panelisi3;
-    private javax.swing.JMenuItem ppBersihkan;
-    private javax.swing.JMenuItem ppStok;
-    private javax.swing.JMenuItem ppStok1;
+    private widget.MenuItem ppBersihkan;
+    private widget.MenuItem ppStok;
+    private widget.MenuItem ppStok1;
     private widget.Table tbDetailObatRacikan;
     private widget.Table tbObat;
     private widget.Table tbObatRacikan;

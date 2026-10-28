@@ -126,10 +126,10 @@ public class TokoCariPiutang extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        ppCetakNota = new javax.swing.JMenuItem();
-        ppHapus = new javax.swing.JMenuItem();
-        MnDetailCicilan = new javax.swing.JMenuItem();
+        jPopupMenu1 = new widget.PopupMenu();
+        ppCetakNota = new widget.MenuItem();
+        ppHapus = new widget.MenuItem();
+        MnDetailCicilan = new widget.MenuItem();
         internalFrame1 = new widget.InternalFrame();
         jPanel1 = new javax.swing.JPanel();
         panelisi4 = new widget.panelisi();
@@ -165,7 +165,7 @@ public class TokoCariPiutang extends javax.swing.JDialog {
         btnPetugas = new widget.Button();
         label18 = new widget.Label();
         Tgl2 = new widget.Tanggal();
-        TabRawat = new javax.swing.JTabbedPane();
+        TabRawat = new widget.TabPane();
         scrollPane1 = new widget.ScrollPane();
         tbDokter = new widget.Table();
         Scroll = new widget.ScrollPane();
@@ -1148,11 +1148,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private widget.Button BtnPrint;
     private widget.Label LTotal;
     private widget.editorpane LoadHTML1;
-    private javax.swing.JMenuItem MnDetailCicilan;
+    private widget.MenuItem MnDetailCicilan;
     private widget.TextBox NoNota;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
-    private javax.swing.JTabbedPane TabRawat;
+    private widget.TabPane TabRawat;
     private widget.Tanggal Tgl1;
     private widget.Tanggal Tgl2;
     private widget.Button btnBarang;
@@ -1161,7 +1161,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private widget.Button btnSatuan;
     private widget.InternalFrame internalFrame1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPopupMenu jPopupMenu1;
+    private widget.PopupMenu jPopupMenu1;
     private widget.TextBox kdbar;
     private widget.TextBox kdmem;
     private widget.TextBox kdptg;
@@ -1182,8 +1182,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private widget.panelisi panelisi1;
     private widget.panelisi panelisi3;
     private widget.panelisi panelisi4;
-    private javax.swing.JMenuItem ppCetakNota;
-    private javax.swing.JMenuItem ppHapus;
+    private widget.MenuItem ppCetakNota;
+    private widget.MenuItem ppHapus;
     private widget.ScrollPane scrollPane1;
     private widget.Table tbDokter;
     // End of variables declaration//GEN-END:variables
@@ -1216,7 +1216,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "+
                 "inner join toko_detail_piutang on tokopiutang.nota_piutang=toko_detail_piutang.nota_piutang "+
                 "inner join tokobarang on toko_detail_piutang.kode_brng=tokobarang.kode_brng "+
-                "inner join tokojenisbarang on tokojenis=tokojenisbarang.kd_jenis "+
+                "inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "+
                 "inner join kodesatuan on toko_detail_piutang.kode_sat=kodesatuan.kode_sat "+
                 "where "+tanggal+nofak+mem+ptg+sat+bar+" and "+
                 "(tokopiutang.nota_piutang like '%"+TCari.getText()+"%' or tokopiutang.no_member like '%"+TCari.getText()+"%' or "+
@@ -1254,7 +1254,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         " toko_detail_piutang.total from "+
                         " toko_detail_piutang inner join tokobarang on toko_detail_piutang.kode_brng=tokobarang.kode_brng "+
                         " inner join kodesatuan on toko_detail_piutang.kode_sat=kodesatuan.kode_sat "+
-                        " inner join tokojenisbarang on tokojenis=tokojenisbarang.kd_jenis "+
+                        " inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "+
                         " where toko_detail_piutang.nota_piutang='"+rs.getString(1)+"' "+sat+bar+" and "+
                         " (toko_detail_piutang.kode_brng like '%"+TCari.getText()+"%' or tokobarang.nama_brng like '%"+TCari.getText()+"%' or "+
                         " toko_detail_piutang.kode_sat like '%"+TCari.getText()+"%' or tokojenisbarang.nm_jenis like '%"+TCari.getText()+"%')"+
@@ -1369,7 +1369,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "+
                     "inner join toko_detail_piutang on tokopiutang.nota_piutang=toko_detail_piutang.nota_piutang "+
                     "inner join tokobarang on toko_detail_piutang.kode_brng=tokobarang.kode_brng "+
-                    "inner join tokojenisbarang on tokojenis=tokojenisbarang.kd_jenis "+
+                    "inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "+
                     "inner join kodesatuan on toko_detail_piutang.kode_sat=kodesatuan.kode_sat "+
                     "where "+tanggal+nofak+mem+ptg+sat+bar+" and "+
                     "(tokopiutang.nota_piutang like '%"+TCari.getText()+"%' or tokopiutang.no_member like '%"+TCari.getText()+"%' or "+
@@ -1426,7 +1426,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         " toko_detail_piutang.total from "+
                         " toko_detail_piutang inner join tokobarang on toko_detail_piutang.kode_brng=tokobarang.kode_brng "+
                         " inner join kodesatuan on toko_detail_piutang.kode_sat=kodesatuan.kode_sat "+
-                        " inner join tokojenisbarang on tokojenis=tokojenisbarang.kd_jenis "+
+                        " inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "+
                         " where toko_detail_piutang.nota_piutang='"+rs.getString(1)+"' "+sat+bar+" and "+
                         " (toko_detail_piutang.kode_brng like '%"+TCari.getText()+"%' or tokobarang.nama_brng like '%"+TCari.getText()+"%' or "+
                         " toko_detail_piutang.kode_sat like '%"+TCari.getText()+"%' or tokojenisbarang.nm_jenis like '%"+TCari.getText()+"%')"+

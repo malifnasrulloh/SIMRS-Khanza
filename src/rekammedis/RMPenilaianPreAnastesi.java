@@ -1325,7 +1325,7 @@ public final class RMPenilaianPreAnastesi extends javax.swing.JDialog {
         FormInput.add(TglPuasa);
         TglPuasa.setBounds(594, 780, 130, 23);
 
-        AngkaASA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "E" }));
+        AngkaASA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "E", "2E", "3E", "4E", "5E" }));
         AngkaASA.setName("AngkaASA"); // NOI18N
         AngkaASA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {

@@ -1094,6 +1094,12 @@ import rekammedis.RMTimeOutSebelumInsisi;
 import rekammedis.RMTransferPasienAntarRuang;
 import rekammedis.RMTriaseIGD;
 import rekammedis.RMUjiFungsiKFR;
+import rekammedis.RMAdmisiSkoringTOLAC;
+import rekammedis.RMDataMonitoringTOLAC;
+import rekammedis.RMHasilPersalinanTOLAC;
+import rekammedis.RMPenilaianGRACE;
+import rekammedis.RMReaksiTransfusi;
+import rekammedis.RMSkriningTOLAC;
 import bridging.SatuSehatBridgingTTE;
 import bridging.SatuSehatKirimCompositionRME;
 import keuangan.KeuanganRingkasanBebanHutangLain;
@@ -10534,8 +10540,50 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         showForm(() -> new KeuanganRingkasanBebanHutangLain(this,false));
     }
 
-    private void btnSetResepPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {   
+    private void btnSetResepPerCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {
         showForm(() -> new DlgSetResepPerCaraBayar(this,false));
+    }
+
+    private void btnSkriningTOLACActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMSkriningTOLAC(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
+    }
+
+    private void btnAdmisiSkoringTOLACActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMAdmisiSkoringTOLAC(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
+    }
+
+    private void btnMonitoringTOLACActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMDataMonitoringTOLAC(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
+    }
+
+    private void btnHasilPersalinanTOLACActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMHasilPersalinanTOLAC(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
+    }
+
+    private void btnLaporanReaksiTranfusiActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMReaksiTransfusi(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
+    }
+
+    private void btnPenilaianGRACEScoreActionPerformed(java.awt.event.ActionEvent evt) {
+        showForm(() -> new RMPenilaianGRACE(this, false), form -> {
+            form.isCek();
+            form.emptTeks();
+        });
     }
 
     /**
@@ -10800,7 +10848,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnSuratPermintaanBinrohtal, btnSuratPermintaanPerlindunganDariKekerasan, btnSuratPermohonanPrivasi, btnSuratPermintaanSecondOpinion, btnSuratKeteranganBerobat, btnSuratPenolakanResusitasi, btnCatatanObservasiRuangOperasi,
             btnHasilUSGAbdomen,btnIntervensiNyeriFarmakologi,btnIntervensiNyeriNonFarmakologi,btnSuratPengajuanCutiPerawatan,btnChecklistKriteriaMasukIsolasi,btnMapingTarifTindakanRalanKPTLSatuSehat,
             btnMapingTarifTindakanRanapKPTLSatuSehat,btnMapingTarifTindakanRadiologiKPTLSatuSehat,btnMapingTarifTindakanLabKPTLSatuSehat,btnMapingTarifTindakanOperasiKPTLSatuSehat,btnMapingTarifKamarKPTLSatuSehat,
-            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnSatuSehatKYC,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain,btnSetResepPerCaraBayar;
+            btnChecklistKriteriaKeluarIsolasi,btnBridgingTTESatuSehat,btnBridgingCompositionRMESatuSehat,btnSatuSehatKYC,btnRingkasanHutangVendorAsetInventaris,btnRingkasanBebanHutangLain,btnSetResepPerCaraBayar,
+            btnSkriningTOLAC,btnAdmisiSkoringTOLAC,btnMonitoringTOLAC,btnHasilPersalinanTOLAC,btnLaporanReaksiTranfusi,btnPenilaianGRACEScore;
 
     public void isWall() {
         try {
@@ -13514,6 +13563,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             addMenu(akses.getruang_ok(), btnRuangOperasi);
 
             addMenu(akses.getset_resep_per_cara_bayar(), btnSetResepPerCaraBayar);
+            addMenu(akses.getskrining_tolac(), btnSkriningTOLAC);
+            addMenu(akses.getadmisi_skoring_tolac(), btnAdmisiSkoringTOLAC);
+            addMenu(akses.getmonitoring_tolac(), btnMonitoringTOLAC);
+            addMenu(akses.gethasil_persalinan_tolac(), btnHasilPersalinanTOLAC);
+            addMenu(akses.getlaporan_reaksi_transfusi(), btnLaporanReaksiTranfusi);
+            addMenu(akses.getpenilaian_grace_scor(), btnPenilaianGRACEScore);
     }
 
     private widget.ButtonBig createMenuButton(String iconPath, String text, String name, java.awt.Dimension preferedSize, java.awt.event.ActionListener actionListener) {
@@ -15967,5 +16022,12 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnRingkasanBebanHutangLain = createMenuButton("/48x48/debt_2780190.png", "Ringkasan Beban Hutang Lain", "btnRingkasanBebanHutangLain", this::btnRingkasanBebanHutangLainActionPerformed);
 
         btnSetResepPerCaraBayar = createMenuButton("/48x48/medicament_18179836.png", "Set Resep Per Cara Bayar", "btnSetResepPerCaraBayar", this::btnSetResepPerCaraBayarActionPerformed);
+
+        btnSkriningTOLAC = createMenuButton("/48x48/pregnant-woman_14373989.png", "Skrining TOLAC", "btnSkriningTOLAC", this::btnSkriningTOLACActionPerformed);
+        btnAdmisiSkoringTOLAC = createMenuButton("/48x48/pregnant_4829967.png", "Admisi & Skoring TOLAC", "btnAdmisiSkoringTOLAC", this::btnAdmisiSkoringTOLACActionPerformed);
+        btnMonitoringTOLAC = createMenuButton("/48x48/birth_9581389.png", "Monitoring Selama TOLAC", "btnMonitoringTOLAC", this::btnMonitoringTOLACActionPerformed);
+        btnHasilPersalinanTOLAC = createMenuButton("/48x48/baby_864560.png", "Resume Hasil Persalinan TOLAC", "btnHasilPersalinanTOLAC", this::btnHasilPersalinanTOLACActionPerformed);
+        btnLaporanReaksiTranfusi = createMenuButton("/48x48/blood-transfusion_1225585.png", "Laporan Reaksi Tranfusi", "btnLaporanReaksiTranfusi", this::btnLaporanReaksiTranfusiActionPerformed);
+        btnPenilaianGRACEScore = createMenuButton("/48x48/broken-heart_301940.png", "Penilaian GRACE Score", "btnPenilaianGRACEScore", this::btnPenilaianGRACEScoreActionPerformed);
     }
 }

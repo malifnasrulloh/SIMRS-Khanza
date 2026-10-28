@@ -228,9 +228,9 @@ public final class DlgPeriksaLaboratorium extends javax.swing.JDialog {
         Umur = new widget.TextBox();
         buttonGroup1 = new javax.swing.ButtonGroup();
         Alamat = new widget.TextBox();
-        Popup = new javax.swing.JPopupMenu();
-        ppBersihkan = new javax.swing.JMenuItem();
-        ppSemua = new javax.swing.JMenuItem();
+        Popup = new widget.PopupMenu();
+        ppBersihkan = new widget.MenuItem();
+        ppSemua = new widget.MenuItem();
         internalFrame1 = new widget.InternalFrame();
         panelGlass8 = new widget.panelisi();
         BtnSimpan = new widget.Button();
@@ -1478,7 +1478,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.PanelBiasa PanelInput;
     private widget.TextBox Pemeriksaan;
     private widget.TextBox Penjab;
-    private javax.swing.JPopupMenu Popup;
+    private widget.PopupMenu Popup;
     private widget.ScrollPane Scroll;
     private widget.ScrollPane Scroll1;
     private widget.TextBox TCari;
@@ -1505,8 +1505,8 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel9;
     private widget.panelisi panelGlass11;
     private widget.panelisi panelGlass8;
-    private javax.swing.JMenuItem ppBersihkan;
-    private javax.swing.JMenuItem ppSemua;
+    private widget.MenuItem ppBersihkan;
+    private widget.MenuItem ppSemua;
     private widget.RadioButton rbAnak;
     private widget.RadioButton rbDewasa;
     private widget.Table tbPemeriksaan;
@@ -1892,25 +1892,12 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 System.out.println("Menjalankan Query : select RESDT.ORDER_TESTID,RESDT.DATA_TYP,RESDT.RESULT_VALUE,RESDT.RESULT_FT,RESDT.UNIT,RESDT.FLAG,RESDT.REF_RANGE from RESDT where RESDT.ONO='"+order+"' and RESDT.TEST_NM='"+rstampil.getString("Pemeriksaan")+"'");
                                 if(rstindakan.next()){
                                     System.out.println("ID Detail Laborat Sysmex Yang Ditemukan : "+rstindakan.getString("ORDER_TESTID"));
-                                    if(rstindakan.getString("DATA_TYP").equals("FT")){
-                                        tabMode.addRow(new Object[]{
-                                            true,"   "+rstampil.getString("Pemeriksaan"),rstindakan.getString("RESULT_FT"),rstindakan.getString("UNIT"),
-                                            rstindakan.getString("REF_RANGE"),rstampil.getString("method"),rstindakan.getString("FLAG").replaceAll("LL","L").replaceAll("HH","H"),
-                                            rstampil.getString("id_template"),rstampil.getDouble("biaya_item"),rstampil.getDouble("bagian_rs"),
-                                            rstampil.getDouble("bhp"),rstampil.getDouble("bagian_perujuk"),rstampil.getDouble("bagian_dokter"),
-                                            rstampil.getDouble("bagian_laborat"),rstampil.getDouble("kso"),rstampil.getDouble("menejemen"),
-                                            tbTarif.getValueAt(i2,1).toString()
-                                        });
-                                    }else{
-                                        tabMode.addRow(new Object[]{
-                                            true,"   "+rstampil.getString("Pemeriksaan"),rstindakan.getString("RESULT_VALUE"),rstindakan.getString("UNIT"),
-                                            rstindakan.getString("REF_RANGE"),rstampil.getString("method"),rstindakan.getString("FLAG").replaceAll("LL","L").replaceAll("HH","H"),
-                                            rstampil.getString("id_template"),rstampil.getDouble("biaya_item"),rstampil.getDouble("bagian_rs"),
-                                            rstampil.getDouble("bhp"),rstampil.getDouble("bagian_perujuk"),rstampil.getDouble("bagian_dokter"),
-                                            rstampil.getDouble("bagian_laborat"),rstampil.getDouble("kso"),rstampil.getDouble("menejemen"),
-                                            tbTarif.getValueAt(i2,1).toString()
-                                        });
-                                    }   
+                                    tabMode.addRow(new Object[]{
+                                        true,"   "+rstampil.getString("Pemeriksaan"),(rstindakan.getString("DATA_TYP").equals("FT")?rstindakan.getString("RESULT_FT"):rstindakan.getString("RESULT_VALUE")),
+                                        rstindakan.getString("UNIT"),rstindakan.getString("REF_RANGE"),rstampil.getString("method"),rstindakan.getString("FLAG").replaceAll("LL","L").replaceAll("HH","H"),
+                                        rstampil.getString("id_template"),rstampil.getDouble("biaya_item"),rstampil.getDouble("bagian_rs"),rstampil.getDouble("bhp"),rstampil.getDouble("bagian_perujuk"),
+                                        rstampil.getDouble("bagian_dokter"),rstampil.getDouble("bagian_laborat"),rstampil.getDouble("kso"),rstampil.getDouble("menejemen"),tbTarif.getValueAt(i2,1).toString()
+                                    });  
                                 }
                             } catch (Exception e) {
                                 System.out.println("Notif : "+e);

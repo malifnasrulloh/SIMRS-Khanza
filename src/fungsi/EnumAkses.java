@@ -1231,6 +1231,11 @@ public enum EnumAkses {
     ringkasan_beban_hutang_lain("[K]Ringkasan Beban Hutang Lain"),
     set_resep_per_cara_bayar("[U]Set Resep Per Cara Bayar"),
     skrining_tolac("[M]Skrining TOLAC"),
+    admisi_skoring_tolac("[M]Admisi & Skoring TOLAC"),
+    monitoring_tolac("[M]Monitoring Selama TOLAC"),
+    hasil_persalinan_tolac("[M]Resume Hasil Persalinan TOLAC"),
+    laporan_reaksi_transfusi("[M]Laporan Reaksi Tranfusi"),
+    penilaian_grace_scor("[M]Penilaian GRACE Score"),
     //Tambahan kolom
     manajemen("[C]Manajemen"),
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat"),

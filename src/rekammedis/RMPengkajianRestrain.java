@@ -668,7 +668,7 @@ public final class RMPengkajianRestrain extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tanggal);
-        Tanggal.setBounds(74, 40, 130, 23);
+        Tanggal.setBounds(74, 40, 140, 23);
 
         jLabel23.setText("Perawat/Petugas :");
         jLabel23.setName("jLabel23"); // NOI18N

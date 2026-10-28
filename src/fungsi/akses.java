@@ -1375,4 +1375,9 @@ public final class akses {
     public static boolean getringkasan_beban_hutang_lain(){return hakAkses.get(EnumAkses.ringkasan_beban_hutang_lain);}
     public static boolean getset_resep_per_cara_bayar(){return hakAkses.get(EnumAkses.set_resep_per_cara_bayar);}
     public static boolean getskrining_tolac(){return hakAkses.get(EnumAkses.skrining_tolac);}
+    public static boolean getadmisi_skoring_tolac(){return hakAkses.get(EnumAkses.admisi_skoring_tolac);}
+    public static boolean getmonitoring_tolac(){return hakAkses.get(EnumAkses.monitoring_tolac);}
+    public static boolean gethasil_persalinan_tolac(){return hakAkses.get(EnumAkses.hasil_persalinan_tolac);}
+    public static boolean getlaporan_reaksi_transfusi(){return hakAkses.get(EnumAkses.laporan_reaksi_transfusi);}
+    public static boolean getpenilaian_grace_scor(){return hakAkses.get(EnumAkses.penilaian_grace_scor);}
 }

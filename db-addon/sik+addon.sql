@@ -44,6 +44,58 @@ COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
+-- Table structure for table `admisi_skoring_tolac`
+--
+
+DROP TABLE IF EXISTS `admisi_skoring_tolac`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admisi_skoring_tolac` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime DEFAULT NULL,
+  `his_frekuensi` varchar(2) DEFAULT NULL,
+  `his_durasi_detik` varchar(5) DEFAULT NULL,
+  `djj` varchar(5) DEFAULT NULL,
+  `pembukaan_cm` varchar(2) DEFAULT NULL,
+  `pendataran_persen` varchar(3) DEFAULT NULL,
+  `penurunan_kepala` varchar(20) DEFAULT NULL,
+  `pilihan_usia` enum('< 40 Tahun','>= 40 Tahun') DEFAULT NULL,
+  `skor_usia` varchar(1) DEFAULT NULL,
+  `pilihan_riwayat_pervaginam` enum('Sebelum & Sesudah SC','Sesudah SC Saja','Sebelum SC Saja','Tidak Pernah') DEFAULT NULL,
+  `skor_riwayat_pervaginam` varchar(1) DEFAULT NULL,
+  `pilihan_indikasi_sc` enum('Bukan Kegagalan Kemajuan Persalinan','Kegagalan Kemajuan Persalinan / CPD-distosia') DEFAULT NULL,
+  `skor_indikasi_sc` varchar(1) DEFAULT NULL,
+  `pilihan_pendataran` enum('>75%','25–75%','<25%') DEFAULT NULL,
+  `skor_pendataran` varchar(1) DEFAULT NULL,
+  `pilihan_pembukaan` enum('>=4 cm','<4 cm') DEFAULT NULL,
+  `skor_pembukaan` varchar(1) DEFAULT NULL,
+  `total_skor` varchar(2) DEFAULT NULL,
+  `peluang_vbac` varchar(6) NOT NULL,
+  `keputusan` enum('Lanjut TOLAC','Lakukan SC') DEFAULT NULL,
+  `keterangan` varchar(100) DEFAULT NULL,
+  `kd_dokter` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`no_rawat`),
+  KEY `kd_dokter` (`kd_dokter`),
+  CONSTRAINT `admisi_skoring_tolac_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `admisi_skoring_tolac_ibfk_2` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admisi_skoring_tolac`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `admisi_skoring_tolac` WRITE;
+/*!40000 ALTER TABLE `admisi_skoring_tolac` DISABLE KEYS */;
+INSERT INTO `admisi_skoring_tolac` VALUES
+('2026/04/07/000001','2026-10-07 08:40:35','1','2','3','4','5','6','< 40 Tahun','2','Sebelum & Sesudah SC','4','Bukan Kegagalan Kemajuan Persalinan','1','>75%','2','>=4 cm','1','10','95-99','Lanjut TOLAC','7','D0000004');
+/*!40000 ALTER TABLE `admisi_skoring_tolac` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
 -- Table structure for table `akun_aset_inventaris`
 --
 
@@ -359,7 +411,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antriapotek2` WRITE;
 /*!40000 ALTER TABLE `antriapotek2` DISABLE KEYS */;
 INSERT INTO `antriapotek2` VALUES
-('202609160001','0','2026/09/16/000002');
+('202610220001','0','2026/10/22/000001');
 /*!40000 ALTER TABLE `antriapotek2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -387,7 +439,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antriapotek3` WRITE;
 /*!40000 ALTER TABLE `antriapotek3` DISABLE KEYS */;
 INSERT INTO `antriapotek3` VALUES
-('202609160001','0','2026/09/16/000002');
+('202610220001','0','2026/10/22/000001');
 /*!40000 ALTER TABLE `antriapotek3` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -542,7 +594,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antrilabpk` WRITE;
 /*!40000 ALTER TABLE `antrilabpk` DISABLE KEYS */;
 INSERT INTO `antrilabpk` VALUES
-('1');
+('0');
 /*!40000 ALTER TABLE `antrilabpk` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -568,7 +620,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antrilabpk2` WRITE;
 /*!40000 ALTER TABLE `antrilabpk2` DISABLE KEYS */;
 INSERT INTO `antrilabpk2` VALUES
-('1');
+('0');
 /*!40000 ALTER TABLE `antrilabpk2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -712,7 +764,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antripelaksanaanedukasi` WRITE;
 /*!40000 ALTER TABLE `antripelaksanaanedukasi` DISABLE KEYS */;
 INSERT INTO `antripelaksanaanedukasi` VALUES
-('2026/09/14/000001','2026-09-19 10:14:08');
+('2026/10/22/000001','2026-10-22 10:40:42');
 /*!40000 ALTER TABLE `antripelaksanaanedukasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -1072,7 +1124,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antripersetujuan` WRITE;
 /*!40000 ALTER TABLE `antripersetujuan` DISABLE KEYS */;
 INSERT INTO `antripersetujuan` VALUES
-('PM20260917001','2026/07/28/000001');
+('PM20261015001','2026/09/14/000001');
 /*!40000 ALTER TABLE `antripersetujuan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -1126,7 +1178,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antripersetujuanrawatinap` WRITE;
 /*!40000 ALTER TABLE `antripersetujuanrawatinap` DISABLE KEYS */;
 INSERT INTO `antripersetujuanrawatinap` VALUES
-('PRI20260914001','2026/09/14/000002');
+('PRI20261022001','2026/10/22/000001');
 /*!40000 ALTER TABLE `antripersetujuanrawatinap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -1209,7 +1261,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antripoli` WRITE;
 /*!40000 ALTER TABLE `antripoli` DISABLE KEYS */;
 INSERT INTO `antripoli` VALUES
-('D0000004','U0003','0','2026/09/16/000002'),
+('D0000004','U0003','0','2026/10/22/000001'),
 ('D0000004','INT','1','2026/09/14/000001'),
 ('D0000004','U0053','1','2025/03/16/000001'),
 ('D0000003','IGDK','1','2025/09/02/000003'),
@@ -1240,7 +1292,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antriradiologi` WRITE;
 /*!40000 ALTER TABLE `antriradiologi` DISABLE KEYS */;
 INSERT INTO `antriradiologi` VALUES
-('1');
+('0');
 /*!40000 ALTER TABLE `antriradiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -1266,7 +1318,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `antriradiologi2` WRITE;
 /*!40000 ALTER TABLE `antriradiologi2` DISABLE KEYS */;
 INSERT INTO `antriradiologi2` VALUES
-('1');
+('0');
 /*!40000 ALTER TABLE `antriradiologi2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -1541,7 +1593,12 @@ INSERT INTO `aturan_pakai` VALUES
 ('2026-08-19','14:17:20','2026/08/19/000001','B000000791','2x1'),
 ('2026-09-14','10:52:09','2026/09/14/000001','2018003','3x1'),
 ('2026-09-16','09:51:37','2026/09/16/000002','B000000571','2 X 1'),
-('2026-09-16','09:51:37','2026/09/16/000002','B000000791','2x1');
+('2026-09-16','09:51:37','2026/09/16/000002','B000000791','2x1'),
+('2026-09-21','11:33:53','2026/09/21/000002','B000000571','2x1'),
+('2026-09-21','11:33:53','2026/09/21/000002','B000000791','3x1'),
+('2026-10-16','15:20:49','2026/10/15/000001','B000000965','2X1'),
+('2026-10-16','15:20:49','2026/10/15/000001','B00001000','2X1'),
+('2026-10-22','10:51:57','2026/10/22/000001','B000000305','2X1');
 /*!40000 ALTER TABLE `aturan_pakai` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -2902,7 +2959,9 @@ INSERT INTO `bayar_pemesanan` VALUES
 ('2026-09-01','PB20260616002','12/09/1988/001',653790,'-','BAYAR CASH','11212'),
 ('2026-09-01','PB20260625001','12/09/1988/001',888222,'-','BAYAR CASH','11212'),
 ('2026-09-01','PB20260901001','120000134',4472291.2465632,'121212','BAYAR CASH','121212'),
-('2026-09-18','PB20260918001','120000134',5193912,'TES','BAYAR CASH','212112');
+('2026-09-18','PB20260918001','120000134',5193912,'TES','BAYAR CASH','212112'),
+('2026-09-21','PB20260921001','120000134',5673076.8,'-','BAYAR CASH','ada'),
+('2026-10-22','PB20261022001','120000134',288923.2465632,'-','BAYAR CASH','qeeq');
 /*!40000 ALTER TABLE `bayar_pemesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -3218,7 +3277,10 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `bayar_piutang` WRITE;
 /*!40000 ALTER TABLE `bayar_piutang` DISABLE KEYS */;
 INSERT INTO `bayar_piutang` VALUES
-('2026-05-11','-',3034.74,'diverifikasi oleh Admin Utama','PD260511001','111010','117000',0,'540103',0,'570102');
+('2026-05-11','-',3034.74,'diverifikasi oleh Admin Utama','PD260511001','111010','117000',0,'540103',0,'570102'),
+('2026-10-20','000022',252463,'diverifikasi oleh Admin Utama','2026/02/25/000002','112020','117015',0,'540103',33246,'570102'),
+('2026-10-20','000022',587379,'diverifikasi oleh Admin Utama','2026/06/03/000004','112020','117015',0,'540103',77351,'570102'),
+('2026-10-20','000048',360158,'diverifikasi oleh Admin Utama','2026/02/25/000003','112020','117015',0,'540103',47428,'570102');
 /*!40000 ALTER TABLE `bayar_piutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -4500,7 +4562,97 @@ INSERT INTO `billing` VALUES
 (32,'2026/03/14/000001','2026-09-18','                           ','POTONGAN BINGUNG',':',100000,1,0,-100000,'Potongan'),
 (33,'2026/03/14/000001','2026-09-18','                           ','POTONGAN KONSULTASI',':',100000,1,0,-100000,'Potongan'),
 (34,'2026/03/14/000001','2026-09-18','                           ','POTONGAN MAJU',':',200000,1,0,-200000,'Potongan'),
-(35,'2026/03/14/000001','2026-09-18','','Total Potongan : 400,000','',0,0,0,0,'TtlPotongan');
+(35,'2026/03/14/000001','2026-09-18','','Total Potongan : 400,000','',0,0,0,0,'TtlPotongan'),
+(0,'2026/09/21/000002','2026-09-21','No.Nota',': 2026/09/21/RJ0001','',0,0,0,0,'-'),
+(1,'2026/09/21/000002','2026-09-21','Unit/Instansi',': Poliklinik Penyakit Dalam','',0,0,0,0,'-'),
+(2,'2026/09/21/000002','2026-09-21','Tanggal & Jam',': 2026-09-21 14:35:13','',0,0,0,0,'-'),
+(3,'2026/09/21/000002','2026-09-21','No.RM',': 000061','',0,0,0,0,'-'),
+(4,'2026/09/21/000002','2026-09-21','Nama Pasien',': KHANZA AZZAHWA KHOIRUNNISA  (5Th)','',0,0,0,0,'-'),
+(5,'2026/09/21/000002','2026-09-21','Alamat Pasien',':  RT /RW  KODE POS , GUWOSARI, PAJANGAN, KABUPATEN BANTUL','',0,0,0,0,'-'),
+(6,'2026/09/21/000002','2026-09-21','Dokter ',':','',0,0,0,0,'-'),
+(7,'2026/09/21/000002','2026-09-21','','dr. Hilyatul Nadia','',0,0,0,0,'Dokter'),
+(8,'2026/09/21/000002','2026-09-21','Registrasi',':','',0,0,0,10000,'Registrasi'),
+(9,'2026/09/21/000002','2026-09-21','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(10,'2026/09/21/000002','2026-09-21','','Pemeriksaan Poli Spesialis',':',250000,1,0,250000,'Ralan Dokter'),
+(11,'2026/09/21/000002','2026-09-21','','Hematologi Darah Rutin ( CITO )',':',185000,1,0,185000,'Laborat'),
+(12,'2026/09/21/000002','2026-09-21','','THORAX AP/PA',':',225000,1,0,225000,'Radiologi'),
+(13,'2026/09/21/000002','2026-09-21','Obat & BHP',':','',0,0,0,0,'Obat'),
+(14,'2026/09/21/000002','2026-09-21','','Amlodipine 10 mg (OBAT LUAR)',':',3996,10,0,39960,'Obat'),
+(15,'2026/09/21/000002','2026-09-21','','Acyclovir 200 mg Tablet (OBAT ORAL)',':',1367.121312,13,0,17773,'Obat'),
+(16,'2026/09/21/000002','2026-09-21','','Albendazole tab (OBAT ORAL)',':',647,14,0,9058,'Obat'),
+(17,'2026/09/21/000002','2026-09-21','','Ibuprofen 400 mg (OBAT ORAL)',':',1479,10,0,14790,'Obat'),
+(18,'2026/09/21/000002','2026-09-21','','PPN Obat',':',8974,1,0,8974,'Obat'),
+(19,'2026/09/21/000002','2026-09-21','','90,555','',0,0,0,0,'TtlObat'),
+(20,'2026/09/21/000002','2026-09-21','Tambahan Biaya',':','',0,0,0,0,'Tambahan'),
+(21,'2026/09/21/000002','2026-09-21','Potongan Biaya',':','',0,0,0,0,'Potongan'),
+(0,'2026/10/05/000001','2026-10-15','No.Nota',': 2026/10/15/RJ0001','',0,0,0,0,'-'),
+(1,'2026/10/05/000001','2026-10-15','Unit/Instansi',': Poliklinik Penyakit Dalam','',0,0,0,0,'-'),
+(2,'2026/10/05/000001','2026-10-15','Tanggal & Jam',': 2026-10-05 10:36:21','',0,0,0,0,'-'),
+(3,'2026/10/05/000001','2026-10-15','No.RM',': 000059','',0,0,0,0,'-'),
+(4,'2026/10/05/000001','2026-10-15','Nama Pasien',': YOHANA FARIDA (37Th)','',0,0,0,0,'-'),
+(5,'2026/10/05/000001','2026-10-15','Alamat Pasien',': DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','',0,0,0,0,'-'),
+(6,'2026/10/05/000001','2026-10-15','Dokter ',':','',0,0,0,0,'-'),
+(7,'2026/10/05/000001','2026-10-15','','dr. Hilyatul Nadia','',0,0,0,0,'Dokter'),
+(8,'2026/10/05/000001','2026-10-15','Registrasi',':','',0,0,0,10000,'Registrasi'),
+(9,'2026/10/05/000001','2026-10-15','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(10,'2026/10/05/000001','2026-10-15','','Pemeriksaan Poli Spesialis',':',250000,1,0,250000,'Ralan Dokter'),
+(11,'2026/10/05/000001','2026-10-15','Obat & BHP',':','',0,0,0,0,'Obat'),
+(12,'2026/10/05/000001','2026-10-15','Tambahan Biaya',':','',0,0,0,0,'Tambahan'),
+(13,'2026/10/05/000001','2026-10-15','Potongan Biaya',':','',0,0,0,0,'Potongan'),
+(0,'2026/10/20/000001','2026-10-20','No.Nota',': 2026/10/20/RJ0001','',0,0,0,0,'-'),
+(1,'2026/10/20/000001','2026-10-20','Unit/Instansi',': Poliklinik Penyakit Dalam','',0,0,0,0,'-'),
+(2,'2026/10/20/000001','2026-10-20','Tanggal & Jam',': 2026-10-20 15:12:07','',0,0,0,0,'-'),
+(3,'2026/10/20/000001','2026-10-20','No.RM',': 000023','',0,0,0,0,'-'),
+(4,'2026/10/20/000001','2026-10-20','Nama Pasien',': RAHMA NIA (34Th)','',0,0,0,0,'-'),
+(5,'2026/10/20/000001','2026-10-20','Alamat Pasien',': RT 01 RW 02, CISARANTEN ENDAH, ARCAMANIK, KOTA BANDUNG','',0,0,0,0,'-'),
+(6,'2026/10/20/000001','2026-10-20','Dokter ',':','',0,0,0,0,'-'),
+(7,'2026/10/20/000001','2026-10-20','','dr. Hilyatul Nadia','',0,0,0,0,'Dokter'),
+(8,'2026/10/20/000001','2026-10-20','Registrasi',':','',0,0,0,10000,'Registrasi'),
+(9,'2026/10/20/000001','2026-10-20','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(10,'2026/10/20/000001','2026-10-20','','Pemeriksaan Poli Spesialis',':',250000,1,0,250000,'Ralan Dokter'),
+(11,'2026/10/20/000001','2026-10-20','','Radiologi USG Abdomen',':',350000,1,0,350000,'Ralan Dokter'),
+(12,'2026/10/20/000001','2026-10-20','Obat & BHP',':','',0,0,0,0,'Obat'),
+(13,'2026/10/20/000001','2026-10-20','Tambahan Biaya',':','',0,0,0,0,'Tambahan'),
+(14,'2026/10/20/000001','2026-10-20','Potongan Biaya',':','',0,0,0,0,'Potongan'),
+(8,'2026/10/21/000001','2026-10-21','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(9,'2026/10/21/000001','2026-10-21','','Pemeriksaan Poli Spesialis',':',250000,1,0,250000,'Ralan Dokter'),
+(10,'2026/10/21/000001','2026-10-21','','THORAX AP/PA',':',225000,1,0,225000,'Radiologi'),
+(11,'2026/10/21/000001','2026-10-21','','Hematologi Darah Rutin',':',85000,1,0,85000,'Laborat'),
+(0,'2026/10/21/000002','2026-10-21','No.Nota',': 2026/10/21/RJ0002','',0,0,0,0,'-'),
+(1,'2026/10/21/000002','2026-10-21','Unit/Instansi',': INT Poli Penyakit Dalam','',0,0,0,0,'-'),
+(2,'2026/10/21/000002','2026-10-21','Tanggal & Jam',': 2026-10-21 11:13:33','',0,0,0,0,'-'),
+(3,'2026/10/21/000002','2026-10-21','No.RM',': 000058','',0,0,0,0,'-'),
+(4,'2026/10/21/000002','2026-10-21','Nama Pasien',': PASIEN BEBAS (39Th)','',0,0,0,0,'-'),
+(5,'2026/10/21/000002','2026-10-21','Alamat Pasien',': , BENER PEPANYI, PERMATA, KABUPATEN BENER MERIAH','',0,0,0,0,'-'),
+(6,'2026/10/21/000002','2026-10-21','Dokter ',':','',0,0,0,0,'-'),
+(7,'2026/10/21/000002','2026-10-21','','dr. Hilyatul Nadia','',0,0,0,0,'Dokter'),
+(8,'2026/10/21/000002','2026-10-21','Registrasi',':','',0,0,0,0,'Registrasi'),
+(9,'2026/10/21/000002','2026-10-21','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(10,'2026/10/21/000002','2026-10-21','','aff Hecting 1 - 5 jahitan',':',60000,1,0,60000,'Ralan Dokter'),
+(11,'2026/10/21/000002','2026-10-21','Obat & BHP',':','',0,0,0,0,'Obat'),
+(12,'2026/10/21/000002','2026-10-21','Tambahan Biaya',':','',0,0,0,0,'Tambahan'),
+(13,'2026/10/21/000002','2026-10-21','Potongan Biaya',':','',0,0,0,0,'Potongan'),
+(0,'2026/10/22/000001','2026-10-22','No.Nota',': 2026/10/22/RJ0001','',0,0,0,0,'-'),
+(1,'2026/10/22/000001','2026-10-22','Unit/Instansi',': Poliklinik Penyakit Dalam','',0,0,0,0,'-'),
+(2,'2026/10/22/000001','2026-10-22','Tanggal & Jam',': 2026-10-22 11:01:14','',0,0,0,0,'-'),
+(3,'2026/10/22/000001','2026-10-22','No.RM',': 000059','',0,0,0,0,'-'),
+(4,'2026/10/22/000001','2026-10-22','Nama Pasien',': YOHANA FARIDA (37Th)','',0,0,0,0,'-'),
+(5,'2026/10/22/000001','2026-10-22','Alamat Pasien',': DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','',0,0,0,0,'-'),
+(6,'2026/10/22/000001','2026-10-22','Dokter ',':','',0,0,0,0,'-'),
+(7,'2026/10/22/000001','2026-10-22','','dr. Hilyatul Nadia','',0,0,0,0,'Dokter'),
+(8,'2026/10/22/000001','2026-10-22','Registrasi',':','',0,0,0,10000,'Registrasi'),
+(9,'2026/10/22/000001','2026-10-22','Tindakan',':','',0,0,0,0,'Ralan Dokter'),
+(10,'2026/10/22/000001','2026-10-22','','Pemeriksaan Poli Spesialis',':',250000,2,0,500000,'Ralan Dokter'),
+(11,'2026/10/22/000001','2026-10-22','','aff Hecting 1 - 5 jahitan',':',36000,1,0,36000,'Ralan Paramedis'),
+(12,'2026/10/22/000001','2026-10-22','','Asuhan Keperawatan',':',90000,1,0,90000,'Ralan Paramedis'),
+(13,'2026/10/22/000001','2026-10-22','','Hematologi Darah Rutin',':',85000,1,7000,92000,'Laborat'),
+(14,'2026/10/22/000001','2026-10-22','','THORAX AP/PA',':',225000,1,0,225000,'Radiologi'),
+(15,'2026/10/22/000001','2026-10-22','Obat & BHP',':','',0,0,0,0,'Obat'),
+(16,'2026/10/22/000001','2026-10-22','','Acetensa tab (OBAT ORAL)',':',160,10,0,1600,'Obat'),
+(17,'2026/10/22/000001','2026-10-22','','PPN Obat',':',176,1,0,176,'Obat'),
+(18,'2026/10/22/000001','2026-10-22','','1,776','',0,0,0,0,'TtlObat'),
+(19,'2026/10/22/000001','2026-10-22','Tambahan Biaya',':','',0,0,0,0,'Tambahan'),
+(20,'2026/10/22/000001','2026-10-22','Potongan Biaya',':','',0,0,0,0,'Potongan');
 /*!40000 ALTER TABLE `billing` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -4683,7 +4835,8 @@ INSERT INTO `booking_operasi` VALUES
 ('2026/06/29/000003','PK000001','2026-06-29','00:00:00','00:00:00','Menunggu','D0000004','-'),
 ('2026/07/21/000001','PK000001','2026-07-21','00:00:00','00:00:00','Menunggu','D0000003','O1'),
 ('2026/08/04/000001','PK000001','2026-08-04','09:00:00','10:00:00','Menunggu','D0000004','O1'),
-('2026/08/06/000001','PK000001','2026-08-06','00:00:00','00:00:00','Menunggu','D0000004','-');
+('2026/08/06/000001','PK000001','2026-08-06','00:00:00','00:00:00','Menunggu','D0000004','-'),
+('2026/09/14/000001','PK000001','2026-09-21','00:00:00','00:00:00','Menunggu','D0000003','O1');
 /*!40000 ALTER TABLE `booking_operasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -5724,7 +5877,10 @@ INSERT INTO `bukti_pelaksanaan_informasi_edukasi` VALUES
 ('2026/08/06/000001','2026-08-06 14:19:59','pages/upload/2026080600000120260806141959.jpeg'),
 ('2026/09/03/000001','2026-09-03 10:26:14','pages/upload/2026090300000120260903102614.jpeg'),
 ('2026/09/14/000001','2026-09-14 09:31:42','pages/upload/2026091400000120260914093142.jpeg'),
-('2026/09/14/000001','2026-09-19 10:14:08','pages/upload/2026091400000120260919101408.jpeg');
+('2026/09/14/000001','2026-09-19 10:14:08','pages/upload/2026091400000120260919101408.jpeg'),
+('2026/09/20/000001','2026-09-21 11:09:13','pages/upload/2026092000000120260921110913.jpeg'),
+('2026/10/05/000001','2026-10-05 11:06:23','pages/upload/2026100500000120261005110623.jpeg'),
+('2026/10/22/000001','2026-10-22 10:40:42','pages/upload/2026102200000120261022104042.jpeg');
 /*!40000 ALTER TABLE `bukti_pelaksanaan_informasi_edukasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -5766,7 +5922,8 @@ INSERT INTO `bukti_pemesanan` VALUES
 ('PB20260629001',''),
 ('PB20260722001','pages/upload/PB20260722001.jpeg'),
 ('PB20260722002',''),
-('PB20260918001','pages/upload/PB20260918001.jpeg');
+('PB20260918001','pages/upload/PB20260918001.jpeg'),
+('PB20260921001','pages/upload/PB20260921001.jpeg');
 /*!40000 ALTER TABLE `bukti_pemesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -5857,7 +6014,8 @@ LOCK TABLES `bukti_penagihan_piutang` WRITE;
 /*!40000 ALTER TABLE `bukti_penagihan_piutang` DISABLE KEYS */;
 INSERT INTO `bukti_penagihan_piutang` VALUES
 ('PP20260603001',''),
-('PP20260804001','pages/upload/PP20260804001.jpeg');
+('PP20260804001','pages/upload/PP20260804001.jpeg'),
+('PP20261020001','');
 /*!40000 ALTER TABLE `bukti_penagihan_piutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -5903,7 +6061,9 @@ INSERT INTO `bukti_penyerahan_resep_obat` VALUES
 ('202607210004','pages/upload/202607210004.jpeg'),
 ('202608060001','pages/upload/202608060001.jpeg'),
 ('202608190001','pages/upload/202608190001.jpeg'),
-('202609160001','pages/upload/202609160001.jpeg');
+('202609160001','pages/upload/202609160001.jpeg'),
+('202609210001','pages/upload/202609210001.jpeg'),
+('202610220001','pages/upload/202610220001.jpeg');
 /*!40000 ALTER TABLE `bukti_penyerahan_resep_obat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -6020,7 +6180,8 @@ INSERT INTO `bukti_persetujuan_penolakan_tindakan_penerimainformasi` VALUES
 ('PM20260806001','pages/upload/PM20260806001PP.jpeg'),
 ('PM20260903001','pages/upload/PM20260903001PP.jpeg'),
 ('PM20260914001','pages/upload/PM20260914001PP.jpeg'),
-('PM20260916001','pages/upload/PM20260916001PP.jpeg');
+('PM20260916001','pages/upload/PM20260916001PP.jpeg'),
+('PM20261015001','pages/upload/PM20261015001PP.jpeg');
 /*!40000 ALTER TABLE `bukti_persetujuan_penolakan_tindakan_penerimainformasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -6078,7 +6239,8 @@ INSERT INTO `bukti_persetujuan_penolakan_tindakan_saksikeluarga` VALUES
 ('PM20260806001','pages/upload/PM20260806001SK.jpeg'),
 ('PM20260903001','pages/upload/PM20260903001SK.jpeg'),
 ('PM20260914001','pages/upload/PM20260914001SK.jpeg'),
-('PM20260916001','pages/upload/PM20260916001SK.jpeg');
+('PM20260916001','pages/upload/PM20260916001SK.jpeg'),
+('PM20261015001','pages/upload/PM20261015001SK.jpeg');
 /*!40000 ALTER TABLE `bukti_persetujuan_penolakan_tindakan_saksikeluarga` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -6758,7 +6920,9 @@ LOCK TABLES `catatan_keseimbangan_cairan` WRITE;
 /*!40000 ALTER TABLE `catatan_keseimbangan_cairan` DISABLE KEYS */;
 INSERT INTO `catatan_keseimbangan_cairan` VALUES
 ('2026/02/25/000005','2026-05-18','13:13:41','200','50','200','300','0','50','20','80.0','-','120000134'),
-('2026/09/03/000001','2026-09-03','11:13:06','2','20','20','0','0','0','0','42.0','tes','123124');
+('2026/09/03/000001','2026-09-03','11:13:06','2','20','20','0','0','0','0','42.0','tes','123124'),
+('2026/09/14/000001','2026-09-21','11:51:32','12','2','2','2','2','2','2','8.0','tes','10908789'),
+('2026/09/14/000001','2026-09-21','11:52:07','0','0','0','0','0','0','0','0','','10908789');
 /*!40000 ALTER TABLE `catatan_keseimbangan_cairan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -7052,6 +7216,8 @@ CREATE TABLE `catatan_observasi_ranap_kebidanan` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `catatan_observasi_ranap_kebidanan` WRITE;
 /*!40000 ALTER TABLE `catatan_observasi_ranap_kebidanan` DISABLE KEYS */;
+INSERT INTO `catatan_observasi_ranap_kebidanan` VALUES
+('2026/04/07/000001','2026-10-10','11:22:16','1','2','3','4','5','6','7','8','9','10','12/09/1988/001');
 /*!40000 ALTER TABLE `catatan_observasi_ranap_kebidanan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -7179,7 +7345,9 @@ LOCK TABLES `catatan_observasi_ruang_ok` WRITE;
 INSERT INTO `catatan_observasi_ruang_ok` VALUES
 ('2026/02/25/000005','2026-06-17','21:35:34','1','2','3','4','5','6','7','120000134'),
 ('2026/02/25/000005','2026-06-17','21:47:11','1','3','4','5','6','7','8 sasasas','123124'),
-('2026/03/14/000001','2026-06-19','07:15:28','1','2','3','4','5','6','-','120000134');
+('2026/03/14/000001','2026-06-19','07:15:28','1','2','3','4','5','6','-','120000134'),
+('2026/08/06/000001','2026-10-05','12:33:45','12','12','21212','12','12','12','','12/09/1988/001'),
+('2026/08/06/000001','2026-10-05','12:33:53','221','2','2','2','2','2','','12/09/1988/001');
 /*!40000 ALTER TABLE `catatan_observasi_ruang_ok` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -7255,6 +7423,7 @@ INSERT INTO `catatan_pasien` VALUES
 ('000006','jutek, HIV Positif'),
 ('000022','PASIEN BAWEL, KELUARGA BUPATI'),
 ('000054','readmisi'),
+('000059','rewel, ngamuk2'),
 ('112384','PASIN ERROR');
 /*!40000 ALTER TABLE `catatan_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -8226,6 +8395,7 @@ LOCK TABLES `cssd_barang` WRITE;
 /*!40000 ALTER TABLE `cssd_barang` DISABLE KEYS */;
 INSERT INTO `cssd_barang` VALUES
 ('I000000001','Heacting Set'),
+('I000000025','Heacting Set'),
 ('INV/2023/12/14/002','Heacting Set'),
 ('MED/09/06/2022/01','Heacting Set'),
 ('MED/11/10/0003','Heacting Set');
@@ -8436,7 +8606,10 @@ INSERT INTO `dapur_riwayat_barang` VALUES
 ('D00001',834,90,0,924,'Penerimaan','2026-07-29','09:19:32','Admin Utama','Simpan'),
 ('D00005',219,100,0,319,'Penerimaan','2026-07-29','09:19:32','Admin Utama','Simpan'),
 ('D00003',601,10,0,611,'Penerimaan','2026-07-29','09:22:05','Admin Utama','Simpan'),
-('D00002',426,100,0,526,'Penerimaan','2026-07-29','09:22:05','Admin Utama','Simpan');
+('D00002',426,100,0,526,'Penerimaan','2026-07-29','09:22:05','Admin Utama','Simpan'),
+('D00004',223,10,0,233,'Pengadaan','2026-10-21','09:24:50','Admin Utama','Simpan'),
+('D00007',260,10,0,270,'Pengadaan','2026-10-21','09:24:50','Admin Utama','Simpan'),
+('D00002',526,0,1,525,'Stok Keluar','2026-10-21','09:25:24','Admin Utama','Simpan');
 /*!40000 ALTER TABLE `dapur_riwayat_barang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8510,12 +8683,12 @@ LOCK TABLES `dapurbarang` WRITE;
 /*!40000 ALTER TABLE `dapurbarang` DISABLE KEYS */;
 INSERT INTO `dapurbarang` VALUES
 ('D00001','INDOMIE','BKS','Kering',924,6913.6133091527045,'1'),
-('D00002','DAGING AYAM','PTG','Kering',526,23045.37769717568,'1'),
+('D00002','DAGING AYAM','PTG','Kering',525,23045.37769717568,'1'),
 ('D00003','BAKSO SONICE','PCS','Kering',611,935.2072760804999,'1'),
-('D00004','BERAS','KG','Kering',223,14785.2,'1'),
+('D00004','BERAS','KG','Kering',233,14785.2,'1'),
 ('D00005','SUSU BERUANG','BTL','Kering',319,13676.31,'1'),
 ('D00006','AQUA 650 ML','BTL','Kering',205,3080.25,'1'),
-('D00007','MASAKO','SAC','Kering',260,1332,'1');
+('D00007','MASAKO','SAC','Kering',270,1332,'1');
 /*!40000 ALTER TABLE `dapurbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8560,6 +8733,9 @@ CREATE TABLE `dapurdetailbeli` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `dapurdetailbeli` WRITE;
 /*!40000 ALTER TABLE `dapurdetailbeli` DISABLE KEYS */;
+INSERT INTO `dapurdetailbeli` VALUES
+('PD20261021001','D00004','KG',10,14785.2,147852,0,0,147852),
+('PD20261021001','D00007','SAC',10,1332,13320,0,0,13320);
 /*!40000 ALTER TABLE `dapurdetailbeli` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8600,7 +8776,8 @@ LOCK TABLES `dapurdetailpengeluaran` WRITE;
 /*!40000 ALTER TABLE `dapurdetailpengeluaran` DISABLE KEYS */;
 INSERT INTO `dapurdetailpengeluaran` VALUES
 ('SKD260629001','D00006','BTL',5,3080.25,15401.25),
-('SKD260629001','D00005','BTL',5,12321,61605);
+('SKD260629001','D00005','BTL',5,12321,61605),
+('SKD261021001','D00002','PTG',1,23045.37769717568,23045.37769717568);
 /*!40000 ALTER TABLE `dapurdetailpengeluaran` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8735,6 +8912,8 @@ CREATE TABLE `dapurpembelian` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `dapurpembelian` WRITE;
 /*!40000 ALTER TABLE `dapurpembelian` DISABLE KEYS */;
+INSERT INTO `dapurpembelian` VALUES
+('PD20261021001','S0001','12/09/1988/001','2026-10-21',161172,0,161172,17729,0,178901,'112020');
 /*!40000 ALTER TABLE `dapurpembelian` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8815,7 +8994,8 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `dapurpengeluaran` WRITE;
 /*!40000 ALTER TABLE `dapurpengeluaran` DISABLE KEYS */;
 INSERT INTO `dapurpengeluaran` VALUES
-('SKD260629001','2026-06-29','120000134','PD260629001, Ruangan RUANG DIREKTUR, oleh D0000004 dr. Hilyatul Nadia');
+('SKD260629001','2026-06-29','120000134','PD260629001, Ruangan RUANG DIREKTUR, oleh D0000004 dr. Hilyatul Nadia'),
+('SKD261021001','2026-10-21','01010101','tes');
 /*!40000 ALTER TABLE `dapurpengeluaran` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -8955,7 +9135,8 @@ INSERT INTO `data_HAIs` VALUES
 ('2026-04-13','2026/02/25/000005',1,0,0,0,0,0,0,0,0,0,0,0,'TIDAK','','','','','K1.01'),
 ('2026-06-19','2026/02/25/000005',2,0,0,0,0,0,0,0,0,0,0,0,'TIDAK','','','','','VUP.01'),
 ('2026-06-22','2026/02/25/000005',0,0,0,0,0,0,0,0,0,0,0,0,'TIDAK','','','','','VUP.01'),
-('2026-06-29','2026/06/29/000003',4,0,0,0,0,0,0,0,0,0,0,0,'TIDAK','','','','','ANG.K1.002');
+('2026-06-29','2026/06/29/000003',4,0,0,0,0,0,0,0,0,0,0,0,'TIDAK','','','','','ANG.K1.002'),
+('2026-10-22','2026/09/14/000001',1,0,0,0,1,0,0,0,0,0,0,0,'TIDAK','','','','','K3.01');
 /*!40000 ALTER TABLE `data_HAIs` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -11688,6 +11869,7 @@ INSERT INTO `detail_beri_diet` VALUES
 ('2026/03/14/000001','K1.01','2026-06-22','Pagi','D03'),
 ('2026/03/14/000001','K1.01','2026-06-26','Pagi','D02'),
 ('2026/03/14/000001','K1.01','2026-07-11','Pagi','D04'),
+('2026/03/14/000001','K1.01','2026-10-21','Pagi','D03'),
 ('2026/04/07/000001','K1.01','2026-06-26','Pagi','D01'),
 ('2026/05/11/000003','K3.01','2026-08-19','Pagi','D03'),
 ('2026/06/22/000001','K3.01','2026-06-22','Pagi','D01'),
@@ -11698,6 +11880,7 @@ INSERT INTO `detail_beri_diet` VALUES
 ('2026/06/29/000003','ANG.K1.002','2026-06-29','Pagi','D06'),
 ('2026/07/28/000001','ANG.K1.002','2026-07-29','Pagi','D04'),
 ('2026/09/14/000001','K3.01','2026-09-19','Pagi','D02'),
+('2026/09/14/000001','K3.01','2026-10-22','Pagi','D01'),
 ('2026/02/25/000005','K1.01','2026-04-13','Pagi2','D04'),
 ('2026/03/11/000003','K3.01','2026-03-12','Pagi2','D02'),
 ('2026/04/07/000001','K1.01','2026-05-12','Pagi2','D03'),
@@ -11706,9 +11889,11 @@ INSERT INTO `detail_beri_diet` VALUES
 ('2026/02/25/000005','VUP.01','2026-06-15','Siang','D03'),
 ('2026/02/25/000005','VUP.01','2026-06-16','Siang','D01'),
 ('2026/03/11/000003','K3.01','2026-03-11','Siang','D02'),
+('2026/03/14/000001','K1.01','2026-10-21','Siang','D04'),
 ('2026/06/22/000001','K3.01','2026-06-03','Siang','D02'),
 ('2026/06/22/000001','K3.01','2026-06-22','Siang','D02'),
 ('2026/07/28/000001','DAH.K1.002','2026-08-06','Siang','D06'),
+('2026/09/14/000001','K3.01','2026-10-22','Siang','D03'),
 ('2026/02/25/000005','K1.01','2026-04-22','Siang2','D04'),
 ('2026/05/11/000001','VUP.01','2026-05-12','Siang2','D03'),
 ('2026/06/22/000001','K3.01','2026-07-21','Siang2','D01'),
@@ -11809,7 +11994,10 @@ INSERT INTO `detail_nota_jalan` VALUES
 ('2026/09/03/000001','Bayar Cash',0,660375),
 ('2026/09/09/000001','Bayar Cash',0,347500),
 ('2026/09/15/000001','Bayar Cash',0,100000),
-('2026/09/16/000002','Bayar Cash',0,558019);
+('2026/09/16/000002','Bayar Cash',0,558019),
+('2026/10/20/000001','Bayar Cash',0,610000),
+('2026/10/21/000001','Bank BCA',0,560000),
+('2026/10/21/000002','Bank BCA',600,60000);
 /*!40000 ALTER TABLE `detail_nota_jalan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -11867,6 +12055,7 @@ INSERT INTO `detail_obat_racikan` VALUES
 ('2026-07-21','15:55:09','2026/07/21/000003','1','B000000556'),
 ('2026-08-04','19:48:54','2026/08/04/000001','1','B000000556'),
 ('2026-08-19','14:17:20','2026/08/19/000001','1','B000000556'),
+('2026-09-21','11:33:53','2026/09/21/000002','1','B000000556'),
 ('2026-08-06','16:13:35','2026/08/06/000001','1','B000000557'),
 ('2026-02-25','10:40:05','2026/02/25/000001','1','B000000560'),
 ('2026-03-04','22:21:22','2026/03/03/000001','1','B000000572'),
@@ -11886,7 +12075,8 @@ INSERT INTO `detail_obat_racikan` VALUES
 ('2026-08-04','19:48:54','2026/08/04/000001','1','B000001207'),
 ('2026-08-06','16:13:35','2026/08/06/000001','1','B000001207'),
 ('2026-08-19','14:17:20','2026/08/19/000001','1','B000001207'),
-('2026-09-16','09:51:37','2026/09/16/000002','1','B000001207');
+('2026-09-16','09:51:37','2026/09/16/000002','1','B000001207'),
+('2026-09-21','11:33:53','2026/09/21/000002','1','B000001659');
 /*!40000 ALTER TABLE `detail_obat_racikan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -11970,11 +12160,11 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `detail_pemberian_obat` WRITE;
 /*!40000 ALTER TABLE `detail_pemberian_obat` DISABLE KEYS */;
 INSERT INTO `detail_pemberian_obat` VALUES
-('2026-06-29','10:15:07','2026/06/29/000003','B000000554',11000,13199.999999999998,9.1,0,0,120119.99999999999,'Ralan','AP','',''),
+('2026-06-29','10:15:07','2026/06/29/000003','B000000554',11000,13199.999999999998,9.1,0,0,120119.99999999997,'Ralan','AP','',''),
 ('2026-06-29','10:15:07','2026/06/29/000003','B000000556',1138,1367.121312,10.7,0,0,14627.999999999998,'Ralan','AP','',''),
 ('2026-06-29','10:15:07','2026/06/29/000003','B000000790',5540,6648,3,0,0,19944,'Ralan','AP','',''),
 ('2026-06-29','10:15:07','2026/06/29/000003','B000001207',2078,3299.9999999999995,14,0,0,46200,'Ralan','AP','',''),
-('2026-06-29','10:15:07','2026/06/29/000003','B00001000',6839,8205.999999999998,10,0,0,82059.99999999999,'Ralan','AP','',''),
+('2026-06-29','10:15:07','2026/06/29/000003','B00001000',6839,8205.999999999998,10,0,0,82059.99999999997,'Ralan','AP','',''),
 ('2026-07-09','14:23:10','2026/07/09/000001','B000000556',1138,1367,10,0,0,13670,'Ralan','AP','',''),
 ('2026-07-09','14:23:10','2026/07/09/000001','B000000557',926,1111,10,0,0,11110,'Ralan','AP','',''),
 ('2026-07-09','14:23:10','2026/07/09/000001','B00001000',6839,8206,10,0,0,82060,'Ralan','AP','',''),
@@ -12021,7 +12211,14 @@ INSERT INTO `detail_pemberian_obat` VALUES
 ('2026-09-16','09:51:37','2026/09/16/000002','B000000305',133,160,11,0,0,1760,'Ralan','AP','',''),
 ('2026-09-16','09:51:37','2026/09/16/000002','B000000571',3330,3996,10,0,0,39960,'Ralan','AP','',''),
 ('2026-09-16','09:51:37','2026/09/16/000002','B000000791',1232,1479,10,0,0,14790,'Ralan','AP','',''),
-('2026-09-16','09:51:37','2026/09/16/000002','B000001207',2078,3300,11,0,0,36300,'Ralan','AP','','');
+('2026-09-16','09:51:37','2026/09/16/000002','B000001207',2078,3300,11,0,0,36300,'Ralan','AP','',''),
+('2026-09-21','11:33:53','2026/09/21/000002','B000000556',1138,1367.1213119999998,13,0,0,17772.999999999996,'Ralan','AP','',''),
+('2026-09-21','11:33:53','2026/09/21/000002','B000000571',3330,3995.9999999999995,10,0,0,39960,'Ralan','AP','',''),
+('2026-09-21','11:33:53','2026/09/21/000002','B000000791',1232,1479,10,0,0,14789.999999999998,'Ralan','AP','',''),
+('2026-09-21','11:33:53','2026/09/21/000002','B000001659',539,646.9999999999999,14,0,0,9057.999999999998,'Ralan','AP','',''),
+('2026-10-16','15:20:49','2026/10/15/000001','B000000965',547,657,10,0,0,6570,'Ralan','AP','',''),
+('2026-10-16','15:20:49','2026/10/15/000001','B00001000',6839,8206,10,0,0,82060,'Ralan','AP','',''),
+('2026-10-22','10:51:57','2026/10/22/000001','B000000305',133,160,10,0,0,1600,'Ralan','AP','','');
 /*!40000 ALTER TABLE `detail_pemberian_obat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -12077,7 +12274,10 @@ INSERT INTO `detail_penagihan_piutang` VALUES
 ('PP20260804001','2026/06/10/000001',1315182),
 ('PP20260804001','2026/07/22/000001',295000),
 ('PP20260804001','2026/07/22/000004',100000),
-('PP20260804001','2026/07/28/000001',810000);
+('PP20260804001','2026/07/28/000001',810000),
+('PP20261020001','2026/02/25/000002',285709),
+('PP20261020001','2026/02/25/000003',407586),
+('PP20261020001','2026/06/03/000004',664730);
 /*!40000 ALTER TABLE `detail_penagihan_piutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -12201,7 +12401,13 @@ INSERT INTO `detail_pengajuan_barang_medis` VALUES
 ('PBM20260729001','B000001659','TAB',100,539,53900,100),
 ('PBM20260918001','B000000246','KAP',100,1760,176000,100),
 ('PBM20260918001','B000001246','PCS',100,176485,17648500,100),
-('PBM20260918001','B000000193','SAL',100,12980,1298000,100);
+('PBM20260918001','B000000193','SAL',100,12980,1298000,100),
+('PBM20260921001','B000001655','TAB',100,13000,1300000,100),
+('PBM20260921001','B000000461','GEL',100,15950,1595000,100),
+('PBM20260921001','B000001603','BTL',100,29282,2928200,100),
+('PBM20261016001','B000000571','TAB',100,3330,333000,100),
+('PBM20261016001','B000000566','TAB',100,363,36300,100),
+('PBM20261016001','B000000790','SYR',100,5540,554000,100);
 /*!40000 ALTER TABLE `detail_pengajuan_barang_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -12294,7 +12500,9 @@ INSERT INTO `detail_pengeluaran_obat_bhp` VALUES
 ('SKM20260629001','B000001314','PCS','',2,6050,12100,''),
 ('SKM20260629001','B000001394','PCS','',1,2000,2000,''),
 ('SKM20260629001','B000001781','PCS','',1,3177,3177,''),
-('SKM20260629001','B000001782','PCS','',3,3975,11925,'');
+('SKM20260629001','B000001782','PCS','',3,3975,11925,''),
+('SKM20261022001','B000000396','DRP','',10,55500,555000,''),
+('SKM20261022001','B000008024','GLN','',1,1400000,1400000,'');
 /*!40000 ALTER TABLE `detail_pengeluaran_obat_bhp` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -12874,6 +13082,22 @@ INSERT INTO `detail_periksa_lab` VALUES
 ('2026/09/03/000001','435-RJ','2026-09-03','11:31:33',2224,'','6.1-8.2','',48300,0,2900,5800,1000,0,0,58000),
 ('2026/09/03/000001','435-RJ','2026-09-03','11:31:33',2225,'','3.7-5.2','',48300,0,2900,5800,1000,0,0,58000),
 ('2026/09/03/000001','435-RJ','2026-09-03','11:31:33',2226,'we','< 25','',7500,0,500,1000,1000,0,0,10000),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',665,'21212','13.5-18.0','L',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',666,'','5.000-10.000','',1000,1000,1000,1000,1000,1000,1000,7000),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',667,'','','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',668,'2','20-40','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',669,'21','','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',670,'1','50-70','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',671,'12','40.0-48.0','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',672,'2','150.000-440.000','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',673,'21','4.5-5.5','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',674,'1','82.0-92.0','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',675,'12','27.0-31.0','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',2198,'12','32.0-37.0','T',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',2199,'2','< 10','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',2200,'21','','H',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',2201,'1','','',0,0,0,0,0,0,0,0),
+('2026/09/14/000001','102-K.2','2026-10-21','10:05:11',2202,'','','',0,0,0,0,0,0,0,0),
 ('2026/09/16/000002','102-K.2','2026-09-16','09:55:20',665,'212','12-16','',0,0,0,0,0,0,0,0),
 ('2026/09/16/000002','102-K.2','2026-09-16','09:55:20',666,'','5.000-10.000','',0,0,0,0,0,0,0,0),
 ('2026/09/16/000002','102-K.2','2026-09-16','09:55:20',667,'','','',0,0,0,0,0,0,0,0),
@@ -12921,7 +13145,55 @@ INSERT INTO `detail_periksa_lab` VALUES
 ('2026/09/20/000002','102-K.2','2026-09-19','11:15:31',2199,'','< 10','',0,0,0,0,0,0,0,0),
 ('2026/09/20/000002','102-K.2','2026-09-19','11:15:31',2200,'1','','',0,0,0,0,0,0,0,0),
 ('2026/09/20/000002','102-K.2','2026-09-19','11:15:31',2201,'2','','',0,0,0,0,0,0,0,0),
-('2026/09/20/000002','102-K.2','2026-09-19','11:15:31',2202,'','','',0,0,0,0,0,0,0,0);
+('2026/09/20/000002','102-K.2','2026-09-19','11:15:31',2202,'','','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',473,'','12-16','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',474,'','5.000-10.000','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',475,'','','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',476,'','20-40','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',477,'sas','','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',481,'sasas','50-70','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',482,'assasas','37.0-43.0','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',483,'sasas','150.000-440.000','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',484,'sasas','4.0-5.0','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',486,'asasas','82.0-92.0','t',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',487,'sasas','27.0-31.0','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',2194,'sas','32.0-37.0','l',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',2195,'sasas','< 20','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',2196,'asas','','h',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',2197,'','','',0,0,0,0,0,0,0,0),
+('2026/09/21/000002','101-K.3','2026-09-21','14:00:17',2362,'','negatif','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',665,'','13.5-18.0','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',666,'','5.000-10.000','',1000,1000,1000,1000,1000,1000,1000,7000),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',667,'','','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',668,'qwqw','20-40','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',669,'2','','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',670,'1','50-70','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',671,'12','40.0-48.0','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',672,'12','150.000-440.000','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',673,'2','4.5-5.5','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',674,'21','82.0-92.0','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',675,'21','27.0-31.0','l',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',2198,'2','32.0-37.0','h',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',2199,'1212','< 10','t',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',2200,'','','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',2201,'','','',0,0,0,0,0,0,0,0),
+('2026/10/15/000001','102-K.2','2026-10-15','14:03:12',2202,'','','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',665,'asas','12-16','h',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',666,'','5.000-10.000','',1000,1000,1000,1000,1000,1000,1000,7000),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',667,'qwqw','','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',668,'as','20-40','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',669,'as','','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',670,'s','50-70','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',671,'sa','37.0-43.0','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',672,'a','150.000-440.000','t',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',673,'as','4.0-5.0','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',674,'s','82.0-92.0','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',675,'sa','27.0-31.0','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',2198,'sa','32.0-37.0','l',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',2199,'a','< 20','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',2200,'u','','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',2201,'a','','',0,0,0,0,0,0,0,0),
+('2026/10/22/000001','102-K.2','2026-10-22','10:57:10',2202,'','','',0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `detail_periksa_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13118,7 +13390,13 @@ INSERT INTO `detail_permintaan_medis` VALUES
 ('PM20260721001','B000001783','PCS',10,''),
 ('PM20260728001','B000000436','TAB',100,''),
 ('PM20260728001','B000000760','AMP5',100,''),
-('PM20260728001','B000000386','DRP',100,'');
+('PM20260728001','B000000386','DRP',100,''),
+('PM20260921001','A000000004','GLN',1,''),
+('PM20260921001','B000001314','PCS',10,''),
+('PM20261016001','B000001855','SET',10,''),
+('PM20261016001','B000001783','PCS',10,''),
+('PM20261022001','B000000396','DRP',10,''),
+('PM20261022001','B000008024','GLN',1,'');
 /*!40000 ALTER TABLE `detail_permintaan_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13207,7 +13485,8 @@ LOCK TABLES `detail_permintaan_resep_pulang` WRITE;
 INSERT INTO `detail_permintaan_resep_pulang` VALUES
 ('RP202606220001','B000001294',10,''),
 ('RP202606250001','B000000557',10,'2x1'),
-('RP202606250001','B00001000',10,'3x1');
+('RP202606250001','B00001000',10,'3x1'),
+('RP202610160001','B000000557',10,'');
 /*!40000 ALTER TABLE `detail_permintaan_resep_pulang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13269,7 +13548,8 @@ INSERT INTO `detail_permintaan_stok_obat_pasien` VALUES
 ('SP202607210001','B000000572',10,'2','true','false','false','false','false','false','true','false','false','false','false','false','true','false','false','false','false','false','true','false','false','false','false','false'),
 ('SP202607280001','B000000556',10,'3','false','false','false','false','false','false','false','true','false','false','false','false','false','false','false','true','false','false','false','false','false','false','true','false'),
 ('SP202607280001','B000000571',10,'3','false','false','false','false','false','true','false','false','false','false','false','false','true','false','false','false','false','false','false','true','false','false','false','false'),
-('SP202609190001','B000001207',10,'2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false');
+('SP202609190001','B000001207',10,'2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false'),
+('SP202609210001','B000000556',10,'2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false');
 /*!40000 ALTER TABLE `detail_permintaan_stok_obat_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13343,21 +13623,24 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `detail_piutang_pasien` WRITE;
 /*!40000 ALTER TABLE `detail_piutang_pasien` DISABLE KEYS */;
 INSERT INTO `detail_piutang_pasien` VALUES
-('2026/02/25/000002','PIUTANG AXA','A04',285709,285709,'2026-02-25'),
-('2026/02/25/000003','PIUTANG AXA','A04',407586,407586,'2026-02-25'),
+('2026/02/25/000002','PIUTANG AXA','A04',285709,0,'2026-02-25'),
+('2026/02/25/000003','PIUTANG AXA','A04',407586,0,'2026-02-25'),
 ('2026/03/11/000002','PIUTANG AXA','A04',260000,0,'2026-03-11'),
 ('2026/03/26/000001','PIUTANG BPJS','BPJ',36896,36896,'2026-04-02'),
 ('2026/05/05/000001','PIUTANG BPJS','BPJ',307844,307844,'2026-05-05'),
 ('2026/05/08/000001','PIUTANG BPJS','BPJ',570000,570000,'2026-05-11'),
 ('2026/05/28/000001','PIUTANG BPJS','BPJ',1031180,1031180,'2026-05-28'),
-('2026/06/03/000004','PIUTANG AXA','A04',664730,664730,'2026-06-03'),
+('2026/06/03/000004','PIUTANG AXA','A04',664730,0,'2026-06-03'),
 ('2026/06/10/000001','PIUTANG AXA','A04',563591,1315182,'2026-06-10'),
 ('2026/06/10/000001','PIUTANG BPJS','BPJ',188000,188000,'2026-06-10'),
 ('2026/06/29/000003','PIUTANG BPJS','BPJ',6450952,6450952,'2026-06-29'),
 ('2026/07/22/000001','PIUTANG AXA','A04',295000,295000,'2026-07-22'),
 ('2026/07/22/000004','PIUTANG AXA','A04',100000,100000,'2026-07-22'),
 ('2026/07/22/000004','PIUTANG BPJS','BPJ',50000,50000,'2026-07-22'),
-('2026/07/28/000001','PIUTANG AXA','A04',810000,810000,'2026-08-04');
+('2026/07/28/000001','PIUTANG AXA','A04',810000,810000,'2026-08-04'),
+('2026/09/21/000002','PIUTANG BPJS','BPJ',760555,760555,'2026-09-21'),
+('2026/10/05/000001','PIUTANG BPJS','BPJ',260000,260000,'2026-10-15'),
+('2026/10/22/000001','PIUTANG BPJS','BPJ',954776,954776,'2026-10-22');
 /*!40000 ALTER TABLE `detail_piutang_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13515,7 +13798,13 @@ INSERT INTO `detail_surat_pemesanan_medis` VALUES
 ('SPM260918001','B000000193','SAL',90,12980,1168200,0,0,1168200,90),
 ('SPM260918002','B000000610','AMP5',2,217800,435600,0,0,435600,2),
 ('SPM260918002','B000000161','TAB',10,2835,28350,0,0,28350,10),
-('SPM260918002','B000001405','DRP',10,41745,417450,0,0,417450,10);
+('SPM260918002','B000001405','DRP',10,41745,417450,0,0,417450,10),
+('SPM260921001','B000001655','TAB',80,13000,1040000,0,0,1040000,80),
+('SPM260921001','B000000461','GEL',100,15950,1595000,0,0,1595000,100),
+('SPM260921001','B000001603','BTL',90,29282,2635380,0,0,2635380,90),
+('SPM261016001','B000000571','TAB',100,3330,333000,0,0,333000,100),
+('SPM261016001','B000000566','TAB',70,363,25410,0,0,25410,70),
+('SPM261016001','B000000790','SYR',90,5540,498600,0,0,498600,90);
 /*!40000 ALTER TABLE `detail_surat_pemesanan_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13793,7 +14082,11 @@ INSERT INTO `detailjual` VALUES
 ('PJ20260504001','B000000707','TAB',55440,46200,2,110880,0,0,0,0,0,'',110880,'',''),
 ('PJ20260504001','B000000379','SYR',50820,42350,2,101640,0,0,0,0,0,'',101640,'',''),
 ('PJ20260616001','B000000575','CAP',4835,3223,10,48350,0,0,0,0,0,'',48350,'',''),
-('PJ20260616001','B000000965','TAB',591,493,10,5910,0,0,0,0,0,'',5910,'','');
+('PJ20260616001','B000000965','TAB',591,493,10,5910,0,0,0,0,0,'',5910,'',''),
+('PJ20261019001','B000000556','TAB',1367,1138,10,13670,0,0,0,0,0,'',13670,'',''),
+('PJ20261019002','B000000557','TAB',1111,926,20,22220,0,0,0,0,0,'',22220,'',''),
+('PJ20261019003','B000000558','SAL',7260,6050,30,217800,0,0,0,0,0,'',217800,'',''),
+('PJ20261019004','B000000556','TAB',1367,1138,10,13670,0,0,0,0,0,'',13670,'','');
 /*!40000 ALTER TABLE `detailjual` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -13828,993 +14121,133 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `detailjurnal` WRITE;
 /*!40000 ALTER TABLE `detailjurnal` DISABLE KEYS */;
 INSERT INTO `detailjurnal` VALUES
-('JR20260629000001','117004',48000,0),
-('JR20260629000001','420100',0,48000),
-('JR20260629000001','520308',48000,0),
-('JR20260629000001','211132',0,48000),
-('JR20260629000002','117004',250000,0),
-('JR20260629000002','420100',0,250000),
-('JR20260629000002','520200',150000,0),
-('JR20260629000002','211020',0,150000),
-('JR20260629000002','520308',50000,0),
-('JR20260629000002','211132',0,50000),
-('JR20260629000002','520309',50000,0),
-('JR20260629000002','211133',0,50000),
-('JR20260629000003','117004',250000,0),
-('JR20260629000003','420100',0,250000),
-('JR20260629000003','520200',150000,0),
-('JR20260629000003','211020',0,150000),
-('JR20260629000003','520308',50000,0),
-('JR20260629000003','211132',0,50000),
-('JR20260629000003','520309',50000,0),
-('JR20260629000003','211133',0,50000),
-('JR20260629000004','117004',282952,0),
-('JR20260629000004','420108',0,282952),
-('JR20260629000004','550106',226379,0),
-('JR20260629000004','115010',0,226379),
-('JR20260629000005','117004',85000,0),
-('JR20260629000005','420106',0,85000),
-('JR20260629000005','520202',12750,0),
-('JR20260629000005','211040',0,12750),
-('JR20260629000005','520203',1000,0),
-('JR20260629000005','211050',0,1000),
-('JR20260629000005','520301',71250,0),
-('JR20260629000005','211214',0,71250),
-('JR20260629000006','117004',475000,0),
-('JR20260629000006','420107',0,475000),
-('JR20260629000006','520204',193750,0),
-('JR20260629000006','211070',0,193750),
-('JR20260629000006','520205',5000,0),
-('JR20260629000006','211080',0,5000),
-('JR20260629000006','520302',276250,0),
-('JR20260629000006','211215',0,276250),
-('JR20260629000007','111010',1182077,0),
-('JR20260629000007','117004',0,1140952),
-('JR20260629000007','116050',0,31125),
-('JR20260629000007','420101',0,10000),
-('JR20260629000008','117004',1140952,0),
-('JR20260629000008','116050',31125,0),
-('JR20260629000008','420101',10000,0),
-('JR20260629000008','111010',0,1182077),
-('JR20260629000009','117004',5300000,0),
-('JR20260629000009','410116',0,5300000),
-('JR20260629000009','510206',5000000,0),
-('JR20260629000009','211101',0,5000000),
-('JR20260629000009','510207',300000,0),
-('JR20260629000009','211111',0,300000),
-('JR20260629000010','530113',77006.25,0),
-('JR20260629000010','115070',0,77006.25),
-('JR20260629000011','115010',0,93002),
-('JR20260629000011','530110',93002,0),
-('JR20260629000012','530102',303427.763424188,0),
-('JR20260629000012','115020',0,303427.763424188),
-('JR20260629000013','117003',6450952,0),
-('JR20260629000013','410112',0,10000),
-('JR20260629000013','117004',0,6440952),
-('JR20260629000014','115010',1882370,0),
-('JR20260629000014','116011',207060.7,0),
-('JR20260629000014','211010',0,2089430.7),
-('JR20260629000015','211010',2089430.7,0),
-('JR20260629000015','111020',0,2089430.7),
-('JR20260629000016','530102',93520.72760804999,0),
-('JR20260629000016','115020',0,93520.72760804999),
-('JR20260630000001','117004',210000,0),
-('JR20260630000001','420100',0,210000),
-('JR20260630000001','520200',24000,0),
-('JR20260630000001','211020',0,24000),
-('JR20260630000001','520308',186000,0),
-('JR20260630000001','211132',0,186000),
-('JR20260630000002','111010',210000,0),
-('JR20260630000002','117004',0,210000),
-('JR20260630000003','117004',210000,0),
-('JR20260630000003','111010',0,210000),
-('JR20260702000001','115010',10868000,0),
-('JR20260702000001','430108',0,10868000),
-('JR20260702000002','117004',85000,0),
-('JR20260702000002','410109',0,85000),
-('JR20260702000002','510202',12750,0),
-('JR20260702000002','211041',0,12750),
-('JR20260702000002','510203',1000,0),
-('JR20260702000002','211051',0,1000),
-('JR20260702000002','520301',71250,0),
-('JR20260702000002','211214',0,71250),
-('JR20260702000003','115020',2638587.2326499997,0),
-('JR20260702000003','116011',290245,0),
-('JR20260702000003','211210',0,2928832.2326499997),
-('JR20260702000004','115020',2922057.6617007544,0),
-('JR20260702000004','116011',321426,0),
-('JR20260702000004','112020',0,3243483.6617007544),
-('JR20260709000001','117015',0,285709),
-('JR20260709000001','112020',247262,0),
-('JR20260709000001','540103',38447,0),
-('JR20260709000002','117015',0,407586),
-('JR20260709000002','112020',352738,0),
-('JR20260709000002','540103',54848,0),
-('JR20260709000003','430118',0,20000000),
-('JR20260709000003','112010',20000000,0),
-('JR20260709000004','117017',68400000,0),
-('JR20260709000004','430114',0,68400000),
-('JR20260709000005','117017',0,0),
-('JR20260709000005','112020',0,0),
-('JR20260709000006','117017',0,0),
-('JR20260709000006','112020',0,0),
-('JR20260709000007','117004',250000,0),
-('JR20260709000007','420100',0,250000),
-('JR20260709000007','520200',150000,0),
-('JR20260709000007','211020',0,150000),
-('JR20260709000007','520308',50000,0),
-('JR20260709000007','211132',0,50000),
-('JR20260709000007','520309',50000,0),
-('JR20260709000007','211133',0,50000),
-('JR20260709000008','115010',1341500,0),
-('JR20260709000008','116011',147565,0),
-('JR20260709000008','211010',0,1489065),
-('JR20260709000009','211010',1489065,0),
-('JR20260709000009','111020',0,1489065),
-('JR20260709000010','530120',1000000,0),
-('JR20260709000010','111010',0,1000000),
-('JR20260709000011','117004',250000,0),
-('JR20260709000011','420100',0,250000),
-('JR20260709000011','520200',150000,0),
-('JR20260709000011','211020',0,150000),
-('JR20260709000011','520308',50000,0),
-('JR20260709000011','211132',0,50000),
-('JR20260709000011','520309',50000,0),
-('JR20260709000011','211133',0,50000),
-('JR20260709000012','117004',106840,0),
-('JR20260709000012','420108',0,106840),
-('JR20260709000012','550106',89030,0),
-('JR20260709000012','115010',0,89030),
-('JR20260709000013','111010',618592,0),
-('JR20260709000013','117004',0,606840),
-('JR20260709000013','116050',0,11752),
-('JR20260709000014','115010',47435912.1312,0),
-('JR20260709000014','116011',5217950.334432,0),
-('JR20260709000014','211010',0,52653862.465632),
-('JR20260709000015','211010',52653862.465632,0),
-('JR20260709000015','111020',0,52653862.465632),
-('JR20260709000016','115010',1303500,0),
-('JR20260709000016','116011',143385,0),
-('JR20260709000016','211010',0,1446885),
-('JR20260711000001','117004',140000,0),
-('JR20260711000001','420100',0,140000),
-('JR20260711000001','520200',119000,0),
-('JR20260711000001','211020',0,119000),
-('JR20260711000001','520308',21000,0),
-('JR20260711000001','211132',0,21000),
-('JR20260711000002','117004',14790,0),
-('JR20260711000002','420108',0,14790),
-('JR20260711000002','550106',12320,0),
-('JR20260711000002','115010',0,12320),
-('JR20260711000003','117004',85000,0),
-('JR20260711000003','420106',0,85000),
-('JR20260711000003','520202',12750,0),
-('JR20260711000003','211040',0,12750),
-('JR20260711000003','520203',1000,0),
-('JR20260711000003','211050',0,1000),
-('JR20260711000003','520301',71250,0),
-('JR20260711000003','211214',0,71250),
-('JR20260711000004','117004',210000,0),
-('JR20260711000004','420107',0,210000),
-('JR20260711000004','520204',57500,0),
-('JR20260711000004','211070',0,57500),
-('JR20260711000004','520205',5000,0),
-('JR20260711000004','211080',0,5000),
-('JR20260711000004','520302',147500,0),
-('JR20260711000004','211215',0,147500),
-('JR20260716000001','115010',1971100,0),
-('JR20260716000001','116011',216821,0),
-('JR20260716000001','112020',0,2187921),
-('JR20260721000001','117004',90000,0),
-('JR20260721000001','420100',0,90000),
-('JR20260721000001','520308',90000,0),
-('JR20260721000001','211132',0,90000),
-('JR20260721000002','117004',250000,0),
-('JR20260721000002','420100',0,250000),
-('JR20260721000002','520200',150000,0),
-('JR20260721000002','211020',0,150000),
-('JR20260721000002','520308',50000,0),
-('JR20260721000002','211132',0,50000),
-('JR20260721000002','520309',50000,0),
-('JR20260721000002','211133',0,50000),
-('JR20260721000003','117004',250000,0),
-('JR20260721000003','420100',0,250000),
-('JR20260721000003','520200',150000,0),
-('JR20260721000003','211020',0,150000),
-('JR20260721000003','520308',50000,0),
-('JR20260721000003','211132',0,50000),
-('JR20260721000003','520309',50000,0),
-('JR20260721000003','211133',0,50000),
-('JR20260721000004','117004',6570,0),
-('JR20260721000004','420108',0,6570),
-('JR20260721000004','550106',5470,0),
-('JR20260721000004','115010',0,5470),
-('JR20260721000005','117004',195235,0),
-('JR20260721000005','420108',0,195235),
-('JR20260721000005','550106',162676,0),
-('JR20260721000005','115010',0,162676),
-('JR20260721000006','117004',85000,0),
-('JR20260721000006','420106',0,85000),
-('JR20260721000006','520202',12750,0),
-('JR20260721000006','211040',0,12750),
-('JR20260721000006','520203',1000,0),
-('JR20260721000006','211050',0,1000),
-('JR20260721000006','520301',71250,0),
-('JR20260721000006','211214',0,71250),
-('JR20260721000007','117004',475000,0),
-('JR20260721000007','420107',0,475000),
-('JR20260721000007','520204',193750,0),
-('JR20260721000007','211070',0,193750),
-('JR20260721000007','520205',5000,0),
-('JR20260721000007','211080',0,5000),
-('JR20260721000007','520302',276250,0),
-('JR20260721000007','211215',0,276250),
-('JR20260721000008','111010',1384004,0),
-('JR20260721000008','117004',0,1351805),
-('JR20260721000008','116050',0,22199),
-('JR20260721000008','420101',0,10000),
-('JR20260721000009','117004',1351805,0),
-('JR20260721000009','116050',22199,0),
-('JR20260721000009','420101',10000,0),
-('JR20260721000009','111010',0,1384004),
-('JR20260721000010','117004',85000,0),
-('JR20260721000010','420106',0,85000),
-('JR20260721000010','520202',12750,0),
-('JR20260721000010','211040',0,12750),
-('JR20260721000010','520203',1000,0),
-('JR20260721000010','211050',0,1000),
-('JR20260721000010','520301',71250,0),
-('JR20260721000010','211214',0,71250),
-('JR20260721000011','117004',85000,0),
-('JR20260721000011','420106',0,85000),
-('JR20260721000011','520202',12750,0),
-('JR20260721000011','211040',0,12750),
-('JR20260721000011','520203',1000,0),
-('JR20260721000011','211050',0,1000),
-('JR20260721000011','520301',71250,0),
-('JR20260721000011','211214',0,71250),
-('JR20260721000012','117004',94678,0),
-('JR20260721000012','410111',0,94678),
-('JR20260721000012','550106',70887,0),
-('JR20260721000012','115010',0,70887),
-('JR20260721000013','117004',14070,0),
-('JR20260721000013','410111',0,14070),
-('JR20260721000013','550106',11720,0),
-('JR20260721000013','115010',0,11720),
-('JR20260721000014','117004',3600,0),
-('JR20260721000014','410111',0,3600),
-('JR20260721000014','550106',3000,0),
-('JR20260721000014','115010',0,3000),
-('JR20260721000015','117004',108318,0),
-('JR20260721000015','420108',0,108318),
-('JR20260721000015','550106',82317,0),
-('JR20260721000015','115010',0,82317),
-('JR20260722000001','117004',250000,0),
-('JR20260722000001','420100',0,250000),
-('JR20260722000001','520200',150000,0),
-('JR20260722000001','211020',0,150000),
-('JR20260722000001','520308',50000,0),
-('JR20260722000001','211132',0,50000),
-('JR20260722000001','520309',50000,0),
-('JR20260722000001','211133',0,50000),
-('JR20260722000002','117004',65000,0),
-('JR20260722000002','420100',0,65000),
-('JR20260722000002','520201',20000,0),
-('JR20260722000002','211030',0,20000),
-('JR20260722000002','520308',45000,0),
-('JR20260722000002','211132',0,45000),
-('JR20260722000003','117004',0,30000),
-('JR20260722000003','420100',30000,0),
-('JR20260722000003','520201',0,10000),
-('JR20260722000003','211030',10000,0),
-('JR20260722000003','520308',0,20000),
-('JR20260722000003','211132',20000,0),
-('JR20260722000004','117004',250000,0),
-('JR20260722000004','420100',0,250000),
-('JR20260722000004','520200',150000,0),
-('JR20260722000004','211020',0,150000),
-('JR20260722000004','520308',50000,0),
-('JR20260722000004','211132',0,50000),
-('JR20260722000004','520309',50000,0),
-('JR20260722000004','211133',0,50000),
-('JR20260722000005','117004',1600,0),
-('JR20260722000005','420108',0,1600),
-('JR20260722000005','550106',1330,0),
-('JR20260722000005','115010',0,1330),
-('JR20260722000006','117004',85000,0),
-('JR20260722000006','420106',0,85000),
-('JR20260722000006','520202',12750,0),
-('JR20260722000006','211040',0,12750),
-('JR20260722000006','520203',1000,0),
-('JR20260722000006','211050',0,1000),
-('JR20260722000006','520301',71250,0),
-('JR20260722000006','211214',0,71250),
-('JR20260722000007','117004',225000,0),
-('JR20260722000007','420107',0,225000),
-('JR20260722000007','520204',75000,0),
-('JR20260722000007','211070',0,75000),
-('JR20260722000007','520205',7000,0),
-('JR20260722000007','211080',0,7000),
-('JR20260722000007','520302',143000,0),
-('JR20260722000007','211215',0,143000),
-('JR20260722000008','112020',361776,0),
-('JR20260722000008','111010',200000,0),
-('JR20260722000008','117004',0,561600),
-('JR20260722000008','116050',0,176),
-('JR20260722000009','117015',295000,0),
-('JR20260722000009','117004',0,285000),
-('JR20260722000009','420101',0,10000),
-('JR20260722000010','117015',0,664730),
-('JR20260722000010','112070',600000,0),
-('JR20260722000010','540103',64730,0),
-('JR20260722000011','117015',0,295000),
-('JR20260722000011','112070',295000,0),
-('JR20260722000012','117004',185000,0),
-('JR20260722000012','420106',0,185000),
-('JR20260722000012','520202',12750,0),
-('JR20260722000012','211040',0,12750),
-('JR20260722000012','520203',1000,0),
-('JR20260722000012','211050',0,1000),
-('JR20260722000012','550103',100000,0),
-('JR20260722000012','115040',0,100000),
-('JR20260722000012','520301',71250,0),
-('JR20260722000012','211214',0,71250),
-('JR20260722000013','111010',165000,0),
-('JR20260722000013','540102',30000,0),
-('JR20260722000013','117004',0,185000),
-('JR20260722000013','420101',0,10000),
-('JR20260722000014','117004',200000,0),
-('JR20260722000014','420100',0,200000),
-('JR20260722000014','520308',200000,0),
-('JR20260722000014','211132',0,200000),
-('JR20260722000015','117004',0,200000),
-('JR20260722000015','420100',200000,0),
-('JR20260722000015','520308',0,200000),
-('JR20260722000015','211132',200000,0),
-('JR20260722000016','117004',40000,0),
-('JR20260722000016','420100',0,40000),
-('JR20260722000016','520200',20000,0),
-('JR20260722000016','211020',0,20000),
-('JR20260722000016','520308',20000,0),
-('JR20260722000016','211132',0,20000),
-('JR20260722000017','117004',75000,0),
-('JR20260722000017','420100',0,75000),
-('JR20260722000017','520308',75000,0),
-('JR20260722000017','211132',0,75000),
-('JR20260722000018','117015',295000,0),
-('JR20260722000018','112070',0,295000),
-('JR20260722000019','117015',664730,0),
-('JR20260722000019','540103',0,64730),
-('JR20260722000019','112070',0,600000),
-('JR20260722000020','117003',0,1031180),
-('JR20260722000020','112020',967975,0),
-('JR20260722000020','540103',63205,0),
-('JR20260722000021','117003',0,188000),
-('JR20260722000021','112020',176477,0),
-('JR20260722000021','540103',11523,0),
-('JR20260722000022','117003',0,6450952),
-('JR20260722000022','112020',6055548,0),
-('JR20260722000022','540103',395404,0),
-('JR20260722000023','117003',1031180,0),
-('JR20260722000023','540103',0,63205),
-('JR20260722000023','112020',0,967975),
-('JR20260722000024','117003',188000,0),
-('JR20260722000024','540103',0,11523),
-('JR20260722000024','112020',0,176477),
-('JR20260722000025','117003',6450952,0),
-('JR20260722000025','540103',0,395404),
-('JR20260722000025','112020',0,6055548),
-('JR20260722000026','117004',215000,0),
-('JR20260722000026','420100',0,215000),
-('JR20260722000026','520200',50000,0),
-('JR20260722000026','211020',0,50000),
-('JR20260722000026','520308',165000,0),
-('JR20260722000026','211132',0,165000),
-('JR20260722000027','117003',100000,0),
-('JR20260722000027','117015',155000,0),
-('JR20260722000027','117004',0,255000),
-('JR20260722000028','117004',255000,0),
-('JR20260722000028','117015',0,155000),
-('JR20260722000028','117003',0,100000),
-('JR20260722000029','111010',105000,0),
-('JR20260722000029','117003',50000,0),
-('JR20260722000029','117015',100000,0),
-('JR20260722000029','117004',0,255000),
-('JR20260722000030','211020',375000,0),
-('JR20260722000030','111020',0,375000),
-('JR20260722000031','115010',10851000,0),
-('JR20260722000031','116011',1193610,0),
-('JR20260722000031','211010',0,12044610),
-('JR20260722000032','115010',2777500,0),
-('JR20260722000032','116011',305525,0),
-('JR20260722000032','211010',0,3083025),
-('JR20260722000033','123104',3200000,0),
-('JR20260722000033','116011',352000,0),
-('JR20260722000033','211218',0,3552000),
-('JR20260722000034','115010',2805500,0),
-('JR20260722000034','116011',308605,0),
-('JR20260722000034','211010',0,3114105),
-('JR20260722000035','115020',7491977.949165981,0),
-('JR20260722000035','116011',824118,0),
-('JR20260722000035','211210',0,8316095.949165981),
-('JR20260722000036','211213',0,100000000),
-('JR20260722000036','520305',100000000,0),
-('JR20260728000001','117004',122020,0),
-('JR20260728000001','420108',0,122020),
-('JR20260728000001','550106',101690,0),
-('JR20260728000001','115010',0,101690),
-('JR20260728000002','117004',53630,0),
-('JR20260728000002','410111',0,53630),
-('JR20260728000002','550106',44680,0),
-('JR20260728000002','115010',0,44680),
-('JR20260728000003','115010',2896800,0),
-('JR20260728000003','116011',318648,0),
-('JR20260728000003','211010',0,3215448),
-('JR20260728000004','117004',964635,0),
-('JR20260728000004','420108',0,964635),
-('JR20260728000004','550106',803865,0),
-('JR20260728000004','115010',0,803865),
-('JR20260728000005','117004',953645,0),
-('JR20260728000005','420108',0,953645),
-('JR20260728000005','550106',794705,0),
-('JR20260728000005','115010',0,794705),
-('JR20260729000001','211020',900000,0),
-('JR20260729000001','111020',0,900000),
-('JR20260729000002','115070',1868490.8582621517,0),
-('JR20260729000002','116011',205534,0),
-('JR20260729000002','211219',0,2074024.8582621517),
-('JR20260729000003','115070',2313889.842478373,0),
-('JR20260729000003','116011',254528,0),
-('JR20260729000003','211219',0,2568417.842478373),
-('JR20260729000004','117004',120230,0),
-('JR20260729000004','420108',0,120230),
-('JR20260729000004','550106',100180,0),
-('JR20260729000004','115010',0,100180),
-('JR20260729000005','117004',0,106560),
-('JR20260729000005','420108',106560,0),
-('JR20260729000005','550106',0,88800),
-('JR20260729000005','115010',88800,0),
-('JR20260729000006','117004',159840,0),
-('JR20260729000006','420108',0,159840),
-('JR20260729000006','550106',133200,0),
-('JR20260729000006','115010',0,133200),
-('JR20260729000007','117004',14070,0),
-('JR20260729000007','420108',0,14070),
-('JR20260729000007','550106',11720,0),
-('JR20260729000007','115010',0,11720),
-('JR20260801000001','117004',85000,0),
-('JR20260801000001','420106',0,85000),
-('JR20260801000001','520202',12750,0),
-('JR20260801000001','211040',0,12750),
-('JR20260801000001','520203',1000,0),
-('JR20260801000001','211050',0,1000),
-('JR20260801000001','520301',71250,0),
-('JR20260801000001','211214',0,71250),
-('JR20260801000002','117004',250000,0),
-('JR20260801000002','420100',0,250000),
-('JR20260801000002','520200',150000,0),
-('JR20260801000002','211020',0,150000),
-('JR20260801000002','520308',50000,0),
-('JR20260801000002','211132',0,50000),
-('JR20260801000002','520309',50000,0),
-('JR20260801000002','211133',0,50000),
-('JR20260804000001','117015',810000,0),
-('JR20260804000001','410112',0,10000),
-('JR20260804000001','410115',0,800000),
-('JR20260804000011','117015',664730,0),
-('JR20260804000011','540103',0,118374),
-('JR20260804000011','112020',0,546356),
-('JR20260804000012','117015',563591,0),
-('JR20260804000012','540103',0,100363),
-('JR20260804000012','112020',0,463228),
-('JR20260807000001','115010',1001912.1312,0),
-('JR20260807000001','116011',110210.33443199999,0),
-('JR20260807000001','211010',0,1112122.465632),
-('JR20260807000002','115020',531233.5290507548,0),
-('JR20260807000002','116011',58436,0),
-('JR20260807000002','211210',0,589669.5290507548),
-('JR20260807000003','211010',1112122.465632,0),
-('JR20260807000003','112030',0,1112122.465632),
-('JR20260807000004','530102',132306.137908069,0),
-('JR20260807000004','115020',0,132306.137908069),
-('JR20260807000005','530108',300000,0),
-('JR20260807000005','111010',0,300000),
-('JR20260807000006','211020',78300.69732343382,0),
-('JR20260807000006','211040',10151.853090830624,0),
-('JR20260807000006','211070',150305.067376102,0),
-('JR20260807000006','211101',1166013.9464686762,0),
-('JR20260807000006','112030',0,1404771.5642590427),
-('JR20260819000001','117004',25000,0),
-('JR20260819000001','420100',0,25000),
-('JR20260819000001','520308',25000,0),
-('JR20260819000001','211132',0,25000),
-('JR20260819000002','117004',250000,0),
-('JR20260819000002','420100',0,250000),
-('JR20260819000002','520200',150000,0),
-('JR20260819000002','211020',0,150000),
-('JR20260819000002','520308',50000,0),
-('JR20260819000002','211132',0,50000),
-('JR20260819000002','520309',50000,0),
-('JR20260819000002','211133',0,50000),
-('JR20260819000003','117004',106338,0),
-('JR20260819000003','420108',0,106338),
-('JR20260819000003','550106',81071,0),
-('JR20260819000003','115010',0,81071),
-('JR20260819000004','117004',85000,0),
-('JR20260819000004','420106',0,85000),
-('JR20260819000004','520202',12750,0),
-('JR20260819000004','211040',0,12750),
-('JR20260819000004','520203',1000,0),
-('JR20260819000004','211050',0,1000),
-('JR20260819000004','520301',71250,0),
-('JR20260819000004','211214',0,71250),
-('JR20260819000005','111010',488035,0),
-('JR20260819000005','117004',0,466338),
-('JR20260819000005','116050',0,11697),
-('JR20260819000005','420101',0,10000),
-('JR20260825000001','117004',90000,0),
-('JR20260825000001','420100',0,90000),
-('JR20260825000001','520100',10000,0),
-('JR20260825000001','211140',0,10000),
-('JR20260825000001','520308',75000,0),
-('JR20260825000001','211132',0,75000),
-('JR20260825000001','520309',5000,0),
-('JR20260825000001','211133',0,5000),
-('JR20260825000002','111010',90000,0),
-('JR20260825000002','117004',0,90000),
-('JR20260831000001','520301',200000,0),
-('JR20260831000001','211214',0,200000),
-('JR20260831000002','520301',200000,0),
-('JR20260831000002','211214',0,200000),
-('JR20260901000001','117004',159250,0),
-('JR20260901000001','410109',0,159250),
-('JR20260901000001','510202',33387,0),
-('JR20260901000001','211041',0,33387),
-('JR20260901000001','510203',11000,0),
-('JR20260901000001','211051',0,11000),
-('JR20260901000001','550103',10000,0),
-('JR20260901000001','115040',0,10000),
-('JR20260901000001','510106',10000,0),
-('JR20260901000001','211180',0,10000),
-('JR20260901000001','520301',84863,0),
-('JR20260901000001','211214',0,84863),
-('JR20260901000001','520303',10000,0),
-('JR20260901000001','211216',0,10000),
-('JR20260901000002','117004',89250,0),
-('JR20260901000002','410109',0,89250),
-('JR20260901000002','510202',13387,0),
-('JR20260901000002','211041',0,13387),
-('JR20260901000002','510203',1000,0),
-('JR20260901000002','211051',0,1000),
-('JR20260901000002','520301',74863,0),
-('JR20260901000002','211214',0,74863),
-('JR20260901000003','117004',0,159250),
-('JR20260901000003','410109',159250,0),
-('JR20260901000003','510202',0,33387),
-('JR20260901000003','211041',33387,0),
-('JR20260901000003','510203',0,11000),
-('JR20260901000003','211051',11000,0),
-('JR20260901000003','550103',0,10000),
-('JR20260901000003','115040',10000,0),
-('JR20260901000003','510106',0,10000),
-('JR20260901000003','211180',10000,0),
-('JR20260901000003','520301',0,84863),
-('JR20260901000003','211214',84863,0),
-('JR20260901000003','520303',0,10000),
-('JR20260901000003','211216',10000,0),
-('JR20260901000004','117004',159250,0),
-('JR20260901000004','410109',0,159250),
-('JR20260901000004','510202',33387,0),
-('JR20260901000004','211041',0,33387),
-('JR20260901000004','510203',11000,0),
-('JR20260901000004','211051',0,11000),
-('JR20260901000004','550103',10000,0),
-('JR20260901000004','115040',0,10000),
-('JR20260901000004','510106',10000,0),
-('JR20260901000004','211180',0,10000),
-('JR20260901000004','520301',84863,0),
-('JR20260901000004','211214',0,84863),
-('JR20260901000004','520303',10000,0),
-('JR20260901000004','211216',0,10000),
-('JR20260901000005','115010',4029091.21312,0),
-('JR20260901000005','116011',443200.0334432,0),
-('JR20260901000005','211010',0,4472291.2465632),
-('JR20260901000006','115010',223377000,0),
-('JR20260901000006','116011',24571470,0),
-('JR20260901000006','211010',0,247948470),
-('JR20260901000007','115010',0,223377000),
-('JR20260901000007','116011',0,24571470),
-('JR20260901000007','211010',247948470,0),
-('JR20260901000008','211010',4472291.2465632,0),
-('JR20260901000008','111020',0,4472291.2465632),
-('JR20260901000009','211010',653790,0),
-('JR20260901000009','111020',0,653790),
-('JR20260901000010','211010',888222,0),
-('JR20260901000010','111020',0,888222),
-('JR20260901000011','115010',1016412.1312,0),
-('JR20260901000011','116011',111805.33443199999,0),
-('JR20260901000011','211010',0,1128217.465632),
-('JR20260901000012','115010',0,1016412.1312),
-('JR20260901000012','116011',0,111805.33443199999),
-('JR20260901000012','211010',1128217.465632,0),
-('JR20260901000013','115010',1016412.1312,0),
-('JR20260901000013','116011',111805,0),
-('JR20260901000013','211010',0,1128217.1312),
-('JR20260901000014','115010',0,1016412.1312),
-('JR20260901000014','116011',0,111805),
-('JR20260901000014','211010',1128217.1312,0),
-('JR20260901000015','115010',1016412.1312,0),
-('JR20260901000015','116011',111805,0),
-('JR20260901000015','211010',0,1128217.1312),
-('JR20260901000016','115010',0,1016412.1312),
-('JR20260901000016','116011',0,111805),
-('JR20260901000016','211010',1128217.1312,0),
-('JR20260901000017','115010',948022.1312,0),
-('JR20260901000017','116011',104282,0),
-('JR20260901000017','211010',0,1052304.1312),
-('JR20260901000018','5301201',1000000000,0),
-('JR20260901000018','112010',0,1000000000),
-('JR20260902000001','117004',225000,0),
-('JR20260902000001','420107',0,225000),
-('JR20260902000001','520204',75000,0),
-('JR20260902000001','211070',0,75000),
-('JR20260902000001','520205',7000,0),
-('JR20260902000001','211080',0,7000),
-('JR20260902000001','520302',143000,0),
-('JR20260902000001','211215',0,143000),
-('JR20260902000002','117004',25000,0),
-('JR20260902000002','420100',0,25000),
-('JR20260902000002','520308',25000,0),
-('JR20260902000002','211132',0,25000),
-('JR20260902000003','117004',256300,0),
-('JR20260902000003','420100',0,256300),
-('JR20260902000003','520200',140000,0),
-('JR20260902000003','211020',0,140000),
-('JR20260902000003','520308',116300,0),
-('JR20260902000003','211132',0,116300),
-('JR20260903000001','117004',35000,0),
-('JR20260903000001','420100',0,35000),
-('JR20260903000001','520201',10000,0),
-('JR20260903000001','211030',0,10000),
-('JR20260903000001','520308',25000,0),
-('JR20260903000001','211132',0,25000),
-('JR20260903000002','117004',85000,0),
-('JR20260903000002','420106',0,85000),
-('JR20260903000002','520202',12750,0),
-('JR20260903000002','211040',0,12750),
-('JR20260903000002','520203',1000,0),
-('JR20260903000002','211050',0,1000),
-('JR20260903000002','520301',71250,0),
-('JR20260903000002','211214',0,71250),
-('JR20260903000003','111010',660375,0),
-('JR20260903000003','117004',0,650375),
-('JR20260903000003','420101',0,10000),
-('JR20260904000001','117004',250000,0),
-('JR20260904000001','420100',0,250000),
-('JR20260904000001','520200',150000,0),
-('JR20260904000001','211020',0,150000),
-('JR20260904000001','520308',50000,0),
-('JR20260904000001','211132',0,50000),
-('JR20260904000001','520309',50000,0),
-('JR20260904000001','211133',0,50000),
-('JR20260905000001','211228',0,10000000),
-('JR20260905000001','520305',10000000,0),
-('JR20260909000001','117004',250000,0),
-('JR20260909000001','420100',0,250000),
-('JR20260909000001','520200',150000,0),
-('JR20260909000001','211020',0,150000),
-('JR20260909000001','520308',50000,0),
-('JR20260909000001','211132',0,50000),
-('JR20260909000001','520309',50000,0),
-('JR20260909000001','211133',0,50000),
-('JR20260909000002','117004',87500,0),
-('JR20260909000002','420100',0,87500),
-('JR20260909000002','520200',24000,0),
-('JR20260909000002','211020',0,24000),
-('JR20260909000002','520308',63500,0),
-('JR20260909000002','211132',0,63500),
-('JR20260909000003','111010',347500,0),
-('JR20260909000003','117004',0,337500),
-('JR20260909000003','420101',0,10000),
-('JR20260909000004','117004',337500,0),
-('JR20260909000004','420101',10000,0),
-('JR20260909000004','111010',0,347500),
-('JR20260909000005','111010',347500,0),
-('JR20260909000005','117004',0,337500),
-('JR20260909000005','420101',0,10000),
-('JR20260909000006','117004',250000,0),
-('JR20260909000006','420100',0,250000),
-('JR20260909000006','520200',150000,0),
-('JR20260909000006','211020',0,150000),
-('JR20260909000006','520308',50000,0),
-('JR20260909000006','211132',0,50000),
-('JR20260909000006','520309',50000,0),
-('JR20260909000006','211133',0,50000),
-('JR20260909000007','211020',300000,0),
-('JR20260909000007','111020',0,300000),
-('JR20260909000008','211020',0,300000),
-('JR20260909000008','111020',300000,0),
-('JR20260909000009','211020',0,78300.69732343382),
-('JR20260909000009','211040',0,10151.853090830624),
-('JR20260909000009','211070',0,150305.067376102),
-('JR20260909000009','211101',0,1166013.9464686762),
-('JR20260909000009','112030',1404771.5642590427,0),
-('JR20260909000010','211020',0,900000),
-('JR20260909000010','111020',900000,0),
-('JR20260909000011','211020',0,375000),
-('JR20260909000011','111020',375000,0),
-('JR20260909000012','211020',0,300000),
-('JR20260909000012','112010',300000,0),
-('JR20260914000001','117004',250000,0),
-('JR20260914000001','420100',0,250000),
-('JR20260914000001','520200',150000,0),
-('JR20260914000001','211020',0,150000),
-('JR20260914000001','520308',50000,0),
-('JR20260914000001','211132',0,50000),
-('JR20260914000001','520309',50000,0),
-('JR20260914000001','211133',0,50000),
-('JR20260914000002','117004',36000,0),
-('JR20260914000002','420100',0,36000),
-('JR20260914000002','520308',36000,0),
-('JR20260914000002','211132',0,36000),
-('JR20260914000003','117004',100000,0),
-('JR20260914000003','420100',0,100000),
-('JR20260914000003','520200',60000,0),
-('JR20260914000003','211020',0,60000),
-('JR20260914000003','520308',40000,0),
-('JR20260914000003','211132',0,40000),
-('JR20260914000004','117004',62160,0),
-('JR20260914000004','420108',0,62160),
-('JR20260914000004','550106',51800,0),
-('JR20260914000004','115010',0,51800),
-('JR20260914000005','520308',0,38089.78891797676),
-('JR20260914000005','211132',38089.78891797676,0),
-('JR20260914000005','520200',0,58300.697323433815),
-('JR20260914000005','211020',58300.697323433815,0),
-('JR20260914000005','520309',0,19433.56577447794),
-('JR20260914000005','211133',19433.56577447794,0),
-('JR20260914000005','117003',0,2507300),
-('JR20260914000005','420100',115824.0520158885,0),
-('JR20260914000005','520301',0,27692.83122863106),
-('JR20260914000005','211214',27692.83122863106,0),
-('JR20260914000005','520202',0,4955.559272491874),
-('JR20260914000005','211040',4955.559272491874,0),
-('JR20260914000005','520203',0,388.67131548955876),
-('JR20260914000005','211050',388.67131548955876,0),
-('JR20260914000005','420106',33037.06181661249,0),
-('JR20260914000005','520302',0,107370.4509039906),
-('JR20260914000005','211215',107370.4509039906,0),
-('JR20260914000005','520204',0,75305.067376102),
-('JR20260914000005','211070',75305.067376102,0),
-('JR20260914000005','520205',0,1943.3565774477938),
-('JR20260914000005','211080',1943.3565774477938,0),
-('JR20260914000005','420107',184618.87485754042,0),
-('JR20260914000005','510206',0,1943356.5774477937),
-('JR20260914000005','211101',1943356.5774477937,0),
-('JR20260914000005','510207',0,116601.39464686763),
-('JR20260914000005','211111',116601.39464686763,0),
-('JR20260914000005','410116',2059957.9720946613,0),
-('JR20260914000005','410112',3886.7131548955876,0),
-('JR20260914000005','420108',109975.32606040162,0),
-('JR20260914000006','520308',98000,0),
-('JR20260914000006','211132',0,98000),
-('JR20260914000006','520200',150000,0),
-('JR20260914000006','211020',0,150000),
-('JR20260914000006','520309',50000,0),
-('JR20260914000006','211133',0,50000),
-('JR20260914000006','117003',6450952,0),
-('JR20260914000006','420100',0,298000),
-('JR20260914000006','520301',71250,0),
-('JR20260914000006','211214',0,71250),
-('JR20260914000006','520202',12750,0),
-('JR20260914000006','211040',0,12750),
-('JR20260914000006','520203',1000,0),
-('JR20260914000006','211050',0,1000),
-('JR20260914000006','420106',0,85000),
-('JR20260914000006','520302',276250,0),
-('JR20260914000006','211215',0,276250),
-('JR20260914000006','520204',193750,0),
-('JR20260914000006','211070',0,193750),
-('JR20260914000006','520205',5000,0),
-('JR20260914000006','211080',0,5000),
-('JR20260914000006','420107',0,475000),
-('JR20260914000006','510206',5000000,0),
-('JR20260914000006','211101',0,5000000),
-('JR20260914000006','510207',300000,0),
-('JR20260914000006','211111',0,300000),
-('JR20260914000006','410116',0,5300000),
-('JR20260914000006','410112',0,10000),
-('JR20260914000006','420108',0,282952),
-('JR20260914000007','570101',0,116403.27393959838),
-('JR20260914000007','550106',116403.27393959838,0),
-('JR20260914000007','117003',2507300,0),
-('JR20260914000007','112020',0,2507300),
-('JR20260915000001','117004',90000,0),
-('JR20260915000001','420100',0,90000),
-('JR20260915000001','520100',10000,0),
-('JR20260915000001','211140',0,10000),
-('JR20260915000001','520308',75000,0),
-('JR20260915000001','211132',0,75000),
-('JR20260915000001','520309',5000,0),
-('JR20260915000001','211133',0,5000),
-('JR20260915000002','111010',100000,0),
-('JR20260915000002','117004',0,90000),
-('JR20260915000002','420101',0,10000),
-('JR20260915000003','117004',90000,0),
-('JR20260915000003','420101',10000,0),
-('JR20260915000003','111010',0,100000),
-('JR20260915000004','111010',100000,0),
-('JR20260915000004','117004',0,90000),
-('JR20260915000004','420101',0,10000),
-('JR20260916000001','117004',135000,0),
-('JR20260916000001','420100',0,135000),
-('JR20260916000001','520201',60000,0),
-('JR20260916000001','211030',0,60000),
-('JR20260916000001','520308',75000,0),
-('JR20260916000001','211132',0,75000),
-('JR20260916000002','117004',250000,0),
-('JR20260916000002','420100',0,250000),
-('JR20260916000002','520200',150000,0),
-('JR20260916000002','211020',0,150000),
-('JR20260916000002','520308',50000,0),
-('JR20260916000002','211132',0,50000),
-('JR20260916000002','520309',50000,0),
-('JR20260916000002','211133',0,50000),
-('JR20260916000003','117004',92810,0),
-('JR20260916000003','420108',0,92810),
-('JR20260916000003','550106',69941,0),
-('JR20260916000003','115010',0,69941),
-('JR20260916000004','117004',85000,0),
-('JR20260916000004','420106',0,85000),
-('JR20260916000004','520202',12750,0),
-('JR20260916000004','211040',0,12750),
-('JR20260916000004','520203',1000,0),
-('JR20260916000004','211050',0,1000),
-('JR20260916000004','520301',71250,0),
-('JR20260916000004','211214',0,71250),
-('JR20260916000005','117004',225000,0),
-('JR20260916000005','420107',0,225000),
-('JR20260916000005','520204',75000,0),
-('JR20260916000005','211070',0,75000),
-('JR20260916000005','520205',7000,0),
-('JR20260916000005','211080',0,7000),
-('JR20260916000005','520302',143000,0),
-('JR20260916000005','211215',0,143000),
-('JR20260916000006','111010',558019,0),
-('JR20260916000006','117004',0,537810),
-('JR20260916000006','116050',0,10209),
-('JR20260916000006','420101',0,10000),
-('JR20260916000007','117004',300000,0),
-('JR20260916000007','420106',0,300000),
-('JR20260916000007','520301',300000,0),
-('JR20260916000007','211214',0,300000),
-('JR20260916000008','117004',475000,0),
-('JR20260916000008','420107',0,475000),
-('JR20260916000008','520204',193750,0),
-('JR20260916000008','211070',0,193750),
-('JR20260916000008','520205',5000,0),
-('JR20260916000008','211080',0,5000),
-('JR20260916000008','520302',276250,0),
-('JR20260916000008','211215',0,276250),
-('JR20260917000001','117004',250000,0),
-('JR20260917000001','420100',0,250000),
-('JR20260917000001','520200',150000,0),
-('JR20260917000001','211020',0,150000),
-('JR20260917000001','520308',50000,0),
-('JR20260917000001','211132',0,50000),
-('JR20260917000001','520309',50000,0),
-('JR20260917000001','211133',0,50000),
-('JR20260917000002','117004',85000,0),
-('JR20260917000002','420106',0,85000),
-('JR20260917000002','520202',12750,0),
-('JR20260917000002','211040',0,12750),
-('JR20260917000002','520203',1000,0),
-('JR20260917000002','211050',0,1000),
-('JR20260917000002','520301',71250,0),
-('JR20260917000002','211214',0,71250),
-('JR20260917000003','117004',100000,0),
-('JR20260917000003','420100',0,100000),
-('JR20260917000003','520200',75000,0),
-('JR20260917000003','211020',0,75000),
-('JR20260917000003','520308',25000,0),
-('JR20260917000003','211132',0,25000),
-('JR20260918000001','117015',407586,0),
-('JR20260918000001','540103',0,54848),
-('JR20260918000001','112020',0,352738),
-('JR20260918000002','117015',285709,0),
-('JR20260918000002','540103',0,38447),
-('JR20260918000002','112020',0,247262),
-('JR20260918000003','117003',570000,0),
-('JR20260918000003','570102',0,270000),
-('JR20260918000003','112020',0,300000),
-('JR20260918000004','117003',307844,0),
-('JR20260918000004','540103',0,39952),
-('JR20260918000004','112020',0,267892),
-('JR20260918000005','117003',36896,0),
-('JR20260918000005','540103',0,4788),
-('JR20260918000005','112020',0,32108),
-('JR20260918000006','117015',200000,0),
-('JR20260918000006','112020',0,200000),
-('JR20260918000007','117004',250000,0),
-('JR20260918000007','420100',0,250000),
-('JR20260918000007','520200',150000,0),
-('JR20260918000007','211020',0,150000),
-('JR20260918000007','520308',50000,0),
-('JR20260918000007','211132',0,50000),
-('JR20260918000007','520309',50000,0),
-('JR20260918000007','211133',0,50000),
-('JR20260918000008','530108',300000,0),
-('JR20260918000008','111010',0,300000),
-('JR20260918000009','115010',4679200,0),
-('JR20260918000009','116011',514712,0),
-('JR20260918000009','211010',0,5193912),
-('JR20260918000010','115010',881400,0),
-('JR20260918000010','116011',96954,0),
-('JR20260918000010','211010',0,978354),
-('JR20260918000011','211010',5193912,0),
-('JR20260918000011','111020',0,5193912),
-('JR20260918000012','211213',0,2000000),
-('JR20260918000012','520305',2000000,0),
-('JR20260918000013','530115',10500000,0),
-('JR20260918000013','111010',0,10500000),
-('JR20260918000014','211020',600000,0),
-('JR20260918000014','111020',0,600000),
-('JR20260918000015','117004',250000,0),
-('JR20260918000015','420100',0,250000),
-('JR20260918000015','520200',150000,0),
-('JR20260918000015','211020',0,150000),
-('JR20260918000015','520308',50000,0),
-('JR20260918000015','211132',0,50000),
-('JR20260918000015','520309',50000,0),
-('JR20260918000015','211133',0,50000),
-('JR20260918000016','111010',500000,0),
-('JR20260918000016','117004',0,500000),
-('JR20260918000017','117004',500000,0),
-('JR20260918000017','111010',0,500000),
-('JR20260918000018','112020',1000000,0),
-('JR20260918000018','410120',0,1000000),
-('JR20260918000019','410120',1000000,0),
-('JR20260918000019','540101',400000,0),
-('JR20260918000019','410112',0,9999.999999999998),
-('JR20260918000019','410115',0,400000),
-('JR20260918000019','117004',0,723500),
-('JR20260918000019','111010',0,266500),
-('JR20260919000001','117004',33000,0),
-('JR20260919000001','410111',0,33000),
-('JR20260919000001','550106',20780,0),
-('JR20260919000001','115010',0,20780),
-('JR20260919000002','117004',250000,0),
-('JR20260919000002','420100',0,250000),
-('JR20260919000002','520200',150000,0),
-('JR20260919000002','211020',0,150000),
-('JR20260919000002','520308',50000,0),
-('JR20260919000002','211132',0,50000),
-('JR20260919000002','520309',50000,0),
-('JR20260919000002','211133',0,50000),
-('JR20260919000003','117004',250000,0),
-('JR20260919000003','420100',0,250000),
-('JR20260919000003','520200',150000,0),
-('JR20260919000003','211020',0,150000),
-('JR20260919000003','520308',50000,0),
-('JR20260919000003','211132',0,50000),
-('JR20260919000003','520309',50000,0),
-('JR20260919000003','211133',0,50000),
-('JR20260919000004','117004',85000,0),
-('JR20260919000004','420106',0,85000),
-('JR20260919000004','520202',12750,0),
-('JR20260919000004','211040',0,12750),
-('JR20260919000004','520203',1000,0),
-('JR20260919000004','211050',0,1000),
-('JR20260919000004','520301',71250,0),
-('JR20260919000004','211214',0,71250),
-('JR20260919000005','117004',225000,0),
-('JR20260919000005','420107',0,225000),
-('JR20260919000005','520204',75000,0),
-('JR20260919000005','211070',0,75000),
-('JR20260919000005','520205',7000,0),
-('JR20260919000005','211080',0,7000),
-('JR20260919000005','520302',143000,0),
-('JR20260919000005','211215',0,143000);
+('JR20261020000001','111010',610000,0),
+('JR20261020000001','117004',0,600000),
+('JR20261020000001','420101',0,10000),
+('JR20261020000002','530115',5000000,0),
+('JR20261020000002','111010',0,5000000),
+('JR20261021000001','115070',161172,0),
+('JR20261021000001','116011',17729,0),
+('JR20261021000001','112020',0,178901),
+('JR20261021000002','530113',23045.37769717568,0),
+('JR20261021000002','115070',0,23045.37769717568),
+('JR20261021000003','430109',0,100000),
+('JR20261021000003','112010',100000,0),
+('JR20261021000004','117004',250000,0),
+('JR20261021000004','420100',0,250000),
+('JR20261021000004','520200',150000,0),
+('JR20261021000004','211020',0,150000),
+('JR20261021000004','520308',50000,0),
+('JR20261021000004','211132',0,50000),
+('JR20261021000004','520309',50000,0),
+('JR20261021000004','211133',0,50000),
+('JR20261021000005','112020',560000,0),
+('JR20261021000005','420106',0,85000),
+('JR20261021000005','420107',0,225000),
+('JR20261021000005','117004',0,250000),
+('JR20261021000005','520202',12750,0),
+('JR20261021000005','211040',0,12750),
+('JR20261021000005','520203',1000,0),
+('JR20261021000005','211050',0,1000),
+('JR20261021000005','520301',71250,0),
+('JR20261021000005','211214',0,71250),
+('JR20261021000005','520204',75000,0),
+('JR20261021000005','211070',0,75000),
+('JR20261021000005','520205',7000,0),
+('JR20261021000005','211080',0,7000),
+('JR20261021000005','520302',143000,0),
+('JR20261021000005','211215',0,143000),
+('JR20261021000006','117004',92000,0),
+('JR20261021000006','410109',0,92000),
+('JR20261021000006','510202',14750,0),
+('JR20261021000006','211041',0,14750),
+('JR20261021000006','510203',2000,0),
+('JR20261021000006','211051',0,2000),
+('JR20261021000006','550103',1000,0),
+('JR20261021000006','115040',0,1000),
+('JR20261021000006','510106',1000,0),
+('JR20261021000006','211180',0,1000),
+('JR20261021000006','520301',72250,0),
+('JR20261021000006','211214',0,72250),
+('JR20261021000006','520303',1000,0),
+('JR20261021000006','211216',0,1000),
+('JR20261021000007','117004',60000,0),
+('JR20261021000007','420100',0,60000),
+('JR20261021000007','520200',24000,0),
+('JR20261021000007','211020',0,24000),
+('JR20261021000007','520308',36000,0),
+('JR20261021000007','211132',0,36000),
+('JR20261021000008','112020',60000,0),
+('JR20261021000008','117004',0,60000),
+('JR20261021000009','117004',250000,0),
+('JR20261021000009','420100',0,250000),
+('JR20261021000009','520200',150000,0),
+('JR20261021000009','211020',0,150000),
+('JR20261021000009','520308',50000,0),
+('JR20261021000009','211132',0,50000),
+('JR20261021000009','520309',50000,0),
+('JR20261021000009','211133',0,50000),
+('JR20261022000001','117004',126000,0),
+('JR20261022000001','420100',0,126000),
+('JR20261022000001','520308',126000,0),
+('JR20261022000001','211132',0,126000),
+('JR20261022000002','117004',250000,0),
+('JR20261022000002','420100',0,250000),
+('JR20261022000002','520200',150000,0),
+('JR20261022000002','211020',0,150000),
+('JR20261022000002','520308',50000,0),
+('JR20261022000002','211132',0,50000),
+('JR20261022000002','520309',50000,0),
+('JR20261022000002','211133',0,50000),
+('JR20261022000003','117004',250000,0),
+('JR20261022000003','420100',0,250000),
+('JR20261022000003','520200',150000,0),
+('JR20261022000003','211020',0,150000),
+('JR20261022000003','520308',50000,0),
+('JR20261022000003','211132',0,50000),
+('JR20261022000003','520309',50000,0),
+('JR20261022000003','211133',0,50000),
+('JR20261022000004','117004',1600,0),
+('JR20261022000004','420108',0,1600),
+('JR20261022000004','550106',1330,0),
+('JR20261022000004','115010',0,1330),
+('JR20261022000005','117004',85000,0),
+('JR20261022000005','420106',0,85000),
+('JR20261022000005','520202',12750,0),
+('JR20261022000005','211040',0,12750),
+('JR20261022000005','520203',1000,0),
+('JR20261022000005','211050',0,1000),
+('JR20261022000005','520301',71250,0),
+('JR20261022000005','211214',0,71250),
+('JR20261022000006','117004',225000,0),
+('JR20261022000006','420107',0,225000),
+('JR20261022000006','520204',75000,0),
+('JR20261022000006','211070',0,75000),
+('JR20261022000006','520205',7000,0),
+('JR20261022000006','211080',0,7000),
+('JR20261022000006','520302',143000,0),
+('JR20261022000006','211215',0,143000),
+('JR20261022000007','117003',954776,0),
+('JR20261022000007','117004',0,944600),
+('JR20261022000007','116050',0,176),
+('JR20261022000007','420101',0,10000),
+('JR20261022000008','115010',260291.21312,0),
+('JR20261022000008','116011',28632.0334432,0),
+('JR20261022000008','211010',0,288923.2465632),
+('JR20261022000009','115010',0,1955000),
+('JR20261022000009','530110',1955000,0),
+('JR20261022000010','211010',288923.2465632,0),
+('JR20261022000010','111020',0,288923.2465632),
+('JR20261026000001','117004',210000,0),
+('JR20261026000001','410110',0,210000),
+('JR20261026000001','510204',57500,0),
+('JR20261026000001','211190',0,57500),
+('JR20261026000001','510205',5000,0),
+('JR20261026000001','211200',0,5000),
+('JR20261026000001','520302',147500,0),
+('JR20261026000001','211215',0,147500),
+('JR20261026000002','117010',1400000,0),
+('JR20261026000002','115060',0,1400000);
 /*!40000 ALTER TABLE `detailjurnal` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -14901,7 +14334,18 @@ INSERT INTO `detailpesan` VALUES
 ('PB20260918001','B000000193','SAL',75,12980,973500,0,0,973500,'',75,'0000-00-00'),
 ('PB20260918002','B000000610','AMP5',2,217800,435600,0,0,435600,'',2,'0000-00-00'),
 ('PB20260918002','B000000161','TAB',10,2835,28350,0,0,28350,'',10,'0000-00-00'),
-('PB20260918002','B000001405','DRP',10,41745,417450,0,0,417450,'',10,'0000-00-00');
+('PB20260918002','B000001405','DRP',10,41745,417450,0,0,417450,'',10,'0000-00-00'),
+('PB20260921001','B000001655','TAB',80,13000,1040000,0,0,1040000,'',80,'2016-02-17'),
+('PB20260921001','B000000461','GEL',90,15950,1435500,0,0,1435500,'',90,'2018-10-31'),
+('PB20260921001','B000001603','BTL',90,29282,2635380,0,0,2635380,'',90,'0000-00-00'),
+('PB20261016001','B000000566','TAB',70,363,25410,0,0,25410,'',70,'2018-11-30'),
+('PB20261016001','B000000571','TAB',90,3330,299700,0,0,299700,'',90,'2025-05-16'),
+('PB20261016001','B000000790','SYR',90,5540,498600,0,0,498600,'',90,'2025-05-16'),
+('PB20261017001','B000000554','TAB',10,11000,110000,0,0,110000,'',10,'0000-00-00'),
+('PB20261017001','B000001207','TAB',10,2750,27500,0,0,27500,'',10,'0000-00-00'),
+('PB20260817002','B000000396','DRP',3,55500,166500,0,0,166500,'',3,'2018-08-30'),
+('PB20261022001','B000000556','TAB',10,1139.121312,11391.21312,0,0,11391.21312,'',10,'2025-04-06'),
+('PB20261022001','B000000559','AMP5',10,24890,248900,0,0,248900,'',10,'0000-00-00');
 /*!40000 ALTER TABLE `detailpesan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -15216,8 +14660,8 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `diagnosa_pasien` WRITE;
 /*!40000 ALTER TABLE `diagnosa_pasien` DISABLE KEYS */;
 INSERT INTO `diagnosa_pasien` VALUES
-('2026/02/25/000001','I50.0','Ralan',1,'Baru'),
-('2026/02/25/000001','K30','Ralan',1,'Baru'),
+('2026/02/25/000001','D00.0','Ralan',2,'Lama'),
+('2026/02/25/000001','I50.1','Ralan',1,'Baru'),
 ('2026/03/11/000001','I50.0','Ralan',1,'Baru'),
 ('2026/03/11/000002','A01.3','Ralan',1,'Baru'),
 ('2026/03/11/000002','D00.0','Ralan',1,'Baru'),
@@ -15232,6 +14676,8 @@ INSERT INTO `diagnosa_pasien` VALUES
 ('2026/05/05/000001','A01.0','Ralan',1,'Baru'),
 ('2026/05/05/000001','D00.0','Ralan',2,'Baru'),
 ('2026/05/08/000001','I50.0','Ralan',1,'Lama'),
+('2026/05/11/000003','I50.0','Ranap',1,'Baru'),
+('2026/05/11/000003','K30','Ranap',1,'Baru'),
 ('2026/05/12/000001','A01.0','Ralan',1,'Baru'),
 ('2026/05/12/000001','D00.0','Ralan',2,'Baru'),
 ('2026/05/12/000002','A01.0','Ralan',1,'Baru'),
@@ -15268,13 +14714,24 @@ INSERT INTO `diagnosa_pasien` VALUES
 ('2026/09/10/000001','I50.0','Ralan',1,'Lama'),
 ('2026/09/14/000001','A01.0','Ralan',1,'Baru'),
 ('2026/09/14/000001','D00.0','Ralan',2,'Baru'),
+('2026/09/14/000001','D00.0','Ranap',1,'Lama'),
+('2026/09/14/000001','I50.0','Ranap',1,'Lama'),
 ('2026/09/14/000002','I50.0','Ralan',1,'Lama'),
 ('2026/09/16/000001','I50.0','Ralan',1,'Baru'),
 ('2026/09/16/000002','I50.0','Ralan',1,'Baru'),
 ('2026/09/17/000001','A01.0','Ralan',1,'Baru'),
 ('2026/09/18/000001','I50.0','Ralan',1,'Baru'),
 ('2026/09/19/000001','A01.0','Ralan',1,'Baru'),
-('2026/09/20/000002','I50.0','Ralan',1,'Baru');
+('2026/09/20/000002','I50.0','Ralan',1,'Baru'),
+('2026/09/21/000001','I50.0','Ralan',1,'Baru'),
+('2026/09/21/000002','I50.0','Ralan',1,'Lama'),
+('2026/10/05/000001','A01.0','Ralan',1,'Baru'),
+('2026/10/15/000001','A91.1','Ralan',1,'Baru'),
+('2026/10/21/000001','A01.0','Ralan',1,'Baru'),
+('2026/10/21/000001','D00.0','Ralan',2,'Baru'),
+('2026/10/21/000002','A01.0','Ralan',1,'Baru'),
+('2026/10/21/000002','D00.0','Ralan',2,'Baru'),
+('2026/10/22/000001','I50.0','Ralan',1,'Baru');
 /*!40000 ALTER TABLE `diagnosa_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -15400,7 +14857,9 @@ LOCK TABLES `dpjp_ranap` WRITE;
 /*!40000 ALTER TABLE `dpjp_ranap` DISABLE KEYS */;
 INSERT INTO `dpjp_ranap` VALUES
 ('2026/02/25/000005','D0000002'),
+('2026/03/14/000001','D0000002'),
 ('2026/07/28/000001','D0000002'),
+('2026/03/14/000001','D0000003'),
 ('2026/07/28/000001','D0000003'),
 ('2026/07/29/000002','D0000003'),
 ('2026/08/06/000001','D0000003'),
@@ -15737,9 +15196,11 @@ INSERT INTO `gambar_radiologi` VALUES
 ('2026/06/03/000004','2026-06-03','21:05:59','pages/upload/polos1.jpg'),
 ('2026/06/29/000003','2026-06-29','10:30:19','pages/upload/polos1_Thorak.jpg'),
 ('2026/07/21/000001','2026-07-21','10:57:13','pages/upload/polos1_Thorak.jpg'),
+('2026/09/14/000001','2026-10-26','10:21:58','pages/upload/polos1_Thorak.jpg'),
 ('2026/09/16/000001','2026-09-16','10:27:06','pages/upload/polos1_Thorak.jpg'),
 ('2026/09/16/000002','2026-09-16','09:56:05','pages/upload/polos1_Thorak.jpg'),
-('2026/09/20/000002','2026-09-19','11:15:52','pages/upload/polos1_Thorak.jpg');
+('2026/09/20/000002','2026-09-19','11:15:52','pages/upload/polos1_Thorak.jpg'),
+('2026/10/22/000001','2026-10-22','10:58:20','pages/upload/WhatsApp_Image_2026-09-19_at_12.01.13.jpeg');
 /*!40000 ALTER TABLE `gambar_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -16308,7 +15769,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000454','AP',0,'',''),
 ('B000000456','AP',0,'',''),
 ('B000000460','AP',0,'',''),
-('B000000461','AP',0,'',''),
 ('B000000462','AP',0,'',''),
 ('B000000463','AP',0,'',''),
 ('B000000464','AP',0,'',''),
@@ -16458,7 +15918,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000784','AP',0,'',''),
 ('B000000785','AP',0,'',''),
 ('B000000786','AP',0,'',''),
-('B000000790','AP',0,'',''),
 ('B000000792','AP',0,'',''),
 ('B000000793','AP',0,'',''),
 ('B000000794','AP',0,'',''),
@@ -17588,7 +17047,7 @@ INSERT INTO `gudangbarang` VALUES
 ('A000000001','AP',9,'',''),
 ('B000000553','AP',9,'1','PB20191230001'),
 ('B000001681','AP',9,'',''),
-('B000001207','AP',9.400000000000023,'',''),
+('B000008024','AP',9,'',''),
 ('2018001','AP',10,'123123','PB20240823001'),
 ('A000000031','AP',10,'',''),
 ('A000000032','AP',10,'',''),
@@ -17667,7 +17126,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001908','AP',10,'',''),
 ('B000001911','AP',10,'',''),
 ('B000002014','GD',10,'',''),
-('B000008024','AP',10,'',''),
 ('A000000002','IGD',11,'',''),
 ('B000001781','ICU',11,'',''),
 ('B000001344','AP',12,'',''),
@@ -17676,7 +17134,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001783','ICU',12,'',''),
 ('B000000637','AP',15,'',''),
 ('B000001783','B0014',16,'',''),
-('B000000559','AP',17,'',''),
 ('B000001174','AP',17,'',''),
 ('B000001880','GD',17,'',''),
 ('B000008019','AP',19,'',''),
@@ -17696,6 +17153,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001809','IGD',21,'',''),
 ('A000000793','AP',25,'',''),
 ('B000001497','GD',25,'',''),
+('B000000559','AP',27,'',''),
 ('B000000567','AP',27,'',''),
 ('A000000004','AP',29,'',''),
 ('B000001274','AP',29,'',''),
@@ -17735,17 +17193,16 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001781','IGD',54,'',''),
 ('B000001341','AP',56,'',''),
 ('B000000789','AP',57,'',''),
-('B000000396','GD',60,'',''),
 ('B000000433','GD',60,'',''),
 ('B000001700','AP',60,'',''),
 ('B000001785','GD',60,'',''),
 ('B000001583','AP',62,'',''),
+('B000000396','GD',63,'',''),
 ('B000000565','AP',64,'',''),
 ('B000000729','AP',66,'',''),
 ('B000000553','AP',69,'',''),
 ('B000001498','AP',69,'',''),
 ('B000000224','GD',70,'',''),
-('B000000554','GD',70,'',''),
 ('B000000598','AP',70,'',''),
 ('B000000630','AP',70,'',''),
 ('B000000634','AP',70,'',''),
@@ -17768,6 +17225,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000405','AP',80,'',''),
 ('B000000409','GD',80,'',''),
 ('B000000554','AP',80,'2','PB20200103001'),
+('B000000554','GD',80,'',''),
 ('B000000627  ','AP',80,'1234','PB20220917002'),
 ('B000000671','GD',80,'',''),
 ('B000000675','AP',80,'',''),
@@ -17798,6 +17256,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000429','AP',90,'',''),
 ('B000000455','AP',90,'',''),
 ('B000000457','AP',90,'',''),
+('B000000461','AP',90,'',''),
 ('B000000560','AP',90,'',''),
 ('B000000561','GD',90,'',''),
 ('B000000571','GD',90,'1123','PB20240729001'),
@@ -17821,6 +17280,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000700','AP',90,'',''),
 ('B000000730','AP',90,'',''),
 ('B000000771','AP',90,'',''),
+('B000000790','AP',90,'',''),
 ('B000000848','GD',90,'',''),
 ('B000001034','AP',90,'',''),
 ('B000001073','GD',90,'',''),
@@ -17851,7 +17311,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001314','GD',95,'',''),
 ('B000001383','GD',95,'',''),
 ('B000001556','AP',96,'',''),
-('B000000566','AP',97,'',''),
 ('B000000655','AP',97,'',''),
 ('B000000582','AP',98,'',''),
 ('B000001294','AP',98,'',''),
@@ -17969,6 +17428,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000992','AP',100,'',''),
 ('B000001067','GD',100,'',''),
 ('B000001178','GD',100,'',''),
+('B000001207','AP',100,'',''),
 ('B000001207','K1',100,'',''),
 ('B000001226','AP',100,'',''),
 ('B000001244','AP',100,'',''),
@@ -18009,7 +17469,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001639','AP',100,'',''),
 ('B000001650','GD',100,'',''),
 ('B000001654','AP',100,'',''),
-('B000001655','AP',100,'',''),
 ('B000001658','AP',100,'',''),
 ('B000001679','GD',100,'',''),
 ('B000001680','AP',100,'',''),
@@ -18089,9 +17548,9 @@ INSERT INTO `gudangbarang` VALUES
 ('B000001828','AP',120,'',''),
 ('B000001902','AP',120,'',''),
 ('B000001442','AP',125,'',''),
+('B000000396','AP',127,'',''),
 ('B000000664','AP',130,'',''),
 ('B000001512','AP',130.4,'',''),
-('B000000396','AP',137,'',''),
 ('B000001547','AP',139,'',''),
 ('B000001951','AP',140,'',''),
 ('B000000294','AP',143,'',''),
@@ -18100,13 +17559,14 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000617','AP',150,'',''),
 ('B000001871','AP',150,'',''),
 ('B000000554','AP',150.39999999999992,'',''),
+('B000000791','AP',151,'',''),
 ('B000000450','GD',155,'',''),
 ('B000000569','AP',155,'',''),
 ('B000001780','AP',155,'',''),
 ('B000001394','GD',156,'',''),
 ('B000002036','AP',160,'',''),
-('B000000791','AP',161,'',''),
 ('B000001519','AP',165,'',''),
+('B000000566','AP',167,'',''),
 ('B000001579','GD',168,'',''),
 ('B000001783','GD',168,'',''),
 ('B000000583','AP',170,'',''),
@@ -18121,6 +17581,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000620','AP',180,'',''),
 ('B000000624','GD',180,'',''),
 ('B000001597','GD',180,'',''),
+('B000001655','AP',180,'',''),
 ('B000001780','GD',180,'',''),
 ('A000000003','AP',181,'',''),
 ('A000000002','GD',183,'',''),
@@ -18168,7 +17629,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000965','GD',250,'',''),
 ('B000000159','AP',260,'',''),
 ('B000001507','AP',260,'',''),
-('B000001207','GD',270,'',''),
+('B000001207','GD',280,'',''),
 ('B000001746','AP',280,'',''),
 ('B000001885','AP',280,'',''),
 ('B000002033','AP',280,'',''),
@@ -18180,7 +17641,6 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000555','GD',300,'',''),
 ('B000000606','GD',300,'',''),
 ('B000000630','GD',300,'',''),
-('B000001603','AP',300,'',''),
 ('B000001877','AP',300,'',''),
 ('B000000559','GD',309,'',''),
 ('B000000560','GD',315,'',''),
@@ -18189,6 +17649,7 @@ INSERT INTO `gudangbarang` VALUES
 ('B000002026','AP',357,'',''),
 ('B000000620','GD',370,'',''),
 ('B000001597','AP',377,'',''),
+('B000001603','AP',390,'',''),
 ('B000001783','AP',397,'',''),
 ('A000000125','GD',400,'',''),
 ('B000000791','GD',400,'',''),
@@ -18217,29 +17678,29 @@ INSERT INTO `gudangbarang` VALUES
 ('B000000579','GD',1000,'',''),
 ('B000001196','AP',1000,'',''),
 ('B000001418','AP',1000,'',''),
+('B000001659','AP',1056,'',''),
 ('B000001260','AP',1060,'',''),
-('B000001659','AP',1070,'',''),
 ('B000001294','GD',1080,'',''),
 ('B000000572','AP',1088,'',''),
 ('B000000568','GD',1100,'',''),
-('B000000571','AP',1130.6,'',''),
 ('B000000623','AP',1155,'',''),
 ('B000000556','GD',1170,'',''),
+('B000000571','AP',1210.6,'',''),
 ('B000000555','AP',1272,'',''),
 ('B000000558','AP',1307,'',''),
+('B00001000','AP',1324,'',''),
 ('B000000557','AP',1333.8999999999999,'',''),
-('B00001000','AP',1334,'',''),
 ('B000000575','AP',1379,'',''),
 ('2018003','GD',1392,'',''),
 ('2018003','AP',1400,'123','PB20200713001'),
 ('2018003','IGD',1425,'',''),
-('B000000556','AP',3076.8000000000006,'',''),
-('B000000965','AP',4030,'',''),
+('B000000556','AP',3063.8000000000006,'',''),
+('B000000965','AP',4020,'',''),
 ('B000000578','AP',5450,'',''),
 ('B000001659','GD',6000,'',''),
 ('B000000305','K1',11000,'',''),
 ('B000000305','GD',11090,'',''),
-('B000000305','AP',99934.09999999999,'','');
+('B000000305','AP',99924.09999999999,'','');
 /*!40000 ALTER TABLE `gudangbarang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -18709,6 +18170,7 @@ INSERT INTO `hasil_pemeriksaan_ekg` VALUES
 ('2026/05/08/000001','2026-05-08 14:53:27','D0000003','wqwqw','wqwqw','qwqwqw','qwqw','wqwqw','qwqw','wqwqw','wqwqw','Normal','Normal','wqwqw'),
 ('2026/05/11/000001','2026-05-24 21:27:45','D0000004','2','1','3','4','5','6','7','7','Normal','Normal','4'),
 ('2026/07/21/000001','2026-07-21 11:10:58','D0000004','tes','tes','tes','tes','tes','tes','tes','tes','Normal','Normal','tes'),
+('2026/09/14/000001','2026-10-16 14:12:53','D0000004','qw','wqw','q','wq','w','qw','qw','qw','Normal','Normal','wqwqw'),
 ('2026/09/19/000001','2026-09-19 11:28:50','D0000004','wq','qwq','w','qw','qw','q','wqw','','Normal','Normal','wqw');
 /*!40000 ALTER TABLE `hasil_pemeriksaan_ekg` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -18984,7 +18446,9 @@ INSERT INTO `hasil_pemeriksaan_usg` VALUES
 ('2026/02/25/000005','2026-05-06 08:07:09','D0000003','212','1212','21212','212','212','21212','212','21212','212','212','212','212','0','Cukup','1212','12','Laki-laki','212'),
 ('2026/05/11/000003','2026-07-11 10:24:24','D0000004','wqw','wqw','wqwqw','wqw','qwq','qwwqw','q','wq','w','qw','qw','q','0','Cukup','qwwq','wqwq','Laki-laki','wq'),
 ('2026/05/25/000001','2026-05-25 09:41:59','D0000004','9','9','9','0','0','9','0','0','0','0','p','0','0','Cukup','p','p','Laki-laki','o'),
-('2026/09/03/000001','2026-09-03 11:48:11','D0000004','wqwqw','qwqwq','wqwqw','qwwqw','wqwqw','qwqw','wqw','qwqw','wqwq','qwqw','qwqw','qwqw','0','Cukup','wqwqw','wqw','Laki-laki','wqw');
+('2026/09/03/000001','2026-09-03 11:48:11','D0000004','wqwqw','qwqwq','wqwqw','qwwqw','wqwqw','qwqw','wqw','qwqw','wqwq','qwqw','qwqw','qwqw','0','Cukup','wqwqw','wqw','Laki-laki','wqw'),
+('2026/09/14/000001','2026-09-21 11:19:12','D0000004','sasas','sasas','sasas','sasas','sas','asas','as','s','as','a','sa','ssas','0','Cukup','sas','sas','Laki-laki','sas'),
+('2026/10/15/000001','2026-10-15 14:09:56','D0000004','1','1','1','1','1','1','1','1','1','1','1','1','1','Cukup','1','2','Laki-laki','2');
 /*!40000 ALTER TABLE `hasil_pemeriksaan_usg` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -19088,6 +18552,9 @@ CREATE TABLE `hasil_pemeriksaan_usg_gambar` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `hasil_pemeriksaan_usg_gambar` WRITE;
 /*!40000 ALTER TABLE `hasil_pemeriksaan_usg_gambar` DISABLE KEYS */;
+INSERT INTO `hasil_pemeriksaan_usg_gambar` VALUES
+('2026/09/14/000001','pages/upload/WhatsApp_Image_2026-09-19_at_12.01.12.jpeg'),
+('2026/10/15/000001','pages/upload/WhatsApp_Image_2026-09-19_at_12.01.13.jpeg');
 /*!40000 ALTER TABLE `hasil_pemeriksaan_usg_gambar` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -19285,6 +18752,56 @@ COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
+-- Table structure for table `hasil_persalinan_tolac`
+--
+
+DROP TABLE IF EXISTS `hasil_persalinan_tolac`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hasil_persalinan_tolac` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `awitan_persalinan` enum('Spontan','Induksi') DEFAULT NULL,
+  `augmentasi` enum('Tidak','Ya') DEFAULT NULL,
+  `ctg_kontinu` enum('Ya','Tidak') DEFAULT NULL,
+  `cara_persalinan` enum('VBAC Berhasil','Gagal TOLAC - SC Ulang') DEFAULT NULL,
+  `indikasi_gagal` varchar(255) DEFAULT NULL,
+  `lama_kala2_menit` varchar(3) DEFAULT NULL,
+  `ruptur_uteri` enum('Tidak Ada','Dehisensi','Ruptur Komplit') DEFAULT NULL,
+  `jumlah_perdarahan_ml` varchar(5) DEFAULT NULL,
+  `transfusi` enum('Tidak','Ya') DEFAULT NULL,
+  `histerektomi` enum('Tidak','Ya') DEFAULT NULL,
+  `komplikasi_lain` varchar(255) DEFAULT NULL,
+  `luaran_perinatal` enum('Hidup','Lahir Mati','Meninggal Neonatal') DEFAULT NULL,
+  `bb_lahir_gram` varchar(4) DEFAULT NULL,
+  `apgar_1` varchar(2) DEFAULT NULL,
+  `apgar_5` varchar(2) DEFAULT NULL,
+  `hie` enum('Tidak','Ya') DEFAULT NULL,
+  `masuk_nicu` enum('Tidak','Ya') DEFAULT NULL,
+  `keterangan` varchar(200) DEFAULT NULL,
+  `kd_dokter` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_rawat`),
+  KEY `kd_dokter` (`kd_dokter`),
+  CONSTRAINT `hasil_persalinan_tolac_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `hasil_persalinan_tolac_ibfk_2` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hasil_persalinan_tolac`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `hasil_persalinan_tolac` WRITE;
+/*!40000 ALTER TABLE `hasil_persalinan_tolac` DISABLE KEYS */;
+INSERT INTO `hasil_persalinan_tolac` VALUES
+('2026/04/07/000001','2026-10-15 09:09:19','Spontan','Tidak','Ya','VBAC Berhasil','1','2','Tidak Ada','3','Tidak','Tidak','4','Hidup','5','6','7','Tidak','Tidak','8','D0000004');
+/*!40000 ALTER TABLE `hasil_persalinan_tolac` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
 -- Table structure for table `hasil_radiologi`
 --
 
@@ -19321,9 +18838,12 @@ INSERT INTO `hasil_radiologi` VALUES
 ('2026/07/11/000001','2026-07-11','09:17:15',';\n\n\nll\n\n\nl\n\n'),
 ('2026/07/21/000001','2026-07-21','10:57:13','tes 1\n\ntes 2\n\ntes 3'),
 ('2026/09/02/000001','2026-09-02','10:18:55','tes'),
+('2026/09/14/000001','2026-10-26','10:21:58','asas\r\nsas\r\na\r\nsa\r\nsa\r\nsa\r\ns\r\n'),
 ('2026/09/16/000001','2026-09-16','10:27:06','as\r\na\r\na\r\ns\r\n\r\n\r\nsa\r\nsa\r\ns'),
 ('2026/09/16/000002','2026-09-16','09:56:05','tes 1\n\ntes 2\n\ntes 3'),
-('2026/09/20/000002','2026-09-19','11:15:52','TES');
+('2026/09/20/000002','2026-09-19','11:15:52','TES'),
+('2026/09/21/000002','2026-09-21','14:03:05','tes 1\n\ntes 2\n\ntes 3'),
+('2026/10/22/000001','2026-10-22','10:58:20','tes 1\n\ntes 2\n\ntes 3');
 /*!40000 ALTER TABLE `hasil_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -25075,7 +24595,10 @@ INSERT INTO `inacbg_data_terkirim2` VALUES
 ('20260311000001','123123123123'),
 ('20260508000001','123123123123'),
 ('20260603000004','123123123123'),
-('20260629000003','123123123123');
+('20260629000003','123123123123'),
+('20260921000002','123123123123'),
+('20261005000001','123123123123'),
+('20261015000001','123123123123');
 /*!40000 ALTER TABLE `inacbg_data_terkirim2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -25166,7 +24689,9 @@ INSERT INTO `inacbg_grouping_stage12` VALUES
 ('20260311000001','Q-5-29-0','GAGAL JANTUNG KONGESTIF DAN KONDISI JANTUNG LAIN-LAIN',524500),
 ('20260508000001','Q-5-29-0','GAGAL JANTUNG KONGESTIF DAN KONDISI JANTUNG LAIN-LAIN',547200),
 ('20260603000004','Q-5-29-0','GAGAL JANTUNG KONGESTIF DAN KONDISI JANTUNG LAIN-LAIN',521100),
-('20260629000003','I-4-12-I','KEGAGALAN JANTUNG (RINGAN)',2507300);
+('20260629000003','I-4-12-I','KEGAGALAN JANTUNG (RINGAN)',2507300),
+('20260921000002','Q-5-29-0','GAGAL JANTUNG KONGESTIF DAN KONDISI JANTUNG LAIN-LAIN',525000),
+('20261015000001','X-0-95-X','GAGAL: KODE DIAGNOSA TIDAK BERLAKU',0);
 /*!40000 ALTER TABLE `inacbg_grouping_stage12` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -25261,7 +24786,10 @@ INSERT INTO `inacbg_klaim_baru2` VALUES
 ('2026/03/11/000001','20260311000001','16781','2','76292'),
 ('2026/05/08/000001','20260508000001','114871','2','589514'),
 ('2026/06/03/000004','20260603000004','2514','4','5026'),
-('2026/06/29/000003','20260629000003','16597','1','75670');
+('2026/06/29/000003','20260629000003','16597','1','75670'),
+('2026/09/21/000002','20260921000002','10085','1','21070'),
+('2026/10/05/000001','20261005000001','1021','6','21069'),
+('2026/10/15/000001','20261015000001','10086','1','21071');
 /*!40000 ALTER TABLE `inacbg_klaim_baru2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -25391,6 +24919,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `indexins` WRITE;
 /*!40000 ALTER TABLE `indexins` DISABLE KEYS */;
 INSERT INTO `indexins` VALUES
+('IT',1),
 ('MEN',6),
 ('IGD',20),
 ('-',60);
@@ -25794,7 +25323,8 @@ INSERT INTO `insiden_keselamatan_pasien` VALUES
 ('2026/07/21/000002','2026-07-21','11:47:29','2026-07-21','11:47:29','IK002','120000134','Poliklinik Penyakit Dalam','tes','tes','tes','tes','tes','tes'),
 ('2026/09/03/000001','2026-09-03','11:06:55','2026-09-03','11:06:55','IK005','120000134','Poliklinik Penyakit Dalam','sasas','sasas','sasas','sasas','sasassas','sasas'),
 ('2026/07/28/000001','2026-09-14','11:07:02','2026-09-14','11:07:02','IK001','120000134','DAH.K1.002 RUANG DAHLIA','petugas ngelamun, habis berantem dengan pasangan','rawat inap vip','pasien kesakitan','ganti rute','-','minta maaf, ditemui menejemen'),
-('2026/09/17/000001','2026-09-17','09:40:47','2026-09-17','09:40:47','IK004','120000134','Poliklinik Penyakit Dalam','tes','tes','sasa','sas','s','sas');
+('2026/09/17/000001','2026-09-17','09:40:47','2026-09-17','09:40:47','IK004','120000134','Poliklinik Penyakit Dalam','tes','tes','sasa','sas','s','sas'),
+('2026/09/14/000001','2026-10-22','15:05:55','2026-10-22','15:05:55','IK006','120000134','K3.01 Kamar Kelas III','pasien kepleset di kamar mandi','rawat inang ruang khidijah','-','-','-','-');
 /*!40000 ALTER TABLE `insiden_keselamatan_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -25932,8 +25462,8 @@ INSERT INTO `inventaris` VALUES
 ('KANTOR/07/0002','BI00000005','Beli','2025-07-29',1000000,'Dipinjam','R4','-','-'),
 ('KANTOR/07/0003','BI00000005','Beli','2025-07-29',1000000,'Ada','R4','-','-'),
 ('KANTOR/07/0004','BI00000005','Beli','2025-07-29',1000000,'Ada','R4','-','-'),
-('MED/03/08/2022/01','BI00000002','Beli','2022-06-09',10000000,'Ada','01','-','-'),
-('MED/09/06/2022/01','BI00000002','Beli','2022-06-09',10000000,'Ada','01','-','-'),
+('MED/03/08/2022/01','BI00000002','Beli','2022-06-09',10000000,'Dipinjam','01','-','-'),
+('MED/09/06/2022/01','BI00000002','Beli','2022-06-09',10000000,'Dipinjam','01','-','-'),
 ('MED/09/06/2022/02','BI00000002','Beli','2022-06-09',10000000,'Ada','01','-','-'),
 ('MED/09/06/2022/03','BI00000002','Beli','2022-06-09',10000000,'Ada','01','-','-'),
 ('MED/11/10/0001','BI00000002','Beli','2023-11-10',15000000,'Ada','01','-','-'),
@@ -25997,7 +25527,9 @@ INSERT INTO `inventaris_ambil_cssd` VALUES
 ('TES','AC20260413001','MED/09/06/2022/01','2026-04-13 13:56:39','123124'),
 ('tes','AC20260622001','I000000001','2026-06-22 14:48:22','123124'),
 ('tes','AC20260626001','MED/09/06/2022/01','2026-06-26 14:20:05','120000134'),
-('tes','AC20260728001','MED/11/10/0003','2026-07-28 10:36:20','123124');
+('tes','AC20260728001','MED/11/10/0003','2026-07-28 10:36:20','123124'),
+('tes','AC20261022001','I000000001','2026-10-22 15:22:11','12/09/1988/001'),
+('tes','AC20261026001','MED/09/06/2022/01','2026-10-26 11:12:38','123124');
 /*!40000 ALTER TABLE `inventaris_ambil_cssd` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -26398,7 +25930,8 @@ INSERT INTO `inventaris_kembali_cssd` VALUES
 ('-','AC20260312001','2026-04-13 13:56:48','123124'),
 ('tes','AC20260622001','2026-06-22 14:48:35','123124'),
 ('tes','AC20260626001','2026-06-26 14:20:15','120000134'),
-('ok','AC20260728001','2026-07-28 10:36:36','123124');
+('ok','AC20260728001','2026-07-28 10:36:36','123124'),
+('tes','AC20261022001','2026-10-22 15:22:27','12/09/1988/001');
 /*!40000 ALTER TABLE `inventaris_kembali_cssd` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -26574,6 +26107,7 @@ INSERT INTO `inventaris_peminjaman` VALUES
 ('-','','MED/11/10/0002','2025-02-11','2025-02-11','123124','Sudah Kembali'),
 ('1212','12','INV/LAPTOP/003','2026-02-10','2026-02-10','123124','Sudah Kembali'),
 ('AJIK','121212121','MED/09/06/2022/01','2024-01-31','2024-01-31','123124','Sudah Kembali'),
+('asasas','','MED/03/08/2022/01','2026-10-26','0000-00-00','12/09/1988/001','Masih Dipinjam'),
 ('CSSD','899889','MED/09/06/2022/01','2025-03-26','2025-03-26','123124','Sudah Kembali'),
 ('dinas kesehatan, untuk sosialisasi tb','65575','SAM/ELE/KAN/0004','2024-10-11','2024-10-11','123124','Sudah Kembali'),
 ('dinkes, untuk sosialisasi tb','9','SAM/ELE/KAN/0003','2024-11-12','2024-11-21','123124','Sudah Kembali'),
@@ -26722,9 +26256,11 @@ INSERT INTO `inventaris_sterilisasi_cssd` VALUES
 ('1qwqwqw','AC20260129001','2026-01-29 15:02:15','123124'),
 ('TES','AC20260210001','2026-02-10 15:54:14','123124'),
 ('-','AC20260312001','2026-04-13 13:56:48','123124'),
+('tes','AC20260413001','2026-10-26 11:12:49','123124'),
 ('tes','AC20260622001','2026-06-22 14:48:35','123124'),
 ('tes','AC20260626001','2026-06-26 14:20:15','120000134'),
-('tes','AC20260728001','2026-07-28 10:36:36','123124');
+('tes','AC20260728001','2026-07-28 10:36:36','123124'),
+('tes','AC20261022001','2026-10-22 15:22:27','12/09/1988/001');
 /*!40000 ALTER TABLE `inventaris_sterilisasi_cssd` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -27396,14 +26932,14 @@ LOCK TABLES `ipsrspemesanan` WRITE;
 /*!40000 ALTER TABLE `ipsrspemesanan` DISABLE KEYS */;
 INSERT INTO `ipsrspemesanan` VALUES
 ('PNM20260313001','SPM20260313001','S0002','12/09/1988/001','2026-03-13','2026-03-13','2026-03-13',3329510.9180893563,0,3329510.9180893563,366246,0,3695756.9180893563,'Sudah Dibayar'),
-('PNM20260402001','-','S0002','12/09/1988/001','2026-04-02','2026-04-02','2026-04-02',25580.369243865007,7674,17906.369243865007,1970,0,19876.369243865007,'Belum Dibayar'),
+('PNM20260402001','-','S0002','12/09/1988/001','2026-04-02','2026-04-02','2026-04-02',25580.369243865007,7674,17906.369243865007,1970,0,19876.369243865007,'Belum Lunas'),
 ('PNM20260504001','QEEQ','S0002','120000134','2026-05-04','2026-05-04','2026-05-04',1525061.7270349832,0,1525061.7270349832,167757,0,1692818.7270349832,'Sudah Dibayar'),
-('PNM20260511001','SPM20260511001','S0002','123124','2026-05-11','2026-05-11','2026-05-11',421264.53877499996,0,421264.53877499996,46339,0,467603.53877499996,'Belum Dibayar'),
+('PNM20260511001','SPM20260511001','S0002','123124','2026-05-11','2026-05-11','2026-05-11',421264.53877499996,0,421264.53877499996,46339,0,467603.53877499996,'Belum Lunas'),
 ('PNM20260511002','1212','S0003','120000134','2026-05-11','2026-05-11','2026-05-11',123210,0,123210,13553,0,136763,'Belum Dibayar'),
-('PNM20260628001','12121','S0002','120000134','2026-06-28','2026-06-28','2026-06-28',629522.176246338,0,629522.176246338,69247,0,698769.176246338,'Belum Dibayar'),
-('PNM20260702001','0909','S0003','120000134','2026-07-02','2026-07-02','2026-07-02',2638587.2326499997,0,2638587.2326499997,290245,0,2928832.2326499997,'Belum Dibayar'),
-('PNM20260722001','SPM20260722001','S0002','123124','2026-07-22','2026-07-22','2026-07-22',10297599.949165981,2805622,7491977.949165981,824118,0,8316095.949165981,'Belum Dibayar'),
-('PNM20260807001','QWQWQW','S0002','120000134','2026-08-07','2026-08-07','2026-08-07',531233.5290507548,0,531233.5290507548,58436,0,589669.5290507548,'Belum Dibayar');
+('PNM20260628001','12121','S0002','120000134','2026-06-28','2026-06-28','2026-06-28',629522.176246338,0,629522.176246338,69247,0,698769.176246338,'Belum Lunas'),
+('PNM20260702001','0909','S0003','120000134','2026-07-02','2026-07-02','2026-07-02',2638587.2326499997,0,2638587.2326499997,290245,0,2928832.2326499997,'Belum Lunas'),
+('PNM20260722001','SPM20260722001','S0002','123124','2026-07-22','2026-07-22','2026-07-22',10297599.949165981,2805622,7491977.949165981,824118,0,8316095.949165981,'Belum Lunas'),
+('PNM20260807001','QWQWQW','S0002','120000134','2026-08-07','2026-08-07','2026-08-07',531233.5290507548,0,531233.5290507548,58436,0,589669.5290507548,'Belum Lunas');
 /*!40000 ALTER TABLE `ipsrspemesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -27655,7 +27191,7 @@ LOCK TABLES `jadwal` WRITE;
 INSERT INTO `jadwal` VALUES
 ('D0000002','RABU','00:00:00','00:00:00','OBG',30),
 ('D0000003','RABU','00:00:00','00:00:00','U0003',30),
-('D0000004','RABU','08:00:00','10:00:00','U0003',0),
+('D0000004','KAMIS','08:00:00','10:00:00','U0003',0),
 ('D0000004','JUMAT','00:00:00','00:00:00','U0027',1000);
 /*!40000 ALTER TABLE `jadwal` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -28036,7 +27572,8 @@ INSERT INTO `jawaban_konsultasi_medik` VALUES
 ('KM202608010001','2026-09-03 11:16:35','sasas','asasas'),
 ('KM202608060001','2026-08-06 16:12:53','tes','ok'),
 ('KM202608120001','2026-08-12 15:08:36','tes','tes'),
-('KM202609170002','2026-09-17 09:24:43','tes','sasasas');
+('KM202609170002','2026-09-17 09:24:43','tes','sasasas'),
+('KM202610220001','2026-10-22 10:29:52','tes','ok');
 /*!40000 ALTER TABLE `jawaban_konsultasi_medik` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -28084,7 +27621,9 @@ INSERT INTO `jawaban_konsultasi_perawat` VALUES
 ('KP202607210001','2026-07-21 15:16:09','tes','tes','tes'),
 ('KP202608010001','2026-08-01 11:06:04','tes','tes','tes'),
 ('KP202608060001','2026-08-06 14:52:33','tes','tes','tes'),
-('KP202609030001','2026-09-03 11:17:09','sasas','sasas','asas');
+('KP202609030001','2026-09-03 11:17:09','sasas','sasas','asas'),
+('KP202610220001','2026-10-22 14:50:46','tes','tes','tes'),
+('KP202610260001','2026-10-26 10:59:54','121212','21212','qwqwqw');
 /*!40000 ALTER TABLE `jawaban_konsultasi_perawat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -28120,7 +27659,8 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `jawaban_pio_apoteker` WRITE;
 /*!40000 ALTER TABLE `jawaban_pio_apoteker` DISABLE KEYS */;
 INSERT INTO `jawaban_pio_apoteker` VALUES
-('PIO202606220001','2026-06-22 15:11:36','Lisan','Segera','tes','tes','12/09/1988/001');
+('PIO202606220001','2026-06-22 15:11:36','Lisan','Segera','tes','tes','12/09/1988/001'),
+('PIO202610260002','2026-10-26 11:31:54','Lisan','Segera','wqwq','wqwqw','120000134');
 /*!40000 ALTER TABLE `jawaban_pio_apoteker` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -34031,217 +33571,29 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `jurnal` WRITE;
 /*!40000 ALTER TABLE `jurnal` DISABLE KEYS */;
 INSERT INTO `jurnal` VALUES
-('JR20260629000001','2026/06/29/000003','2026-06-29','09:48:45','U','TINDAKAN RAWAT JALAN PASIEN 000010 GATOT SATRIYO (36 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260629000002','2026/06/29/000003','2026-06-29','09:50:52','U','TINDAKAN RAWAT JALAN PASIEN 2026/06/29/000003 DIPOSTING OLEH Admin Utama'),
-('JR20260629000003','2026/06/29/000001','2026-06-29','10:09:35','U','TINDAKAN RAWAT JALAN PASIEN 2026/06/29/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260629000004','2026/06/29/000003','2026-06-29','10:15:07','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000010 GATOT SATRIYO, DIPOSTING OLEH Admin Utama'),
-('JR20260629000005','2026/06/29/000003','2026-06-29','10:24:18','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN GATOT SATRIYO DIPOSTING OLEH Admin Utama'),
-('JR20260629000006','2026/06/29/000003','2026-06-29','10:30:34','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN GATOT SATRIYO DIPOSTING OLEH Admin Utama'),
-('JR20260629000007','2026/06/29/000003','2026-06-29','10:42:43','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/06/29/000003 000010 GATOT SATRIYO, DIPOSTING OLEH Admin Utama'),
-('JR20260629000008','2026/06/29/000003','2026-06-29','10:42:58','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/06/29/000003 000010 GATOT SATRIYO, DIBATALKAN OLEH Admin Utama'),
-('JR20260629000009','2026/06/29/000003','2026-06-29','10:59:59','U','OPERASI RAWAT INAP PASIEN GATOT SATRIYO DIPOSTING OLEH Admin Utama'),
-('JR20260629000010','SKD260629001','2026-06-29','13:43:48','U','PENGGUNAAN BARANG DAPUR KERING DAN BASAH, OLEH Admin Utama'),
-('JR20260629000011','SKM20260629001','2026-06-29','13:50:29','U','STOK KELUAR BARANG MEDIS/OBAT/ALKES/BHP, OLEH Admin Utama'),
-('JR20260629000012','SKNM260629001','2026-06-29','13:51:16','U','PENGGUNAAN BARANG NON MEDIS DAN PENUNJANG (LAB & RAD), OLEH Admin Utama'),
-('JR20260629000013','2026/06/29/000003','2026-06-29','13:56:17','U','PIUTANG PASIEN RAWAT INAP 2026/06/29/000003 000010 GATOT SATRIYO, DIPOSTING OLEH Admin Utama'),
-('JR20260629000014','PB20260629001','2026-06-29','14:14:39','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260629000015','3131131','2026-06-29','14:16:20','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260629001, OLEH Admin Utama'),
-('JR20260629000016','SKNM260629002','2026-06-29','14:25:17','U','PENGGUNAAN BARANG NON MEDIS DAN PENUNJANG (LAB & RAD), OLEH Admin Utama'),
-('JR20260630000001','2026/06/30/000001','2026-06-30','19:11:58','U','TINDAKAN RAWAT JALAN PASIEN 2026/06/30/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260630000002','2026/06/30/000001','2026-06-30','19:12:09','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/06/30/000001 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260630000003','2026/06/30/000001','2026-06-30','19:12:29','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/06/30/000001 000048 LIYA RAHMA, DIBATALKAN OLEH Admin Utama'),
-('JR20260702000001','HO20260702001','2026-07-02','14:37:45','U','HIBAH OBAT & BHP DI APOTEK, OLEH Admin Utama'),
-('JR20260702000002','2026/06/22/000001','2026-07-02','15:13:29','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN RUDI SANTOSO DIPOSTING OLEH Admin Utama'),
-('JR20260702000003','PNM20260702001','2026-07-02','19:58:33','U','PENERIMAAN BARANG NON MEDIS/PENUNJANG, OLEH Admin Utama'),
-('JR20260702000004','PI20260702001','2026-07-02','20:04:55','U','PEMBELIAN BARANG NON MEDIS DAN PENUNJANG(LAB & RAD) , OLEH Admin Utama'),
-('JR20260709000001','2026/02/25/000002','2026-07-09','11:37:51','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260709000002','2026/02/25/000003','2026-07-09','11:37:51','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260709000003','PL20260709001','2026-07-09','12:01:34','U','PEMASUKAN LAIN-LAIN OLEH Admin Utama'),
-('JR20260709000004','PJP20260709001','2026-07-09','12:04:52','U','PIUTANG JASA PERUSAHAAN PERUSAHAAN MAJU MUNDUR, OLEH Admin Utama'),
-('JR20260709000005','PJP20260709001','2026-07-09','12:05:31','U','BAYAR PIUTANG JASA PERUSAHAAN, OLEH Admin Utama'),
-('JR20260709000006','PJP20260709001','2026-07-09','12:05:40','U','PEMBATALAN BAYAR PIUTANG JASA PERUSAHAAN, OLEH Admin Utama'),
-('JR20260709000007','2026/07/09/000001','2026-07-09','12:13:17','U','TINDAKAN RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI (38 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260709000008','PB20260709001','2026-07-09','12:24:41','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260709000009','12121212','2026-07-09','12:25:49','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260709001, OLEH Admin Utama'),
-('JR20260709000010','PH20260709001','2026-07-09','12:28:19','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
-('JR20260709000011','2026/07/09/000001','2026-07-09','14:13:31','U','TINDAKAN RAWAT JALAN PASIEN 2026/07/09/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260709000012','2026/07/09/000001','2026-07-09','14:23:11','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260709000013','2026/07/09/000001','2026-07-09','14:24:15','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/07/09/000001 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260709000014','PB20260709002','2026-07-09','14:25:43','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260709000015','1212','2026-07-09','14:26:44','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260709002, OLEH Admin Utama'),
-('JR20260709000016','PB20260709003','2026-07-09','14:52:30','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260711000001','2026/07/11/000001','2026-07-11','09:03:30','U','TINDAKAN RAWAT JALAN PASIEN 000023 RAHMA NIA (34 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260711000002','2026/07/11/000001','2026-07-11','09:10:20','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000023 RAHMA NIA, DIPOSTING OLEH Admin Utama'),
-('JR20260711000003','2026/07/11/000001','2026-07-11','09:15:29','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RAHMA NIA DIPOSTING OLEH Admin Utama'),
-('JR20260711000004','2026/07/11/000001','2026-07-11','09:17:16','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN RAHMA NIA DIPOSTING OLEH Admin Utama'),
-('JR20260716000001','PG20260716001','2026-07-16','12:53:01','U','PEMBELIAN DI KAMAR KELAS I, OLEH Admin Utama'),
-('JR20260721000001','2026/07/21/000001','2026-07-21','10:13:30','U','TINDAKAN RAWAT JALAN PASIEN 000009 WAHYUDI KURNIAWAN (36 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260721000002','2026/07/21/000001','2026-07-21','10:37:24','U','TINDAKAN RAWAT JALAN PASIEN 000009 WAHYUDI KURNIAWAN (36 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260721000003','2026/07/21/000001','2026-07-21','10:38:26','U','TINDAKAN RAWAT JALAN PASIEN 2026/07/21/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260721000004','2026/07/21/000001','2026-07-21','10:43:13','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000009 WAHYUDI KURNIAWAN, DIPOSTING OLEH Admin Utama'),
-('JR20260721000005','2026/07/21/000001','2026-07-21','10:47:28','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000009 WAHYUDI KURNIAWAN, DIPOSTING OLEH Admin Utama'),
-('JR20260721000006','2026/07/21/000001','2026-07-21','10:55:18','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN WAHYUDI KURNIAWAN DIPOSTING OLEH Admin Utama'),
-('JR20260721000007','2026/07/21/000001','2026-07-21','10:57:13','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN WAHYUDI KURNIAWAN DIPOSTING OLEH Admin Utama'),
-('JR20260721000008','2026/07/21/000001','2026-07-21','11:17:03','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/07/21/000001 000009 WAHYUDI KURNIAWAN, DIPOSTING OLEH Admin Utama'),
-('JR20260721000009','2026/07/21/000001','2026-07-21','11:51:47','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/07/21/000001 000009 WAHYUDI KURNIAWAN, DIBATALKAN OLEH Admin Utama'),
-('JR20260721000010','2026/07/21/000002','2026-07-21','13:44:19','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RAHMA NIA DIPOSTING OLEH Admin Utama'),
-('JR20260721000011','2026/07/21/000003','2026-07-21','14:10:30','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN HARRY AAD DIPOSTING OLEH Admin Utama'),
-('JR20260721000012','2026/07/21/000001','2026-07-21','15:07:42','U','PEMBERIAN OBAT RAWAT INAP PASIEN 2026/07/21/000001 000009 WAHYUDI KURNIAWAN, DIPOSTING OLEH Admin Utama'),
-('JR20260721000013','2026/06/22/000001','2026-07-21','15:09:28','U','PEMBERIAN OBAT RAWAT INAP PASIEN, DIPOSTING OLEH Admin Utama'),
-('JR20260721000014','2026/07/21/000001','2026-07-21','15:14:08','U','PEMBERIAN OBAT RAWAT INAP PASIEN 2026/07/21/000001 000009 WAHYUDI KURNIAWAN (36 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260721000015','2026/07/21/000003','2026-07-21','15:55:10','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000050 HARRY AAD, DIPOSTING OLEH Admin Utama'),
-('JR20260722000001','2026/07/22/000001','2026-07-22','09:35:22','U','TINDAKAN RAWAT JALAN PASIEN 000048 LIYA RAHMA (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260722000002','2026/07/22/000001','2026-07-22','09:39:35','U','TINDAKAN RAWAT JALAN PASIEN 000048 LIYA RAHMA (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260722000003','2026/07/22/000001','2026-07-22','09:40:20','U','PEMBATALAN TINDAKAN RAWAT JALAN PASIEN 000048 LIYA RAHMA OLEH Admin Utama'),
-('JR20260722000004','2026/07/22/000002','2026-07-22','09:49:12','U','TINDAKAN RAWAT JALAN PASIEN 2026/07/22/000002 DIPOSTING OLEH Admin Utama'),
-('JR20260722000005','2026/07/22/000002','2026-07-22','09:57:25','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000023 RAHMA NIA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000006','2026/07/22/000002','2026-07-22','09:59:00','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RAHMA NIA DIPOSTING OLEH Admin Utama'),
-('JR20260722000007','2026/07/22/000002','2026-07-22','10:00:03','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN RAHMA NIA DIPOSTING OLEH Admin Utama'),
-('JR20260722000008','2026/07/22/000002','2026-07-22','10:01:16','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/07/22/000002 000023 RAHMA NIA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000009','2026/07/22/000001','2026-07-22','10:02:35','U','PIUTANG PASIEN RAWAT JALAN 2026/07/22/000001 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000010','2026/06/03/000004','2026-07-22','10:13:11','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000011','2026/07/22/000001','2026-07-22','10:13:11','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000012','2026/07/22/000003','2026-07-22','10:17:28','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RAHMAT PAMBUDI DIPOSTING OLEH Admin Utama'),
-('JR20260722000013','2026/07/22/000003','2026-07-22','10:19:41','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/07/22/000003 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260722000014','2026/07/22/000004','2026-07-22','10:24:31','U','TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA (37 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260722000015','2026/07/22/000004','2026-07-22','10:24:50','U','PEMBATALAN TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA OLEH Admin Utama'),
-('JR20260722000016','2026/07/22/000004','2026-07-22','10:24:58','U','TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000017','2026/07/22/000002','2026-07-22','10:26:05','U','TINDAKAN RAWAT JALAN PASIEN 000023 RAHMA NIA (34 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260722000018','2026/07/22/000001','2026-07-22','10:33:05','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000019','2026/06/03/000004','2026-07-22','10:33:08','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000020','2026/05/28/000001','2026-07-22','10:35:46','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000021','2026/06/10/000001','2026-07-22','10:35:46','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000022','2026/06/29/000003','2026-07-22','10:35:46','U','BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000023','2026/05/28/000001','2026-07-22','10:36:03','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000024','2026/06/10/000001','2026-07-22','10:36:10','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000025','2026/06/29/000003','2026-07-22','10:36:12','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260722000026','2026/07/22/000004','2026-07-22','10:42:54','U','TINDAKAN RAWAT JALAN PASIEN 2026/07/22/000004 DIPOSTING OLEH Admin Utama'),
-('JR20260722000027','2026/07/22/000004','2026-07-22','10:43:21','U','PIUTANG PASIEN RAWAT JALAN 2026/07/22/000004 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000028','2026/07/22/000004','2026-07-22','10:45:28','U','PEMBATALAN PIUTANG PASIEN RAWAT JALAN 2026/07/22/000004 000059 YOHANA FARIDA, DIBATALKAN OLEH Admin Utama'),
-('JR20260722000029','2026/07/22/000004','2026-07-22','10:45:53','U','PIUTANG PASIEN RAWAT JALAN 2026/07/22/000004 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
-('JR20260722000030','JMD20260722001','2026-07-22','11:02:34','U','PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260722000031','PB20260722001','2026-07-22','11:37:27','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260722000032','PB20260722002','2026-07-22','15:02:10','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260722000033','PAI20260722001','2026-07-22','15:07:09','U','PENERIMAAN BARANG ASET/INVENTARIS, OLEH Admin Utama'),
-('JR20260722000034','PB20260722003','2026-07-22','15:19:01','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260722000035','PNM20260722001','2026-07-22','15:23:52','U','PENERIMAAN BARANG NON MEDIS/PENUNJANG, OLEH Admin Utama'),
-('JR20260722000036','BHL202607220001','2026-07-22','15:30:20','U','BEBAN HUTANG LAIN, OLEH Admin Utama'),
-('JR20260728000001','2026/07/28/000002','2026-07-28','13:57:08','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260728000002','2026/07/21/000001','2026-07-28','14:00:09','U','PEMBERIAN OBAT RAWAT INAP PASIEN, DIPOSTING OLEH Admin Utama'),
-('JR20260728000003','PB20260728001','2026-07-28','14:38:19','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260728000004','2026/07/28/000002','2026-07-28','14:39:53','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260728000005','2026/07/28/000002','2026-07-28','14:41:57','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260729000001','JMD20260729001','2026-07-29','08:30:06','U','PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260729000002','PD20260729001','2026-07-29','09:19:32','U','PENERIMAAN BARANG DAPUR, OLEH Admin Utama'),
-('JR20260729000003','PD20260729002','2026-07-29','09:22:05','U','PENERIMAAN BARANG DAPUR, OLEH Admin Utama'),
-('JR20260729000004','2026/07/29/000001','2026-07-29','09:45:13','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260729000005','2026/07/29/000001','2026-07-29','09:45:27','U','PEMBATALAN PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA OLEH Admin Utama'),
-('JR20260729000006','2026/07/29/000001','2026-07-29','09:45:40','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260729000007','2026/07/29/000001','2026-07-29','09:46:53','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000048 LIYA RAHMA, DIPOSTING OLEH Admin Utama'),
-('JR20260801000001','2026/08/01/000001','2026-08-01','11:08:32','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN YOHANA FARIDA DIPOSTING OLEH Admin Utama'),
-('JR20260801000002','2026/08/01/000001','2026-08-01','11:19:31','U','TINDAKAN RAWAT JALAN PASIEN 2026/08/01/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260804000001','2026/07/28/000001','2026-08-04','19:27:41','U','PIUTANG PASIEN RAWAT INAP 2026/07/28/000001 000051 ADI KAZAMA, DIPOSTING OLEH Admin Utama'),
-('JR20260804000011','2026/06/03/000004','2026-08-04','19:35:20','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260804000012','2026/06/10/000001','2026-08-04','19:35:22','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260807000001','PB20260807001','2026-08-07','19:34:40','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260807000002','PNM20260807001','2026-08-07','19:35:24','U','PENERIMAAN BARANG NON MEDIS/PENUNJANG, OLEH Admin Utama'),
-('JR20260807000003','121212','2026-08-07','19:39:47','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260807001, OLEH Admin Utama'),
-('JR20260807000004','SKNM260807001','2026-08-07','19:44:26','U','PENGGUNAAN BARANG NON MEDIS DAN PENUNJANG (LAB & RAD), OLEH Admin Utama'),
-('JR20260807000005','PH20260807001','2026-08-07','19:57:15','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
-('JR20260807000006','JMD20260807001','2026-08-07','20:05:03','U','PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260819000001','2026/08/19/000001','2026-08-19','14:09:54','U','TINDAKAN RAWAT JALAN PASIEN 000002 DEWI EKAWATI (38 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260819000002','2026/08/19/000001','2026-08-19','14:15:21','U','TINDAKAN RAWAT JALAN PASIEN 2026/08/19/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260819000003','2026/08/19/000001','2026-08-19','14:17:21','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000002 DEWI EKAWATI, DIPOSTING OLEH Admin Utama'),
-('JR20260819000004','2026/08/19/000001','2026-08-19','14:20:12','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN DEWI EKAWATI DIPOSTING OLEH Admin Utama'),
-('JR20260819000005','2026/08/19/000001','2026-08-19','14:21:00','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/08/19/000001 000002 DEWI EKAWATI, DIPOSTING OLEH Admin Utama'),
-('JR20260825000001','2026/08/25/000001','2026-08-25','14:49:49','U','TINDAKAN RAWAT JALAN PASIEN 2026/08/25/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260825000002','2026/08/25/000001','2026-08-25','14:50:00','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/08/25/000001 000061 KHANZA AZZAHWA KHOIRUNNISA , DIPOSTING OLEH Admin Utama'),
-('JR20260831000001','2026/05/11/000003','2026-08-31','20:41:42','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN BY.NY.RAHMANIA DIPOSTING OLEH Admin Utama'),
-('JR20260831000002','2026/03/14/000001','2026-08-31','20:42:29','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN Sakha Hamizan Aqila DIPOSTING OLEH Admin Utama'),
-('JR20260901000001','2026/03/14/000001','2026-09-01','05:12:35','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN Sakha Hamizan Aqila DIPOSTING OLEH Admin Utama'),
-('JR20260901000002','2026/03/14/000001','2026-09-01','05:32:20','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN Sakha Hamizan Aqila DIPOSTING OLEH Admin Utama'),
-('JR20260901000003','2026/03/14/000001','2026-09-01','09:02:09','U','PEMBATALAN PEMERIKSAAN LABORAT RAWAT INAP PASIEN OLEH Admin Utama'),
-('JR20260901000004','2026/03/14/000001','2026-09-01','09:02:09','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN Sakha Hamizan Aqila DIPOSTING OLEH Admin Utama'),
-('JR20260901000005','PB20260901001','2026-09-01','10:08:19','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000006','PB20260901002','2026-09-01','10:10:06','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000007','PB20260901002','2026-09-01','10:10:36','U','BATAL TRANSAKSI PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000008','121212','2026-09-01','10:12:06','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260901001, OLEH Admin Utama'),
-('JR20260901000009','11212','2026-09-01','10:31:31','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260616002, OLEH Admin Utama'),
-('JR20260901000010','11212','2026-09-01','10:31:31','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260625001, OLEH Admin Utama'),
-('JR20260901000011','PB20260901002','2026-09-01','10:41:50','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000012','PB20260901002','2026-09-01','10:42:30','U','BATAL TRANSAKSI PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000013','PB20260901002','2026-09-01','10:42:30','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000014','PB20260901002','2026-09-01','10:43:20','U','BATAL TRANSAKSI PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000015','PB20260901002','2026-09-01','10:43:20','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000016','PB20260901002','2026-09-01','10:43:42','U','BATAL TRANSAKSI PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000017','PB20260901002','2026-09-01','10:43:42','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260901000018','PH20260901001','2026-09-01','17:03:30','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
-('JR20260902000001','2026/09/02/000001','2026-09-02','10:18:55','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN RIDWAN HALIM DIPOSTING OLEH Admin Utama'),
-('JR20260902000002','2026/09/02/000001','2026-09-02','11:02:26','U','TINDAKAN RAWAT JALAN PASIEN 112384 RIDWAN HALIM (37 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260902000003','2026/09/02/000001','2026-09-02','14:15:25','U','TINDAKAN RAWAT JALAN PASIEN 112384 RIDWAN HALIM (37 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260903000001','2026/09/03/000001','2026-09-03','10:29:19','U','TINDAKAN RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260903000002','2026/09/03/000001','2026-09-03','11:25:15','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RAHMAT PAMBUDI DIPOSTING OLEH Admin Utama'),
-('JR20260903000003','2026/09/03/000001','2026-09-03','11:31:10','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/03/000001 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260904000001','2026/09/04/000001','2026-09-04','10:18:49','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/04/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260905000001','0102102102121212','2026-09-05','12:33:18','U','BEBAN HUTANG LAIN, OLEH Admin Utama'),
-('JR20260909000001','2026/09/09/000001','2026-09-09','09:25:33','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/09/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260909000002','2026/09/09/000001','2026-09-09','10:18:55','U','TINDAKAN RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260909000003','2026/09/09/000001','2026-09-09','10:20:21','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/09/000001 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260909000004','2026/09/09/000001','2026-09-09','11:13:20','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/09/09/000001 000055 RAHMAT PAMBUDI, DIBATALKAN OLEH Admin Utama'),
-('JR20260909000005','2026/09/09/000001','2026-09-09','11:17:51','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/09/000001 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260909000006','2026/09/09/000002','2026-09-09','14:08:40','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/09/000002 DIPOSTING OLEH Admin Utama'),
-('JR20260909000007','JMD20260909001','2026-09-09','14:40:07','U','PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260909000008','JMD20260909001','2026-09-09','14:40:29','U','PEMBATALAN PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260909000009','JMD20260807001','2026-09-09','14:40:31','U','PEMBATALAN PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260909000010','JMD20260729001','2026-09-09','14:40:34','U','PEMBATALAN PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260909000011','JMD20260722001','2026-09-09','14:40:36','U','PEMBATALAN PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260909000012','JMD20260313001','2026-09-09','14:40:39','U','PEMBATALAN PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260914000001','2026/09/14/000001','2026-09-14','09:26:57','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/14/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260914000002','2026/09/14/000002','2026-09-14','09:45:36','U','TINDAKAN RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260914000003','2026/09/14/000002','2026-09-14','09:47:13','U','TINDAKAN RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI (39 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260914000004','2026/09/14/000001','2026-09-14','10:52:10','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000055 RAHMAT PAMBUDI, DIPOSTING OLEH Admin Utama'),
-('JR20260914000005','2026/06/29/000003','2026-09-14','14:19:20','U','PEMBATALAN RVP PIUTANG BPJS, OLEH Admin Utama'),
-('JR20260914000006','2026/06/29/000003','2026-09-14','14:19:20','U','PEMBATALAN RVP PIUTANG BPJS, OLEH Admin Utama'),
-('JR20260914000007','2026/06/29/000003','2026-09-14','14:19:20','U','PEMBATALAN RVP PIUTANG BPJS, OLEH Admin Utama'),
-('JR20260915000001','2026/09/15/000001','2026-09-15','06:55:10','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/15/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260915000002','2026/09/15/000001','2026-09-15','06:55:24','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/15/000001 000061 KHANZA AZZAHWA KHOIRUNNISA , DIPOSTING OLEH Admin Utama'),
-('JR20260915000003','2026/09/15/000001','2026-09-15','06:56:27','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/09/15/000001 000061 KHANZA AZZAHWA KHOIRUNNISA , DIBATALKAN OLEH Admin Utama'),
-('JR20260915000004','2026/09/15/000001','2026-09-15','06:57:03','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/15/000001 000061 KHANZA AZZAHWA KHOIRUNNISA , DIPOSTING OLEH Admin Utama'),
-('JR20260916000001','2026/09/16/000002','2026-09-16','09:41:35','U','TINDAKAN RAWAT JALAN PASIEN 000061 KHANZA AZZAHWA KHOIRUNNISA  (5 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260916000002','2026/09/16/000001','2026-09-16','09:49:03','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/16/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260916000003','2026/09/16/000002','2026-09-16','09:51:37','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000061 KHANZA AZZAHWA KHOIRUNNISA , DIPOSTING OLEH Admin Utama'),
-('JR20260916000004','2026/09/16/000002','2026-09-16','09:55:21','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN KHANZA AZZAHWA KHOIRUNNISA  DIPOSTING OLEH Admin Utama'),
-('JR20260916000005','2026/09/16/000002','2026-09-16','09:56:05','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN KHANZA AZZAHWA KHOIRUNNISA  DIPOSTING OLEH Admin Utama'),
-('JR20260916000006','2026/09/16/000002','2026-09-16','09:57:37','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/16/000002 000061 KHANZA AZZAHWA KHOIRUNNISA , DIPOSTING OLEH Admin Utama'),
-('JR20260916000007','2026/09/16/000001','2026-09-16','10:23:22','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN RUDI SANTOSO DIPOSTING OLEH Admin Utama'),
-('JR20260916000008','2026/09/16/000001','2026-09-16','10:27:07','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN RUDI SANTOSO DIPOSTING OLEH Admin Utama'),
-('JR20260917000001','2026/09/17/000001','2026-09-17','09:14:45','U','TINDAKAN RAWAT JALAN PASIEN 000054 JAROT KUMBORO (36 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260917000002','2026/09/17/000001','2026-09-17','10:22:42','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN JAROT KUMBORO DIPOSTING OLEH Admin Utama'),
-('JR20260917000003','2026/09/17/000001','2026-09-17','11:35:32','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/17/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260918000001','2026/02/25/000003','2026-09-18','09:39:30','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000002','2026/02/25/000002','2026-09-18','09:39:32','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000003','2026/05/08/000001','2026-09-18','09:39:34','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000004','2026/05/05/000001','2026-09-18','09:39:37','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000005','2026/03/26/000001','2026-09-18','09:39:40','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000006','2026/03/14/000001','2026-09-18','09:39:43','U','PEMBATALAN BAYAR PIUTANG, OLEH Admin Utama'),
-('JR20260918000007','2026/09/18/000001','2026-09-18','10:05:14','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/18/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260918000008','PH20260918001','2026-09-18','10:31:36','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
-('JR20260918000009','PB20260918001','2026-09-18','10:45:45','U','PENERIMAAN BARANG DI GUDANG, OLEH Admin Utama'),
-('JR20260918000010','PB20260918002','2026-09-18','10:49:36','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
-('JR20260918000011','212112','2026-09-18','10:52:01','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20260918001, OLEH Admin Utama'),
-('JR20260918000012','BHL202609180001','2026-09-18','11:19:42','U','BEBAN HUTANG LAIN, OLEH Admin Utama'),
-('JR20260918000013','PK20260918001','2026-09-18','11:26:13','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
-('JR20260918000014','JMD20260918001','2026-09-18','13:42:46','U','PEMBAYARAN JASA MEDIS DOKTER D0000004 dr. Hilyatul Nadia, OLEH Admin Utama'),
-('JR20260918000015','2026/09/18/000001','2026-09-18','13:55:09','U','TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA (37 Th), DIPOSTING OLEH Admin Utama'),
-('JR20260918000016','2026/09/18/000001','2026-09-18','13:55:56','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/09/18/000001 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
-('JR20260918000017','2026/09/18/000001','2026-09-18','13:57:13','U','PEMBATALAN PEMBAYARAN PASIEN RAWAT JALAN 2026/09/18/000001 000059 YOHANA FARIDA, DIBATALKAN OLEH Admin Utama'),
-('JR20260918000018','DP202609180001','2026-09-18','15:51:06','U','DEPOSIT PASIEN 2026/03/14/000001 000006 Sakha Hamizan Aqila, OLEH Admin Utama'),
-('JR20260918000019','2026/03/14/000001','2026-09-18','15:51:22','U','PIUTANG PASIEN RAWAT INAP 2026/03/14/000001 000006 Sakha Hamizan Aqila, DIPOSTING OLEH Admin Utama'),
-('JR20260919000001','2026/09/14/000001','2026-09-19','09:41:09','U','PEMBERIAN OBAT RAWAT INAP PASIEN, DIPOSTING OLEH Admin Utama'),
-('JR20260919000002','2026/09/19/000001','2026-09-19','11:12:46','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/19/000001 DIPOSTING OLEH Admin Utama'),
-('JR20260919000003','2026/09/20/000002','2026-09-19','11:15:01','U','TINDAKAN RAWAT JALAN PASIEN 2026/09/20/000002 DIPOSTING OLEH Admin Utama'),
-('JR20260919000004','2026/09/20/000002','2026-09-19','11:15:32','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN TEST MCU DIPOSTING OLEH Admin Utama'),
-('JR20260919000005','2026/09/20/000002','2026-09-19','11:15:53','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN TEST MCU DIPOSTING OLEH Admin Utama');
+('JR20261020000001','2026/10/20/000001','2026-10-20','15:12:09','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/10/20/000001 000023 RAHMA NIA, DIPOSTING OLEH Admin Utama'),
+('JR20261020000002','PK20261020001','2026-10-20','15:50:16','U','PENGELUARAN HARIAN, OLEH Admin Utama'),
+('JR20261021000001','PD20261021001','2026-10-21','09:24:50','U','PEMBELIAN BARANG DAPUR KERING & BASAH , OLEH Admin Utama'),
+('JR20261021000002','SKD261021001','2026-10-21','09:25:24','U','PENGGUNAAN BARANG DAPUR KERING DAN BASAH, OLEH Admin Utama'),
+('JR20261021000003','PL20261021001','2026-10-21','09:38:59','U','PEMASUKAN LAIN-LAIN OLEH Admin Utama'),
+('JR20261021000004','2026/10/21/000001','2026-10-21','09:52:48','U','TINDAKAN RAWAT JALAN PASIEN 2026/10/21/000001 DIPOSTING OLEH Admin Utama'),
+('JR20261021000005','2026/10/21/000001','2026-10-21','10:01:23','U','PEMBAYARAN PASIEN RAWAT JALAN, DIPOSTING OLEH Admin Utama'),
+('JR20261021000006','2026/09/14/000001','2026-10-21','10:05:11','U','PEMERIKSAAN LABORAT RAWAT INAP PASIEN RAHMAT PAMBUDI DIPOSTING OLEH Admin Utama'),
+('JR20261021000007','2026/10/21/000002','2026-10-21','11:12:14','U','TINDAKAN RAWAT JALAN PASIEN 2026/10/21/000002 DIPOSTING OLEH Admin Utama'),
+('JR20261021000008','2026/10/21/000002','2026-10-21','11:13:36','U','PEMBAYARAN PASIEN RAWAT JALAN 2026/10/21/000002 000058 PASIEN BEBAS, DIPOSTING OLEH Admin Utama'),
+('JR20261021000009','2026/10/21/000002','2026-10-21','13:54:00','U','TINDAKAN RAWAT JALAN PASIEN 2026/10/21/000002 DIPOSTING OLEH Admin Utama'),
+('JR20261022000001','2026/10/22/000001','2026-10-22','10:13:10','U','TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA (37 Th), DIPOSTING OLEH Admin Utama'),
+('JR20261022000002','2026/10/22/000001','2026-10-22','10:22:16','U','TINDAKAN RAWAT JALAN PASIEN 2026/10/22/000001 DIPOSTING OLEH Admin Utama'),
+('JR20261022000003','2026/10/22/000001','2026-10-22','10:24:20','U','TINDAKAN RAWAT JALAN PASIEN 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
+('JR20261022000004','2026/10/22/000001','2026-10-22','10:51:58','U','PEMBERIAN OBAT RAWAT JALAN PASIEN 000059 YOHANA FARIDA/1989-06-12, DIPOSTING OLEH Admin Utama'),
+('JR20261022000005','2026/10/22/000001','2026-10-22','10:57:10','U','PEMERIKSAAN LABORAT RAWAT JALAN PASIEN YOHANA FARIDA DIPOSTING OLEH Admin Utama'),
+('JR20261022000006','2026/10/22/000001','2026-10-22','10:58:21','U','PEMERIKSAAN RADIOLOGI RAWAT JALAN PASIEN YOHANA FARIDA DIPOSTING OLEH Admin Utama'),
+('JR20261022000007','2026/10/22/000001','2026-10-22','11:01:16','U','PIUTANG PASIEN RAWAT JALAN 2026/10/22/000001 000059 YOHANA FARIDA, DIPOSTING OLEH Admin Utama'),
+('JR20261022000008','PB20261022001','2026-10-22','11:24:16','U','PENERIMAAN BARANG DI APOTEK, OLEH Admin Utama'),
+('JR20261022000009','SKM20261022001','2026-10-22','11:26:36','U','STOK KELUAR BARANG MEDIS/OBAT/ALKES/BHP, OLEH Admin Utama'),
+('JR20261022000010','qeeq','2026-10-22','11:27:59','U','BAYAR PELUNASAN HUTANG OBAT/BHP/ALKES NO.FAKTUR PB20261022001, OLEH Admin Utama'),
+('JR20261026000001','2026/09/14/000001','2026-10-26','10:21:58','U','PEMERIKSAAN RADIOLOGI RAWAT INAP PASIEN RAHMAT PAMBUDI DIPOSTING OLEH Admin Utama'),
+('JR20261026000002','TP2026102600001','2026-10-26','13:35:34','U','PIUTANG TOKO / MINIMARKET / KOPERASI, OLEH Admin Utama');
 /*!40000 ALTER TABLE `jurnal` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -34732,11 +34084,11 @@ LOCK TABLES `kamar` WRITE;
 /*!40000 ALTER TABLE `kamar` DISABLE KEYS */;
 INSERT INTO `kamar` VALUES
 ('ANG.K1.001','ANG',500000,'DIBOOKING','Kelas 1','1'),
-('ANG.K1.002','ANG',500000,'KOSONG','Kelas 1','1'),
+('ANG.K1.002','ANG',500000,'DIBOOKING','Kelas 1','1'),
 ('DAH.K1.001','DAH',300000,'DIBOOKING','Kelas 1','1'),
 ('DAH.K1.002','DAH',300000,'DIBOOKING','Kelas 1','1'),
 ('K1.01','K1',500000,'KOSONG','Kelas 1','1'),
-('K3.01','K3',100000,'ISI','Kelas 3','1'),
+('K3.01','K3',100000,'KOSONG','Kelas 3','1'),
 ('VUP.01','VIP',550000,'DIBOOKING','Kelas VVIP','1');
 /*!40000 ALTER TABLE `kamar` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -34793,12 +34145,12 @@ INSERT INTO `kamar_inap` VALUES
 ('2026/03/14/000001','K1.01',500000,'tes','I50.0, ','2026-05-29','13:29:41','0000-00-00','00:00:00',0,0,'-'),
 ('2026/04/07/000001','K1.01',500000,'-','-','2026-04-07','11:59:09','0000-00-00','00:00:00',38,19000000,'-'),
 ('2026/05/11/000001','VUP.01',550000,'-','tes','2026-05-11','09:26:29','2026-05-25','13:54:54',14,7700000,'Meninggal'),
-('2026/05/11/000003','K3.01',100000,'-','-','2026-08-01','11:34:09','0000-00-00','00:00:00',0,0,'-'),
-('2026/06/29/000003','ANG.K1.002',499999.99999999994,'TES','TES','2026-06-29','10:45:46','2026-06-29','13:53:19',0,0,'Sehat'),
+('2026/05/11/000003','K3.01',100000,'-','K30, I50.0, ','2026-08-01','11:34:09','0000-00-00','00:00:00',0,0,'-'),
+('2026/06/29/000003','ANG.K1.002',499999.9999999999,'TES','TES','2026-06-29','10:45:46','2026-06-29','13:53:19',0,0,'Sehat'),
 ('2026/07/28/000001','ANG.K1.002',500000,'-','-','2026-07-28','10:18:41','2026-07-29','09:08:43',1,500000,'Pindah Kamar'),
-('2026/07/28/000001','DAH.K1.002',300000,'-','-','2026-07-29','09:08:43','0000-00-00','00:00:00',1,300000,'-'),
+('2026/07/28/000001','DAH.K1.002',300000,'-','tes','2026-07-29','09:08:43','2026-09-21','11:50:21',54,16200000,'Meninggal'),
 ('2026/07/29/000002','DAH.K1.002',300000,'-','','2026-07-29','09:56:18','2026-07-29','09:56:35',0,0,'Meninggal'),
-('2026/09/14/000001','K3.01',100000,'tes','-','2026-09-14','15:45:23','0000-00-00','00:00:00',0,0,'-');
+('2026/09/14/000001','K3.01',100000,'tes','tes','2026-09-14','15:45:23','2026-10-26','11:10:46',42,4200000,'Meninggal');
 /*!40000 ALTER TABLE `kamar_inap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -35936,7 +35288,8 @@ INSERT INTO `konsultasi_medik` VALUES
 ('KM202608060001','2026/08/06/000001','2026-08-06 16:12:04','Rawat Bersama','D0000005','D0000004','TES','RES'),
 ('KM202608120001','2026/07/28/000001','2026-08-12 15:07:38','Konsultasi','D0000005','D0000004','tes','tes'),
 ('KM202609170001','2026/09/17/000001','2026-09-17 09:22:47','Konsultasi','D0000004','D0000003','tes','sasas'),
-('KM202609170002','2026/09/17/000001','2026-09-17 09:23:52','Konsultasi','D0000003','D0000004','asas','sasas');
+('KM202609170002','2026/09/17/000001','2026-09-17 09:23:52','Konsultasi','D0000003','D0000004','asas','sasas'),
+('KM202610220001','2026/10/22/000001','2026-10-22 10:27:20','Konsultasi','D0000004','D0000003','TES','TES');
 /*!40000 ALTER TABLE `konsultasi_medik` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -35996,7 +35349,10 @@ INSERT INTO `konsultasi_perawat` VALUES
 ('KP202607290001','2026/07/29/000002','2026-07-29 10:14:00','12/09/1988/001','D0000005','qwqw','qwqw','wqwqw','wqwqw'),
 ('KP202608010001','2026/08/01/000001','2026-08-01 11:04:21','12/09/1988/001','D0000004','tes','tes','tes','tes'),
 ('KP202608060001','2026/07/28/000001','2026-08-06 14:50:35','12/09/1988/001','D0000003','tea','tes','tes','tes'),
-('KP202609030001','2026/09/03/000001','2026-09-03 11:14:34','12/09/1988/001','D0000004','qwqwqw','wqwqwqw','qwqwqw','wqwqw');
+('KP202609030001','2026/09/03/000001','2026-09-03 11:14:34','12/09/1988/001','D0000004','qwqwqw','wqwqwqw','qwqwqw','wqwqw'),
+('KP202610150001','2026/10/15/000001','2026-10-15 14:03:37','12/09/1988/001','D0000004','121','212','221212212','21212'),
+('KP202610220001','2026/09/14/000001','2026-10-22 14:48:17','120000134','D0000003','tes','tes','tes','tes'),
+('KP202610260001','2026/03/14/000001','2026-10-26 10:58:08','12/09/1988/001','D0000004','12121','1212','1212','21212');
 /*!40000 ALTER TABLE `konsultasi_perawat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -36785,6 +36141,49 @@ INSERT INTO `laporan_operasi` VALUES
 ('2026/06/29/000003','2026-06-29 10:59:36','TES','TES','TES','2026-06-29 10:59:36','Tidak','1212','TES SAJA\n\nOK'),
 ('2026/08/04/000001','2026-08-04 19:54:42','TES','TES','TES','2026-08-04 20:54:42','Tidak','asas','TES SAJA\n\nOK');
 /*!40000 ALTER TABLE `laporan_operasi` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `laporan_reaksi_transfusi`
+--
+
+DROP TABLE IF EXISTS `laporan_reaksi_transfusi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `laporan_reaksi_transfusi` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `diagnosis_klinis` varchar(255) DEFAULT NULL,
+  `indikasi_transfusi` varchar(255) DEFAULT NULL,
+  `komponen_darah` enum('WB','PRC','WRC','TC','WE','Lainnya') DEFAULT NULL,
+  `komponen_lainnya` varchar(50) DEFAULT NULL,
+  `volume_cc` varchar(4) DEFAULT NULL,
+  `nokantong` varchar(25) DEFAULT NULL,
+  `jenis_reaksi` varchar(500) DEFAULT NULL,
+  `penanganan` varchar(500) DEFAULT NULL,
+  `nip` varchar(20) NOT NULL,
+  `kd_dokter` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_rawat`,`tanggal`),
+  KEY `nip` (`nip`),
+  KEY `kd_dokter` (`kd_dokter`),
+  CONSTRAINT `laporan_reaksi_transfusi_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `laporan_reaksi_transfusi_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `petugas` (`nip`) ON UPDATE CASCADE,
+  CONSTRAINT `laporan_reaksi_transfusi_ibfk_3` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `laporan_reaksi_transfusi`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `laporan_reaksi_transfusi` WRITE;
+/*!40000 ALTER TABLE `laporan_reaksi_transfusi` DISABLE KEYS */;
+INSERT INTO `laporan_reaksi_transfusi` VALUES
+('2026/09/14/000001','2026-10-20 08:34:25','1	','2	','Lainnya','3','4','5','6	','7','120000134','D0000004');
+/*!40000 ALTER TABLE `laporan_reaksi_transfusi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -38886,6 +38285,47 @@ COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
+-- Table structure for table `monitoring_tolac`
+--
+
+DROP TABLE IF EXISTS `monitoring_tolac`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `monitoring_tolac` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tgl_perawatan` date NOT NULL,
+  `jam_rawat` time NOT NULL,
+  `his_frekuensi` varchar(2) DEFAULT NULL,
+  `his_durasi_detik` varchar(5) DEFAULT NULL,
+  `djj` varchar(5) DEFAULT NULL,
+  `nadi` varchar(5) DEFAULT NULL,
+  `td` varchar(7) DEFAULT NULL,
+  `pembukaan_cm` varchar(2) DEFAULT NULL,
+  `tanda_bahaya` enum('Tidak Ada','Ada') DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `nip` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`no_rawat`,`tgl_perawatan`,`jam_rawat`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `monitoring_tolac_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `monitoring_tolac_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nik`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `monitoring_tolac`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `monitoring_tolac` WRITE;
+/*!40000 ALTER TABLE `monitoring_tolac` DISABLE KEYS */;
+INSERT INTO `monitoring_tolac` VALUES
+('2026/04/07/000001','2026-10-10','11:14:47','1','2','6','5','4','3','Tidak Ada','7','156798');
+/*!40000 ALTER TABLE `monitoring_tolac` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
 -- Table structure for table `mpp_evaluasi`
 --
 
@@ -39064,7 +38504,8 @@ INSERT INTO `mpp_skrining` VALUES
 ('2026/04/07/000001','2026-04-13','Ya','Ya','Tidak','Tidak','Tidak','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','D0000004'),
 ('2026/05/11/000001','2026-05-12','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','08998998'),
 ('2026/06/22/000004','2026-07-28','Ya','Tidak','Tidak','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','123124'),
-('2026/06/29/000003','2026-06-29','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Ya','Ya','Tidak','Tidak','Tidak','Tidak','123124');
+('2026/06/29/000003','2026-06-29','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Ya','Ya','Tidak','Tidak','Tidak','Tidak','123124'),
+('2026/09/14/000001','2026-10-22','Ya','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','Tidak','D0000004');
 /*!40000 ALTER TABLE `mpp_skrining` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -39113,8 +38554,10 @@ INSERT INTO `mutasi_berkas` VALUES
 ('2026/08/19/000001','Sudah Kembali','2026-08-19 14:11:52','2026-08-19 14:11:52','2026-08-19 14:15:47','0000-00-00 00:00:00','0000-00-00 00:00:00'),
 ('2026/09/14/000001','Sudah Kembali','2026-09-14 10:49:54','2026-09-14 10:50:13','2026-09-14 10:50:57','0000-00-00 00:00:00','0000-00-00 00:00:00'),
 ('2026/09/14/000004','Sudah Kembali','2026-09-14 10:55:50','2026-09-14 10:55:50','2026-09-14 10:57:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),
-('2026/09/14/000005','Sudah Kembali','2026-09-14 10:56:10','2026-09-14 10:56:10','2026-09-14 10:56:41','0000-00-00 00:00:00','0000-00-00 00:00:00'),
-('2026/09/16/000002','Sudah Kembali','2026-09-16 09:44:28','2026-09-16 09:44:28','2026-09-16 09:49:49','0000-00-00 00:00:00','0000-00-00 00:00:00');
+('2026/09/14/000005','Sudah Kembali','2026-09-14 10:56:10','2026-09-14 10:56:10','2026-09-28 19:58:42','0000-00-00 00:00:00','0000-00-00 00:00:00'),
+('2026/09/16/000002','Sudah Kembali','2026-09-16 09:44:28','2026-09-16 09:44:28','2026-09-16 09:49:49','0000-00-00 00:00:00','0000-00-00 00:00:00'),
+('2026/09/21/000001','Sudah Diterima','2026-09-21 11:24:13','2026-09-21 11:24:13','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'),
+('2026/10/22/000001','Sudah Kembali','2026-10-22 10:17:38','2026-10-22 10:18:35','2026-10-22 10:30:41','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `mutasi_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -39379,7 +38822,13 @@ INSERT INTO `nota_jalan` VALUES
 ('2026/09/03/000001','2026/09/03/RJ0001','2026-09-03','11:30:56'),
 ('2026/09/09/000001','2026/09/09/RJ0002','2026-09-09','11:17:39'),
 ('2026/09/15/000001','2026/09/15/RJ0001','2026-09-15','06:56:49'),
-('2026/09/16/000002','2026/09/16/RJ0001','2026-09-16','09:57:19');
+('2026/09/16/000002','2026/09/16/RJ0001','2026-09-16','09:57:19'),
+('2026/09/21/000002','2026/09/21/RJ0001','2026-09-21','14:34:53'),
+('2026/10/05/000001','2026/10/15/RJ0001','2026-10-15','10:36:09'),
+('2026/10/20/000001','2026/10/20/RJ0001','2026-10-20','15:11:55'),
+('2026/10/21/000001','2026/10/21/PS0001','2026-10-21','10:00:37'),
+('2026/10/21/000002','2026/10/21/RJ0002','2026-10-21','11:12:08'),
+('2026/10/22/000001','2026/10/22/RJ0001','2026-10-22','11:01:02');
 /*!40000 ALTER TABLE `nota_jalan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -39537,7 +38986,8 @@ INSERT INTO `obat_racikan` VALUES
 ('2026-08-04','19:48:54','2026/08/04/000001','1','R1','R01',16,'2 X 1','HABISKAN'),
 ('2026-08-06','16:13:35','2026/08/06/000001','1','R1','R01',16,'2 X 1','HABISKAN'),
 ('2026-08-19','14:17:20','2026/08/19/000001','1','R1','R01',16,'2 X 1','HABISKAN'),
-('2026-09-16','09:51:37','2026/09/16/000002','1','R1','R01',16,'2 X 1','ABISKAN');
+('2026-09-16','09:51:37','2026/09/16/000002','1','R1','R01',16,'2 X 1','ABISKAN'),
+('2026-09-21','11:33:53','2026/09/21/000002','1','R1','R01',18,'3 x 1','HABISKAN');
 /*!40000 ALTER TABLE `obat_racikan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -39746,7 +39196,7 @@ INSERT INTO `operasi` VALUES
 ('2026/04/07/000001','2026-04-22 18:53:21','121212','Sedang','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',3000000,0,0,300000,0,0,0,0,0,2000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ranap'),
 ('2026/04/07/000001','2026-05-25 09:20:01','-','-','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',3000000,0,0,300000,0,0,0,0,0,2000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ranap'),
 ('2026/04/07/000001','2026-06-19 14:40:03','-','Ringan Cito','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',3000000,0,0,300000,0,0,0,0,0,2000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ranap'),
-('2026/06/29/000003','2026-06-29 10:59:36','tes','-','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',2999999.9999999995,0,0,300000,0,0,0,0,0,1999999.9999999998,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ranap'),
+('2026/06/29/000003','2026-06-29 10:59:36','tes','-','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',2999999.999999999,0,0,300000,0,0,0,0,0,1999999.9999999995,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ranap'),
 ('2026/08/04/000001','2026-08-04 19:54:42','tes','Sedang','D0000004','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','PK000001',3000000,0,0,300000,0,0,0,0,0,2000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Ralan');
 /*!40000 ALTER TABLE `operasi` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -39870,6 +39320,7 @@ INSERT INTO `opname` VALUES
 ('B000001196',5809,'2020-12-26',0,1000,0,0,1000,5809000,'-','AP','',''),
 ('B000001207',2037,'2020-12-26',0,1000,0,0,1000,2037000,'-','AP','',''),
 ('B000001207',2078,'2022-06-17',252.7000000000001,1000,0,0,747.3,1552889.4,'-','AP','',''),
+('B000001207',2078,'2026-09-21',9.400000000000023,100,0,0,90.59999999999998,188266.79999999996,'-','AP','',''),
 ('B000001221',353100,'2023-10-11',0,100,0,0,100,35310000,'-','AP','',''),
 ('B000001232',132000,'2021-04-08',0,10,0,0,10,1320000,'-','AP','',''),
 ('B000001254',10450,'2026-07-28',0,100,0,0,100,1045000,'-','IGDP','',''),
@@ -40260,19 +39711,19 @@ INSERT INTO `pasien` VALUES
 ('000002','DEWI EKAWATI','9201394901000008','P','WONOGIRI','1988-02-22','-','ALAMAT','-','-','MENIKAH','ISLAM','2022-06-28','08123442332','38 Th 5 Bl 28 Hr','-','SAUDARA','-','-','-',205,636,394,'-','ALAMAT','KELURAHAN','KECAMATAN','KABUPATEN','-',1,1,1,'-','-',3,'PROPINSI'),
 ('000006','Sakha Hamizan Aqila','3671043112100019','L','-','2016-10-13','DEWI EKAWATI','PAJANGAN BANTUL','-','PEKERJA MANDIRI','BELUM MENIKAH','-','2022-08-03','0856267503923','9 Th 7 Bl 13 Hr','-','AYAH','WINDIARTO','-','0002081647866',1,1,1,'-','PAJANGAN BANTUL','-','-','-','I0002',1,1,1,'-','-',1,'-'),
 ('000013','PARAMITA RAMADANI','-','P','-','1990-01-01','-','BANTUL','-','-','MENIKAH','-','2023-04-11','0812345678','36 Th 3 Bl 6 Hr','-','SAUDARA','-','-','-',1053,190,232,'-','-','-','-','-','-',1,1,1,'testes.yahoo.com','-',300,'JAWA TENGAHJL ANGGUR NO.36 RT'),
-('000022','RUDI SANTOSO','3374135702570001','P','KEBUMEN','1957-03-11','JUMINTEN','TES','-','-','MENIKAH','ISLAM','2023-08-17','123123213','69 Th 6 Bl 5 Hr','-','SAUDARA','-','BPJ','002084509113',1101010222,725,457,'-','TES','KEDUNGWARU','PREMBUN','KABUPATEN KEBUMEN','I0002',1,1,1,'-','-',3,'JAWA TENGAH'),
-('000023','RAHMA NIA','-','P','BANDUNG','1992-02-22','-','RT 01 RW 02','-','-','MENIKAH','ISLAM','2023-10-11','-','34 Th 6 Bl 28 Hr','-','AYAH','WAHYU','A09','-',1101010225,728,460,'TES','RT 01 RW 02','CISARANTEN ENDAH','ARCAMANIK','KOTA BANDUNG','I0003',18,1,1,'-','-',321,'JAWA BARAT'),
+('000022','RUDI SANTOSO','3374135702570001','P','KEBUMEN','1957-03-11','JUMINTEN','TES','-','-','MENIKAH','ISLAM','2023-08-17','123123213','69 Th 6 Bl 10 Hr','-','SAUDARA','-','BPJ','002084509113',1101010222,725,457,'-','TES','KEDUNGWARU','PREMBUN','KABUPATEN KEBUMEN','I0002',1,1,1,'-','-',3,'JAWA TENGAH'),
+('000023','RAHMA NIA','-','P','BANDUNG','1992-02-22','-','RT 01 RW 02','-','-','MENIKAH','ISLAM','2023-10-11','-','34 Th 7 Bl 28 Hr','-','AYAH','WAHYU','A09','-',1101010225,728,460,'TES','RT 01 RW 02','CISARANTEN ENDAH','ARCAMANIK','KOTA BANDUNG','I0003',18,1,1,'-','-',321,'JAWA BARAT'),
 ('000048','LIYA RAHMA','-','L','KLATEN','1987-02-22','SURTI','TES','-','-','MENIKAH','ISLAM','2025-03-15','09865786','39 Th 6 Bl 28 Hr','S1','DIRI SENDIRI','-','A09','-',1101010281,784,516,'-','TES','JOYOTAKAN','SERENGAN','KOTA SURAKARTA','-',5,1,1,'-','-',3,'JAWA TENGAH'),
-('000051','ADI KAZAMA','-','L','BOJONEGORO','1985-01-20','SURTI','','-','-','MENIKAH','ISLAM','2025-07-29','-','41 Th 6 Bl 8 Hr','S1','DIRI SENDIRI','-','A09','-',1101010289,792,524,'-','ALAMAT','CAMPURJO','BOJONEGORO','KABUPATEN BOJONEGORO','-',1,1,1,'-','-',267,'JAWA TIMUR'),
+('000051','ADI KAZAMA','-','L','BOJONEGORO','1985-01-20','SURTI','','-','-','MENIKAH','ISLAM','2025-07-29','-','41 Th 8 Bl 25 Hr','S1','DIRI SENDIRI','-','A09','-',1101010289,792,524,'-','ALAMAT','CAMPURJO','BOJONEGORO','KABUPATEN BOJONEGORO','-',1,1,1,'-','-',267,'JAWA TIMUR'),
 ('000052','BY.NY. AROFAH','-','L','-','2025-08-19','AROFAH','KALITIDU','-','-','BELUM MENIKAH','-','2025-08-19','0','0','-','AYAH','IRFAN','-','-',1,1,1,'-','KALITIDU','-','-','-','-',1,1,1,'-','-',1,'-'),
 ('000053','TES','-','L','-','1990-01-01','-','KALITIDU','-','-','JOMBLO','-','2025-08-20','08123123123','0 Th','-','SAUDARA','','-','',1,1,1,'-','-','-','-','-','-',1,1,1,'tesyahoo.com','-',1,'-'),
-('000054','JAROT KUMBORO','-','L','-','1990-01-01','-','MALANG KOTA','-','-','JOMBLO','-','2025-08-26','0812121212','36 Th 8 Bl 16 Hr','-','SAUDARA','','-','',1,1,1,'-','-','-','-','-','-',1,1,1,'JAROTYAHOO.COM','-',1,'-'),
+('000054','JAROT KUMBORO','-','L','-','1990-01-01','-','MALANG KOTA','-','-','JOMBLO','-','2025-08-26','0812121212','36 Th 8 Bl 26 Hr','-','SAUDARA','','-','',1,1,1,'-','-','-','-','-','-',1,1,1,'JAROTYAHOO.COM','-',1,'-'),
 ('000055','RAHMAT PAMBUDI','098669766575','L','MALANG','1987-08-25','SURANTI','-','A','KARYAWAN','BELUM MENIKAH','KRISTEN','2025-08-26','09988','39 Th 0 Bl 20 Hr','D4','DIRI SENDIRI','RAHMA','A09','0',11,164,448,'BURUH','MALANG','MAKASAR','ARCAMANIK','ASASAS','I0002',12,2,5,'JAROT@YAHOO.COM','1213123123',496,'DI YOGYAKARTA'),
 ('000057','BY.NY.RAHMANIA','-','P','-','2026-05-11','NY. RAHMANIA','-','-','-','BELUM MENIKAH','-','2026-05-11','0','-','-','AYAH','-','-','-',1,1,1,'-','-','-','-','-','-',1,1,1,'-','-',1,'-'),
-('000058','PASIEN BEBAS','21212','L','SEKARSULI','1987-07-01','TES','','-','121212','MENIKAH','ISLAM','2026-06-03','21212','39 Th 2 Bl 13 Hr','-','DIRI SENDIRI','-','A09','121212121212',1101010316,819,551,'-','ALAMAT','BENER PEPANYI','PERMATA','KABUPATEN BENER MERIAH','-',79,1,1,'1212','',536,'ACEH'),
-('000059','YOHANA FARIDA','-','P','PONTIANAK','1989-06-12','RAHMA','DUSUN JERAMI','-','-','MENIKAH','ISLAM','2026-06-20','-','37 Th 3 Bl 6 Hr','D4','DIRI SENDIRI','-','-','-',1101010317,820,552,'-','DUSUN JERAMI','SUTRA','SUKADANA','KABUPATEN KAYONG UTARA','-',1,1,1,'-','',639,'KALIMANTAN BARAT'),
+('000058','PASIEN BEBAS','21212','L','SEKARSULI','1987-07-01','TES','','-','121212','MENIKAH','ISLAM','2026-06-03','21212','39 Th 3 Bl 20 Hr','-','DIRI SENDIRI','-','A09','121212121212',1101010316,819,551,'-','ALAMAT','BENER PEPANYI','PERMATA','KABUPATEN BENER MERIAH','-',79,1,1,'1212','',536,'ACEH'),
+('000059','YOHANA FARIDA','-','P','PONTIANAK','1989-06-12','RAHMA','DUSUN JERAMI','-','-','MENIKAH','ISLAM','2026-06-20','-','37 Th 4 Bl 10 Hr','D4','DIRI SENDIRI','-','-','-',1101010317,820,552,'-','DUSUN JERAMI','SUTRA','SUKADANA','KABUPATEN KAYONG UTARA','-',1,1,1,'-','',639,'KALIMANTAN BARAT'),
 ('000060','BY.UJICBA','-','L','1212','2026-07-29','212122','','-','-','MENIKAH','ISLAM','2026-07-29','-','0 Th 0 Bl 0 Hr','-','DIRI SENDIRI','1212','-','-',202,681,413,'121212','ALAMAT','KELURAHAN','KECAMATAN','KABUPATEN','-',1,1,1,'-','-',497,'PROPINSI'),
-('000061','KHANZA AZZAHWA KHOIRUNNISA ','3402074511200002','P','BANTUL','2020-11-05','DEWI EKAWATI',' RT /RW  KODE POS ','-','-','BELUM MENIKAH','ISLAM','2026-08-25','-','5 Th 10 Bl 11 Hr','-','IBU','DEWI EKAWATI','A09','-',1441,500,387,'TES',' RT /RW  KODE POS ','GUWOSARI','PAJANGAN','KABUPATEN BANTUL','-',1,1,1,'-','-',469,'DI YOGYAKARTA'),
+('000061','KHANZA AZZAHWA KHOIRUNNISA ','3402074511200002','P','BANTUL','2020-11-05','DEWI EKAWATI',' RT /RW  KODE POS ','-','-','BELUM MENIKAH','ISLAM','2026-08-25','-','5 Th 10 Bl 16 Hr','-','IBU','DEWI EKAWATI','A09','-',1441,500,387,'TES',' RT /RW  KODE POS ','GUWOSARI','PAJANGAN','KABUPATEN BANTUL','-',1,1,1,'-','-',469,'DI YOGYAKARTA'),
 ('000062','TEST MCU','121212','L','JAKARTA','2010-01-01','SURANTI','JAKARTA','B','SAS','BELUM MENIKAH','ISLAM','2026-09-20','12212','16 Th 8 Bl 18 Hr','D3','AYAH','RAHMA','A09','',10,728,9,'BURUH','21212','BAJO','ARCAMANIK','ASASAS','I0003',18,5,5,'KHANZA@COM','121212',496,'DKI JAKARTA'),
 ('112384','RIDWAN HALIM','-','L','KLATEN','1989-01-24','SUTINAH','GAS','-','-','MENIKAH','ISLAM','2025-01-14','-','37 Th 7 Bl 9 Hr','S1','DIRI SENDIRI','-','AKA','0002063487947',1101010279,782,514,'-','ALAMAT','KARANG TIMUR','KARANG TENGAH','KOTA TANGERANG','-',1,1,1,'-','-',601,'BANTEN');
 /*!40000 ALTER TABLE `pasien` ENABLE KEYS */;
@@ -40455,6 +39906,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `pasien_mati` WRITE;
 /*!40000 ALTER TABLE `pasien_mati` DISABLE KEYS */;
 INSERT INTO `pasien_mati` VALUES
+('2026-09-21','00:00:00','000051','-','-','tes','','','','D0000004'),
 ('2026-07-29','00:00:00','000060','-','-','-','-','-','-','D0000002');
 /*!40000 ALTER TABLE `pasien_mati` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -41862,7 +41314,7 @@ INSERT INTO `pegawai` VALUES
 (134,'156798','SUSI SUSANTI','Pria','-','-','-','-','-','-','-','-','-','-','-',0,'KLATEN','2025-03-15','JONGGRANGAN','-','1900-01-01','<1','-','T','-','AKTIF',0,0,0,'1900-01-01',0,0,'pages/pegawai/photo/','-'),
 (135,'D0000005','dr. Sri Rahma','Pria','-','-','-','-','-','-','-','-','-','-','-',0,'jogja','2025-03-15','-','-','1900-01-01','<1','-','T','-','AKTIF',0,0,0,'1900-01-01',0,0,'pages/pegawai/photo/','-'),
 (136,'01010101','RAHMI DEWI','Pria','-','-','-','-','-','-','-','-','-','-','-',0,'SASAS','2025-07-29','SAS','-','1900-01-01','<1','-','T','-','AKTIF',0,0,0,'1900-01-01',0,0,'pages/pegawai/photo/','-'),
-(137,'120000134','TULUS SANTOSO','Pria','TES','PJBU','KP','I','I','IT','Manajemen','K/0','CK','131133','S1 PEMERINTAHAN',0,'KLATEB','1988-01-01','KLATEN','KLATEN','2026-01-01','<1','-','BPD','998989867','AKTIF',0,0,0,'2026-01-01',0,0,'pages/pegawai/photo/photo merah hitam.jpeg','1113131131'),
+(137,'120000134','TULUS SANTOSO','Pria','TES','PJBU','KP','I','I','IT','Manajemen','K/0','CK','131133','S1 PEMERINTAHAN',0,'KLATEB','1988-01-01','KLATEN','KLATEN','2026-01-01','<1','-','BPD','998989867','AKTIF',0,0,0,'2026-01-01',0,0,'pages/pegawai/photo/photo merah hitam.jpeg','3508162501870001'),
 (139,'10908789','USER BARU','Pria','-','-','-','-','-','-','-','-','-','-','-',0,'SASAS','2026-06-04','SASAS','-','1900-01-01','<1','-','T','-','AKTIF',0,0,0,'1900-01-01',0,0,'pages/pegawai/photo/','-');
 /*!40000 ALTER TABLE `pegawai` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -41933,7 +41385,10 @@ INSERT INTO `pelaksanaan_informasi_edukasi` VALUES
 ('2026/08/06/000001','2026-08-06 14:19:59','D0000005','edukasi implan operasi','tes','Pasien','tes','10','Ceramah','Sudah Mengerti','Awal'),
 ('2026/09/03/000001','2026-09-03 10:26:14','123124','qwq w qw qwqw','wqwqw','Pasien','21212','2','Ceramah','Sudah Mengerti','Awal'),
 ('2026/09/14/000001','2026-09-14 09:31:42','D0000004','EDUKASI TENTANG DIET PASIEN','tes','Pasien','tes','10','Ceramah','Sudah Mengerti','Awal'),
-('2026/09/14/000001','2026-09-19 10:14:08','123124','edukasi implan operasi','1212121212','Pasien','21212','10','Ceramah','Sudah Mengerti','Awal');
+('2026/09/14/000001','2026-09-19 10:14:08','123124','edukasi implan operasi','1212121212','Pasien','21212','10','Ceramah','Sudah Mengerti','Awal'),
+('2026/09/20/000001','2026-09-21 11:09:13','123124','EDUKASI TENTANG DIET PASIEN','tes','Pasien','','10','Ceramah','Sudah Mengerti','Awal'),
+('2026/10/05/000001','2026-10-05 11:06:23','D0000003','sasas','asas','Pasien','sasas','sas','Ceramah','Sudah Mengerti','Awal'),
+('2026/10/22/000001','2026-10-22 10:40:42','123124','edukasi implan operasi','tes','Pasien','tes','10','Ceramah','Sudah Mengerti','Awal');
 /*!40000 ALTER TABLE `pelaksanaan_informasi_edukasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -41972,7 +41427,9 @@ LOCK TABLES `pelayanan_informasi_obat` WRITE;
 /*!40000 ALTER TABLE `pelayanan_informasi_obat` DISABLE KEYS */;
 INSERT INTO `pelayanan_informasi_obat` VALUES
 ('PIO202606220001','2026/02/25/000005','2026-06-22 15:11:10','Lisan','dokter','Pasien','ytty','Identifikasi Obat','tes','tes'),
-('PIO202607090001','2026/06/22/000001','2026-07-09 09:47:34','Lisan','tes','Pasien','asas','Identifikasi Obat','sasas','sasas');
+('PIO202607090001','2026/06/22/000001','2026-07-09 09:47:34','Lisan','tes','Pasien','asas','Identifikasi Obat','sasas','sasas'),
+('PIO202610260001','2026/05/11/000003','2026-10-26 11:31:13','Lisan','2121','Pasien','21212','Identifikasi Obat','21212','21212'),
+('PIO202610260002','2026/05/11/000003','2026-10-26 11:31:54','Lisan','2323','Pasien','32323','Identifikasi Obat','32323','323');
 /*!40000 ALTER TABLE `pelayanan_informasi_obat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -42280,7 +41737,8 @@ INSERT INTO `pemasukan_lain` VALUES
 ('PL20260526001','2026-05-26 10:31:33','20',10000000,'120000134','STIKES SRAGEN','BIAYA PRAKTEK'),
 ('PL20260604001','2026-06-04 13:24:09','20',10000000,'120000134','STIKES UMKLA','BIAYA MAGANG'),
 ('PL20260616001','2026-06-16 11:04:11','08',1000000,'120000134','IBU NRIMALA','ANTAR KE BANGKO'),
-('PL20260709001','2026-07-09 12:01:03','21',20000000,'120000134','CFC','SEWA TEMPAT TAHUN 2026');
+('PL20260709001','2026-07-09 12:01:03','21',20000000,'120000134','CFC','SEWA TEMPAT TAHUN 2026'),
+('PL20261021001','2026-10-21 09:38:26','11',100000,'120000134','tes','tes');
 /*!40000 ALTER TABLE `pemasukan_lain` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -42996,7 +42454,16 @@ INSERT INTO `pemeriksaan_ralan` VALUES
 ('2026/09/19/000001','2026-09-19','09:56:42','21212','','','','','','','','Compos Mentis','1212','1212','','','','','','','123124'),
 ('2026/09/19/000001','2026-09-19','09:57:03','21212','','','','','','','','Compos Mentis','1212','1212','','','','','','','D0000004'),
 ('2026/09/19/000001','2026-09-19','13:25:56','','','','','','','','','Compos Mentis','TES','TES','','','a. Goo of treat\nb. Tindakan/Program\nc. Edukasi\n    lanjutan sesi latihan\nd. Frekuensi kunjungan\n    2x seminggu','TYPHOID','','Reasesment Ulang\nRujuk Nalik Ke DPJP','D0000004'),
-('2026/09/20/000002','2026-09-19','11:14:54','','','','','','','','','Compos Mentis','TES','TES','','','TES','JANTUNG','TES','','D0000004');
+('2026/09/20/000002','2026-09-19','11:14:54','','','','','','','','','Compos Mentis','TES','TES','','','TES','JANTUNG','TES','','D0000004'),
+('2026/09/20/000002','2026-09-21','11:04:53','','','','','','','','','Compos Mentis','tes','ok','','','','','','','08998998'),
+('2026/09/21/000001','2026-09-21','11:30:26','','','','','','','','','Compos Mentis','TES TIDAK BANYAK MENETIK','DITEMUKAN AKRAL DINGIN','','','OBAT JANTUNG, CEK ECHO','JANTUNG','RADIOLOGI','-','D0000004'),
+('2026/09/21/000002','2026-09-21','11:25:48','','','','','','','','','Compos Mentis','tes','','','','','','','','D0000003'),
+('2026/10/05/000001','2026-10-05','09:25:49','','','','','','','','','Compos Mentis','TES','TES','','','TES','TYPHOID','','TES','D0000004'),
+('2026/10/15/000001','2026-10-15','10:22:02','','','','','','','','','Compos Mentis','TES','TES','','','TES','TYPHOID','','TES','D0000004'),
+('2026/10/21/000001','2026-10-21','09:52:14','','','','','','','','','Compos Mentis','panas beberapa hari tidak turun','suhu badan 40 derajat','','','4','tipes','5','6','D0000004'),
+('2026/10/21/000002','2026-10-21','13:53:50','','','','','','','','','Compos Mentis','panas beberapa hari tidak turun','suhu badan 40 derajat','','','4','tipes','5','6','D0000004'),
+('2026/10/22/000001','2026-10-22','10:10:40','','','','','','','','','Compos Mentis','tes','tes','','','','','','','123124'),
+('2026/10/22/000001','2026-10-22','10:20:46','','','','','','','','','Compos Mentis','TES','TES','','','TES Resep : \nIbuprofen 400 mg Jumlah 10 Aturan Pakai 2 X 1\nAmlodipine 5 mg Jumlah 10 Aturan Pakai 2x11\n1. R1 Jumlah 16 Puyer Aturan Pakai 2 X 1\n-- Acyclovir 200 mg Tablet 11.6\n-- Albendazole tab 6.4\n','JANTUNG','TES','','D0000004');
 /*!40000 ALTER TABLE `pemeriksaan_ralan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43136,10 +42603,15 @@ INSERT INTO `pemesanan` VALUES
 ('PB20260722003','SPM260722002','S0007','12/09/1988/001','2026-07-22','2026-07-22','2026-07-22',2805500,0,2805500,308605,0,3114105,'AP','Belum Dibayar'),
 ('PB20260728001','31311','S0007','12/09/1988/001','2026-07-28','2026-07-28','2026-07-28',2896800,0,2896800,318648,0,3215448,'AP','Belum Dibayar'),
 ('PB20260807001','010201212','S0007','120000134','2026-08-07','2026-08-07','2026-08-07',1001912.1312,0,1001912.1312,110210.33443199999,0,1112122.465632,'GD','Sudah Dibayar'),
+('PB20260817002','12121','S0007','120000134','2026-08-01','2026-08-17','2026-08-17',166500,0,166500,18315,0,184815,'GD','Belum Dibayar'),
 ('PB20260901001','qwqwqwqw','S0004','120000134','2026-09-01','2026-09-01','2026-09-01',4029091.21312,0,4029091.21312,443200.0334432,0,4472291.2465632,'AP','Sudah Dibayar'),
 ('PB20260901002','2121212','S0007','12/09/1988/001','2026-09-01','2026-09-01','2026-09-01',948022.1312,0,948022.1312,104282,0,1052304.1312,'AP','Belum Dibayar'),
 ('PB20260918001','SPM260918001','S0007','120000134','2026-09-18','2026-09-18','2026-09-18',4679200,0,4679200,514712,0,5193912,'GD','Sudah Dibayar'),
-('PB20260918002','SPM260918002','S0007','12/09/1988/001','2026-09-18','2026-09-18','2026-09-18',881400,0,881400,96954,0,978354,'AP','Belum Dibayar');
+('PB20260918002','SPM260918002','S0007','12/09/1988/001','2026-09-18','2026-09-18','2026-09-18',881400,0,881400,96954,0,978354,'AP','Belum Dibayar'),
+('PB20260921001','SPM260921001','S0007','12/09/1988/001','2026-09-21','2026-09-21','2026-09-21',5110880,0,5110880,562196.8,0,5673076.8,'AP','Sudah Dibayar'),
+('PB20261016001','SPM261016001','S0007','120000134','2026-10-16','2026-10-16','2026-10-16',823710,0,823710,90608.1,0,914318.1,'AP','Belum Dibayar'),
+('PB20261017001','12121','S0007','120000134','2026-08-17','2026-08-17','2026-08-17',137500,0,137500,15125,0,152625,'GD','Belum Dibayar'),
+('PB20261022001','0','S0007','12/09/1988/001','2026-10-22','2026-10-22','2026-10-22',260291.21312,0,260291.21312,28632.0334432,0,288923.2465632,'AP','Sudah Dibayar');
 /*!40000 ALTER TABLE `pemesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43298,7 +42770,8 @@ INSERT INTO `penagihan_piutang` VALUES
 ('PP20260628001','2026-06-28','2026-06-28',0,'D0000004','123124','BPJ','-','112020','Sudah Dibayar'),
 ('PP20260709001','2026-07-09','2026-07-09',0,'D0000005','08998998','BPJ','tes','112020','Proses Penagihan'),
 ('PP20260722001','2026-07-22','2026-07-22',0,'08998998','01010101','BPJ','-','112020','Sudah Dibayar'),
-('PP20260804001','2026-08-04','2026-10-04',61,'D0000004','123124','A04','tes','112020','Belum Lunas');
+('PP20260804001','2026-08-04','2026-10-04',61,'D0000004','123124','A04','tes','112020','Belum Lunas'),
+('PP20261020001','2026-10-20','2026-10-20',0,'123124','156798','A04','-','112020','Sudah Dibayar');
 /*!40000 ALTER TABLE `penagihan_piutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43605,7 +43078,9 @@ INSERT INTO `pengajuan_barang_medis` VALUES
 ('PBM20260722001','156798','2026-07-22','Disetujui','CITO'),
 ('PBM20260722002','156798','2026-07-22','Disetujui','cito'),
 ('PBM20260729001','01010101','2026-07-29','Disetujui','-'),
-('PBM20260918001','123124','2026-09-18','Disetujui','CITO');
+('PBM20260918001','123124','2026-09-18','Disetujui','CITO'),
+('PBM20260921001','123124','2026-09-21','Disetujui','cito'),
+('PBM20261016001','08998998','2026-10-16','Disetujui','121212');
 /*!40000 ALTER TABLE `pengajuan_barang_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43704,7 +43179,8 @@ INSERT INTO `pengajuan_biaya` VALUES
 ('PK20260629001','2026-06-29','D0000004','Cito','workshop hemodialisa','PENINGKATANG KAPASITAS PERAWAT HEMODIALISA','PERAWAT HD','JOGJA',5,4000000,20000000,'-','156798','Disetujui'),
 ('PK20260709001','2026-07-09','D0000004','Cito','PEMBELIAN BARANG APOTEK','-','-','-',1,10000000,10000000,'-','156798','Disetujui'),
 ('PK20260807001','2026-08-07','156798','Cito','WORKSHOP BTCLS','PENINGKATAN KAPASITAS PERAWAT','PERAWAT IGD','JOGJA',3,5000000,15000000,'-','01010101','Disetujui'),
-('PK20260918001','2026-09-18','123124','Cito','WORKSHOP KEUANGAN SIMRS KHANZA','PENINGKATAN SKILL KEUANGAN','PETUGAS KEUANGAN','JOGJA',4,3500000,14000000,'-','156798','Divalidasi');
+('PK20260918001','2026-09-18','123124','Cito','WORKSHOP KEUANGAN SIMRS KHANZA','PENINGKATAN SKILL KEUANGAN','PETUGAS KEUANGAN','JOGJA',4,3500000,14000000,'-','156798','Divalidasi'),
+('PK20261020001','2026-10-20','123124','Cito','workshop SIMRS Khanza','Mengenal Keuangan','IT','jogja',3,3000000,9000000,'-','156798','Divalidasi');
 /*!40000 ALTER TABLE `pengajuan_biaya` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43743,7 +43219,8 @@ INSERT INTO `pengajuan_biaya_disetujui` VALUES
 ('PK20260629001',2,4000000,8000000),
 ('PK20260709001',1,30000000,30000000),
 ('PK20260807001',2,4500000,9000000),
-('PK20260918001',3,3500000,10500000);
+('PK20260918001',3,3500000,10500000),
+('PK20261020001',2,2500000,5000000);
 /*!40000 ALTER TABLE `pengajuan_biaya_disetujui` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43878,7 +43355,8 @@ INSERT INTO `pengeluaran_harian` VALUES
 ('PH20260807001','2026-08-07 19:54:22','05',300000,'120000134','PAK BEJO BELI SOLAR'),
 ('PH20260901001','2026-09-01 17:00:43','03',1000000000,'120000134','MAS MUL BELI ALPHARD'),
 ('PH20260918001','2026-09-18 10:30:04','05',300000,'120000134','PAK BEJO BELI SOLAR UNTUK GENSET'),
-('PK20260918001','2026-09-18 11:25:04','06',10500000,'12/09/1988/001','Validasi pengajuan No.PK20260918001 tanggal 2026-09-18 oleh FREDIAN AHMAD NIP 123124');
+('PK20260918001','2026-09-18 11:25:04','06',10500000,'12/09/1988/001','Validasi pengajuan No.PK20260918001 tanggal 2026-09-18 oleh FREDIAN AHMAD NIP 123124'),
+('PK20261020001','2026-10-20 15:49:58','06',5000000,'120000134','Validasi pengajuan No.PK20261020001 tanggal 2026-10-20 oleh FREDIAN AHMAD NIP 123124');
 /*!40000 ALTER TABLE `pengeluaran_harian` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -43915,7 +43393,8 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `pengeluaran_obat_bhp` WRITE;
 /*!40000 ALTER TABLE `pengeluaran_obat_bhp` DISABLE KEYS */;
 INSERT INTO `pengeluaran_obat_bhp` VALUES
-('SKM20260629001','2026-06-29','12/09/1988/001','No.Permintaan PM20260629001 Tgl 2026-06-29 Ruang HEMODIALISA oleh SRI WAHYUNI','AP');
+('SKM20260629001','2026-06-29','12/09/1988/001','No.Permintaan PM20260629001 Tgl 2026-06-29 Ruang HEMODIALISA oleh SRI WAHYUNI','AP'),
+('SKM20261022001','2026-10-22','120000134','No.Permintaan PM20261022001 Tgl 2026-10-22 Ruang LABORAT oleh RAHMI DEWI','AP');
 /*!40000 ALTER TABLE `pengeluaran_obat_bhp` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -44220,7 +43699,7 @@ CREATE TABLE `penilaian_awal_keperawatan_igd` (
   `keluhan_utama` text NOT NULL,
   `rpd` text NOT NULL,
   `rpo` text NOT NULL,
-  `status_kehamilan` enum('Tidak Hamil','Hamil') NOT NULL,
+  `status_kehamilan` enum('-','Tidak Hamil','Hamil') NOT NULL,
   `gravida` varchar(20) DEFAULT NULL,
   `para` varchar(20) DEFAULT NULL,
   `abortus` varchar(20) DEFAULT NULL,
@@ -44263,9 +43742,9 @@ CREATE TABLE `penilaian_awal_keperawatan_igd` (
   `alat_bantu` enum('Tidak','Ya') NOT NULL,
   `ket_bantu` varchar(50) DEFAULT '',
   `nyeri` enum('Tidak Ada Nyeri','Nyeri Akut','Nyeri Kronis') NOT NULL,
-  `provokes` enum('Proses Penyakit','Benturan','Lain-lain') NOT NULL,
+  `provokes` enum('-','Proses Penyakit','Benturan','Lain-lain') NOT NULL,
   `ket_provokes` varchar(40) NOT NULL,
-  `quality` enum('Seperti Tertusuk','Berdenyut','Teriris','Tertindih','Tertiban','Lain-lain') NOT NULL,
+  `quality` enum('-','Seperti Tertusuk','Berdenyut','Teriris','Tertindih','Tertiban','Lain-lain') NOT NULL,
   `ket_quality` varchar(50) NOT NULL,
   `lokasi` varchar(50) NOT NULL,
   `menyebar` enum('Tidak','Ya') NOT NULL,
@@ -44283,6 +43762,40 @@ CREATE TABLE `penilaian_awal_keperawatan_igd` (
   `ket_lapor` varchar(15) DEFAULT NULL,
   `rencana` text NOT NULL,
   `nip` varchar(20) NOT NULL,
+  `id_observation_informasi` varchar(40) DEFAULT '',
+  `id_observation_keluhan_utama` varchar(40) DEFAULT '',
+  `id_observation_rpd` varchar(40) DEFAULT '',
+  `id_observation_rpo` varchar(40) DEFAULT '',
+  `id_observation_status_kehamilan` varchar(40) DEFAULT '',
+  `id_observation_gravida` varchar(40) DEFAULT '',
+  `id_observation_para` varchar(40) DEFAULT '',
+  `id_observation_abortus` varchar(40) DEFAULT '',
+  `id_observation_hpht` varchar(40) DEFAULT '',
+  `id_observation_tekanan` varchar(40) DEFAULT '',
+  `id_observation_pupil` varchar(40) DEFAULT '',
+  `id_observation_neurosensorik` varchar(40) DEFAULT '',
+  `id_observation_integumen` varchar(40) DEFAULT '',
+  `id_observation_turgor` varchar(40) DEFAULT '',
+  `id_observation_edema` varchar(40) DEFAULT '',
+  `id_observation_mukosa` varchar(40) DEFAULT '',
+  `id_observation_perdarahan` varchar(40) DEFAULT '',
+  `id_observation_intoksikasi` varchar(40) DEFAULT '',
+  `id_observation_eliminasi` varchar(40) DEFAULT '',
+  `id_observation_psikologis` varchar(40) DEFAULT '',
+  `id_observation_jiwa` varchar(40) DEFAULT '',
+  `id_observation_perilaku` varchar(40) DEFAULT '',
+  `id_observation_hubungan` varchar(40) DEFAULT '',
+  `id_observation_tinggal_dengan` varchar(40) DEFAULT '',
+  `id_observation_budaya` varchar(40) DEFAULT '',
+  `id_observation_pendidikan_pj` varchar(40) DEFAULT '',
+  `id_observation_edukasi` varchar(40) DEFAULT '',
+  `id_observation_kemampuan` varchar(40) DEFAULT '',
+  `id_observation_aktifitas` varchar(40) DEFAULT '',
+  `id_observation_alat_bantu` varchar(40) DEFAULT '',
+  `id_observation_nyeri` varchar(40) DEFAULT '',
+  `id_observation_resiko_jatuh` varchar(40) DEFAULT '',
+  `id_careplan_rencana` varchar(40) DEFAULT '',
+  `id_composition` varchar(40) DEFAULT '',
   PRIMARY KEY (`no_rawat`),
   KEY `nip` (`nip`) USING BTREE,
   CONSTRAINT `penilaian_awal_keperawatan_igd_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -44298,11 +43811,13 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `penilaian_awal_keperawatan_igd` WRITE;
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_igd` DISABLE KEYS */;
 INSERT INTO `penilaian_awal_keperawatan_igd` VALUES
-('2026/05/12/000001','2026-05-12 09:11:09','Autoanamnesis','-','-','-','Tidak Hamil','-','-','-','-','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001'),
-('2026/06/22/000002','2026-06-22 09:54:17','Autoanamnesis','-','-','-','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','01010101'),
-('2026/06/29/000003','2026-06-29 09:32:18','Autoanamnesis','-','-','-','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001'),
-('2026/07/21/000004','2026-07-21 14:34:49','Autoanamnesis','tes','sasas','sasas','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001'),
-('2026/09/14/000002','2026-09-14 09:44:01','Autoanamnesis','wewe','ewewe','ewewe','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','120000134');
+('2026/05/12/000001','2026-05-12 09:11:09','Autoanamnesis','-','-','-','Tidak Hamil','-','-','-','-','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+('2026/06/22/000002','2026-06-22 09:54:17','Autoanamnesis','-','-','-','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','01010101','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+('2026/06/29/000003','2026-06-29 09:32:18','Autoanamnesis','-','-','-','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+('2026/07/21/000004','2026-07-21 14:34:49','Autoanamnesis','tes','sasas','sasas','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','12/09/1988/001','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+('2026/08/25/000001','2026-10-16 10:41:16','Autoanamnesis','1','3','2','Tidak Hamil','0','0','0','12-01-2027','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','7','8','Tidak Ada','9','10','11','12','13','14','15','16','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','17','18','Harmonis','Sendiri','19','Tidak Ada','20','-','21','Pasien','22','Mandiri','Tirah Baring','Tidak','23','Tidak Ada Nyeri','-','24','-','25','26','Tidak','0','27','Istirahat','28','Tidak','29','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','30','31','120000134','1907f0e9-42bc-48a2-9f99-08098211a14d','b98f222a-821c-4053-9f8a-b3fc958286ef','a0ae3286-80bb-4e72-bbe4-02c75c9ef9bd','e7c96ba0-cfe9-4d6b-ae20-bad85fefa8d4','e7ee57ef-d418-4be0-ad42-eee500ad2a13','cc822c0e-5509-444c-a6c4-a74fc2c491c4','2cfa2f61-a1e5-48e2-8498-0a375b9316c3','89e58687-128a-4921-92b4-784b2968d787','','b8ffad5c-07dd-4cdf-b54c-27d474094c46','fc91d00e-648b-4701-86a6-4207c97ae7ef','cae4d06a-a9fb-42a9-8738-3575bbd62692','af0358bc-ab1e-4581-8284-3f4f73d986d5','db4c4071-3af6-47b1-9935-7a310325ac04','acf8f769-01b1-4528-a057-3bdc42a2267f','7386b76c-306d-4ec6-ae49-a59d965d7cd9','296f8b0d-58a0-4c18-894a-9ca869d51661','a477a7b9-f4ba-409d-be7b-f7295191bb6b','a7e9d210-02f9-44ae-a224-a2295a67b662','69f7c2e6-bcc6-4f75-904f-ce7002560153','952b69da-757a-44bc-87f1-132b067361b0','d78e41c4-c2db-4b58-95f6-840d80f3d16a','91d596ad-c5a5-4a9c-ab21-49788f81b80f','d51ae85d-27b2-4b72-ac53-d063e05dc69f','1b521cd7-477e-49af-8b78-5ac4c216d5c0','957ddc20-efe9-41dd-bc71-9f9c83595370','d19d75f6-371d-46e4-85fe-062e11e972b5','2cd85a01-ca41-4165-a24f-2b5a55da8be2','8f39c602-e42d-4944-8a87-41947358ae01','78e93e99-3c9a-4082-ac9f-103e899348f2','f6d5079b-1c14-4077-bfa8-6ed83c46b215','59253dc2-32f7-47ac-9aa2-befb34071335','c0a3af37-3114-4ee4-b4f2-ebfb51438126',''),
+('2026/09/14/000002','2026-09-14 09:44:01','Autoanamnesis','wewe','ewewe','ewewe','Tidak Hamil','','','','','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','','120000134','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+('2026/10/05/000001','2026-10-16 07:26:49','Autoanamnesis','1','3','2','Tidak Hamil','7','4','6','5','TAK','Normal','TAK','TAK','Baik','Tidak Ada','Lembab','Tidak Ada','','','Tidak Ada','','','','','','','','','Tidak Ada Masalah','Tidak','Perilaku Kekerasan','','','Harmonis','Sendiri','','Tidak Ada','','-','','Pasien','','Mandiri','Tirah Baring','Tidak','','Tidak Ada Nyeri','-','','-','','','Tidak','0','','Istirahat','','Tidak','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','tes','12/09/1988/001','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_igd` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -44318,6 +43833,7 @@ DROP TABLE IF EXISTS `penilaian_awal_keperawatan_igd_masalah`;
 CREATE TABLE `penilaian_awal_keperawatan_igd_masalah` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_masalah` varchar(3) NOT NULL,
+  `id_condition_masalah` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`,`kode_masalah`),
   KEY `kode_masalah` (`kode_masalah`) USING BTREE,
   CONSTRAINT `penilaian_awal_keperawatan_igd_masalah_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `penilaian_awal_keperawatan_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -44333,11 +43849,14 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `penilaian_awal_keperawatan_igd_masalah` WRITE;
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_igd_masalah` DISABLE KEYS */;
 INSERT INTO `penilaian_awal_keperawatan_igd_masalah` VALUES
-('2026/05/12/000001','001'),
-('2026/06/22/000002','001'),
-('2026/06/29/000003','001'),
-('2026/07/21/000004','001'),
-('2026/09/14/000002','001');
+('2026/05/12/000001','001',''),
+('2026/06/22/000002','001',''),
+('2026/06/29/000003','001',''),
+('2026/07/21/000004','001',''),
+('2026/08/25/000001','001','-'),
+('2026/09/14/000002','001',''),
+('2026/10/05/000001','001',''),
+('2026/10/05/000001','002','');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_igd_masalah` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -44916,7 +44435,9 @@ INSERT INTO `penilaian_awal_keperawatan_ralan` VALUES
 ('2026/08/11/000001','2026-08-11 11:41:29','Autoanamnesis','12','12','12','1','21','21','21','2','12\n121212','21212','21212','21212','212','Tidak','','Tidak','','Mandiri','Tenang','','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','10908789'),
 ('2026/08/19/000001','2026-08-19 14:08:53','Autoanamnesis','-','-','-','-','-','-','-','-','1212','21212','21212','1212','212','Tidak','','Tidak','','Mandiri','Tenang','','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','12/09/1988/001'),
 ('2026/09/03/000001','2026-09-03 10:24:00','Autoanamnesis','23','23','23','2','32','3','23','2','32\n3\n2','32323','32323','32323','32323','Tidak','','Tidak','','Mandiri','Tenang','','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','12/09/1988/001'),
-('2026/09/16/000002','2026-09-16 09:38:22','Autoanamnesis','1','1','1','1','1','1','1','1','21212','21212','21212','21212','21212','Tidak','21212','Tidak','21212','Mandiri','Tenang','21212','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','120000134');
+('2026/09/16/000002','2026-09-16 09:38:22','Autoanamnesis','1','1','1','1','1','1','1','1','21212','21212','21212','21212','21212','Tidak','21212','Tidak','21212','Mandiri','Tenang','21212','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','120000134'),
+('2026/09/20/000002','2026-09-21 11:03:43','Autoanamnesis','qw','qw','qw','qw','q','wq','wq','w','wqwqw','qwqw','wqwqwqw','qwqw','wqw','Tidak','','Tidak','','Mandiri','Tenang','','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','10908789'),
+('2026/10/22/000001','2026-10-22 10:09:51','Autoanamnesis','1','1','1','1','1','1','1','10000.0','1','1','1','1','1','Tidak','','Tidak','','Mandiri','Tenang','','Baik','Sendiri','','Baik','Tidak Ada','','Pasien','','Tidak','Tidak','Tidak','Tidak beresiko (tidak ditemukan a dan b)','Tidak','','Tidak','0','Tidak','0',0,'Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','','12/09/1988/001');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ralan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -45209,10 +44730,14 @@ INSERT INTO `penilaian_awal_keperawatan_ralan_masalah` VALUES
 ('2026/08/19/000001','001'),
 ('2026/09/03/000001','001'),
 ('2026/09/16/000002','001'),
+('2026/09/20/000002','001'),
+('2026/10/22/000001','001'),
 ('2026/04/10/000001','002'),
 ('2026/05/25/000001','002'),
 ('2026/08/11/000001','002'),
 ('2026/09/16/000002','002'),
+('2026/09/20/000002','002'),
+('2026/10/22/000001','002'),
 ('2026/03/11/000001','003');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ralan_masalah` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -45463,11 +44988,15 @@ INSERT INTO `penilaian_awal_keperawatan_ralan_rencana` VALUES
 ('2026/08/19/000001','001'),
 ('2026/09/03/000001','001'),
 ('2026/09/16/000002','001'),
+('2026/09/20/000002','001'),
+('2026/10/22/000001','001'),
 ('2026/03/11/000001','002'),
 ('2026/04/10/000001','002'),
 ('2026/04/13/000001','002'),
 ('2026/05/25/000001','002'),
 ('2026/07/21/000001','002'),
+('2026/09/20/000002','002'),
+('2026/10/22/000001','002'),
 ('2026/05/25/000001','003'),
 ('2026/09/16/000002','003');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ralan_rencana` ENABLE KEYS */;
@@ -45574,6 +45103,7 @@ DROP TABLE IF EXISTS `penilaian_awal_keperawatan_ralan_rencana_igd`;
 CREATE TABLE `penilaian_awal_keperawatan_ralan_rencana_igd` (
   `no_rawat` varchar(17) NOT NULL,
   `kode_rencana` varchar(3) NOT NULL,
+  `id_careplan_rencana` varchar(40) DEFAULT '',
   PRIMARY KEY (`no_rawat`,`kode_rencana`),
   KEY `kode_rencana` (`kode_rencana`),
   CONSTRAINT `penilaian_awal_keperawatan_ralan_rencana_igd_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `penilaian_awal_keperawatan_igd` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -45589,11 +45119,13 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `penilaian_awal_keperawatan_ralan_rencana_igd` WRITE;
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ralan_rencana_igd` DISABLE KEYS */;
 INSERT INTO `penilaian_awal_keperawatan_ralan_rencana_igd` VALUES
-('2026/05/12/000001','001'),
-('2026/06/22/000002','001'),
-('2026/06/29/000003','001'),
-('2026/07/21/000004','001'),
-('2026/09/14/000002','001');
+('2026/05/12/000001','001',''),
+('2026/06/22/000002','001',''),
+('2026/06/29/000003','001',''),
+('2026/07/21/000004','001',''),
+('2026/08/25/000001','001','-'),
+('2026/09/14/000002','001',''),
+('2026/10/05/000001','001','');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ralan_rencana_igd` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -45847,6 +45379,8 @@ CREATE TABLE `penilaian_awal_keperawatan_ranap` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `penilaian_awal_keperawatan_ranap` WRITE;
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ranap` DISABLE KEYS */;
+INSERT INTO `penilaian_awal_keperawatan_ranap` VALUES
+('2026/09/14/000001','2026-10-17 13:41:53','Autoanamnesis','','Jalan Tanpa Bantuan','Trauma','Poli','saat ini','dahulu','keluarga','obat','bedah','dirawat','Tidak Ada','Tidak','','','','Tidak','','Tidak','','Tidak','Tidak','','Baik','','','','','','','','','TAK','','TAK','','TAK','TAK','','TAK','Teratur','Akral Hangat','','Kuat','Normal','Tidak Ada','Vesikuler','Normal','Pernafasan Dada','','Teratur','Tidak','TAK','','TAK','','TAK','','TAK','','Supel','','TAK','TAK','TAK','','Tidak','TAK','Jelas','','TAK','TAK','Kuat','Normal','Baik','Normal','Tidak Ada','Bebas','Baik','Tidak Ada','','Tidak Ada','','Tidak Ada','','','','','','','','','','Mandiri','Mandiri','Mandiri','Mandiri','Mandiri','','','','','Tidak Ada Gangguan','Mandiri','Tirah Baring','TAK','','Kursi Roda','TAK','','TAK','','Tidak Ada Kesulitan','','Tidak Ada Kesulitan','','Tidak (Tidak Perlu Co DPJP)','Tidak Ada Masalah','Tidak','Tidak Ada Masalah','','Harmonis','Keluarga','','Tidak Ada','','-','Pasien','','Tidak Ada Nyeri','Proses Penyakit','','Seperti Tertusuk','','','Tidak','0','','Istirahat','','Tidak','','Tidak',0,'Tidak',0,'Tidak Ada/Kursi Roda/Perawat/Tirah Baring',0,'Tidak',0,'Normal/Tirah Baring/Imobilisasi',0,'Sadar Akan Kemampuan Diri Sendiri',0,0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,'Tidak',0,0,'Tidak ada penurunan berat badan',0,'Tidak',0,0,'Tidak','','Tidak','','','120000134','-','D0000004');
 /*!40000 ALTER TABLE `penilaian_awal_keperawatan_ranap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -46756,6 +46290,57 @@ COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
+-- Table structure for table `penilaian_grace_scor`
+--
+
+DROP TABLE IF EXISTS `penilaian_grace_scor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `penilaian_grace_scor` (
+  `no_rawat` varchar(17) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `usia` tinyint(3) unsigned NOT NULL,
+  `skor_usia` tinyint(3) unsigned NOT NULL,
+  `denyut_jantung` smallint(5) unsigned NOT NULL,
+  `skor_denyut_jantung` tinyint(3) unsigned NOT NULL,
+  `sistolik` smallint(5) unsigned NOT NULL,
+  `skor_sistolik` tinyint(3) unsigned NOT NULL,
+  `kreatinin` decimal(4,2) NOT NULL,
+  `skor_kreatinin` tinyint(3) unsigned NOT NULL,
+  `killip` enum('I : Tidak Ada Ronkhi Di Paru','II : Ronkhi Di Setengah Bawah Paru','III : Ronkhi Hingga Setengah Atas Paru Disertai Edema Paru','IV : Syok Kardiogenik (TD < 90 mmHg)') NOT NULL,
+  `skor_killip` tinyint(3) unsigned NOT NULL,
+  `deviasi_st` enum('Tidak Ada Deviasi Signifikan','ST Elevasi Atau ST Depresi > 1 mm') NOT NULL,
+  `skor_deviasi_st` tinyint(3) unsigned NOT NULL,
+  `troponin` enum('Tidak','Ya') NOT NULL,
+  `skor_troponin` tinyint(3) unsigned NOT NULL,
+  `henti_jantung` enum('Tidak','Ya') NOT NULL,
+  `skor_henti_jantung` tinyint(3) unsigned NOT NULL,
+  `skor` smallint(5) unsigned NOT NULL,
+  `kategori` enum('Low Risk','Intermediate Risk','High Risk') NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `kd_dokter` varchar(20) NOT NULL,
+  PRIMARY KEY (`no_rawat`),
+  KEY `kd_dokter` (`kd_dokter`),
+  CONSTRAINT `penilaian_grace_scor_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `penilaian_grace_scor_ibfk_2` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `penilaian_grace_scor`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `penilaian_grace_scor` WRITE;
+/*!40000 ALTER TABLE `penilaian_grace_scor` DISABLE KEYS */;
+INSERT INTO `penilaian_grace_scor` VALUES
+('2026/10/21/000001','2026-10-23 14:33:18',37,0,90,13,90,58,90.00,31,'IV : Syok Kardiogenik (TD < 90 mmHg)',64,'ST Elevasi Atau ST Depresi > 1 mm',30,'Ya',15,'Ya',43,254,'High Risk','tes','D0000004');
+/*!40000 ALTER TABLE `penilaian_grace_scor` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
 -- Table structure for table `penilaian_korban_kekerasan`
 --
 
@@ -47596,7 +47181,8 @@ LOCK TABLES `penilaian_medis_ralan` WRITE;
 /*!40000 ALTER TABLE `penilaian_medis_ralan` DISABLE KEYS */;
 INSERT INTO `penilaian_medis_ralan` VALUES
 ('2026/05/28/000001','2026-05-28 14:06:25','D0000004','Autoanamnesis','','qwqw','qwqw','qwqww','qwqw','wqwqw','wqw','Sehat','','Compos Mentis','','','','','','','','Normal','Normal','Normal','Normal','Normal','Normal','Normal','Normal','','','','','',''),
-('2026/09/03/000001','2026-09-03 10:43:36','D0000003','Autoanamnesis','','wqwqw','wqwqw','wqw','qwqw','qwqw','wqwqw','Sehat','','Compos Mentis','','','','','','','','Normal','Normal','Normal','Normal','Normal','Normal','Normal','Normal','wqw','','','','','');
+('2026/09/03/000001','2026-09-03 10:43:36','D0000003','Autoanamnesis','','wqwqw','wqwqw','wqw','qwqw','qwqw','wqwqw','Sehat','','Compos Mentis','','','','','','','','Normal','Normal','Normal','Normal','Normal','Normal','Normal','Normal','wqw','','','','',''),
+('2026/09/21/000002','2026-09-21 11:25:04','D0000004','Autoanamnesis','','-','-','-','-','-','-','Sehat','','Compos Mentis','','','','','','','','Normal','Normal','Normal','Normal','Normal','Normal','Normal','Normal','','','','','','');
 /*!40000 ALTER TABLE `penilaian_medis_ralan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -48507,7 +48093,8 @@ INSERT INTO `penilaian_medis_ralan_penyakit_dalam` VALUES
 ('2026/04/10/000001','2026-04-10 10:07:14','D0000003','Autoanamnesis','','122','wqw','wqwqw','21212','wqw','212','','','','','','','','','Normal','','Normal','','Normal','','Normal','','','','','','','','','','',''),
 ('2026/04/13/000001','2026-04-13 10:34:56','D0000004','Autoanamnesis','','-','-','-','-','','','','','','','','','','','Normal','','Normal','','Normal','','Normal','','','','','','','','','','',''),
 ('2026/04/21/000002','2026-04-21 11:55:27','D0000004','Autoanamnesis','','1','1','1','1','','1','','','','','','','','','Normal','','Normal','','Normal','','Normal','','1','1','1','1','1','1','1','1','1','1'),
-('2026/09/16/000002','2026-09-16 09:45:15','D0000004','Autoanamnesis','','w121','2121212','1212','21212','21212','21212','21212','','','','','','','','Normal','','Normal','','Normal','','Normal','','21212','21212','21212','12','','','','','','');
+('2026/09/16/000002','2026-09-16 09:45:15','D0000004','Autoanamnesis','','w121','2121212','1212','21212','21212','21212','21212','','','','','','','','Normal','','Normal','','Normal','','Normal','','21212','21212','21212','12','','','','','',''),
+('2026/10/22/000001','2026-10-22 10:19:21','D0000004','Autoanamnesis','','121','21212','1212','1212','','','212','','','','','','','','Normal','','Normal','','Normal','','Normal','','','','','','','','','','','212');
 /*!40000 ALTER TABLE `penilaian_medis_ralan_penyakit_dalam` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -48850,6 +48437,8 @@ CREATE TABLE `penilaian_medis_ranap` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `penilaian_medis_ranap` WRITE;
 /*!40000 ALTER TABLE `penilaian_medis_ranap` DISABLE KEYS */;
+INSERT INTO `penilaian_medis_ranap` VALUES
+('2026/04/07/000001','2026-10-17 13:29:52','D0000004','Autoanamnesis','','utama','sekarang','dahulu','keluarga','guna obat','alergi','Sehat','','Compos Mentis','','','','','','','','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','Tidak Diperiksa','7','','','','','','','');
 /*!40000 ALTER TABLE `penilaian_medis_ranap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -49438,7 +49027,7 @@ CREATE TABLE `penilaian_pre_anestesi` (
   `riwayat_medis_respiratory` varchar(100) DEFAULT NULL,
   `riwayat_medis_endocrine` varchar(100) DEFAULT NULL,
   `riwayat_medis_lainnya` varchar(100) DEFAULT NULL,
-  `asa` enum('1','2','3','4','5','E') DEFAULT NULL,
+  `asa` enum('1','2','3','4','5','E','2E','3E','4E','5E') DEFAULT NULL,
   `puasa` datetime DEFAULT NULL,
   `rencana_anestesi` enum('GA','RA Spinal','RA Epidural','RA Combined','Blok Syaraf') DEFAULT NULL,
   `rencana_perawatan` varchar(40) DEFAULT NULL,
@@ -50334,7 +49923,11 @@ INSERT INTO `penjualan` VALUES
 ('PJ20260209001','2026-02-09','12/09/1988/001','-','RAHMA','-','Jual Bebas',0,0,'Sudah Dibayar','AP','112020','Bank BCA'),
 ('PJ20260225001','2026-02-25','12/09/1988/001','000013','SETIYAWAN KRISTANTO','','Jual Bebas',0,0,'Sudah Dibayar','AP','111010','Bayar Cash'),
 ('PJ20260504001','2026-05-04','12/09/1988/001','-','RS AISYIAH','-','Jual Bebas',0,0,'Sudah Dibayar','AP','112020','Bank BCA'),
-('PJ20260616001','2026-06-16','123124','-','JUMINTAN','TES','Jual Bebas',0,0,'Sudah Dibayar','AP','112020','Bank BCA');
+('PJ20260616001','2026-06-16','123124','-','JUMINTAN','TES','Jual Bebas',0,0,'Sudah Dibayar','AP','112020','Bank BCA'),
+('PJ20261019001','2026-10-19','12/09/1988/001','000055','RAHMAT PAMBUDI','1','Jual Bebas',0,1503.7,'Belum Dibayar','AP','112020','Bank BCA'),
+('PJ20261019002','2026-10-19','12/09/1988/001','000055','RAHMAT PAMBUDI','1','Jual Bebas',0,2444.2,'Belum Dibayar','AP','112020','Bank BCA'),
+('PJ20261019003','2026-10-19','12/09/1988/001','000055','RAHMAT PAMBUDI','1','Jual Bebas',0,23958,'Belum Dibayar','AP','112020','Bank BCA'),
+('PJ20261019004','2026-10-19','120000134','000058','PASIEN BEBAS','qwqww','Jual Bebas',0,1503.7,'Belum Dibayar','AP','112020','Bank BCA');
 /*!40000 ALTER TABLE `penjualan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -91420,7 +91013,7 @@ INSERT INTO `periksa_lab` VALUES
 ('2026/04/13/000001','12/09/1988/001','102-K.2','2026-04-13','11:03:08','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/04/15/000001','12/09/1988/001','102-K.2','2026-04-15','14:26:04','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/04/21/000001','12/09/1988/001','102-K.2','2026-04-21','11:45:13','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
-('2026/05/08/000001','12/09/1988/001','102-K.2','2026-05-25','09:56:32','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
+('2026/05/08/000001','12/09/1988/001','102-K.2','2026-05-25','09:56:32','D0000004',71250,0,4250,8500,1000.0000000000001,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/05/11/000003','120000134','J000108','2026-08-31','20:41:42','D0000004',200000,0,0,0,0,0,0,0,'D0000003','Ranap','MB'),
 ('2026/05/28/000001','120000134','102-K.2','2026-05-28','14:15:47','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/06/03/000004','120000134','102-K.2','2026-06-03','21:05:27','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
@@ -91432,7 +91025,7 @@ INSERT INTO `periksa_lab` VALUES
 ('2026/06/20/000001','120000134','PA0003','2026-06-20','10:39:31','D0000004',300000,0,0,0,0,0,0,300000,'D0000004','Ralan','PA'),
 ('2026/06/20/000003','12/09/1988/001','102-K.2','2026-06-20','16:10:01','-',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/06/22/000001','120000134','102-K.2','2026-07-02','15:13:28','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ranap','PK'),
-('2026/06/29/000003','120000134','102-K.2','2026-06-29','10:24:17','D0000004',71250,0,4250,8500,1000,0,0,84999.99999999999,'D0000002','Ralan','PK'),
+('2026/06/29/000003','120000134','102-K.2','2026-06-29','10:24:17','D0000004',71250,0,4250,8500,1000,0,0,84999.99999999997,'D0000002','Ralan','PK'),
 ('2026/07/11/000001','120000134','102-K.2','2026-07-11','09:15:28','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/07/21/000001','120000134','102-K.2','2026-07-21','10:55:18','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/07/21/000002','120000134','102-K.2','2026-07-21','13:44:18','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
@@ -91446,10 +91039,14 @@ INSERT INTO `periksa_lab` VALUES
 ('2026/09/03/000001','120000134','102-K.2','2026-09-03','11:25:35','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/09/03/000001','12/09/1988/001','105-VVIP','2026-09-03','11:31:33','D0000004',76669,0,4569,9137,1000,0,0,91375,'D0000002','Ralan','PK'),
 ('2026/09/03/000001','12/09/1988/001','435-RJ','2026-09-03','11:31:33','D0000004',0,0,0,0,0,0,0,0,'D0000002','Ralan','PK'),
+('2026/09/14/000001','120000134','102-K.2','2026-10-21','10:05:11','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ranap','PK'),
 ('2026/09/16/000001','12/09/1988/001','PA0003','2026-09-16','10:23:21','D0000003',300000,0,0,0,0,0,0,300000,'D0000004','Ralan','PA'),
 ('2026/09/16/000002','12/09/1988/001','102-K.2','2026-09-16','09:55:20','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
 ('2026/09/17/000001','12/09/1988/001','102-K.2','2026-09-17','10:22:42','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
-('2026/09/20/000002','123124','102-K.2','2026-09-19','11:15:31','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK');
+('2026/09/20/000002','123124','102-K.2','2026-09-19','11:15:31','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
+('2026/09/21/000002','12/09/1988/001','101-K.3','2026-09-21','14:00:17','D0000004',71249.99999999999,100000,4250,8500,999.9999999999999,0,0,184999.99999999997,'D0000002','Ralan','PK'),
+('2026/10/15/000001','12/09/1988/001','102-K.2','2026-10-15','14:03:12','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK'),
+('2026/10/22/000001','120000134','102-K.2','2026-10-22','10:57:10','D0000004',71250,0,4250,8500,1000,0,0,85000,'D0000002','Ralan','PK');
 /*!40000 ALTER TABLE `periksa_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -91516,18 +91113,21 @@ INSERT INTO `periksa_radiologi` VALUES
 ('2026/04/10/000001','120000134','IG.AS.RJ 4','2026-04-10','10:39:23','D0000004',276250,0,3750,190000,5000,0,0,475000,'D0000004','Ralan','','','','','','','',''),
 ('2026/04/13/000001','120000134','ICU.CTO-01','2026-04-13','11:04:58','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
 ('2026/04/21/000002','120000134','ICU-01','2026-04-21','11:08:29','D0000004',98000,0,30000,45000,7000,0,0,180000,'D0000004','Ralan','','','','','','','',''),
-('2026/05/08/000001','01010101','ICU.CTO-01','2026-05-08','08:43:49','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
+('2026/05/08/000001','01010101','ICU.CTO-01','2026-05-08','08:43:49','D0000004',143000,0,30000.000000000004,45000,7000.000000000001,0,0,225000.00000000003,'D0000004','Ralan','','','','','','','',''),
 ('2026/05/20/000001','12/09/1988/001','J000004','2026-05-20','13:18:20','D0000004',2000000,500000,20000,200000,100000,0,0,2820000,'D0000004','Ralan','','','','','','','',''),
 ('2026/05/28/000001','156798','ICU.CTO-01','2026-05-28','14:16:53','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
 ('2026/06/03/000004','12/09/1988/001','ICU.CTO-01','2026-06-03','21:05:59','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
-('2026/06/29/000003','120000134','IG.AS.RJ 4','2026-06-29','10:30:19','D0000004',276249.99999999994,0,3750,189999.99999999997,5000,0,0,475000,'D0000004','Ralan','','','','','','','',''),
+('2026/06/29/000003','120000134','IG.AS.RJ 4','2026-06-29','10:30:19','D0000004',276249.99999999994,0,3750,189999.99999999994,5000,0,0,475000,'D0000004','Ralan','','','','','','','',''),
 ('2026/07/11/000001','10908789','IG.AS- 1','2026-07-11','09:17:15','D0000004',147500,0,2500,55000,5000,0,0,210000,'D0000004','Ralan','','','','','','','',''),
 ('2026/07/21/000001','120000134','IG.AS.RJ 4','2026-07-21','10:57:13','D0000004',276250,0,3750,190000,5000,0,0,475000,'D0000004','Ralan','','','','','','','',''),
 ('2026/07/22/000002','123124','ICU.CTO-01','2026-07-22','10:00:03','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
 ('2026/09/02/000001','120000134','ICU.CTO-01','2026-09-02','10:18:55','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
+('2026/09/14/000001','120000134','IG.AS- 1','2026-10-26','10:21:58','D0000004',147500,0,2500,55000,5000,0,0,210000,'D0000004','Ranap','','','','','','','',''),
 ('2026/09/16/000001','10908789','IG.AS.RJ 4','2026-09-16','10:27:06','D0000004',276250,0,3750,190000,5000,0,0,475000,'D0000004','Ralan','','','','','','','',''),
 ('2026/09/16/000002','120000134','ICU.CTO-01','2026-09-16','09:56:05','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
-('2026/09/20/000002','120000134','ICU.CTO-01','2026-09-19','11:15:52','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','','');
+('2026/09/20/000002','120000134','ICU.CTO-01','2026-09-19','11:15:52','D0000004',143000,0,30000,45000,7000,0,0,225000,'D0000004','Ralan','','','','','','','',''),
+('2026/09/21/000002','123124','ICU.CTO-01','2026-09-21','14:03:05','D0000004',143000,0,29999.999999999996,44999.99999999999,7000,0,0,224999.99999999997,'D0000004','Ralan','','','','','','','',''),
+('2026/10/22/000001','120000134','ICU.CTO-01','2026-10-22','10:58:20','D0000003',143000,0,30000,45000,7000,0,0,225000,'D0000003','Ralan','','','','','','','','');
 /*!40000 ALTER TABLE `periksa_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -92703,7 +92303,135 @@ INSERT INTO `permintaan_detail_permintaan_lab` VALUES
 ('PK202609190002','102-K.2',2199,'Belum'),
 ('PK202609190002','102-K.2',2200,'Belum'),
 ('PK202609190002','102-K.2',2201,'Belum'),
-('PK202609190002','102-K.2',2202,'Belum');
+('PK202609190002','102-K.2',2202,'Belum'),
+('PK202609210001','101-K.3',473,'Belum'),
+('PK202609210001','101-K.3',474,'Belum'),
+('PK202609210001','101-K.3',475,'Belum'),
+('PK202609210001','101-K.3',476,'Belum'),
+('PK202609210001','101-K.3',477,'Belum'),
+('PK202609210001','101-K.3',481,'Belum'),
+('PK202609210001','101-K.3',482,'Belum'),
+('PK202609210001','101-K.3',483,'Belum'),
+('PK202609210001','101-K.3',484,'Belum'),
+('PK202609210001','101-K.3',486,'Belum'),
+('PK202609210001','101-K.3',487,'Belum'),
+('PK202609210001','101-K.3',2194,'Belum'),
+('PK202609210001','101-K.3',2195,'Belum'),
+('PK202609210001','101-K.3',2196,'Belum'),
+('PK202609210001','101-K.3',2197,'Belum'),
+('PK202609210001','101-K.3',2362,'Belum'),
+('PK202609210002','102-K.2',665,'Belum'),
+('PK202609210002','102-K.2',666,'Belum'),
+('PK202609210002','102-K.2',667,'Belum'),
+('PK202609210002','102-K.2',668,'Belum'),
+('PK202609210002','102-K.2',669,'Belum'),
+('PK202609210002','102-K.2',670,'Belum'),
+('PK202609210002','102-K.2',671,'Belum'),
+('PK202609210002','102-K.2',672,'Belum'),
+('PK202609210002','102-K.2',673,'Belum'),
+('PK202609210002','102-K.2',674,'Belum'),
+('PK202609210002','102-K.2',675,'Belum'),
+('PK202609210002','102-K.2',2198,'Belum'),
+('PK202609210002','102-K.2',2199,'Belum'),
+('PK202609210002','102-K.2',2200,'Belum'),
+('PK202609210002','102-K.2',2201,'Belum'),
+('PK202609210002','102-K.2',2202,'Belum'),
+('PK202610050001','102-K.2',665,'Belum'),
+('PK202610050001','102-K.2',666,'Belum'),
+('PK202610050001','102-K.2',667,'Belum'),
+('PK202610050001','102-K.2',668,'Belum'),
+('PK202610050001','102-K.2',669,'Belum'),
+('PK202610050001','102-K.2',670,'Belum'),
+('PK202610050001','102-K.2',671,'Belum'),
+('PK202610050001','102-K.2',672,'Belum'),
+('PK202610050001','102-K.2',673,'Belum'),
+('PK202610050001','102-K.2',674,'Belum'),
+('PK202610050001','102-K.2',675,'Belum'),
+('PK202610050001','102-K.2',2198,'Belum'),
+('PK202610050001','102-K.2',2199,'Belum'),
+('PK202610050001','102-K.2',2200,'Belum'),
+('PK202610050001','102-K.2',2201,'Belum'),
+('PK202610050001','102-K.2',2202,'Belum'),
+('PK202610150001','102-K.2',665,'Belum'),
+('PK202610150001','102-K.2',666,'Belum'),
+('PK202610150001','102-K.2',667,'Belum'),
+('PK202610150001','102-K.2',668,'Belum'),
+('PK202610150001','102-K.2',669,'Belum'),
+('PK202610150001','102-K.2',670,'Belum'),
+('PK202610150001','102-K.2',671,'Belum'),
+('PK202610150001','102-K.2',672,'Belum'),
+('PK202610150001','102-K.2',673,'Belum'),
+('PK202610150001','102-K.2',674,'Belum'),
+('PK202610150001','102-K.2',675,'Belum'),
+('PK202610150001','102-K.2',2198,'Belum'),
+('PK202610150001','102-K.2',2199,'Belum'),
+('PK202610150001','102-K.2',2200,'Belum'),
+('PK202610150001','102-K.2',2201,'Belum'),
+('PK202610150001','102-K.2',2202,'Belum'),
+('PK202610210001','102-K.2',665,'Belum'),
+('PK202610210001','102-K.2',666,'Belum'),
+('PK202610210001','102-K.2',667,'Belum'),
+('PK202610210001','102-K.2',668,'Belum'),
+('PK202610210001','102-K.2',669,'Belum'),
+('PK202610210001','102-K.2',670,'Belum'),
+('PK202610210001','102-K.2',671,'Belum'),
+('PK202610210001','102-K.2',672,'Belum'),
+('PK202610210001','102-K.2',673,'Belum'),
+('PK202610210001','102-K.2',674,'Belum'),
+('PK202610210001','102-K.2',675,'Belum'),
+('PK202610210001','102-K.2',2198,'Belum'),
+('PK202610210001','102-K.2',2199,'Belum'),
+('PK202610210001','102-K.2',2200,'Belum'),
+('PK202610210001','102-K.2',2201,'Belum'),
+('PK202610210001','102-K.2',2202,'Belum'),
+('PK202610210002','102-K.2',665,'Belum'),
+('PK202610210002','102-K.2',666,'Belum'),
+('PK202610210002','102-K.2',667,'Belum'),
+('PK202610210002','102-K.2',668,'Belum'),
+('PK202610210002','102-K.2',669,'Belum'),
+('PK202610210002','102-K.2',670,'Belum'),
+('PK202610210002','102-K.2',671,'Belum'),
+('PK202610210002','102-K.2',672,'Belum'),
+('PK202610210002','102-K.2',673,'Belum'),
+('PK202610210002','102-K.2',674,'Belum'),
+('PK202610210002','102-K.2',675,'Belum'),
+('PK202610210002','102-K.2',2198,'Belum'),
+('PK202610210002','102-K.2',2199,'Belum'),
+('PK202610210002','102-K.2',2200,'Belum'),
+('PK202610210002','102-K.2',2201,'Belum'),
+('PK202610210002','102-K.2',2202,'Belum'),
+('PK202610220001','102-K.2',665,'Belum'),
+('PK202610220001','102-K.2',666,'Belum'),
+('PK202610220001','102-K.2',667,'Belum'),
+('PK202610220001','102-K.2',668,'Belum'),
+('PK202610220001','102-K.2',669,'Belum'),
+('PK202610220001','102-K.2',670,'Belum'),
+('PK202610220001','102-K.2',671,'Belum'),
+('PK202610220001','102-K.2',672,'Belum'),
+('PK202610220001','102-K.2',673,'Belum'),
+('PK202610220001','102-K.2',674,'Belum'),
+('PK202610220001','102-K.2',675,'Belum'),
+('PK202610220001','102-K.2',2198,'Belum'),
+('PK202610220001','102-K.2',2199,'Belum'),
+('PK202610220001','102-K.2',2200,'Belum'),
+('PK202610220001','102-K.2',2201,'Belum'),
+('PK202610220001','102-K.2',2202,'Belum'),
+('PK202610220002','102-K.2',665,'Belum'),
+('PK202610220002','102-K.2',666,'Belum'),
+('PK202610220002','102-K.2',667,'Belum'),
+('PK202610220002','102-K.2',668,'Belum'),
+('PK202610220002','102-K.2',669,'Belum'),
+('PK202610220002','102-K.2',670,'Belum'),
+('PK202610220002','102-K.2',671,'Belum'),
+('PK202610220002','102-K.2',672,'Belum'),
+('PK202610220002','102-K.2',673,'Belum'),
+('PK202610220002','102-K.2',674,'Belum'),
+('PK202610220002','102-K.2',675,'Belum'),
+('PK202610220002','102-K.2',2198,'Belum'),
+('PK202610220002','102-K.2',2199,'Belum'),
+('PK202610220002','102-K.2',2200,'Belum'),
+('PK202610220002','102-K.2',2201,'Belum'),
+('PK202610220002','102-K.2',2202,'Belum');
 /*!40000 ALTER TABLE `permintaan_detail_permintaan_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -92846,7 +92574,15 @@ INSERT INTO `permintaan_lab` VALUES
 ('PK202609170001','2026/09/17/000001','2026-09-17','10:21:34','2026-09-17','10:21:43','2026-09-17','10:22:42','D0000004','ralan','-','--'),
 ('PK202609180001','2026/09/18/000001','2026-09-18','10:04:42','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','JANTUNG'),
 ('PK202609190001','2026/09/19/000001','2026-09-19','11:12:20','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','TYPHOID'),
-('PK202609190002','2026/09/20/000002','2026-09-19','11:14:54','2026-09-19','11:15:10','2026-09-19','11:15:31','D0000004','ralan','-','JANTUNG');
+('PK202609190002','2026/09/20/000002','2026-09-19','11:14:54','2026-09-19','11:15:10','2026-09-19','11:15:31','D0000004','ralan','-','JANTUNG'),
+('PK202609210001','2026/09/21/000002','2026-09-21','11:29:17','2026-09-21','13:56:43','2026-09-21','14:00:17','D0000004','ralan','-','-'),
+('PK202609210002','2026/09/21/000001','2026-09-21','11:30:26','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','JANTUNG'),
+('PK202610050001','2026/10/05/000001','2026-10-05','09:25:49','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','TYPHOID'),
+('PK202610150001','2026/10/15/000001','2026-10-15','10:22:02','2026-10-15','14:02:23','2026-10-15','14:03:12','D0000004','ralan','-','TYPHOID'),
+('PK202610210001','2026/10/21/000001','2026-10-21','09:52:14','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','tipes'),
+('PK202610210002','2026/10/21/000002','2026-10-21','13:53:50','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','tipes'),
+('PK202610220001','2026/10/22/000001','2026-10-22','10:20:46','2026-10-22','10:55:41','2026-10-22','10:57:10','D0000004','ralan','-','JANTUNG'),
+('PK202610220002','2026/10/22/000001','2026-10-22','10:26:46','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','-');
 /*!40000 ALTER TABLE `permintaan_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93076,7 +92812,10 @@ INSERT INTO `permintaan_medis` VALUES
 ('PM20260625001','AP','156798','2026-06-25','Baru','GD'),
 ('PM20260629001','HM','08998998','2026-06-29','Disetujui','AP'),
 ('PM20260721001','B0014','01010101','2026-07-21','Baru','GD'),
-('PM20260728001','AP','D0000004','2026-07-28','Baru','AP');
+('PM20260728001','AP','D0000004','2026-07-28','Baru','AP'),
+('PM20260921001','B0014','08998998','2026-09-21','Baru','AP'),
+('PM20261016001','IGD','123124','2026-10-16','Baru','GD'),
+('PM20261022001','B0014','01010101','2026-10-22','Disetujui','AP');
 /*!40000 ALTER TABLE `permintaan_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93246,7 +92985,15 @@ INSERT INTO `permintaan_pemeriksaan_lab` VALUES
 ('PK202609170001','102-K.2','Belum'),
 ('PK202609180001','102-K.2','Belum'),
 ('PK202609190001','102-K.2','Belum'),
-('PK202609190002','102-K.2','Belum');
+('PK202609190002','102-K.2','Belum'),
+('PK202609210001','101-K.3','Belum'),
+('PK202609210002','102-K.2','Belum'),
+('PK202610050001','102-K.2','Belum'),
+('PK202610150001','102-K.2','Belum'),
+('PK202610210001','102-K.2','Sudah'),
+('PK202610210002','102-K.2','Belum'),
+('PK202610220001','102-K.2','Belum'),
+('PK202610220002','102-K.2','Belum');
 /*!40000 ALTER TABLE `permintaan_pemeriksaan_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93395,7 +93142,15 @@ INSERT INTO `permintaan_pemeriksaan_radiologi` VALUES
 ('PR202609166002','IG.AS.RJ 4','Belum'),
 ('PR202609180001','IG.AS.RJ 4','Belum'),
 ('PR202609190001','IG.AS- 1','Belum'),
-('PR202609190002','ICU.CTO-01','Belum');
+('PR202609190002','ICU.CTO-01','Belum'),
+('PR20260921001','ICU.CTO-01','Belum'),
+('PR202609211002','IG.AS.RJ 4','Belum'),
+('PR202610050001','IG.AS- 1','Belum'),
+('PR202610150001','IG.AS- 1','Belum'),
+('PR202610210001','ICU.CTO-01','Sudah'),
+('PR202610210002','ICU.CTO-01','Belum'),
+('PR202610220001','ICU.CTO-01','Belum'),
+('PR20261022002','IG.AS- 1','Belum');
 /*!40000 ALTER TABLE `permintaan_pemeriksaan_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93523,7 +93278,15 @@ INSERT INTO `permintaan_radiologi` VALUES
 ('PR202609166002','2026/09/16/000001','2026-09-16','09:48:39','2026-09-16','10:26:53','2026-09-16','10:27:06','D0000004','ralan','-','JANTUNG'),
 ('PR202609180001','2026/09/18/000001','2026-09-18','10:04:42','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','JANTUNG'),
 ('PR202609190001','2026/09/19/000001','2026-09-19','11:12:20','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','TYPHOID'),
-('PR202609190002','2026/09/20/000002','2026-09-19','11:14:54','2026-09-19','11:15:41','2026-09-19','11:15:52','D0000004','ralan','-','JANTUNG');
+('PR202609190002','2026/09/20/000002','2026-09-19','11:14:54','2026-09-19','11:15:41','2026-09-19','11:15:52','D0000004','ralan','-','JANTUNG'),
+('PR20260921001','2026/09/21/000002','2026-09-21','11:29:34','2026-09-21','14:02:45','2026-09-21','14:03:05','D0000004','ralan','-','-'),
+('PR202609211002','2026/09/21/000001','2026-09-21','11:30:26','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','JANTUNG'),
+('PR202610050001','2026/10/05/000001','2026-10-05','09:25:49','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','TYPHOID'),
+('PR202610150001','2026/10/15/000001','2026-10-15','10:22:02','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','TYPHOID'),
+('PR202610210001','2026/10/21/000001','2026-10-21','09:52:14','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','tipes'),
+('PR202610210002','2026/10/21/000002','2026-10-21','13:53:50','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','tipes'),
+('PR202610220001','2026/10/22/000001','2026-10-22','10:20:46','2026-10-22','10:57:55','2026-10-22','10:58:20','D0000004','ralan','-','JANTUNG'),
+('PR20261022002','2026/10/22/000001','2026-10-22','10:27:02','0000-00-00','00:00:00','0000-00-00','00:00:00','D0000004','ralan','-','-');
 /*!40000 ALTER TABLE `permintaan_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93641,15 +93404,6 @@ LOCK TABLES `permintaan_ranap` WRITE;
 /*!40000 ALTER TABLE `permintaan_ranap` DISABLE KEYS */;
 INSERT INTO `permintaan_ranap` VALUES
 ('2026/03/11/000003','2026-03-11','VUP.01','I50 - Heart failure','','kamar bebas'),
-('2026/03/12/000001','2026-03-12','K3.01','JANTUNG','','KAMAR BEBAS'),
-('2026/03/12/000002','2026-03-12','VUP.01','I50.0 - Congestive heart failure','','-'),
-('2026/04/13/000001','2026-04-13','K3.01','JANTUNG','','SFSF'),
-('2026/04/21/000001','2026-04-21','K3.01','A01.4 - Paratyphoid fever, unspecified','','-'),
-('2026/04/22/000001','2026-04-22','K3.01','-','','-'),
-('2026/05/12/000001','2026-05-12','VUP.01','JANTUNG','','-'),
-('2026/05/20/000001','2026-05-21','ANG.K1.001','tes','','bebas'),
-('2026/05/25/000001','2026-05-25','VUP.01','tes','','ok'),
-('2026/06/07/000001','2026-06-07','ANG.K1.001','tes','','-'),
 ('2026/06/15/000001','2026-06-15','DAH.K1.001','jantung','','bebas'),
 ('2026/06/19/000001','2026-06-19','ANG.K1.001','A02.0 - Salmonella enteritis','','tes'),
 ('2026/06/20/000001','2026-06-26','ANG.K1.002','A02 - Other salmonella infections','','tes'),
@@ -93661,7 +93415,12 @@ INSERT INTO `permintaan_ranap` VALUES
 ('2026/09/09/000001','2026-09-09','ANG.K1.001','qwqwqwqwq','','qwqwqwqw'),
 ('2026/09/11/000001','2026-09-11','DAH.K1.002','tes','sakit','sasasas'),
 ('2026/09/14/000001','2026-09-14','DAH.K1.001','wqwqw','qwqw','wqwqw'),
-('2026/09/14/000002','2026-09-14','DAH.K1.001','tes','tes','tes');
+('2026/09/14/000002','2026-09-14','DAH.K1.001','tes','tes','tes'),
+('2026/09/21/000001','2026-09-21','VUP.01','tes','tes','tes'),
+('2026/10/05/000001','2026-10-05','K3.01','wew','ewe','ewewew'),
+('2026/10/15/000001','2026-10-15','VUP.01','qwqw','wqwqwwqw','wqw'),
+('2026/10/21/000001','2026-10-21','ANG.K1.002','wqwq','wqwqw','qwqwqw'),
+('2026/10/22/000001','2026-10-22','DAH.K1.002','tes','kenapa','tes');
 /*!40000 ALTER TABLE `permintaan_ranap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93762,7 +93521,8 @@ LOCK TABLES `permintaan_resep_pulang` WRITE;
 /*!40000 ALTER TABLE `permintaan_resep_pulang` DISABLE KEYS */;
 INSERT INTO `permintaan_resep_pulang` VALUES
 ('RP202606220001','2026-06-22','11:38:45','2026/02/25/000005','D0000002','Belum','0000-00-00','00:00:00'),
-('RP202606250001','2026-06-25','11:25:43','2026/06/22/000001','D0000004','Sudah','2026-06-25','11:25:55');
+('RP202606250001','2026-06-25','11:25:43','2026/06/22/000001','D0000004','Sudah','2026-06-25','11:25:55'),
+('RP202610160001','2026-10-16','10:14:28','2026/09/14/000001','D0000004','Belum','0000-00-00','00:00:00');
 /*!40000 ALTER TABLE `permintaan_resep_pulang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -93805,7 +93565,8 @@ INSERT INTO `permintaan_stok_obat_pasien` VALUES
 ('SP202604220001','2026-04-22','11:11:06','2026/02/25/000005','D0000005','Sudah','2026-04-22','11:11:34'),
 ('SP202607210001','2026-07-21','15:09:09','2026/06/22/000001','D0000004','Sudah','2026-07-21','15:09:28'),
 ('SP202607280001','2026-07-28','13:59:44','2026/07/21/000001','D0000004','Sudah','2026-07-28','14:00:08'),
-('SP202609190001','2026-09-19','09:40:44','2026/09/14/000001','D0000004','Sudah','2026-09-19','09:41:09');
+('SP202609190001','2026-09-19','09:40:44','2026/09/14/000001','D0000004','Sudah','2026-09-19','09:41:09'),
+('SP202609210001','2026-09-21','11:45:02','2026/09/14/000001','D0000004','Sudah','2026-09-21','11:45:27');
 /*!40000 ALTER TABLE `permintaan_stok_obat_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -94378,7 +94139,8 @@ INSERT INTO `persetujuan_penolakan_tindakan` VALUES
 ('PM20260903001','2026/09/03/000001','2026-09-03','1','true','Operasi','true','3','true','4','true','5','true','6','true','7','true','8','true','9','true',10000000,'true','10','true','D0000004','12/09/1988/001','RAHMAT PAMBUDI','','L','1987-08-25','3909','-, KARTASURA, BAITURRAHMAN, ASASAS','09988','Diri Sendiri','Persetujuan','12121212'),
 ('PM20260914001','2026/09/14/000002','2026-09-14','1','true','Operasi','true','3','true','4','true','5','true','6','true','7','true','8','true','9','true',10000000,'true','10','true','D0000004','12/09/1988/001','RAHMAT PAMBUDI','tes','L','1987-08-25','39020','-, KARTASURA, BAITURRAHMAN, ASASAS','09988','Diri Sendiri','Persetujuan','tes'),
 ('PM20260916001','2026/07/28/000001','2026-09-16','1','true','Operasi','true','3','true','4','true','5','true','6','true','7','true','8','true','9','true',10000000,'true','10','true','D0000004','12/09/1988/001','ADI KAZAMA','','L','1985-01-20','4168',', CAMPURJO, BOJONEGORO, KABUPATEN BOJONEGORO','-','Diri Sendiri','Persetujuan','tes'),
-('PM20260917001','2026/07/28/000001','2026-09-17','SASS','false','PEMASANGAN KATETER','false','ASAS','false','SASAS','false','SASAS','false','SASAS','false','SAS','false','SAS','false','SASAS','false',0,'false','ASAS','false','D0000004','12/09/1988/001','ADI KAZAMA','','L','1985-01-20','4168',', CAMPURJO, BOJONEGORO, KABUPATEN BOJONEGORO','-','Diri Sendiri','Belum Dikonfirmasi','TES');
+('PM20260917001','2026/07/28/000001','2026-09-17','SASS','false','PEMASANGAN KATETER','false','ASAS','false','SASAS','false','SASAS','false','SASAS','false','SAS','false','SAS','false','SASAS','false',0,'false','ASAS','false','D0000004','12/09/1988/001','ADI KAZAMA','','L','1985-01-20','4168',', CAMPURJO, BOJONEGORO, KABUPATEN BOJONEGORO','-','Diri Sendiri','Belum Dikonfirmasi','TES'),
+('PM20261015001','2026/09/14/000001','2026-10-15','1','true','Operasi','true','3','true','4','true','5','true','6','true','7','true','8','true','9','true',10000000,'true','10','true','D0000004','123124','RAHMAT PAMBUDI','wqwqw','L','1987-08-25','39020','-, KARTASURA, BAITURRAHMAN, ASASAS','09988','Diri Sendiri','Persetujuan','tes');
 /*!40000 ALTER TABLE `persetujuan_penolakan_tindakan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -94731,19 +94493,22 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `piutang_pasien` WRITE;
 /*!40000 ALTER TABLE `piutang_pasien` DISABLE KEYS */;
 INSERT INTO `piutang_pasien` VALUES
-('2026/02/25/000002','2026-02-25','000022','Belum Lunas',285709,0,285709,'2026-02-25'),
-('2026/02/25/000003','2026-02-25','000048','Belum Lunas',407586,0,407586,'2026-02-25'),
+('2026/02/25/000002','2026-02-25','000022','Lunas',285709,0,285709,'2026-02-25'),
+('2026/02/25/000003','2026-02-25','000048','Lunas',407586,0,407586,'2026-02-25'),
 ('2026/03/11/000002','2026-03-11','000022','Lunas',260000,0,260000,'2026-03-11'),
 ('2026/03/26/000001','2026-04-02','000006','Belum Lunas',36896,0,36896,'2026-04-02'),
 ('2026/05/05/000001','2026-05-05','000048','Belum Lunas',307844,0,307844,'2026-05-05'),
 ('2026/05/08/000001','2026-05-11','000022','Belum Lunas',570000,0,570000,'2026-05-11'),
 ('2026/05/28/000001','2026-05-28','000022','Belum Lunas',1031180,0,1031180,'2026-05-28'),
-('2026/06/03/000004','2026-06-03','000022','Belum Lunas',664730,0,664730,'2026-06-03'),
+('2026/06/03/000004','2026-06-03','000022','Lunas',664730,0,664730,'2026-06-03'),
 ('2026/06/10/000001','2026-06-10','000013','Belum Lunas',751591,0,751591,'2026-06-10'),
 ('2026/06/29/000003','2026-06-29','000006','Belum Lunas',6450952,0,6450952,'2026-06-29'),
 ('2026/07/22/000001','2026-07-22','000048','Belum Lunas',295000,0,295000,'2026-07-22'),
 ('2026/07/22/000004','2026-07-22','000059','Belum Lunas',255000,105000,150000,'2026-07-22'),
-('2026/07/28/000001','2026-08-04','000051','Belum Lunas',810000,0,810000,'2026-08-04');
+('2026/07/28/000001','2026-08-04','000051','Belum Lunas',810000,0,810000,'2026-08-04'),
+('2026/09/21/000002','2026-09-21','000061','Belum Lunas',760555,0,760555,'2026-09-21'),
+('2026/10/05/000001','2026-10-15','000059','Belum Lunas',260000,0,260000,'2026-10-15'),
+('2026/10/22/000001','2026-10-22','000059','Belum Lunas',954776,0,954776,'2026-10-22');
 /*!40000 ALTER TABLE `piutang_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -95143,7 +94908,14 @@ INSERT INTO `prosedur_pasien` VALUES
 ('2026/09/16/000001','00.02','Ralan',1,'1'),
 ('2026/09/18/000001','00.02','Ralan',1,'1'),
 ('2026/09/19/000001','99.32','Ralan',1,'1'),
-('2026/09/20/000002','33.6','Ralan',1,'1');
+('2026/09/20/000002','33.6','Ralan',1,'1'),
+('2026/09/21/000001','00.02','Ralan',1,'1'),
+('2026/10/05/000001','99.32','Ralan',1,'1'),
+('2026/10/21/000001','00.80','Ralan',2,'1'),
+('2026/10/21/000001','99.32','Ralan',1,'1'),
+('2026/10/21/000002','00.80','Ralan',2,'1'),
+('2026/10/21/000002','99.32','Ralan',1,'1'),
+('2026/10/22/000001','33.6','Ralan',1,'1');
 /*!40000 ALTER TABLE `prosedur_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -95385,7 +95157,7 @@ INSERT INTO `rawat_jl_dr` VALUES
 ('2026/04/21/000002','RJ00861','D0000004','2026-04-21','11:58:23',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/05/01/000001','RJ00861','D0000004','2026-05-08','13:12:06',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/05/05/000001','RJ00861','D0000004','2026-05-05','08:22:04',50000,0,150000,0,50000,250000,'Belum'),
-('2026/05/08/000001','RJ00861','D0000004','2026-05-08','13:21:12',50000,0,150000,0,50000,250000,'Belum'),
+('2026/05/08/000001','RJ00861','D0000004','2026-05-08','13:21:12',50000,0,150000,0,50000,250000.00000000003,'Belum'),
 ('2026/05/12/000001','C425','D0000004','2026-05-12','11:02:33',120000,0,125000,0,0,245000,'Belum'),
 ('2026/05/12/000001','RJ00861','D0000004','2026-05-12','09:14:02',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/05/12/000001','RJ00861','D0000004','2026-05-12','11:02:33',50000,0,150000,0,50000,250000,'Belum'),
@@ -95410,7 +95182,7 @@ INSERT INTO `rawat_jl_dr` VALUES
 ('2026/06/25/000001','RJ00861','D0000004','2026-06-25','13:46:23',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/06/26/000001','RJ00861','D0000004','2026-06-26','15:45:41',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/06/29/000001','RJ00861','D0000004','2026-06-29','10:09:31',50000,0,150000,0,50000,250000,'Belum'),
-('2026/06/29/000003','RJ00861','D0000004','2026-06-29','09:49:56',50000,0,150000,0,50000,249999.99999999997,'Belum'),
+('2026/06/29/000003','RJ00861','D0000004','2026-06-29','09:49:56',50000,0,150000,0,50000,249999.99999999994,'Belum'),
 ('2026/06/30/000001','IGD.001','D0000004','2026-06-30','19:11:57',36000,0,24000,0,0,60000,'Belum'),
 ('2026/06/30/000001','JP000331','D0000004','2026-06-30','19:11:57',150000,0,0,0,0,150000,'Belum'),
 ('2026/07/09/000001','RJ00861','D0000004','2026-07-09','12:13:17',50000,0,150000,0,50000,250000,'Belum'),
@@ -95447,7 +95219,19 @@ INSERT INTO `rawat_jl_dr` VALUES
 ('2026/09/18/000001','RJ00861','D0000004','2026-09-18','10:04:42',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/09/18/000001','RJ00861','D0000004','2026-09-18','13:55:08',50000,0,150000,0,50000,250000,'Belum'),
 ('2026/09/19/000001','RJ00861','D0000004','2026-09-19','11:12:20',50000,0,150000,0,50000,250000,'Belum'),
-('2026/09/20/000002','RJ00861','D0000004','2026-09-19','11:14:54',50000,0,150000,0,50000,250000,'Belum');
+('2026/09/20/000002','RJ00861','D0000004','2026-09-19','11:14:54',50000,0,150000,0,50000,250000,'Belum'),
+('2026/09/21/000001','RJ00861','D0000004','2026-09-21','11:30:26',50000,0,150000,0,50000,250000,'Belum'),
+('2026/09/21/000002','RJ00861','D0000004','2026-09-21','11:26:19',49999.99999999999,0,149999.99999999997,0,49999.99999999999,250000,'Belum'),
+('2026/09/21/000003','RJ00861','D0000003','2026-09-21','14:30:13',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/05/000001','RJ00861','D0000004','2026-10-05','09:25:49',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/15/000001','RJ00861','D0000004','2026-10-15','10:22:02',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/20/000001','J000731','D0000004','2026-10-20','14:03:19',350000,0,0,0,0,350000,'Belum'),
+('2026/10/20/000001','RJ00861','D0000004','2026-10-20','14:03:19',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/21/000001','RJ00861','D0000004','2026-10-21','09:52:14',50000,0,150000,0,50000,250000,'Suspen'),
+('2026/10/21/000002','IGD.001','D0000004','2026-10-21','11:12:13',36000,0,24000,0,0,60000,'Belum'),
+('2026/10/21/000002','RJ00861','D0000004','2026-10-21','13:53:50',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/22/000001','RJ00861','D0000004','2026-10-22','10:20:46',50000,0,150000,0,50000,250000,'Belum'),
+('2026/10/22/000001','RJ00861','D0000004','2026-10-22','10:24:19',50000,0,150000,0,50000,250000,'Belum');
 /*!40000 ALTER TABLE `rawat_jl_dr` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -95569,7 +95353,9 @@ INSERT INTO `rawat_jl_pr` VALUES
 ('2026/09/03/000001','JP000026','123124','2026-09-03','10:29:19',25000,0,10000,0,0,35000,'Belum'),
 ('2026/09/14/000002','IGD.002','120000134','2026-09-14','09:45:35',36000,0,0,0,0,36000,'Belum'),
 ('2026/09/16/000002','C046','12/09/1988/001','2026-09-16','09:41:35',50000,0,50000,0,0,100000,'Belum'),
-('2026/09/16/000002','JP000026','12/09/1988/001','2026-09-16','09:41:35',25000,0,10000,0,0,35000,'Belum');
+('2026/09/16/000002','JP000026','12/09/1988/001','2026-09-16','09:41:35',25000,0,10000,0,0,35000,'Belum'),
+('2026/10/22/000001','IGD.001','120000134','2026-10-22','10:13:10',36000,0,0,0,0,36000,'Belum'),
+('2026/10/22/000001','RJ00001','120000134','2026-10-22','10:13:10',90000,0,0,0,0,90000,'Belum');
 /*!40000 ALTER TABLE `rawat_jl_pr` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -95903,7 +95689,17 @@ INSERT INTO `reg_periksa` VALUES
 ('001','2026/09/18/000001','2026-09-18','10:04:24','D0000004','000059','UMU','-','DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','DIRI SENDIRI',0,'Belum','Lama','Ralan','-',37,'Th','Belum Bayar','Baru'),
 ('001','2026/09/19/000001','2026-09-19','08:53:36','D0000004','000048','U0003','-','TES, JOYOTAKAN, SERENGAN, KOTA SURAKARTA','DIRI SENDIRI',10000,'Belum','Lama','Ralan','A09',39,'Th','Belum Bayar','Lama'),
 ('001','2026/09/20/000001','2026-09-20','11:11:41','D0000004','000023','U0027','PERUSAHAAN MAJU MUNDUR','','Tempat Kerja',0,'Belum','Lama','Ralan','A09',34,'Th','Belum Bayar','Baru'),
-('002','2026/09/20/000002','2026-09-20','11:11:41','D0000004','000062','U0027','PERUSAHAAN MAJU MUNDUR','','Tempat Kerja',0,'Belum','Baru','Ralan','A09',16,'Th','Belum Bayar','Baru');
+('002','2026/09/20/000002','2026-09-20','11:11:41','D0000004','000062','U0027','PERUSAHAAN MAJU MUNDUR','','Tempat Kerja',0,'Belum','Baru','Ralan','A09',16,'Th','Belum Bayar','Baru'),
+('001','2026/09/21/000001','2026-09-21','10:58:10','D0000004','000022','U0003','-','TES, KEDUNGWARU, PREMBUN, KABUPATEN KEBUMEN','SAUDARA',10000,'Belum','Lama','Ralan','BPJ',69,'Th','Belum Bayar','Lama'),
+('002','2026/09/21/000002','2026-09-21','10:58:38','D0000004','000061','U0003','DEWI EKAWATI',' RT /RW  KODE POS , GUWOSARI, PAJANGAN, KABUPATEN BANTUL','IBU',10000,'Belum','Lama','Ralan','A09',5,'Th','Sudah Bayar','Lama'),
+('001','2026/09/21/000003','2026-09-21','14:29:55','D0000003','000051','U0003','-',', CAMPURJO, BOJONEGORO, KABUPATEN BOJONEGORO','DIRI SENDIRI',10000,'Belum','Lama','Ralan','A09',41,'Th','Belum Bayar','Lama'),
+('001','2026/09/27/000001','2026-09-27','14:09:02','D0000004','000054','U0003','','MALANG KOTA, -, -, -','SAUDARA',10000,'Belum','Lama','Ralan','-',36,'Th','Belum Bayar','Lama'),
+('001','2026/10/05/000001','2026-10-05','11:14:02','D0000004','000059','U0003','-','DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','DIRI SENDIRI',10000,'Belum','Lama','Ralan','BPJ',37,'Th','Sudah Bayar','Lama'),
+('001','2026/10/15/000001','2026-10-15','10:21:45','D0000004','000051','U0003','-',', CAMPURJO, BOJONEGORO, KABUPATEN BOJONEGORO','DIRI SENDIRI',10000,'Belum','Lama','Ralan','A09',41,'Th','Belum Bayar','Lama'),
+('001','2026/10/20/000001','2026-10-20','14:02:54','D0000004','000023','U0003','WAHYU','RT 01 RW 02, CISARANTEN ENDAH, ARCAMANIK, KOTA BANDUNG','AYAH',10000,'Belum','Lama','Ralan','A09',34,'Th','Sudah Bayar','Lama'),
+('001','2026/10/21/000001','2026-10-21','09:56:13','D0000004','000059','U0003','-','DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','DIRI SENDIRI',10000,'Belum','Lama','Ralan','A09',37,'Th','Sudah Bayar','Lama'),
+('001','2026/10/21/000002','2026-10-21','11:12:02','D0000004','000058','INT','-',', BENER PEPANYI, PERMATA, KABUPATEN BENER MERIAH','DIRI SENDIRI',0,'Sudah','Lama','Ralan','A09',39,'Th','Sudah Bayar','Baru'),
+('001','2026/10/22/000001','2026-10-22','10:05:47','D0000004','000059','U0003','-','DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','DIRI SENDIRI',10000,'Sudah','Lama','Ralan','-',37,'Th','Sudah Bayar','Lama');
 /*!40000 ALTER TABLE `reg_periksa` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -96290,7 +96086,7 @@ INSERT INTO `rekeningtahun` VALUES
 (2026,'530119',0),
 (2026,'530120',0),
 (2026,'5301201',0),
-(2026,'111010',1000000),
+(2026,'111010',560000),
 (2026,'115020',200000000),
 (2026,'115010',300000000),
 (2026,'112010',5000000000),
@@ -96602,7 +96398,21 @@ INSERT INTO `resep_dokter` VALUES
 ('202609180001','B000000965',10,'2X1'),
 ('202609190001','B00001000',10,'2X1'),
 ('202609190001','B000000965',10,'2X1'),
-('202609190002','B000000305',10,'2X1');
+('202609190002','B000000305',10,'2X1'),
+('202609210001','B000000791',10,'3x1'),
+('202609210001','B000000571',10,'2x1'),
+('202609210002','B000000965',10,'2X1'),
+('202610050001','B00001000',10,'2X1'),
+('202610050001','B000000965',10,'2X1'),
+('202610150001','B00001000',10,'2X1'),
+('202610150001','B000000965',10,'2X1'),
+('202610210001','B000001207',10,'2x1'),
+('202610210001','B000000556',10,'3x1'),
+('202610210002','B000001207',10,'2x1'),
+('202610210002','B000000556',10,'3x1'),
+('202610220001','B000000305',10,'2X1'),
+('202610220002','B000000791',10,'2 X 1'),
+('202610220002','B000000572',10,'2x11');
 /*!40000 ALTER TABLE `resep_dokter` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -96666,7 +96476,9 @@ INSERT INTO `resep_dokter_racikan` VALUES
 ('202608060004','1','R1','R01',16,'2 X 1','HABISKAN'),
 ('202608190001','1','R1','R01',16,'2 X 1','HABISKAN'),
 ('202609030001','1','R1','R01',10,'2 X 1','HABISKAN'),
-('202609160001','1','R1','R01',16,'2 X 1','ABISKAN');
+('202609160001','1','R1','R01',16,'2 X 1','ABISKAN'),
+('202609210001','1','R1','R01',18,'3 x 1','HABISKAN'),
+('202610220002','1','R1','R01',16,'2 X 1','HABISKAN');
 /*!40000 ALTER TABLE `resep_dokter_racikan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -96756,7 +96568,11 @@ INSERT INTO `resep_dokter_racikan_detail` VALUES
 ('202609030001','1','B000000556',1,1,'130',6.5),
 ('202609030001','1','B000001659',2,3,'40.0',6.7),
 ('202609160001','1','B000000305',1,1,'45',10.3),
-('202609160001','1','B000001207',2,3,'33.3',10.7);
+('202609160001','1','B000001207',2,3,'33.3',10.7),
+('202609210001','1','B000000556',1,1,'135',12.2),
+('202609210001','1','B000001659',3,4,'45.0',13.5),
+('202610220002','1','B000000556',1,1,'145',11.6),
+('202610220002','1','B000001659',2,5,'24.0',6.4);
 /*!40000 ALTER TABLE `resep_dokter_racikan_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -97041,7 +96857,15 @@ INSERT INTO `resep_obat` VALUES
 ('202609160002','0000-00-00','00:00:00','2026/09/16/000001','D0000004','2026-09-16','09:48:39','ralan','0000-00-00','00:00:00'),
 ('202609180001','0000-00-00','00:00:00','2026/09/18/000001','D0000004','2026-09-18','10:04:42','ralan','0000-00-00','00:00:00'),
 ('202609190001','0000-00-00','00:00:00','2026/09/19/000001','D0000004','2026-09-19','11:12:20','ralan','0000-00-00','00:00:00'),
-('202609190002','0000-00-00','00:00:00','2026/09/20/000002','D0000004','2026-09-19','11:14:54','ralan','0000-00-00','00:00:00');
+('202609190002','0000-00-00','00:00:00','2026/09/20/000002','D0000004','2026-09-19','11:14:54','ralan','0000-00-00','00:00:00'),
+('202609210001','2026-09-21','11:33:53','2026/09/21/000002','D0000004','2026-09-21','11:28:33','ralan','2026-09-21','11:36:02'),
+('202609210002','0000-00-00','00:00:00','2026/09/21/000001','D0000004','2026-09-21','11:30:26','ralan','0000-00-00','00:00:00'),
+('202610050001','0000-00-00','00:00:00','2026/10/05/000001','D0000004','2026-10-05','09:25:49','ralan','0000-00-00','00:00:00'),
+('202610150001','2026-10-16','15:20:49','2026/10/15/000001','D0000004','2026-10-15','10:22:02','ralan','0000-00-00','00:00:00'),
+('202610210001','0000-00-00','00:00:00','2026/10/21/000001','D0000004','2026-10-21','09:52:14','ralan','0000-00-00','00:00:00'),
+('202610210002','0000-00-00','00:00:00','2026/10/21/000002','D0000004','2026-10-21','13:53:50','ralan','0000-00-00','00:00:00'),
+('202610220001','2026-10-22','10:51:57','2026/10/22/000001','D0000004','2026-10-22','10:20:46','ralan','2026-10-22','10:54:17'),
+('202610220002','0000-00-00','00:00:00','2026/10/22/000001','D0000004','2026-10-22','10:26:24','ralan','0000-00-00','00:00:00');
 /*!40000 ALTER TABLE `resep_obat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -97267,7 +97091,9 @@ INSERT INTO `resume_pasien` VALUES
 ('2026/06/29/000003','D0000004','DITEMUKAN AKRAL DINGIN, ','tes','tes 1\n\ntes 2\n\ntes 3, ','Hemoglobin : 8, Rhesus : +, Golongan Darah : , LED : qrtrr, MCHC : qfg, MCH : qyy, MCV : q, Erytrosit : q, Trombosit : q, Hematokrit : q, Gran% : q, Mid% : q, Lymph% : q, Diffcount : q, Leukosit : q, SDT/Malaria : q, ','jantung','I50.0','','','','','','','','','Therapeutic ultrasound of heart','00.02','','','','','','','Hidup','Acran 150 mg Tablet : 9.1 TAB , Acyclovir 200 mg Tablet : 10.7 TAB , Ibuprofen 200 mg : 3 SYR 2x1, Acrios 50 mg tab : 14 TAB , Amoxsan 500 mg  : 10 CAP 3x1, '),
 ('2026/09/10/000001','D0000004','1212','21212','1212','1212','UJICOBA TES','I50.0','SASAS','','ASAS','','','','SASAS','','','','','','','','','','Hidup','SASAS'),
 ('2026/09/14/000002','D0000004','TES TIDAK BANYAK MENETIK, DITEMUKAN AKRAL DINGIN, ','sasa','asas','sasas','asasasa','I50.0','','','','','','','','','','','','','','','','','Hidup',''),
-('2026/09/16/000002','D0000004','wqwqw, ','wqwqw','tes 1\n\ntes 2\n\ntes 3, ','MCHC : 3, MCV : 3, Trombosit : 2, ','wwqqwwqw','I50.0','','','','','','','','','','','','','','','','','Hidup','');
+('2026/09/16/000002','D0000004','wqwqw, ','wqwqw','tes 1\n\ntes 2\n\ntes 3, ','MCHC : 3, MCV : 3, Trombosit : 2, ','wwqqwwqw','I50.0','','','','','','','','','','','','','','','','','Hidup',''),
+('2026/09/21/000002','D0000004',', ','TES','tes 1\n\ntes 2\n\ntes 3, ','Hemoglobin : , Rhesus : , Golongan Darah : asas, LED : sasas, MCHC : sas, MCH : sasas, MCV : asasas, Erytrosit : sasas, Trombosit : sasas, Hematokrit : assasas, Gran% : sasas, Mid% : sas, Lymph% : , Diffcount : , Leukosit : , SDT/Malaria : , ','JANTUNG','I50.0','','','','','','','','','','','','','','','','','Hidup','Acyclovir 200 mg Tablet : 13 TAB , Amlodipine 10 mg : 10 TAB 2x1, Ibuprofen 400 mg : 10 TAB 3x1, Albendazole tab : 14 TAB , '),
+('2026/10/22/000001','D0000004','tes, ','eea','tes 1\n\ntes 2\n\ntes 3, ','','Congestive heart failure','I50.0','','','','','','','','','Combined heart-lung transplantation','33.6','','','','','','','Hidup','');
 /*!40000 ALTER TABLE `resume_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -97701,7 +97527,29 @@ INSERT INTO `riwayat_barang_medis` VALUES
 ('B000000610',50,2,0,52,'Penerimaan','2026-09-18','10:49:36','Admin Utama','AP','Simpan','','','PB20260918002 SPM260918002 ENSEVAL'),
 ('B000000161',90,10,0,100,'Penerimaan','2026-09-18','10:49:36','Admin Utama','AP','Simpan','','','PB20260918002 SPM260918002 ENSEVAL'),
 ('B000001405',0,10,0,10,'Penerimaan','2026-09-18','10:49:36','Admin Utama','AP','Simpan','','','PB20260918002 SPM260918002 ENSEVAL'),
-('B000001207',19.400000000000023,0,10,9.400000000000023,'Stok Pasien Ranap','2026-09-19','09:41:09','Admin Utama','AP','Simpan','','','2026/09/14/000001 000055 RAHMAT PAMBUDI');
+('B000001207',19.400000000000023,0,10,9.400000000000023,'Stok Pasien Ranap','2026-09-19','09:41:09','Admin Utama','AP','Simpan','','','2026/09/14/000001 000055 RAHMAT PAMBUDI'),
+('B000000571',1130.6,0,10,1120.6,'Pemberian Obat','2026-09-21','11:33:53','Admin Utama','AP','Simpan','','','2026/09/21/000002 000061 KHANZA AZZAHWA KHOIRUNNISA '),
+('B000000791',161,0,10,151,'Pemberian Obat','2026-09-21','11:33:53','Admin Utama','AP','Simpan','','','2026/09/21/000002 000061 KHANZA AZZAHWA KHOIRUNNISA '),
+('B000000556',3076.8000000000006,0,13,3063.8000000000006,'Pemberian Obat','2026-09-21','11:33:53','Admin Utama','AP','Simpan','','','2026/09/21/000002 000061 KHANZA AZZAHWA KHOIRUNNISA '),
+('B000001659',1070,0,14,1056,'Pemberian Obat','2026-09-21','11:33:53','Admin Utama','AP','Simpan','','','2026/09/21/000002 000061 KHANZA AZZAHWA KHOIRUNNISA '),
+('B000000556',3063.8000000000006,0,10,3053.8000000000006,'Stok Pasien Ranap','2026-09-21','11:45:27','Admin Utama','AP','Simpan','','','2026/09/14/000001 000055 RAHMAT PAMBUDI'),
+('B000001207',9.400000000000023,100,0,100,'Opname','2026-09-21','11:55:13','Admin Utama','AP','Simpan','','','-'),
+('B000001655',100,80,0,180,'Penerimaan','2026-09-21','14:42:01','Admin Utama','AP','Simpan','','','PB20260921001 SPM260921001 ENSEVAL'),
+('B000000461',0,90,0,90,'Penerimaan','2026-09-21','14:42:01','Admin Utama','AP','Simpan','','','PB20260921001 SPM260921001 ENSEVAL'),
+('B000001603',300,90,0,390,'Penerimaan','2026-09-21','14:42:01','Admin Utama','AP','Simpan','','','PB20260921001 SPM260921001 ENSEVAL'),
+('B000000566',97,70,0,167,'Penerimaan','2026-10-16','13:48:46','Admin Utama','AP','Simpan','','','PB20261016001 SPM261016001 ENSEVAL'),
+('B000000571',1120.6,90,0,1210.6,'Penerimaan','2026-10-16','13:48:46','Admin Utama','AP','Simpan','','','PB20261016001 SPM261016001 ENSEVAL'),
+('B000000790',0,90,0,90,'Penerimaan','2026-10-16','13:48:46','Admin Utama','AP','Simpan','','','PB20261016001 SPM261016001 ENSEVAL'),
+('B00001000',1334,0,10,1324,'Pemberian Obat','2026-10-16','15:20:49','Admin Utama','AP','Simpan','','','2026/10/15/000001 000051 ADI KAZAMA/1985-01-20'),
+('B000000965',4030,0,10,4020,'Pemberian Obat','2026-10-16','15:20:49','Admin Utama','AP','Simpan','','','2026/10/15/000001 000051 ADI KAZAMA/1985-01-20'),
+('B000000554',70,10,0,80,'Penerimaan','2026-10-17','13:38:36','Admin Utama','GD','Simpan','','','PB20261017001 12121 ENSEVAL'),
+('B000001207',270,10,0,280,'Penerimaan','2026-10-17','13:38:36','Admin Utama','GD','Simpan','','','PB20261017001 12121 ENSEVAL'),
+('B000000396',60,3,0,63,'Penerimaan','2026-10-17','13:38:55','Admin Utama','GD','Simpan','','','PB20260817002 12121 ENSEVAL'),
+('B000000305',99934.09999999999,0,10,99924.09999999999,'Pemberian Obat','2026-10-22','10:51:58','Admin Utama','AP','Simpan','','','2026/10/22/000001 000059 YOHANA FARIDA/1989-06-12'),
+('B000000556',3053.8000000000006,10,0,3063.8000000000006,'Penerimaan','2026-10-22','11:24:15','Admin Utama','AP','Simpan','','','PB20261022001 0 ENSEVAL'),
+('B000000559',17,10,0,27,'Penerimaan','2026-10-22','11:24:16','Admin Utama','AP','Simpan','','','PB20261022001 0 ENSEVAL'),
+('B000000396',137,0,10,127,'Stok Keluar','2026-10-22','11:26:36','Admin Utama','AP','Simpan','','','SKM20261022001, No.Permintaan PM20261022001 Tgl 2026-10-22 Ruang LABORAT oleh RAHMI DEWI'),
+('B000008024',10,0,1,9,'Stok Keluar','2026-10-22','11:26:36','Admin Utama','AP','Simpan','','','SKM20261022001, No.Permintaan PM20261022001 Tgl 2026-10-22 Ruang LABORAT oleh RAHMI DEWI');
 /*!40000 ALTER TABLE `riwayat_barang_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -98111,7 +97959,8 @@ INSERT INTO `rujuk` VALUES
 ('R000000003','2026/05/25/000001','tes','2026-05-25','tes','D0000004','-','-','-','11:14:43'),
 ('R000000004','2026/06/15/000001','RSUD SIJUNJUNG','2026-06-15','tes','D0000003','Non Bedah','AGD','TES','10:41:41'),
 ('R000000005','2026/09/16/000001','qwqw','2026-09-16','wqwqw','D0000003','-','-','wqwqw','10:23:41'),
-('R000000006','2026/09/14/000001','2121','2026-09-19','21212','D0000004','-','-','21212','08:48:15');
+('R000000006','2026/09/14/000001','2121','2026-09-19','21212','D0000004','-','-','21212','08:48:15'),
+('R000000007','2026/09/14/000001','tes','2026-10-22','A01.4 - Paratyphoid fever, unspecified','D0000004','Non Bedah','SENDIRI','tes','15:00:26');
 /*!40000 ALTER TABLE `rujuk` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -98441,7 +98290,8 @@ INSERT INTO `saran_kesan_lab` VALUES
 ('2026/07/11/000001','2026-07-11','09:15:28','tes','tes'),
 ('2026/07/21/000001','2026-07-21','10:55:18','OK','TES'),
 ('2026/08/06/000001','2026-08-06','15:22:30','tes','tes'),
-('2026/08/19/000001','2026-08-19','14:20:11','tes','tes');
+('2026/08/19/000001','2026-08-19','14:20:11','tes','tes'),
+('2026/09/21/000002','2026-09-21','14:00:17','tes','tes');
 /*!40000 ALTER TABLE `saran_kesan_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -150366,7 +150216,7 @@ INSERT INTO `set_insentif` VALUES
 (2025,12,200000000,100,200000000),
 (2026,1,300000000,100,300000000),
 (2026,3,7000000000,40,2800000000),
-(2026,5,4000000000,10,400000000);
+(2026,5,4000000000,100,4000000000);
 /*!40000 ALTER TABLE `set_insentif` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -154058,10 +153908,10 @@ CREATE TABLE `skrining_tolac` (
   `jumlah_sc` varchar(1) DEFAULT NULL,
   `tahun_sc` varchar(4) DEFAULT NULL,
   `indikasi_sc` varchar(50) DEFAULT NULL,
-  `jenis_insisi` enum('transversal_rendah','klasik','tidak_diketahui') DEFAULT NULL,
-  `riwayat_pervaginam` enum('sebelum_sesudah','sesudah_saja','sebelum_saja','tidak_pernah') DEFAULT NULL,
+  `jenis_insisi` enum('-','Transversal Rendah','Klasik','Tidak Diketahui') DEFAULT NULL,
+  `riwayat_pervaginam` enum('Sebelum & Sesudah SC','Sesudah SC Saja','Sebelum SC Saja','Tidak Pernah') DEFAULT NULL,
   `tbj_gram` varchar(5) DEFAULT NULL,
-  `presentasi_janin` varchar(20) DEFAULT NULL,
+  `presentasi_janin` varchar(30) DEFAULT NULL,
   `inklusi_riwayat_sc` enum('Ya','Tidak') DEFAULT NULL,
   `inklusi_panggul_adekuat` enum('Ya','Tidak') DEFAULT NULL,
   `inklusi_janin_tunggal_kepala` enum('Ya','Tidak') DEFAULT NULL,
@@ -154071,6 +153921,7 @@ CREATE TABLE `skrining_tolac` (
   `eksklusi_plasenta_previa` enum('Ya','Tidak') DEFAULT NULL,
   `kesimpulan` enum('Kandidat TOLAC','Rujuk SC Elektif') DEFAULT NULL,
   `edukasi_diberikan` enum('Ya','Tidak') DEFAULT NULL,
+  `keterangan` varchar(100) NOT NULL,
   `kd_dokter` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`no_rawat`),
   KEY `kd_dokter` (`kd_dokter`),
@@ -154086,6 +153937,8 @@ CREATE TABLE `skrining_tolac` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `skrining_tolac` WRITE;
 /*!40000 ALTER TABLE `skrining_tolac` DISABLE KEYS */;
+INSERT INTO `skrining_tolac` VALUES
+('2026/09/27/000001','2026-09-28 08:57:31','1','2','3','','4 tes','-','Tidak Pernah','5','6','Ya','Ya','Ya','Ya','Tidak','Tidak','Tidak','Kandidat TOLAC','Ya','7','D0000004');
 /*!40000 ALTER TABLE `skrining_tolac` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -154225,7 +154078,8 @@ INSERT INTO `stok_obat_pasien` VALUES
 ('2026-07-21','15:09:28','2026/06/22/000001','B000000572',10,'AP','','','2','true','false','false','false','false','false','true','false','false','false','false','false','true','false','false','false','false','false','true','false','false','false','false','false'),
 ('2026-07-28','14:00:08','2026/07/21/000001','B000000556',10,'AP','','','3','false','false','false','false','false','false','false','true','false','false','false','false','false','false','false','true','false','false','false','false','false','false','true','false'),
 ('2026-07-28','14:00:08','2026/07/21/000001','B000000571',10,'AP','','','3','false','false','false','false','false','true','false','false','false','false','false','false','true','false','false','false','false','false','false','true','false','false','false','false'),
-('2026-09-19','09:41:09','2026/09/14/000001','B000001207',10,'AP','','','2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false');
+('2026-09-19','09:41:09','2026/09/14/000001','B000001207',10,'AP','','','2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false'),
+('2026-09-21','11:45:27','2026/09/14/000001','B000000556',10,'AP','','','2','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false','false','true','false','false','false');
 /*!40000 ALTER TABLE `stok_obat_pasien` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -155551,7 +155405,9 @@ INSERT INTO `surat_pemesanan_medis` VALUES
 ('SPM260729001','S0004','D0000004','2026-07-29',275000,0,275000,30250,0,305250,'Proses Pesan'),
 ('SPM260729002','S0007','08998998','2026-07-29',941900,0,941900,103609,0,1045509,'Proses Pesan'),
 ('SPM260918001','S0007','120000134','2026-09-18',4873900,0,4873900,536129,0,5410029,'Sudah Datang'),
-('SPM260918002','S0007','156798','2026-09-18',881400,0,881400,96954,0,978354,'Sudah Datang');
+('SPM260918002','S0007','156798','2026-09-18',881400,0,881400,96954,0,978354,'Sudah Datang'),
+('SPM260921001','S0007','123124','2026-09-21',5270380,0,5270380,579742,0,5850122,'Sudah Datang'),
+('SPM261016001','S0007','123124','2026-10-16',857010,0,857010,94271,0,951281,'Sudah Datang');
 /*!40000 ALTER TABLE `surat_pemesanan_medis` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -156197,7 +156053,9 @@ INSERT INTO `surat_persetujuan_rawat_inap` VALUES
 ('PRI20260711001','2026/07/11/000001','2026-07-11','asas','sasa','TS','sasas','sas','sasas','Kelas 1','Suami','Kelas 1','assas','sasas','12/09/1988/001'),
 ('PRI20260806001','2026/08/06/000001','2026-08-06','-','-','-','-','-','-','Kelas 1','Suami','Kelas 1','-','-','120000134'),
 ('PRI20260903001','2026/09/03/000001','2026-09-03','WQ','WQ','TS','WQ','W','WQ','Kelas 1','Suami','Kelas 1','WQWQW','WQW','123124'),
-('PRI20260914001','2026/09/14/000002','2026-09-14','tes','tes','TS','tes','tes','tes','Kelas 1','Diri Saya','Kelas 1','tes','tes','12/09/1988/001');
+('PRI20260914001','2026/09/14/000002','2026-09-14','tes','tes','TS','tes','tes','tes','Kelas 1','Diri Saya','Kelas 1','tes','tes','12/09/1988/001'),
+('PRI20260921001','2026/09/21/000001','2026-09-21','tes','tes','TS','tes','tes','tes','Kelas 1','Suami','Kelas 1','tes','tes','12/09/1988/001'),
+('PRI20261022001','2026/10/22/000001','2026-10-22','tes','tes','TS','tes','989','tes','Kelas 1','Suami','Kelas 1','tes','tes','120000134');
 /*!40000 ALTER TABLE `surat_persetujuan_rawat_inap` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -156237,7 +156095,9 @@ INSERT INTO `surat_persetujuan_rawat_inap_pembuat_pernyataan` VALUES
 ('PRI20260711001','pages/upload/PRI20260711001.jpeg'),
 ('PRI20260806001','pages/upload/PRI20260806001.jpeg'),
 ('PRI20260903001','pages/upload/PRI20260903001.jpeg'),
-('PRI20260914001','pages/upload/PRI20260914001.jpeg');
+('PRI20260914001','pages/upload/PRI20260914001.jpeg'),
+('PRI20260921001','pages/upload/PRI20260921001.jpeg'),
+('PRI20261022001','pages/upload/PRI20261022001.jpeg');
 /*!40000 ALTER TABLE `surat_persetujuan_rawat_inap_pembuat_pernyataan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -156659,7 +156519,8 @@ LOCK TABLES `surat_skbn` WRITE;
 INSERT INTO `surat_skbn` VALUES
 ('SKBN20260407001','2026/04/07/000001','2026-04-07','UMUM','D0000004','424242','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF'),
 ('SKBN20260410001','2026/04/10/000001','2026-04-10','UMUM','D0000004','ewe','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF'),
-('SKBN20260625001','2026/06/16/000001','2026-06-25','UMUM','D0000004','-','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF');
+('SKBN20260625001','2026/06/16/000001','2026-06-25','UMUM','D0000004','-','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF'),
+('SKBN20261026001','2026/10/21/000002','2026-10-26','UMUM','D0000004','tes','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF','NEGATIF');
 /*!40000 ALTER TABLE `surat_skbn` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -157123,6 +156984,9 @@ INSERT INTO `tagihan_sadewa` VALUES
 ('2026/09/09/000001','000055','RAHMAT PAMBUDI','-, KARTASURA, BAITURRAHMAN, ASASAS','2026-09-09 11:17:39','Pelunasan',347500,347500,'Sudah','Admin Utama'),
 ('2026/09/15/000001','000061','KHANZA AZZAHWA KHOIRUNNISA ',' RT /RW  KODE POS , GUWOSARI, PAJANGAN, KABUPATEN BANTUL','2026-09-15 06:56:49','Pelunasan',100000,100000,'Sudah','Admin Utama'),
 ('2026/09/16/000002','000061','KHANZA AZZAHWA KHOIRUNNISA ',' RT /RW  KODE POS , GUWOSARI, PAJANGAN, KABUPATEN BANTUL','2026-09-16 09:57:19','Pelunasan',558019,558019,'Sudah','Admin Utama'),
+('2026/10/20/000001','000023','RAHMA NIA','RT 01 RW 02, CISARANTEN ENDAH, ARCAMANIK, KOTA BANDUNG','2026-10-20 15:11:55','Pelunasan',610000,610000,'Sudah','Admin Utama'),
+('2026/10/21/000001','000059','YOHANA FARIDA','DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','2026-10-21 10:01:23','Pelunasan',560000,560000,'Sudah','Admin Utama'),
+('2026/10/21/000002','000058','PASIEN BEBAS',', BENER PEPANYI, PERMATA, KABUPATEN BENER MERIAH','2026-10-21 11:12:08','Pelunasan',60000,60000,'Sudah','Admin Utama'),
 ('DP202512040001','000003','HAFIZ HARIYADI','-','2025-12-04 17:03:22','Uang Muka',1000000,1000000,'Belum','Admin Utama'),
 ('DP202512110001','000003','HAFIZ HARIYADI','-','2025-12-11 14:28:29','Uang Muka',5000000,5000000,'Belum','Admin Utama'),
 ('DP202601090001','000013','PARAMITA RAMADANI','-','2026-01-09 10:39:28','Uang Muka',1000000,1000000,'Belum','Admin Utama'),
@@ -157183,7 +157047,8 @@ INSERT INTO `tagihan_sadewa` VALUES
 ('PL20260526001','-','STIKES SRAGEN','-','2026-05-26 10:32:14','Pelunasan',0,10000000,'Sudah','Admin Utama'),
 ('PL20260604001','-','STIKES UMKLA','-','2026-06-04 13:24:38','Pelunasan',0,10000000,'Sudah','Admin Utama'),
 ('PL20260616001','-','IBU NRIMALA','-','2026-06-16 11:04:59','Pelunasan',0,1000000,'Sudah','Admin Utama'),
-('PL20260709001','-','CFC','-','2026-07-09 12:01:34','Pelunasan',0,20000000,'Sudah','Admin Utama');
+('PL20260709001','-','CFC','-','2026-07-09 12:01:34','Pelunasan',0,20000000,'Sudah','Admin Utama'),
+('PL20261021001','-','tes','-','2026-10-21 09:38:59','Pelunasan',0,100000,'Sudah','Admin Utama');
 /*!40000 ALTER TABLE `tagihan_sadewa` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -157637,7 +157502,9 @@ INSERT INTO `telaah_farmasi` VALUES
 ('202608040001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Tidak','Tidak','Ya','Ya','Ya','120000134'),
 ('202608060001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','10908789'),
 ('202608190001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','120000134'),
-('202609160001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','12/09/1988/001');
+('202609160001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','12/09/1988/001'),
+('202609210001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','10908789'),
+('202610220001','Ya','','Ya','','Ya','','Ya','','Ya','','Tidak','','Tidak','','Tidak','','Ya','Ya','Ya','Ya','Ya','12/09/1988/001');
 /*!40000 ALTER TABLE `telaah_farmasi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -160621,264 +160488,11 @@ INSERT INTO `temporary` VALUES
 (3,'','','','','3. 520308, BEBAN JASA SARANA RAWAT JALAN','50,000','0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.0.190'),
 (4,'','','','','4. 520309, BEBAN JASA MENEJEMEN RAWAT JALAN','50,000','0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.0.190'),
 (0,'JR20260512000001','2026/05/12/000001','2026-05-12 09:15:34','Umum','TINDAKAN RAWAT JALAN PASIEN 2026/05/12/000001 DIPOSTING OLEH Admin Utama','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.0.190'),
-(254,'  570102','  BEBAN PIUTANG TIDAK TERBAYAR','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(253,'  570101','  BEBAN KLAIM TIDAK DIBAYAR BPJS','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(252,' 57',' KERUGIAN ASURANSI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(249,'  550107','  HPP BHP LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(250,' 56',' BIAYA TOKO','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(251,'  560101','  HPP BARANG TOKO','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(247,'  550105','  HPP BARANG MEDIS/OBAT/BHP KAMAR OPERASI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(248,'  550106','  HPP BARANG MEDIS/OBAT/BHP ','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(246,'  550104','  HPP BHP RADIOLOGI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(244,'  550102','  RETUR PIUTANG OBAT & BHP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(245,'  550103','  HPP BHP LABORATORIUM','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(241,' 55',' BIAYA PENUNJANG MEDIS','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(242,'  550100','  RETUR PENJUALAN OBAT & BHP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(243,'  550101','  RETUR OBAT RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(240,'  540103','  POTONGAN PIUTANG/DISKON PIUTANG','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(239,'  540102','  POTONGAN BIAYA PASIEN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(235,'   5301201','   BIAYA PEMELIHARAAN MOBIL','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(236,' 54',' POTONGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(237,'  540100','  POTONGAN PENJUALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(238,'  540101','  POTONGAN BIAYA PASIEN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(230,'  530116','  BIAYA TRANSAKSI BANK BNI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(231,'  530117','  BIAYA PENGEMBALIAN UANG PASIEN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(232,'  530118','  PENYUSUTAN BARANG KANTOR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(233,'  530119','  BELI SNACK RAPAT','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(234,'  530120','  BIAYA PEMELIHARAAN KENDARAAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(225,'  530111','  BIAYA CROSMATCH AMBIL DARAH','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(226,'  530112','  BIAYA ASURANSI BPJS KESEHATAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(227,'  530113','  STOK KELUAR BARANG DAPUR','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(228,'  530114','  BIAYA TRANSAKSI BANK MANDIRI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(229,'  530115','  WORKHSOP KARYAWAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(224,'  530110','  STOK KELUAR BARANG MEDIS/OBAT/BHP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(222,'  530108','  BIAYA PEMBELIAN BAHAN BAKAR UNTUK GENSET','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(223,'  530109','  PENGELUARAN HARIAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(220,'  530106','  BIAYA PEMEBLIAN MATERIAL BANGUNAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(221,'  530107','  BIAYA LISTRIK','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(219,'  530105','  BIAYA GAJI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(218,'  530104','  PENGGUNAAN/PENGAMBILAN BARANG NON MEDIS UNTI TRANFUSI DARAH','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(217,'  530103','  PENGGUNAAN/PENGAMBILAN BHP MEDIS UNIT TRANFUSI DARAH','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(212,'   520317','   BEBAN JASA MENEJEMEN LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(213,' 53',' BIAYA OPERASIONAL LAIN - LAIN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(214,'  530100','  PENGADAAN/PEMBELIAN OBAT & BHP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(215,'  530101','  PENGADAAN/PEMBELIAN BARANG NON MEDIS DAN PENUNJANG','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(216,'  530102','  STOK KELUAR BARANG NON MEDIS & PENUNJANG','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(202,'   520305','   BEBAN UTANG LAIN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(203,'   520308','   BEBAN JASA SARANA RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(204,'   520309','   BEBAN JASA MENEJEMEN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(205,'   520310','   BEBAN JASA SARANA LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(206,'   520311','   BEBAN JASA MENEJEMEN LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(207,'   520312','   BEBAN JASA PJ LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(208,'   520313','   BEBAN JASA PJ PENGUJIAN LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(209,'   520314','   BEBAN JASA ANALIS LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(210,'   520315','   BEBAN JASA PJ VERIFIKASI LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(211,'   520316','   BEBAN KSO LAB KESEHATAN LINGKUNGAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(201,'   520304','   BEBAN JASA MENEJEMEN RADIOLOGI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(200,'   520303','   BEBAN JASA MENEJEMEN LABORAT','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(198,'   520301','   BEBAN JASA SARANA LABORAT','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(199,'   520302','   BEBAN JASA SARANA RADIOLOGI','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(197,'  5203','  BEBAN LAIN-LAIN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(196,'   520207','   BEBAN JASA MEDIK PARAMEDIS OPERASI RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(182,'   510302','   BEBAN JASA MENEJEMEN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(183,' 52',' BEBAN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(184,'  5201','  BEBAN KSO RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(185,'   520100','   BEBAN KSO TINDAKAN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(186,'   520101','   BEBAN KSO LABORATORIUM RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(187,'   520102','   BEBAN KSO RADIOLOGI RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(188,'  5202','  BEBAN JASSA MEDIK RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(189,'   520200','   BEBAN JASA MEDIK DOKTER TINDAKAN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(190,'   520201','   BEBAN JASA MEDIK PARAMEDIS TINDAKAN RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(191,'   520202','   BEBAN JASA MEDIK DOKTER LABORATORIUM RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(192,'   520203','   BEBAN JASA MEDIK PETUGAS LABORATORIUM RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(193,'   520204','   BEBAN JASA MEDIK DOKTER RADIOLOGI RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(194,'   520205','   BEBAN JASA MEDIK PETUGAS RADIOLOGI RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(195,'   520206','   BEBAN JASA MEDIK DOKTER OPERASI RAWAT JALAN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(179,'   510207','   BEBAN JASA MEDIK PARAMEDIS OPERASI RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(181,'   510301','   BEBAN JASA SARANA RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(180,'  5103','  BEBAN LAIN-LAIN','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(176,'   510204','   BEBAN JASA MEDIK DOKTER RADIOLOGI RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(178,'   510206','   BEBAN JASA MEDIK DOKTER OPERASI RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(177,'   510205','   BEBAN JASA MEDIK PETUGAS RADIOLOGI RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(173,'   510201','   BEBAN JASA MEDIK PARAMEDIS TINDAKAN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(174,'   510202','   BEBAN JASA MEDIK DOKTER LABORATORIUM RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(175,'   510203','   BEBAN JASA MEDIK PETUGAS LABORATORIUM RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(155,'  430109','  PENDAPATAN AMBULANCE','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(156,'  430110','  PENJUALAN BARANG TOKO','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(157,'  430111','  PENDAPATAN LEBIH BAYAR KLAIM BPJS','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(158,'  430112','  PENDAPATAN ZAKAT','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(159,'  430113','  PENDAPATAN LEBIH BAYAR PIUTANG','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(160,'  430114','  PENDAPATAN JASA','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(161,'  430115','  PENGEMBALIAN UANG','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(162,'  430116','  PENDAPATAN STUDI BANDING','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(163,'  430117','  PENDAPATAN MAHASISWA PRAKTEK','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(164,'  430118','  PENDAPATAN SEWA TEMPAT/TENAN/TOKO DI RS','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(165,'5','BIAYA OPERASIONAL LANGSUNG','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(166,' 51',' BEBAN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(167,'  5101','  BEBAN KSO RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(168,'   510102','   BEBAN KSO TINDAKAN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(169,'   510106','   BEBAN KSO LABORATORIUM RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(170,'   510109','   BEBAN KSO RADIOLOGI RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(171,'  5102','  BEBAN JASA MEDIS RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(172,'   510200','   BEBAN JASA MEDIK DOKTER TINDAKAN RAWAT INAP','R','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(149,'  430103','  PENYERAHAN DARAH','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(150,'  430104','  PEMBAYARAN PIUTANG','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(151,'  430105','  POTONGAN PEMBELIAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(152,'  430106','  RETUR PEMBELIAN/PENGADAAN OBAT & BHP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(153,'  430107','  PENDAPATAN LAIN-LAIN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(154,'  430108','  PENDAPATAN HIBAH','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(148,'  430102','  PENDAPATAN APOTEK UMUM/JUAL BEBAS OBAT & BHP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(145,' 43',' OPERASIONAL LAIN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(146,'  430100','  PENDAPATAN PARKIR','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(147,'  430101','  PENDAPATAN PENGURUSAN AKTE','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(144,'  420109','  PENDAPATAN NAIK KELAS PASIEN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(143,'  420108','  PENDAPATAN OBAT RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(141,'  420106','  PENDAPATAN LABORAT RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(142,'  420107','  PENDAPATAN RADIOLOGI RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(140,'  420104','  PENDAPATAN UANG MUKA RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(138,'  420102','  PENDAPATAN TAMBAHAN BIAYA RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(139,'  420103','  PENDAPATAN TINDAKAN OPERASI RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(137,'  420101','  PENDAPATAN REGISTRASI RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(135,' 42',' PENDAPATAN RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(136,'  420100','  PENDAPATAN TINDAKAN RAWAT JALAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(134,'  410121','  PENDAPATAN LABORAT KESEHATAN LINGKUNGAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(131,'  410117','  PENDAPATAN HARIAN KAMAR RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(132,'  410119','  PENDAPATAN BIAYA SERVICE RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(133,'  410120','  UANG MUKA RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(129,'  410115','  PENDAPATAN SEWA KAMAR RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(130,'  410116','  PENDAPATAN TINDAKAN OPERASI RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(128,'  410114','  PENDAPATAN RESEP PULANG RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(126,'  410112','  PENDAPATAN REGISTRASI RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(127,'  410113','  PENDAPATAN TAMBAHAN BIAYA RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(125,'  410111','  PENDAPATAN OBAT RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(123,'  410109','  PENDAPATAN LABORAT RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(124,'  410110','  PENDAPATAN RADIOLOGI RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(122,'  410105','  PENDAPATAN TINDAKAN RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(121,' 41',' PENDAPATAN RAWAT INAP','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(120,'4','PENDAPATAN','R','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(117,'   211228','   UTANG LAB ASC','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(118,'3','EKUITAS','M','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(119,' 310000',' MODAL','M','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(111,'   211222','   UTANG JASA PJ LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(112,'   211223','   UTANG JASA PJ PENGUJIAN LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(113,'   211224','   UTANG JASA PJ VERIFIKASI LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(114,'   211225','   UTANG JASA ANALIS LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(115,'   211226','   UTANG KSO LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(116,'   211227','   UTANG JASA MENEJEMEN LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(110,'   211221','   UTANG JASA SARANA LAB KESEHATAN LINGKUNGAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(108,'   211219','   UTANG BARANG DAPUR','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(109,'   211220','   UTANG USAHA LAIN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(106,'   211217','   UTANG JASA MENEJEMEN RADIOLOGI','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(107,'   211218','   UTANG BARANG ASET/INVENTARIS','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(105,'   211216','   UTANG JASA MENEJEMEN LABORAT','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(103,'   211214','   UTANG JASA SARANA LABORAT','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(104,'   211215','   UTANG JASA SARANA RADIOLOGI','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(102,'   211213','   UTANG BARANG TOKO','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(101,'   211212','   UTANG JASA MENEJEMEN RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(100,'   211211','   UTANG JASA SARANA RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(98,'   211200','   UTANG JASA MEDIK PETUGAS RADIOLOGI RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(99,'   211210','   UTANG BARANG NON MEDIS/PENUNJANG','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(86,'   211120','   UTANG JASA MEDIK DOKTER TINDAKAN RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(87,'   211130','   UTANG JASA MEDIK PARAMEDIS TINDAKAN RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(88,'   211131','   UTANG PAJAK','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(89,'   211132','   UTANG JASA SARANA RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(90,'   211133','   UTANG JASA MENEJEMEN RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(91,'   211140','   UTANG KSO TINDAKAN RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(92,'   211150','   UTANG KSO LABORATORIUM RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(93,'   211160','   UTANG KSO RADIOLOGI RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(94,'   211161','   UTANG KSO RADIOLOGI RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(95,'   211170','   UTANG KSO TINDAKAN RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(96,'   211180','   UTANG KSO LABORATORIUM RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(97,'   211190','   UTANG JASA MEDIK DOKTER RADIOLOGI RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(83,'   211102','   BIAYA YANG MASIH HARUS DIBAYAR','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(84,'   211110','   UTANG JASA MEDIK PARAMEDIS OPERASI RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(85,'   211111','   UTANG JASA MEDIK PARAMEDIS OPERASI RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(79,'   211070','   UTANG JASA MEDIK DOKTER RADIOLOGI RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(80,'   211080','   UTANG JASA MEDIK PETUGAS RADIOLOGI RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(81,'   211100','   UTANG JASA MEDIK DOKTER OPERASI RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(82,'   211101','   UTANG JASA MEDIK DOKTER OPERASI RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(76,'   211041','   UTANG JASA MEDIK DOKTER LABORATORIUM RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(77,'   211050','   UTANG JASA MEDIK PETUGAS LABORATORIUM RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(78,'   211051','   UTANG JASA MEDIK PETUGAS LABORATORIUM RAWAT INAP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(68,'   123105','   LINEN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(69,'2','LEABILITAS','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(70,' 21',' LIABILITAS JANGKA PENDEK','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(71,'  2110','  UTANG USAHA','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(72,'   211010','   UTANG BARANG MEDIS/OBAT/BHP','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(73,'   211020','   UTANG JASA MEDIK DOKTER TINDAKAN RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(74,'   211030','   UTANG JASA MEDIK PARAMEDIS TINDAKAN RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(75,'   211040','   UTANG JASA MEDIK DOKTER LABORATORIUM RAWAT JALAN','N','K','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(57,'   117014','   PIUTANG PT KAI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(58,'   117015','   PIUTANG AXA MEDIKA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(59,'   117016','   PIUTANG PLN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(60,'   117017','   PIUTANG JASA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(61,'   117018','   PIUTANG BCA LIFE','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(62,' 12',' ASET TIDAK LANCAR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(63,'  1230','  AKTIVA TETAP','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(64,'   123101','   TANAH','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(65,'   123102','   BANGUNAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(66,'   123103','   PERALATAN MEDIS','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(67,'   123104','   PERALATAN KANTOR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(50,'   117007','   PIUTANG JAMINAN KOTA BOGOR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(51,'   117008','   PIUTANG ANGGOTA DPR YANG TIDAK AKAN DIBAYAR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(56,'   117013','   PIUTANG JASA RAHARJA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(55,'   117012','   PIUTANG DINAS SOSIAL','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(54,'   117011','   PIUTANG/PINJAMAN KE PERUSAHAAN LAIN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(53,'   117010','   PIUTANG TOKO','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(52,'   117009','   PIUTANG KARYAWAN RUMAH SAKIT','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(49,'   117006','   PIUTANG ADMEDIKA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(48,'   117005','   PIUTANG MANDIRI INHEALTH','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(46,'   117003','   PIUTANG BPJS','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(47,'   117004','   SUSPEN PIUTANG','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(45,'   117002','   PIUTANG PASIEN RAWAT INAP','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(44,'   117001','   PIUTANG PASIEN RAWAT JALAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(43,'   117000','   PIUTANG OBAT & BHP','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(42,'  1170','  PIUTANG','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(41,'   116050','   PPN KELUARAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(39,'   116030','   UANG MUKA DEVIDEN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(40,'   116040','   UANG MUKA PEMBELIAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(38,'   116020','   UANG MUKA JAMINAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(37,'   116011','   PPN MASUKAN/UANG MUKA PPN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(36,'   116010','   UANG MUKA PAJAK','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(35,'  1160','  UANG MUKA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(34,'   115071','   PERSEDIAAN BHP LAB KESEHATAN LINGKUNGAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(33,'   115070','   PERSEDIAAN BARANG DAPUR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(32,'   115060','   PERSEDIAAN BARANG TOKO','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(31,'   115050','   PERSEDIAAN BHP RADIOLOGI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(30,'   115040','   PERSEDIAAN BHP LABORATORIUM','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(28,'   115020','   PERSEDIAAN BARANG NON MEDIS','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(29,'   115030','   PERSEDIAAN BARANG MEDIS/OBAT/BHP KAMAR OPERASI ','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(27,'   115010','   PERSEDIAAN BARANG MEDIS/OBAT/BHP ','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(19,'   112080','   BANK BCA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(20,'   112090','   BANK BNI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(21,'   112091','   BANK JATENG','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(22,'   112092','   BANK PAPUA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(23,'   112093','   BANK BJB','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(24,'   112094','   BANK NAGARI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(25,'   112095','   BANK KALTENG','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(26,'  1150','  PERSEDIAAN','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(15,'   112050','   BANK RAKYAT INDONESIA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(16,'   112060','   BANK BRI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(17,'   112061','   BRI VIRTUAL ACCOUNT','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
 (0,'10.0','Syrup','B000000407','Codipront cum expect syr 60 ml','SYR','55,550','555,500','0.0','0','555,500','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.14.59'),
 (1,'10.0','Ampul','B000000424','Cedantron 8 mg inj (soho)','AMP5','60,500','605,000','0.0','0','605,000','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.14.59'),
 (2,'10.0','Pieces','B000001316','COMAFUSIN HEPAR INFUS','PCS','231,000','2,310,000','0.0','0','2,310,000','','','','','','','','','','','','','','','','','','','','','','','','','','','192.168.14.59'),
-(18,'   112070','   BANK DKI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(14,'   112040','   BANK DANAMON','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(13,'   112030','   BANK SYARIAH MANDIRI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(12,'   112020','   BANK CENTRAL ASIA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(9,'  1120','  BANK','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(10,'   112010','   BANK MANDIRI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(11,'   112011','   BANK NAGARI','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(8,'   111031','   KASBON','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(3,'   111010','   KAS KASIR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(4,'   111020','   KAS BENDAHARA','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(5,'    1110201','    KAS BENDAHARA BLUD','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(6,'    1110202','    KAS BENDAHARA PEMBANTU','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(7,'   111030','   KAS KECIL','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(0,'1','ASET','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(1,' 11',' ASET LANCAR','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(2,'  1110','  KAS','N','D','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1');
+(0,'1','Hematologi Darah Rutin ( CITO )','4','2','2','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(1,'','TOTAL','4','2','2','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1');
 /*!40000 ALTER TABLE `temporary` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -161030,7 +160644,43 @@ INSERT INTO `temporary2` VALUES
 (22,'2026/07/22/000001','000048','UMUM','2026-07-22 09:33:11','2026-07-22 10:02:02','1','L','1987-02-22','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','295,000','0','0','250,000','0','35,000','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
 (23,'2026/07/22/000004','000059','-','2026-07-22 10:23:58','2026-07-22 10:42:41','1','P','1989-06-12','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','255,000','0','0','255,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
 (24,'2026/07/22/000002','000023','UMUM','2026-07-22 09:48:31','2026-07-22 10:00:51','1','P','1992-02-22','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','33.6','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','561,776','0','0','250,000','0','0','0','0','85,000','0','225,000','0','0','0','1,776','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
-(25,'Total',':','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','11,046,434','0','0','5,946,000','','534,000','170,000','','1,220,000','','1,350,000','','','','1,856,434','','','','-30,000','1,073,800','-370,201','','','','','','','','127.0.0.1');
+(25,'Total',':','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','11,046,434','0','0','5,946,000','','534,000','170,000','','1,220,000','','1,350,000','','','','1,856,434','','','','-30,000','1,073,800','-370,201','','','','','','','','127.0.0.1'),
+(0,'2026/06/20/000003','000059','-','2026-06-20 16:04:43','2026-06-20 16:35:43','1','P','1989-06-12','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','85,000','0','0','0','0','0','0','0','85,000','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(1,'2026/03/12/000003','000054','-','2026-03-12 08:25:50','2026-03-19 10:38:15','1','L','1990-01-01','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','73,500','0','0','73,500','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(2,'2026/08/19/000001','000002','-','2026-08-19 14:06:44','2026-08-19 14:20:31','1','P','1988-02-22','RJ','Reguler','Sembuh','A01.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','488,035','0','0','250,000','0','25,000','10,000','0','85,000','0','0','0','0','0','118,035','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(3,'2026/02/25/000001','000022','BPJS','2026-02-25 10:07:55','2026-02-25 14:09:34','1','P','1957-03-11','RJ','Reguler','Sembuh','K30','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','874,001','0','0','600,000','0','36,000','10,000','0','85,000','0','0','0','0','0','143,001','0','0','0','0','526,600','-347,401','','','','','','','','127.0.0.1'),
+(4,'2026/02/25/000002','000022','-','2026-02-25 11:55:49','2026-02-25 14:38:24','1','P','1957-03-11','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','285,709','0','0','75,000','0','36,000','10,000','0','85,000','0','0','0','0','0','79,709','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(5,'2026/02/25/000003','000048','UMUM','2026-02-25 14:35:37','2026-02-25 14:41:06','1','L','1987-02-22','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','407,586','0','0','250,000','0','0','10,000','0','0','0','0','0','0','0','147,586','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(6,'2026/03/11/000001','112384','PT KERETA API','2026-03-11 09:20:30','2026-03-11 11:00:42','1','L','1989-01-24','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','777,961','0','0','100,000','0','126,000','10,000','0','185,000','0','225,000','0','0','0','131,961','0','0','0','0','524,500','-253,461','','','','','','','','127.0.0.1'),
+(7,'2026/03/11/000002','000022','BPJS','2026-03-11 09:20:23','2026-03-11 11:04:40','1','P','1957-03-11','RJ','Reguler','Sembuh','D00.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','00.01','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','260,000','0','0','250,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(8,'2026/03/12/000004','000006','-','2026-03-12 08:36:37','2026-03-19 10:37:38','1','L','2016-10-13','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','94,127','0','0','0','0','0','10,000','0','0','0','0','0','0','0','84,127','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(9,'2026/03/15/000001','000013','-','2026-03-15 15:25:16','2026-03-19 10:19:58','1','P','1990-01-01','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','73,793','0','0','0','0','0','0','0','0','0','0','0','0','0','73,793','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(10,'2026/03/26/000001','000006','BPJS','2026-03-26 14:42:24','2026-04-02 09:44:57','1','L','2016-10-13','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','36,896','0','0','0','0','0','0','0','0','0','0','0','0','0','36,896','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(11,'2026/04/13/000001','000006','UMUM','2026-04-13 10:04:20','2026-04-13 11:11:39','1','L','2016-10-13','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','00.02','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','940,429','0','0','250,000','0','115,000','10,000','0','85,000','0','225,000','0','0','0','255,429','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(12,'2026/04/15/000001','112384','PT KERETA API','2026-04-15 14:19:02','2026-04-15 14:26:42','1','L','1989-01-24','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','543,567','0','0','250,000','0','71,000','10,000','0','85,000','0','0','0','0','0','127,567','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(13,'2026/05/05/000001','000048','UMUM','2026-05-05 07:51:31','2026-05-05 08:06:42','1','L','1987-02-22','RJ','Reguler','Sembuh','A01.0','D00.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','00.80','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','307,844','0','0','100,000','0','0','10,000','0','0','0','0','0','0','0','197,844','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(14,'2026/05/08/000001','000022','BPJS','2026-05-08 08:40:07','2026-05-11 13:34:18','1','P','1957-03-11','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','570,000','0','0','250,000','0','0','10,000','0','85,000','0','225,000','0','0','0','0','0','0','0','0','547,200','-22,800','','','','','','','','127.0.0.1'),
+(15,'2026/05/12/000001','000013','-','2026-05-12 09:08:09','2026-05-12 11:08:10','1','P','1990-01-01','RJ','Reguler','Sembuh','A01.0','D00.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','00.80','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','755,000','0','0','745,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(16,'2026/05/26/000001','000006','-','2026-05-26 09:41:53','2026-05-26 10:46:47','1','L','2016-10-13','RJ','Reguler','Sembuh','A01.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','260,000','0','0','250,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(17,'2026/05/28/000001','000022','BPJS','2026-05-28 13:59:46','2026-05-28 14:17:34','1','P','1957-03-11','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','1,031,180','0','0','495,000','0','115,000','0','0','85,000','0','225,000','0','0','0','111,180','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(18,'2026/06/03/000001','000022','BPJS','2026-06-03 11:35:58','2026-06-03 15:06:17','1','P','1957-03-11','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','358,152','0','0','260,000','0','0','10,000','0','0','0','0','0','0','0','88,152','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(19,'2026/06/03/000004','000022','BPJS','2026-06-03 20:00:52','2026-06-03 21:16:42','1','P','1957-03-11','RJ','Reguler','Sembuh','I50.0','K30','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','664,730','0','0','117,500','0','0','10,000','0','85,000','0','225,000','0','0','0','227,230','0','0','0','0','521,100','-143,630','','','','','','','','127.0.0.1'),
+(20,'2026/06/10/000001','000013','UMUM','2026-06-10 19:40:43','2026-06-10 19:51:01','1','P','1990-01-01','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','751,591','0','0','625,000','0','0','10,000','0','85,000','0','0','0','0','0','31,591','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(21,'2026/07/09/000001','000055','UMUM','2026-07-09 12:12:59','2026-07-09 14:24:03','1','L','1987-08-25','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','00.02','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','618,592','0','0','500,000','0','0','0','0','0','0','0','0','0','0','118,592','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(22,'2026/07/22/000003','000055','UMUM','2026-07-22 10:15:53','2026-07-22 10:18:56','1','L','1987-08-25','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','165,000','0','0','0','0','0','10,000','0','185,000','0','0','0','0','0','0','0','0','0','-30,000','0','0','','','','','','','','127.0.0.1'),
+(23,'2026/07/22/000001','000048','UMUM','2026-07-22 09:33:11','2026-07-22 10:02:02','1','L','1987-02-22','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','295,000','0','0','250,000','0','35,000','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(24,'2026/07/22/000004','000059','-','2026-07-22 10:23:58','2026-07-22 10:42:41','1','P','1989-06-12','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','255,000','0','0','255,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(25,'2026/07/22/000002','000023','UMUM','2026-07-22 09:48:31','2026-07-22 10:00:51','1','P','1992-02-22','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','33.6','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','561,776','0','0','250,000','0','0','0','0','85,000','0','225,000','0','0','0','1,776','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(26,'2026/08/06/000001','000022','BPJS','2026-08-06 10:50:05','2026-08-06 16:19:29','1','P','1957-03-11','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','639,577','0','0','250,000','0','30,000','0','0','270,000','0','0','0','0','0','89,577','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(27,'2026/08/25/000001','000061','UMUM','2026-08-25 13:51:25','2026-08-25 14:49:40','1','P','2020-11-05','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','90,000','0','0','90,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(28,'2026/09/03/000001','000055','UMUM','2026-09-03 10:21:25','2026-09-03 11:30:56','1','L','1987-08-25','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','660,375','0','0','0','0','35,000','10,000','0','615,375','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(29,'2026/09/09/000001','000055','UMUM','2026-09-09 09:24:57','2026-09-09 11:17:39','1','L','1987-08-25','RJ','Reguler','Sembuh','A01.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','347,500','0','0','337,500','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(30,'2026/09/15/000001','000061','UMUM','2026-09-15 06:53:01','2026-09-15 06:56:49','1','P','2020-11-05','RJ','Reguler','Sembuh','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','100,000','0','0','90,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(31,'2026/09/16/000002','000061','UMUM','2026-09-16 09:35:48','2026-09-16 09:57:19','1','P','2020-11-05','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','558,019','0','0','0','0','135,000','10,000','0','85,000','0','225,000','0','0','0','103,019','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(32,'2026/09/21/000002','000061','UMUM','2026-09-21 10:58:38','2026-09-21 14:34:53','1','P','2020-11-05','RJ','Reguler','Sembuh','I50.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','760,555','0','0','250,000','0','0','10,000','0','185,000','0','225,000','0','0','0','90,555','0','0','0','0','525,000','-235,555','','','','','','','','127.0.0.1'),
+(33,'2026/10/05/000001','000059','BPJS','2026-10-05 11:14:02','2026-10-15 10:36:09','1','P','1989-06-12','RJ','Reguler','Sembuh','A01.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','99.32','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','260,000','0','0','250,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(34,'2026/10/15/000001','000051','UMUM','2026-10-15 10:21:45','2026-10-15 10:48:37','1','L','1985-01-20','RJ','Reguler','Meninggal','A91.1','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',' ','260,000','0','0','250,000','0','0','10,000','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','','','','','','127.0.0.1'),
+(35,'Total',':','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','15,210,495','0','0','7,713,500','','759,000','250,000','','2,460,375','','1,800,000','','','','2,257,620','','','','-30,000','2,644,400','-1,002,847','','','','','','','','127.0.0.1');
 /*!40000 ALTER TABLE `temporary2` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -161116,25 +160766,31 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temporary_bayar_ralan` WRITE;
 /*!40000 ALTER TABLE `temporary_bayar_ralan` DISABLE KEYS */;
 INSERT INTO `temporary_bayar_ralan` VALUES
-(20,'SISA PIUTANG',':','','','','','350,000','Tagihan','Admin Utama','','','','','','','',''),
-(21,'-  PIUTANG AXA',':','','','','','350,000','Tagihan','Admin Utama','','','','','','','',''),
-(19,'-  Bayar Cash',':','','','','','150,000','Tagihan','Admin Utama','','','','','','','',''),
-(17,'TAGIHAN + PPN',':','','','','','500,000','Tagihan','Admin Utama','','','','','','','',''),
-(18,'EKSES',':','','','','','150,000','Tagihan','Admin Utama','','','','','','','',''),
-(10,'','Pemeriksaan Poli Spesialis',':','250,000','2.0','0','500,000','Ralan Dokter','Admin Utama','','','','','','','',''),
-(11,'Obat & BHP',':','','','','','','Obat','Admin Utama','','','','','','','',''),
-(15,'TOTAL TAGIHAN',':','','','','','500,000','Tagihan','Admin Utama','','','','','','','',''),
-(16,'PPN',':','','','','','0','Tagihan','Admin Utama','','','','','','','',''),
+(26,'SISA PIUTANG',':','','','','','954,776','Tagihan','Admin Utama','','','','','','','',''),
+(27,'-  PIUTANG BPJS',':','','','','','954,776','Tagihan','Admin Utama','','','','','','','',''),
+(25,'EKSES',':','','','','','0','Tagihan','Admin Utama','','','','','','','',''),
+(24,'TAGIHAN + PPN',':','','','','','954,776','Tagihan','Admin Utama','','','','','','','',''),
+(23,'PPN',':','','','','','0','Tagihan','Admin Utama','','','','','','','',''),
+(22,'TOTAL TAGIHAN',':','','','','','954,776','Tagihan','Admin Utama','','','','','','','',''),
+(17,'','PPN Obat',':','176','1','0','176','Obat','Admin Utama','','','','','','','',''),
+(18,'','1,776','','','','','','TtlObat','Admin Utama','','','','','','','',''),
+(16,'','Acetensa tab (OBAT ORAL)',':','160','10.0','0','1,600','Obat','Admin Utama','','','','','','','',''),
+(15,'Obat & BHP',':','','','','','','Obat','Admin Utama','','','','','','','',''),
+(14,'','THORAX AP/PA',':','225,000','1.0','0','225,000','Radiologi','Admin Utama','','','','','','','',''),
+(13,'','Hematologi Darah Rutin',':','85,000','1.0','7,000','92,000','Laborat','Admin Utama','','','','','','','',''),
+(12,'','Asuhan Keperawatan',':','90,000','1.0','0','90,000','Ralan Paramedis','Admin Utama','','','','','','','',''),
+(11,'','aff Hecting 1 - 5 jahitan',':','36,000','1.0','0','36,000','Ralan Paramedis','Admin Utama','','','','','','','',''),
 (9,'Tindakan',':','','','','','','Ralan Dokter','Admin Utama','','','','','','','',''),
-(8,'Registrasi',':','','','','','0','Registrasi','Admin Utama','','','','','','','',''),
+(10,'','Pemeriksaan Poli Spesialis',':','250,000','2.0','0','500,000','Ralan Dokter','Admin Utama','','','','','','','',''),
+(8,'Registrasi',':','','','','','10,000','Registrasi','Admin Utama','','','','','','','',''),
 (7,'','dr. Hilyatul Nadia','','','','','','Dokter','Admin Utama','','','','','','','',''),
 (6,'Dokter ',':','','','','','','-','Admin Utama','','','','','','','',''),
 (5,'Alamat Pasien',': DUSUN JERAMI, SUTRA, SUKADANA, KABUPATEN KAYONG UTARA','','','','','','-','Admin Utama','','','','','','','',''),
 (4,'Nama Pasien',': YOHANA FARIDA (37Th)','','','','','','-','Admin Utama','','','','','','','',''),
 (3,'No.RM',': 000059','','','','','','-','Admin Utama','','','','','','','',''),
-(2,'Tanggal & Jam',': 2026-09-18 16:08:04','','','','','','-','Admin Utama','','','','','','','',''),
-(1,'Unit/Instansi',': UMUM','','','','','','-','Admin Utama','','','','','','','',''),
-(0,'No.Nota',': 2026/09/18/RJ0001','','','','','','-','Admin Utama','','','','','','','','');
+(2,'Tanggal & Jam',': 2026-10-22 11:01:14','','','','','','-','Admin Utama','','','','','','','',''),
+(1,'Unit/Instansi',': Poliklinik Penyakit Dalam','','','','','','-','Admin Utama','','','','','','','',''),
+(0,'No.Nota',': 2026/10/22/RJ0001','','','','','','-','Admin Utama','','','','','','','','');
 /*!40000 ALTER TABLE `temporary_bayar_ralan` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -161336,7 +160992,7 @@ CREATE TABLE `temporary_gizi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=702 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=719 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161347,23 +161003,23 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temporary_gizi` WRITE;
 /*!40000 ALTER TABLE `temporary_gizi` DISABLE KEYS */;
 INSERT INTO `temporary_gizi` VALUES
-(685,'-','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(686,'HCU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(687,'HEMODIALISA','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(688,'IGD','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(689,'IGD PHONEX','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(690,'Kamar ICU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(691,'Kamar Kelas I','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(692,'Kamar Kelas II','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(693,'Kamar Kelas III','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','0','0','0','0','0','0','0','0','0','0','0','0','2','','','',''),
-(694,'Kamar Kelas VIP','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(695,'Kamar Kelas VVIP','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(696,'Kamar NICU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(697,'Kamar Operasi','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(698,'LABORAT','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(699,'RUANG ANGGREK','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(700,'RUANG DAHLIA','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
-(701,'Total : ','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','0','0','0','0','0','0','0','0','0','0','0','0','2','','','','');
+(702,'-','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(703,'HCU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(704,'HEMODIALISA','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(705,'IGD','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(706,'IGD PHONEX','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(707,'Kamar ICU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(708,'Kamar Kelas I','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','0','0','0','0','0','0','0','0','0','0','2','','','',''),
+(709,'Kamar Kelas II','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(710,'Kamar Kelas III','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','0','0','0','0','0','0','0','0','0','2','','','',''),
+(711,'Kamar Kelas VIP','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(712,'Kamar Kelas VVIP','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(713,'Kamar NICU','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(714,'Kamar Operasi','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(715,'LABORAT','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(716,'RUANG ANGGREK','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(717,'RUANG DAHLIA','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','','','',''),
+(718,'Total : ','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','2','0','0','0','0','0','0','0','0','0','4','','','','');
 /*!40000 ALTER TABLE `temporary_gizi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -161497,21 +161153,21 @@ LOCK TABLES `temporary_lab` WRITE;
 /*!40000 ALTER TABLE `temporary_lab` DISABLE KEYS */;
 INSERT INTO `temporary_lab` VALUES
 (0,'Hematologi Darah Rutin','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1,'   Hemoglobin','','g/dl','13.5-18.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(2,'   Rhesus','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(3,'   Golongan Darah','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(4,'   LED','','mm/jam','< 10','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(5,'   MCHC','12121','%','32.0-37.0','h','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(6,'   MCH','21212','pg','27.0-31.0','l','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(7,'   MCV','1212','fL','82.0-92.0','t','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(8,'   Erytrosit','2212','juta','4.5-5.5','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(9,'   Trombosit','212','/uL','150.000-440.000','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(10,'   Hematokrit','1','%','40.0-48.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(11,'   Gran%','2','%','50-70','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(12,'   Mid%','12','%','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(13,'   Lymph%','1','%','20-40','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(14,'   Diffcount','21','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(15,'   Leukosit','2','/mm3','5.000-10.000','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1,'   Hemoglobin','asas','g/dl','12-16','h','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(2,'   Rhesus','a','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(3,'   Golongan Darah','u','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(4,'   LED','a','mm/jam','< 20','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(5,'   MCHC','sa','%','32.0-37.0','l','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(6,'   MCH','sa','pg','27.0-31.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(7,'   MCV','s','fL','82.0-92.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(8,'   Erytrosit','as','juta','4.0-5.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(9,'   Trombosit','a','/uL','150.000-440.000','t','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(10,'   Hematokrit','sa','%','37.0-43.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(11,'   Gran%','s','%','50-70','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(12,'   Mid%','as','%','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(13,'   Lymph%','as','%','20-40','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(14,'   Diffcount','qwqw','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(15,'   Leukosit','','/mm3','5.000-10.000','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
 (16,'   SDT/Malaria','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
 /*!40000 ALTER TABLE `temporary_lab` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -161565,7 +161221,7 @@ CREATE TABLE `temporary_lama_pelayanan_radiologi` (
   `temp36` varchar(100) NOT NULL,
   `temp37` varchar(100) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM AUTO_INCREMENT=1166 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1262 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161576,13 +161232,43 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temporary_lama_pelayanan_radiologi` WRITE;
 /*!40000 ALTER TABLE `temporary_lama_pelayanan_radiologi` DISABLE KEYS */;
 INSERT INTO `temporary_lama_pelayanan_radiologi` VALUES
-(1159,'1','112384','RIDWAN HALIM','dr. Hilyatul Nadia','PR20260902001','2026-09-02 10:18:19','2026-09-02 10:18:40','2026-09-02 10:18:55','0.35','0.25','0.60','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1160,'','','Rata-rata (Menit)',': ','','','','','0.3','0.2','0.6','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1161,'','','0 - 15 Menit',': ','','','','','1','1','1','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1162,'','','>15 - <=30 Menit',': ','','','','','0','0','0','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1163,'','','>30 - <=60 Menit',': ','','','','','0','0','0','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1164,'','','>60 - <=120 Menit',': ','','','','','0','0','0','','','','','','','','','','','','','','','','','','','','','','','','','',''),
-(1165,'','','>120 Menit',': ','','','','','0','0','0','','','','','','','','','','','','','','','','','','','','','','','','','','');
+(1225,'1','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202602250001','2026-02-25 10:23:25','2026-02-25 11:39:31','2026-02-25 11:53:03','76.10','13.53','89.63','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1226,'2','112384','RIDWAN HALIM','dr. Hilyatul Nadia','PK202603110001','2026-03-11 09:28:10','2026-03-11 09:44:40','2026-03-11 09:46:03','16.50','1.38','17.88','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1227,'3','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','PK202603120001','2026-03-12 14:27:22','2026-03-12 14:36:46','2026-03-12 14:50:46','9.40','14.00','23.40','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1228,'4','000013','PARAMITA RAMADANI','dr. Hilyatul Nadia','PK202604070001','2026-04-07 10:49:06','2026-04-07 10:55:25','2026-04-07 10:56:22','6.32','0.95','7.27','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1229,'5','000013','PARAMITA RAMADANI','dr. Hilyatul Nadia','PK202604100001','2026-04-10 10:09:41','2026-04-10 10:35:33','2026-04-10 10:37:28','25.87','1.92','27.78','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1230,'6','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','PK202604130001','2026-04-13 10:41:08','2026-04-13 11:01:22','2026-04-13 11:03:08','20.23','1.77','22.00','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1231,'7','112384','RIDWAN HALIM','dr. Hilyatul Nadia','PK202604150001','2026-04-15 14:20:57','2026-04-15 14:25:25','2026-04-15 14:26:04','4.47','0.65','5.12','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1232,'8','000002','DEWI EKAWATI','dr. Hilyatul Nadia','PK202604210001','2026-04-21 10:40:52','2026-04-21 11:43:23','2026-04-21 11:45:13','62.52','1.83','64.35','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1233,'9','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202605080001','2026-05-08 08:40:28','2026-05-18 15:51:08','2026-05-25 09:56:32','430.67','-354.60','76.07','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1234,'10','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202605280001','2026-05-28 14:09:25','2026-05-28 14:14:35','2026-05-28 14:15:47','5.17','1.20','6.37','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1235,'11','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202606030001','2026-06-03 20:50:10','2026-06-03 21:04:02','2026-06-03 21:05:27','13.87','1.42','15.28','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1236,'12','000013','PARAMITA RAMADANI','dr. Hilyatul Nadia','PK202606100001','2026-06-10 19:46:48','2026-06-10 19:49:46','2026-06-10 19:50:23','2.97','0.62','3.58','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1237,'13','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','PK202606190001','2026-06-19 10:09:52','2026-06-19 14:17:46','2026-06-19 14:18:09','247.90','0.38','248.28','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1238,'14','000059','YOHANA FARIDA','-','PK202606200003','2026-06-20 16:06:21','2026-06-20 16:25:25','2026-06-20 16:10:01','19.07','-15.40','3.67','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1239,'15','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','PK202606290001','2026-06-29 09:49:56','2026-06-29 10:22:03','2026-06-29 10:24:17','32.12','2.23','34.35','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1240,'16','000023','RAHMA NIA','dr. Hilyatul Nadia','PK202607110001','2026-07-11 09:08:02','2026-07-11 09:14:20','2026-07-11 09:15:28','6.30','1.13','7.43','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1241,'17','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202607210001','2026-07-21 10:38:11','2026-07-21 10:53:08','2026-07-21 10:55:18','14.95','2.17','17.12','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1242,'18','000023','RAHMA NIA','dr. Hilyatul Nadia','PK202607210003','2026-07-21 13:39:52','2026-07-21 13:41:58','2026-07-21 13:44:18','2.10','2.33','4.43','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1243,'19','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202607210004','2026-07-21 14:09:32','2026-07-21 14:10:12','2026-07-21 14:10:30','0.67','0.30','0.97','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1244,'20','000023','RAHMA NIA','dr. Hilyatul Nadia','PK202607220001','2026-07-22 09:48:47','2026-07-22 09:58:29','2026-07-22 09:59:00','9.70','0.52','10.22','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1245,'21','000055','RAHMAT PAMBUDI','dr. Hilyatul Nadia','PK202607220002','2026-07-22 10:16:25','2026-07-22 10:17:16','2026-07-22 10:17:27','0.85','0.18','1.03','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1246,'22','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202608060001','2026-08-06 15:17:18','2026-08-06 15:18:14','2026-08-06 15:22:30','0.93','4.27','5.20','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1247,'23','000022','RUDI SANTOSO','dr. Hilyatul Nadia','PK202608060003','2026-08-06 16:11:08','2026-08-06 16:17:16','2026-08-06 16:17:56','6.13','0.67','6.80','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1248,'24','000002','DEWI EKAWATI','dr. Qotrunnada','PK202608190001','2026-08-19 14:14:31','2026-08-19 14:19:09','2026-08-19 14:20:11','4.63','1.03','5.67','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1249,'25','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','PK202609010002','2026-09-01 05:12:59','2026-09-01 05:15:50','2026-09-01 05:32:20','2.85','16.50','19.35','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1250,'26','000061','KHANZA AZZAHWA KHOIRUNNISA ','dr. Hilyatul Nadia','PK202609160001','2026-09-16 09:47:42','2026-09-16 09:54:03','2026-09-16 09:55:20','6.35','1.28','7.63','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1251,'27','000054','JAROT KUMBORO','dr. Hilyatul Nadia','PK202609170001','2026-09-17 10:21:34','2026-09-17 10:21:43','2026-09-17 10:22:42','0.15','0.98','1.13','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1252,'28','000062','TEST MCU','dr. Hilyatul Nadia','PK202609190002','2026-09-19 11:14:54','2026-09-19 11:15:10','2026-09-19 11:15:31','0.27','0.35','0.62','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1253,'29','000061','KHANZA AZZAHWA KHOIRUNNISA ','dr. Hilyatul Nadia','PK202609210001','2026-09-21 11:29:17','2026-09-21 13:56:43','2026-09-21 14:00:17','147.43','3.57','151.00','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1254,'30','000051','ADI KAZAMA','dr. Hilyatul Nadia','PK202610150001','2026-10-15 10:22:02','2026-10-15 14:02:23','2026-10-15 14:03:12','220.35','0.82','221.17','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1255,'31','000059','YOHANA FARIDA','dr. Hilyatul Nadia','PK202610220001','2026-10-22 10:20:46','2026-10-22 10:55:41','2026-10-22 10:57:10','34.92','1.48','36.40','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1256,'','','Rata-rata (Menit)',': ','','','','','46.2','-9.4','36.8','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1257,'','','0 - 15 Menit',': ','','','','','19','30','16','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1258,'','','>15 - <=30 Menit',': ','','','','','4','1','7','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1259,'','','>30 - <=60 Menit',': ','','','','','2','0','2','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1260,'','','>60 - <=120 Menit',': ','','','','','2','0','3','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(1261,'','','>120 Menit',': ','','','','','4','0','3','','','','','','','','','','','','','','','','','','','','','','','','','','');
 /*!40000 ALTER TABLE `temporary_lama_pelayanan_radiologi` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -161710,42 +161396,23 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temporary_permintaan_lab` WRITE;
 /*!40000 ALTER TABLE `temporary_permintaan_lab` DISABLE KEYS */;
 INSERT INTO `temporary_permintaan_lab` VALUES
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Hematokrit','%','LD : 40.0-48.0, LA : 40.0-48.0, PD : 37.0-43.0 PA : 37.0-43.0','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','7','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','BT','menit','LD : 1-3, LA : 1-3, PD : 1-3 PA : 1-3','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','gran%','%','LD : 50-70, LA : 50-70, PD : 50-70 PA : 50-70','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','8','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','CT','menit','LD : < 10, LA : < 10, PD : < 10 PA : < 10','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','mid%','%','','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','9','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','LED','mm/jam','LD : < 10, LA : < 10, PD : < 20 PA : < 20','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','lymph %','%','LD : 20-40, LA : 20-40, PD : 20-40 PA : 20-40','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','10','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','MCHC','%','LD : 32.0-37.0, LA : 32.0-37.0, PD : 32.0-37.0 PA : 32.0-37.0','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','1','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Diffcount','','','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','11','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','MCH','pg','LD : 27.0-31.0, LA : 27.0-31.0, PD : 27.0-31.0 PA : 27.0-31.0','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','3','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','SDT/Malaria','','LD : negatif, LA : negatif, PD : negatif PA : negatif','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Leukosit','/mm3','LD : 5.000-10.000, LA : 5.000-10.000, PD : 5.000-10.000 PA : 5.000-10.000','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','12','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','MCV','fL','LD : 82.0-92.0, LA : 82.0-92.0, PD : 82.0-92.0 PA : 82.0-92.0','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','5','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Rhesus','','','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Hemoglobin','g/dl','LD : 13.5-18.0, LA : 13.5-18.0, PD : 12-16 PA : 10.0 -16.0','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Eritrosit','juta','LD : 4.0-5.0, LA : 4.0-5.0, PD : 4.5-5.5 PA : 4.5-5.5','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','4','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Trombosit','/uL','LD : 150.000-450.000, LA : 150.000-450.000, PD : 150.000-450.000 PA : 150.000-450.000','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','6','','','','','','','','','','','','','','','',''),
-(0,'PK202609010002','2026/03/14/000001','000006 Sakha Hamizan Aqila','Hematologi Darah Rutin','Golongan Darah','','','2026-09-01','05:12:59','2026-09-01','05:15:50','2026-09-01','05:32:20','D0000004','dr. Hilyatul Nadia','K1.01 Kamar Kelas I','-','-','BPJ','BPJS','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Hemoglobin','g/dl','LD : 13.5-18.0, LA : 13.5-18.0, PD : 12-16 PA : 10.0 -16.0','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Eritrosit','juta','LD : 4.0-5.0, LA : 4.0-5.0, PD : 4.5-5.5 PA : 4.5-5.5','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','4','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Rhesus','','','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Trombosit','/uL','LD : 150.000-450.000, LA : 150.000-450.000, PD : 150.000-450.000 PA : 150.000-450.000','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','6','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Golongan Darah','','','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Hematokrit','%','LD : 40.0-48.0, LA : 40.0-48.0, PD : 37.0-43.0 PA : 37.0-43.0','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','7','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','BT','menit','LD : 1-3, LA : 1-3, PD : 1-3 PA : 1-3','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','gran%','%','LD : 50-70, LA : 50-70, PD : 50-70 PA : 50-70','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','8','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','CT','menit','LD : < 10, LA : < 10, PD : < 10 PA : < 10','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','mid%','%','','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','9','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','LED','mm/jam','LD : < 10, LA : < 10, PD : < 20 PA : < 20','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','lymph %','%','LD : 20-40, LA : 20-40, PD : 20-40 PA : 20-40','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','10','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','MCHC','%','LD : 32.0-37.0, LA : 32.0-37.0, PD : 32.0-37.0 PA : 32.0-37.0','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','1','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Diffcount','','','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','11','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','MCH','pg','LD : 27.0-31.0, LA : 27.0-31.0, PD : 27.0-31.0 PA : 27.0-31.0','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','3','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','Leukosit','/mm3','LD : 5.000-10.000, LA : 5.000-10.000, PD : 5.000-10.000 PA : 5.000-10.000','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','12','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','MCV','fL','LD : 82.0-92.0, LA : 82.0-92.0, PD : 82.0-92.0 PA : 82.0-92.0','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','5','','','','','','','','','','','','','','','',''),
-(0,'PK202609010001','2026/07/28/000001','000051 ADI KAZAMA','Hematologi Darah Rutin','SDT/Malaria','','LD : negatif, LA : negatif, PD : negatif PA : negatif','2026-09-01','05:11:35','','','','','D0000004','dr. Hilyatul Nadia','DAH.K1.002 RUANG DAHLIA','-','-','A09','UMUM','','','','','','','','','','','','','','','','','');
+(0,'Hematologi Darah Rutin','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Hemoglobin','g/dl','LD : 13.5-18.0, LA : 13.5-18.0, PD : 12-16 PA : 10.0 -16.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Rhesus','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Golongan Darah','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  LED','mm/jam','LD : < 10, LA : < 10, PD : < 20 PA : < 20','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  MCHC','%','LD : 32.0-37.0, LA : 32.0-37.0, PD : 32.0-37.0 PA : 32.0-37.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  MCH','pg','LD : 27.0-31.0, LA : 27.0-31.0, PD : 27.0-31.0 PA : 27.0-31.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  MCV','fL','LD : 82.0-92.0, LA : 82.0-92.0, PD : 82.0-92.0 PA : 82.0-92.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Erytrosit','juta','LD : 4.5-5.5, LA : 4.5-5.5, PD : 4.0-5.0 PA : 4.0-5.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Trombosit','/uL','LD : 150.000-440.000, LA : 150.000-440.000, PD : 150.000-440.000 PA : 150.000-440.000','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Hematokrit','%','LD : 40.0-48.0, LA : 40.0-48.0, PD : 37.0-43.0 PA : 37.0-43.0','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Gran%','%','LD : 50-70, LA : 50-70, PD : 50-70 PA : 50-70','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Mid%','%','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Lymph%','%','LD : 20-40, LA : 20-50, PD : 20-40 PA : 20-40','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Diffcount','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  Leukosit','/mm3','LD : 5.000-10.000, LA : 5.000-10.000, PD : 5.000-10.000 PA : 5.000-10.000','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''),
+(0,'  SDT/Malaria','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','');
 /*!40000 ALTER TABLE `temporary_permintaan_lab` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -162030,9 +161697,33 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temporary_resep` WRITE;
 /*!40000 ALTER TABLE `temporary_resep` DISABLE KEYS */;
 INSERT INTO `temporary_resep` VALUES
-(2,'R1 (Acrios 50 mg tab 11,Acetensa tab 11)','2 X 1','16','Puyer','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(1,'Ibuprofen 400 mg','2x1','10','Tablet','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
-(0,'Amlodipine 10 mg','2 X 1','10','Tablet','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1');
+(26,'','','>60 Menit',': ','','','','','1','0','2','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(24,'','','>15 - <=30 Menit',': ','','','','','2','1','2','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(25,'','','>30 - <=60 Menit',': ','','','','','2','1','3','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(22,'','','Rata-rata (Menit)',': ','','','','','18','-5.7','12.3','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(23,'','','0 - 15 Menit',': ','','','','','17','20','15','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(21,'22','000059','YOHANA FARIDA','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-10-22 10:20:46','2026-10-22 10:51:57','2026-10-22 10:54:17','31.18','2.33','33.52','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(20,'21','000061','KHANZA AZZAHWA KHOIRUNNISA ','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-09-21 11:28:33','2026-09-21 11:33:53','2026-09-21 11:36:02','5.33','2.15','7.48','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(19,'20','000061','KHANZA AZZAHWA KHOIRUNNISA ','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-09-16 09:47:22','2026-09-16 09:51:37','2026-09-16 09:53:13','4.25','1.60','5.85','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(18,'19','000002','DEWI EKAWATI','dr. Qotrunnada','Poliklinik Penyakit Dalam','2026-08-19 14:14:04','2026-08-19 14:17:20','2026-08-19 14:18:21','3.27','1.02','4.28','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(17,'18','000022','RUDI SANTOSO','dr. Hilyatul Nadia','MCU','2026-08-06 11:59:44','2026-08-06 15:12:35','2026-08-06 15:13:58','192.85','1.38','194.23','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(16,'17','000022','RUDI SANTOSO','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-07-21 15:51:47','2026-07-21 15:55:09','2026-07-21 15:57:33','3.37','2.40','5.77','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(15,'16','000022','RUDI SANTOSO','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-07-21 10:38:11','2026-07-21 10:43:12','2026-07-21 10:44:26','5.02','1.23','6.25','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(14,'15','000023','RAHMA NIA','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-07-11 09:05:14','2026-07-11 09:10:19','2026-07-11 09:11:40','5.08','1.35','6.43','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(13,'14','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','IGD','2026-06-29 09:55:20','2026-06-29 10:15:07','2026-06-29 10:18:10','19.78','3.05','22.83','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(12,'13','000022','RUDI SANTOSO','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-06-03 20:49:46','2026-06-03 20:52:33','2026-06-03 20:54:53','2.78','2.33','5.12','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(11,'12','000022','RUDI SANTOSO','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-06-03 14:07:13','2026-06-03 14:20:24','2026-06-03 14:38:04','13.18','17.67','30.85','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(10,'11','000022','RUDI SANTOSO','dr. Hilyatul Nadia','MCU','2026-05-28 14:09:07','2026-05-28 14:11:35','2026-05-28 14:13:40','2.47','2.08','4.55','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(9,'10','000022','RUDI SANTOSO','dr. Hilyatul Nadia','INT Poli Penyakit Dalam','2026-04-22 19:59:54','2026-04-22 20:00:04','2026-05-03 16:00:17','0.17','-239.78','-239.62','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(8,'9','000022','RUDI SANTOSO','dr. Hilyatul Nadia','INT Poli Penyakit Dalam','2026-04-22 19:02:52','2026-04-22 19:03:06','2026-04-22 19:04:04','0.23','0.97','1.20','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(7,'8','000022','RUDI SANTOSO','dr. Hilyatul Nadia','INT Poli Penyakit Dalam','2026-04-22 10:57:47','2026-04-22 10:58:57','2026-04-22 11:04:31','1.17','5.57','6.73','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(6,'7','000002','DEWI EKAWATI','dr. Hilyatul Nadia','IGD','2026-04-21 10:19:43','2026-04-21 11:18:19','2026-04-21 11:20:08','58.60','1.82','60.42','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(5,'6','112384','RIDWAN HALIM','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-04-15 14:20:46','2026-04-15 14:22:54','2026-04-15 14:24:15','2.13','1.35','3.48','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(4,'5','000006','Sakha Hamizan Aqila','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-04-13 10:39:36','2026-04-13 10:50:37','2026-04-13 10:53:15','11.02','2.63','13.65','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(3,'4','000013','PARAMITA RAMADANI','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-04-10 10:08:27','2026-04-10 10:30:20','2026-04-10 10:33:35','21.88','3.25','25.13','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(2,'3','000013','PARAMITA RAMADANI','dr. Hilyatul Nadia','INT Poli Penyakit Dalam','2026-04-07 10:48:37','2026-04-07 10:52:39','2026-04-07 10:54:14','4.03','1.58','5.62','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(1,'2','000022','RUDI SANTOSO','dr. Qotrunnada','INT Poli Penyakit Dalam','2026-03-12 14:28:33','2026-03-12 14:29:00','2026-03-12 15:25:06','0.45','56.10','56.55','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1'),
+(0,'1','112384','RIDWAN HALIM','dr. Hilyatul Nadia','Poliklinik Penyakit Dalam','2026-03-11 09:27:13','2026-03-11 09:35:27','2026-03-11 09:38:04','8.23','2.62','10.85','','','','','','','','','','','','','','','','','','','','','','','','','','127.0.0.1');
 /*!40000 ALTER TABLE `temporary_resep` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -162394,7 +162085,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `temppanggilnorawat` WRITE;
 /*!40000 ALTER TABLE `temppanggilnorawat` DISABLE KEYS */;
 INSERT INTO `temppanggilnorawat` VALUES
-('2026/09/19/000001');
+('2026/10/22/000001');
 /*!40000 ALTER TABLE `temppanggilnorawat` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -162846,6 +162537,8 @@ CREATE TABLE `toko_detail_piutang` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `toko_detail_piutang` WRITE;
 /*!40000 ALTER TABLE `toko_detail_piutang` DISABLE KEYS */;
+INSERT INTO `toko_detail_piutang` VALUES
+('TP2026102600001','BT000001','BAL',140000,70000,10,1400000,0,0,1400000);
 /*!40000 ALTER TABLE `toko_detail_piutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -163067,6 +162760,8 @@ CREATE TABLE `toko_riwayat_barang` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `toko_riwayat_barang` WRITE;
 /*!40000 ALTER TABLE `toko_riwayat_barang` DISABLE KEYS */;
+INSERT INTO `toko_riwayat_barang` VALUES
+('BT000001',26,0,10,16,'Piutang','2026-10-26','13:35:34','Admin Utama','Simpan');
 /*!40000 ALTER TABLE `toko_riwayat_barang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -163147,7 +162842,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `tokobarang` WRITE;
 /*!40000 ALTER TABLE `tokobarang` DISABLE KEYS */;
 INSERT INTO `tokobarang` VALUES
-('BT000001','Beras Merah Holistic','BAL','J01',26,70000,100000,120000,130000,140000,'1'),
+('BT000001','Beras Merah Holistic','BAL','J01',16,70000,100000,120000,130000,140000,'1'),
 ('BT000002','MADU HOLISTIC','BTL','J02',29,90000,90000,120000,120000,120000,'1');
 /*!40000 ALTER TABLE `tokobarang` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -163424,6 +163119,8 @@ CREATE TABLE `tokopiutang` (
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `tokopiutang` WRITE;
 /*!40000 ALTER TABLE `tokopiutang` DISABLE KEYS */;
+INSERT INTO `tokopiutang` VALUES
+('TP2026102600001','2026-10-26','120000134','M0000001','JUMINTEN','tes','Retail',0,0,1400000,'2026-10-26');
 /*!40000 ALTER TABLE `tokopiutang` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -165387,6 +165084,11 @@ CREATE TABLE `user` (
   `ringkasan_beban_hutang_lain` enum('true','false') DEFAULT NULL,
   `set_resep_per_cara_bayar` enum('true','false') DEFAULT NULL,
   `skrining_tolac` enum('true','false') DEFAULT NULL,
+  `admisi_skoring_tolac` enum('true','false') DEFAULT NULL,
+  `monitoring_tolac` enum('true','false') DEFAULT NULL,
+  `hasil_persalinan_tolac` enum('true','false') DEFAULT NULL,
+  `laporan_reaksi_transfusi` enum('true','false') DEFAULT NULL,
+  `penilaian_grace_scor` enum('true','false') DEFAULT NULL,
   `manajemen` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_episodeofcare` enum('true','false') DEFAULT NULL,
   `satu_sehat_kirim_nutritionorder` enum('true','false') DEFAULT NULL,
@@ -165404,8 +165106,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-('m…oÕÎØTºÿ2B¢dK“',')k¡ ÛK-4MCÛ-','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true',NULL,NULL,NULL,'false','false'),
-('$ó5ìžHÉïËvg‘ÑInc','	.Ò½,iA–RÂøu™','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true',NULL,NULL,NULL,'false','false');
+('$ó5ìžHÉïËvg‘ÑInc','	.Ò½,iA–RÂøu™','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true','true',NULL,NULL,NULL,'false','false');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -166645,4 +166346,4 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-10-28 17:05:44
+-- Dump completed on 2026-10-28 21:27:13
