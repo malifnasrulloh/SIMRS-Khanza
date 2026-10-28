@@ -19,7 +19,7 @@ for f in *.sql; do
 done
 
 echo "Extracting structure..."
-mariadb-dump -u$USER --no-data $DB > "$OUT"
+mariadb-dump -u$USER $DB > "$OUT"
 
 mariadb -u$USER -e "DROP DATABASE $DB;"
 
