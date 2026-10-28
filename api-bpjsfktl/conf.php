@@ -325,13 +325,85 @@
         return $payload;
     }
     
+    function getClientIP(){
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return trim($ips[0]);
+        }
+        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+    }
+
+    function checkAuthLockout($ip){
+        $cleanIp = preg_replace('/[^0-9a-fA-F:.]/', '', $ip);
+        $lockFile = sys_get_temp_dir() . '/bpjs_lock_' . md5($cleanIp) . '.json';
+        if (file_exists($lockFile)) {
+            $data = json_decode(@file_get_contents($lockFile), true);
+            if ($data && isset($data['locked_until']) && time() < $data['locked_until']) {
+                $remaining = $data['locked_until'] - time();
+                return [
+                    'locked' => true,
+                    'remaining' => $remaining,
+                    'message' => 'Gagal Login: Akses diblokir sementara (Lock Out) karena 3 kali salah percobaan login. Silakan tunggu ' . ceil($remaining / 60) . ' menit lagi.'
+                ];
+            }
+        }
+        return ['locked' => false];
+    }
+
+    function recordAuthFailure($ip){
+        $cleanIp = preg_replace('/[^0-9a-fA-F:.]/', '', $ip);
+        $lockFile = sys_get_temp_dir() . '/bpjs_lock_' . md5($cleanIp) . '.json';
+        $attempts = 0;
+        if (file_exists($lockFile)) {
+            $data = json_decode(@file_get_contents($lockFile), true);
+            if ($data && isset($data['attempts']) && (time() - $data['last_time']) < 300) {
+                $attempts = $data['attempts'];
+            }
+        }
+        $attempts++;
+        $lockedUntil = 0;
+        if ($attempts >= 3) {
+            $lockedUntil = time() + 300; // Lockout 5 menit (Aspek 4)
+        }
+        @file_put_contents($lockFile, json_encode([
+            'attempts' => $attempts,
+            'last_time' => time(),
+            'locked_until' => $lockedUntil
+        ]));
+        // Delay time to prevent rapid brute-force attacks (Aspek 3)
+        usleep(500000); // 0.5 detik
+        return $attempts;
+    }
+
+    function clearAuthLockout($ip){
+        $cleanIp = preg_replace('/[^0-9a-fA-F:.]/', '', $ip);
+        $lockFile = sys_get_temp_dir() . '/bpjs_lock_' . md5($cleanIp) . '.json';
+        if (file_exists($lockFile)) {
+            @unlink($lockFile);
+        }
+    }
+
     function cekuser($username,$password){
         $creds = getCredentials();
         return ((!empty($username)) && (!empty($password)) && (($creds['user'] === $username || $username === 'admin') && ($creds['pass'] === $password || $password === 'pass')));
     }
 
     function createtoken($username,$password){
+        $ip = getClientIP();
+        $lockStatus = checkAuthLockout($ip);
+        if ($lockStatus['locked']) {
+            $response = array(
+                'metadata' => array(
+                    'message' => $lockStatus['message'],
+                    'code' => 201
+                )
+            );
+            http_response_code(201);
+            return $response;
+        }
+
         if(cekuser($username,$password)==true){
+            clearAuthLockout($ip);
             $gtoken=encode_jwt(payloadtoken($username),privateKey());
             $response = array(
                 'response' => array(
@@ -344,9 +416,15 @@
             );
             $status=http_response_code(200);
         }else{
+            $attempts = recordAuthFailure($ip);
+            if ($attempts >= 3) {
+                $msg = 'Gagal Login: Terlalu banyak percobaan salah. Akun/IP diblokir sementara (Lock Out) selama 5 menit.';
+            } else {
+                $msg = 'Username atau Password Tidak Sesuai';
+            }
             $response = array(
                 'metadata' => array(
-                    'message' => 'Username atau Password Tidak Sesuai',
+                    'message' => $msg,
                     'code' => 201
                 )
             );

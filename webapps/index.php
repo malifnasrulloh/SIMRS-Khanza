@@ -204,74 +204,119 @@
                         </div>
                     </div>";		
            }else{
+               $pesan_warning = "";
+               $is_locked = false;
+
+               if (!function_exists('cekKompleksitasPassword')) {
+                   function cekKompleksitasPassword($pwd) {
+                       if (strlen($pwd) < 8) return false;
+                       if (!preg_match('/[A-Z]/', $pwd)) return false; // Huruf besar
+                       if (!preg_match('/[a-z]/', $pwd)) return false; // Huruf kecil
+                       if (!preg_match('/[0-9]/', $pwd)) return false; // Angka
+                       if (!preg_match('/[^a-zA-Z0-9]/', $pwd)) return false; // Karakter khusus
+                       return true;
+                   }
+               }
+
+               if (!isset($_SESSION['login_fail_count'])) {
+                   $_SESSION['login_fail_count'] = 0;
+               }
+               if (!isset($_SESSION['login_lock_time'])) {
+                   $_SESSION['login_lock_time'] = 0;
+               }
+
+               // Cek status Lock Out temporer (Aspek 4)
+               if ($_SESSION['login_lock_time'] > time()) {
+                   $is_locked = true;
+                   $sisa_menit = ceil(($_SESSION['login_lock_time'] - time()) / 60);
+                   $pesan_warning = "Gagal Login: Terlalu banyak percobaan salah. Akun/Akses diblokir sementara (Lock Out) selama $sisa_menit menit lagi.";
+               }
+
                $BtnLogin=isset($_POST['BtnLogin'])?$_POST['BtnLogin']:NULL;
-                if (isset($BtnLogin)) {
-                    $usere      = validTeks4($_POST['usere'],30);
-                    $passworde  = validTeks4($_POST['passworde'],30);
-                    if(getOne("select count(admin.passworde) from admin where admin.usere=aes_encrypt('$usere','nur') and admin.passworde=aes_encrypt('$passworde','windi')")>0){
-                        $_SESSION["ses_admin_login"]= USERHYBRIDWEB.PASHYBRIDWEB;
-                        exit(header("Location:index.php"));
-                    }else if(getOne("select count(user.password) from user where user.id_user=aes_encrypt('$usere','nur') and user.password=aes_encrypt('$passworde','windi')")>0){
-                        $_SESSION["ses_admin_login"]= USERHYBRIDWEB.PASHYBRIDWEB;
-                        exit(header("Location:index.php"));
-                    }else{
-                        echo "  <form id=\"pengenmasuk-form\" role=\"form\" onsubmit=\"return validasiIsi();\" method=\"post\" action=\"\" enctype=multipart/form-data>
-                                    <table width='100%' align='center' height='100%' border='0'>
-                                        <tr width='100%' align='center' height='100%' border='0'>
-                                            <td width='100%' height='100%' alin='center' valign='middle' border='0'> 
-                                                <table width='400px' align='center' height='100px' border='0'>
-                                                    <tr width='100%' align='center' border='0'>
-                                                        <td width='100%' align='center' border='0' class=\"text\">
-                                                            <input type=\"password\" name=\"usere\" class=\"text\" pattern=\"[a-zA-Z0-9, ./_]{1,30}\" title=\" a-zA-Z0-9, ./_ (Maksimal 30 karakter)\" required placeholder=\"User Login\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi1'));\" id=\"TxtIsi1\" autocomplete=\"off\" size=\"17\" maxlength=\"30\" autofocus/>
-                                                            <span id=\"MsgIsi1\" style=\"color:#CC0000; font-size:10px;\"></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr width='100%' align='center' border='0'>
-                                                        <td width='100%' align='center' border='0' class=\"text\">
-                                                            <input type=\"password\" name=\"passworde\" class=\"text\" pattern=\"[a-zA-Z0-9, ./_]{1,30}\" title=\" a-zA-Z0-9, ./_ (Maksimal 30 karakter)\" required placeholder=\"Password\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi2'));\" id=\"TxtIsi2\" autocomplete=\"off\" size=\"17\" maxlength=\"30\"/>
-                                                            <span id=\"MsgIsi2\" style=\"color:#CC0000; font-size:10px;\"></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr width='100%' align='center' border='0'>
-                                                        <td width='100%' border='0' class=\"text\">
-                                                            <div align=\"center\"><input name=\"BtnLogin\" type=\"submit\" class=\"button\" value=\"Log-In\">&nbsp<input name=\"BtnKosong\" type=\"reset\" class=\"button\" value=\"Batal\"></div>
-                                                        </td>
-                                                    </tr>
-                                                </table> 
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>";		
-                    }
-                }else{
-                    echo "  <form id=\"pengenmasuk-form\" role=\"form\" onsubmit=\"return validasiIsi();\" method=\"post\" action=\"\" enctype=multipart/form-data>
-                                <table width='100%' align='center' height='100%' border='0'>
-                                    <tr width='100%' align='center' height='100%' border='0'>
-                                        <td width='100%' height='100%' alin='center' valign='middle' border='0'> 
-                                            <table width='400px' align='center' height='100px' border='0'>
-                                                <tr width='100%' align='center' border='0'>
-                                                    <td width='100%' align='center' border='0' class=\"text\">
-                                                        <input type=\"password\" name=\"usere\" class=\"text\" pattern=\"[a-zA-Z0-9, ./_]{1,30}\" title=\" a-zA-Z0-9, ./_ (Maksimal 30 karakter)\" required placeholder=\"User Login\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi1'));\" id=\"TxtIsi1\" autocomplete=\"off\" size=\"17\" maxlength=\"30\" autofocus/>
-                                                        <span id=\"MsgIsi1\" style=\"color:#CC0000; font-size:10px;\"></span>
-                                                    </td>
-                                                </tr>
-                                                <tr width='100%' align='center' border='0'>
-                                                    <td width='100%' align='center' border='0' class=\"text\">
-                                                        <input type=\"password\" name=\"passworde\" class=\"text\" pattern=\"[a-zA-Z0-9, ./_]{1,30}\" title=\" a-zA-Z0-9, ./_ (Maksimal 30 karakter)\" required placeholder=\"Password\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi2'));\" id=\"TxtIsi2\" autocomplete=\"off\" size=\"17\" maxlength=\"30\"/>
-                                                        <span id=\"MsgIsi2\" style=\"color:#CC0000; font-size:10px;\"></span>
-                                                    </td>
-                                                </tr>
-                                                <tr width='100%' align='center' border='0'>
-                                                    <td width='100%' border='0' class=\"text\">
-                                                        <div align=\"center\"><input name=\"BtnLogin\" type=\"submit\" class=\"button\" value=\"Log-In\">&nbsp<input name=\"BtnKosong\" type=\"reset\" class=\"button\" value=\"Batal\"></div>
-                                                    </td>
-                                                </tr>
-                                            </table> 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>";	
-                }      
+               if (isset($BtnLogin)) {
+                   if ($is_locked) {
+                       $pesan_warning = "Gagal Login: Terlalu banyak percobaan salah. Akun/Akses diblokir sementara (Lock Out). Silahkan tunggu beberapa saat.";
+                   } else {
+                       $usere      = validTeks4($_POST['usere'],30);
+                       $raw_pass   = isset($_POST['passworde']) ? $_POST['passworde'] : '';
+                       $raw_pass   = substr(str_replace("\0", "", $raw_pass), 0, 30);
+                       $konektor   = bukakoneksi();
+                       $passworde  = mysqli_real_escape_string($konektor, $raw_pass);
+
+                       if(getOne("select count(admin.passworde) from admin where admin.usere=aes_encrypt('$usere','nur') and admin.passworde=aes_encrypt('$passworde','windi')")>0){
+                           $_SESSION["ses_admin_login"]= USERHYBRIDWEB.PASHYBRIDWEB;
+                           $_SESSION['login_fail_count'] = 0;
+                           $_SESSION['login_lock_time'] = 0;
+                           exit(header("Location:index.php"));
+                       }else if(getOne("select count(user.password) from user where user.id_user=aes_encrypt('$usere','nur') and user.password=aes_encrypt('$passworde','windi')")>0){
+                           $_SESSION["ses_admin_login"]= USERHYBRIDWEB.PASHYBRIDWEB;
+                           $_SESSION['login_fail_count'] = 0;
+                           $_SESSION['login_lock_time'] = 0;
+                           exit(header("Location:index.php"));
+                       }else{
+                           // Delay time membatasi brute force berkali-kali (Aspek 3)
+                           usleep(500000);
+                           $_SESSION['login_fail_count']++;
+
+                           // Lock Out Login temporer setelah 3 kali salah (Aspek 4)
+                           if ($_SESSION['login_fail_count'] >= 3) {
+                               $_SESSION['login_lock_time'] = time() + 300; // 5 menit
+                               $pesan_warning = "Gagal Login: Percobaan login salah telah mencapai 3 kali. Akun/Akses diblokir sementara (Lock Out) selama 5 menit.";
+                           } else if (!cekKompleksitasPassword($raw_pass)) {
+                               // Aspek 7: Kebijakan Kompleksitas Password minimal 8 karakter memuat kombinasi huruf besar, kecil, angka, dan karakter khusus
+                               $pesan_warning = "Gagal Login: Password tidak memenuhi kebijakan keamanan minimal (panjang minimal 8 karakter, memuat kombinasi huruf besar, huruf kecil, angka, dan karakter khusus seperti *, #, $, !, &).";
+                           } else {
+                               // Warning gagal login generik tidak membedakan user/password (Aspek 5 & 6)
+                               $pesan_warning = "Gagal Login: Username atau Password Tidak Sesuai";
+                           }
+                       }
+                   }
+               }
+
+               $alert_html = "";
+               if (!empty($pesan_warning)) {
+                   $alert_html = "<tr width='100%' align='center' border='0'>
+                                      <td width='100%' align='center' border='0' style='padding: 8px;'>
+                                          <div style='background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; font-family: Tahoma; text-align: center;'>
+                                              $pesan_warning
+                                          </div>
+                                      </td>
+                                  </tr>";
+               }
+
+               echo "  <form id=\"pengenmasuk-form\" role=\"form\" onsubmit=\"return validasiIsi();\" method=\"post\" action=\"\" enctype=multipart/form-data>
+                           <table width='100%' align='center' height='100%' border='0'>
+                               <tr width='100%' align='center' height='100%' border='0'>
+                                   <td width='100%' height='100%' alin='center' valign='middle' border='0'>
+                                       <table width='450px' align='center' height='100px' border='0'>
+                                           $alert_html
+                                           <tr width='100%' align='center' border='0'>
+                                               <td width='100%' align='center' border='0' class=\"text\">
+                                                   <input type=\"password\" name=\"usere\" class=\"text\" pattern=\"[a-zA-Z0-9, ./_]{1,30}\" title=\" a-zA-Z0-9, ./_ (Maksimal 30 karakter)\" required placeholder=\"User Login\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi1'));\" id=\"TxtIsi1\" autocomplete=\"off\" size=\"20\" maxlength=\"30\" autofocus/>
+                                                   <span id=\"MsgIsi1\" style=\"color:#CC0000; font-size:10px;\"></span>
+                                               </td>
+                                           </tr>
+                                           <tr width='100%' align='center' border='0'>
+                                               <td width='100%' align='center' border='0' class=\"text\">
+                                                   <input type=\"password\" name=\"passworde\" class=\"text\" minlength=\"8\" maxlength=\"30\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,30}\" title=\"Kebijakan Password: Minimal 8 karakter, memuat kombinasi huruf besar (A-Z), huruf kecil (a-z), angka (0-9), dan karakter khusus (*, #, $, !, &, dll)\" required placeholder=\"Password (Min. 8 Karakter & Simbol)\" onkeydown=\"setDefault(this, document.getElementById('MsgIsi2'));\" id=\"TxtIsi2\" autocomplete=\"off\" size=\"20\"/>
+                                                   <span id=\"MsgIsi2\" style=\"color:#CC0000; font-size:10px;\"></span>
+                                               </td>
+                                           </tr>
+                                           <tr width='100%' align='center' border='0'>
+                                               <td width='100%' border='0' class=\"text\">
+                                                   <div align=\"center\"><input name=\"BtnLogin\" type=\"submit\" class=\"button\" value=\"Log-In\">&nbsp<input name=\"BtnKosong\" type=\"reset\" class=\"button\" value=\"Batal\"></div>
+                                               </td>
+                                           </tr>
+                                           <tr width='100%' align='center' border='0'>
+                                               <td width='100%' border='0' style='padding-top: 10px; font-size: 11px; color: #ffffff; text-align: center; text-shadow: 1px 1px 2px #000;'>
+                                                   * Kebijakan Keamanan: Password minimal 8 karakter, kombinasi huruf besar, huruf kecil, angka, dan simbol (*, #, $, !, &, dll).
+                                               </td>
+                                           </tr>
+                                       </table>
+                                   </td>
+                               </tr>
+                           </table>
+                       </form>";
            }
         ?>
     </div>    
