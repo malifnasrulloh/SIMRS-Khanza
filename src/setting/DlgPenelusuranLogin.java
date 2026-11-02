@@ -40,7 +40,7 @@ import javax.swing.table.TableColumn;
  * @author dosen
  */
 public class DlgPenelusuranLogin extends javax.swing.JDialog {
-    private DefaultTableModel tabMode,tabMode2;
+    private DefaultTableModel tabMode,tabMode2,tabMode3;
     private Connection koneksi=koneksiDB.condb();
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
@@ -49,6 +49,7 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
     private String keyword="";
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
+    private volatile boolean isDrillDown = false;
 
     /** Creates new form DlgPemberianInfus
      * @param parent
@@ -100,7 +101,66 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
         }
         tbObat1.setDefaultRenderer(Object.class, new WarnaTable());
 
+        tabMode3 = new DefaultTableModel(null, new Object[]{
+            "Tanggal", "NIP / ID User", "Nama Pegawai", "Jumlah Insert", "Jumlah Update", "Jumlah Delete", "Total Perubahan"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+        };
+        tbObat2.setModel(tabMode3);
+        tbObat2.setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbObat2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        for (int i = 0; i < 7; i++) {
+            TableColumn column = tbObat2.getColumnModel().getColumn(i);
+            if (i == 0) {
+                column.setPreferredWidth(100);
+            } else if (i == 1) {
+                column.setPreferredWidth(130);
+            } else if (i == 2) {
+                column.setPreferredWidth(220);
+            } else if (i == 3) {
+                column.setPreferredWidth(90);
+            } else if (i == 4) {
+                column.setPreferredWidth(90);
+            } else if (i == 5) {
+                column.setPreferredWidth(90);
+            } else if (i == 6) {
+                column.setPreferredWidth(100);
+            }
+        }
+        tbObat2.setDefaultRenderer(Object.class, new WarnaTable());
+
+        tbObat2.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() >= 2) {
+                    int row = tbObat2.getSelectedRow();
+                    if (row != -1) {
+                        int modelRow = tbObat2.convertRowIndexToModel(row);
+                        String tgl = tabMode3.getValueAt(modelRow, 0).toString();
+                        String nip = tabMode3.getValueAt(modelRow, 1).toString();
+                        TabRawat.setSelectedIndex(1);
+                        keyword = "";
+                        Valid.SetTgl(DTPCari1, tgl);
+                        Valid.SetTgl(DTPCari2, tgl);
+                        isDrillDown = true;
+                        try {
+                            TCari.setText(nip);
+                        } finally {
+                            isDrillDown = false;
+                        }
+                        ceksukses = false;
+                        runBackground(() -> tampil2());
+                    }
+                }
+            }
+        });
+
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        BtnHapus.setEnabled(false);
    }
     
     private Dimension screen=Toolkit.getDefaultToolkit().getScreenSize();
@@ -136,6 +196,8 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
         tbObat = new widget.Table();
         Scroll1 = new widget.ScrollPane();
         tbObat1 = new widget.Table();
+        Scroll2 = new widget.ScrollPane();
+        tbObat2 = new widget.Table();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -335,6 +397,21 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
 
         TabRawat.addTab("Penulusan SQL Simpan, Ganti, Hapus", Scroll1);
 
+        Scroll2.setName("Scroll2"); // NOI18N
+        Scroll2.setOpaque(true);
+
+        tbObat2.setAutoCreateRowSorter(false);
+        tbObat2.setName("tbObat2"); // NOI18N
+        Scroll2.setViewportView(tbObat2);
+
+        TabRawat.addTab("Statistik Aktivitas User", Scroll2);
+
+        TabRawat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TabRawatMouseClicked(evt);
+            }
+        });
+
         internalFrame1.add(TabRawat, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
@@ -343,40 +420,11 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            if(tabMode.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-                tbObat.requestFocus();
-            }else{
-                try{
-                    Sequel.queryu("delete from tracker");
-                    runBackground(() ->tampil());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
-                    JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih terlebih dulu data yang mau anda hapus...\n Klik data pada table untuk memilih data...!!!!");
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==1){
-            if(tabMode2.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-                tbObat1.requestFocus();
-            }else{
-                try{
-                    Sequel.queryu("delete from trackersql");
-                    runBackground(() ->tampil2());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
-                    JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih terlebih dulu data yang mau anda hapus...\n Klik data pada table untuk memilih data...!!!!");
-                }
-            }
-        }
-            
+        // Dinonaktifkan untuk menjaga keamanan data audit log
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            BtnHapusActionPerformed(null);
-        }else{
+        if(evt.getKeyCode()!=KeyEvent.VK_SPACE){
             Valid.pindah(evt, TCari, BtnKeluar);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -406,6 +454,8 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
             runBackground(() ->tampil());
         }else if(TabRawat.getSelectedIndex()==1){
             runBackground(() ->tampil2());
+        }else if(TabRawat.getSelectedIndex()==2){
+            runBackground(() ->tampil3());
         }
 }//GEN-LAST:event_BtnCariActionPerformed
 
@@ -424,6 +474,8 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
             runBackground(() ->tampil());
         }else if(TabRawat.getSelectedIndex()==1){
             runBackground(() ->tampil2());
+        }else if(TabRawat.getSelectedIndex()==2){
+            runBackground(() ->tampil3());
         }
 }//GEN-LAST:event_BtnAllActionPerformed
 
@@ -440,31 +492,37 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if(!isDrillDown && TCari.getText().length()>2){
                         if(TabRawat.getSelectedIndex()==0){
                             runBackground(() ->tampil());
                         }else if(TabRawat.getSelectedIndex()==1){
                             runBackground(() ->tampil2());
+                        }else if(TabRawat.getSelectedIndex()==2){
+                            runBackground(() ->tampil3());
                         }
                     }
                 }
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if(!isDrillDown && TCari.getText().length()>2){
                         if(TabRawat.getSelectedIndex()==0){
                             runBackground(() ->tampil());
                         }else if(TabRawat.getSelectedIndex()==1){
                             runBackground(() ->tampil2());
+                        }else if(TabRawat.getSelectedIndex()==2){
+                            runBackground(() ->tampil3());
                         }
                     }
                 }
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if(!isDrillDown && TCari.getText().length()>2){
                         if(TabRawat.getSelectedIndex()==0){
                             runBackground(() ->tampil());
                         }else if(TabRawat.getSelectedIndex()==1){
                             runBackground(() ->tampil2());
+                        }else if(TabRawat.getSelectedIndex()==2){
+                            runBackground(() ->tampil3());
                         }
                     }
                 }
@@ -517,6 +575,8 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
     private widget.MenuItem ppFilterPemulanganPasien;
     private widget.Table tbObat;
     private widget.Table tbObat1;
+    private widget.ScrollPane Scroll2;
+    private widget.Table tbObat2;
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
@@ -600,8 +660,69 @@ public class DlgPenelusuranLogin extends javax.swing.JDialog {
     }
 
     
+    private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {
+        if (TabRawat.getSelectedIndex() == 0) {
+            runBackground(() -> tampil());
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            runBackground(() -> tampil2());
+        } else if (TabRawat.getSelectedIndex() == 2) {
+            runBackground(() -> tampil3());
+        }
+    }
+
+    private void tampil3() {
+        Valid.tabelKosong(tabMode3);
+        try {
+            String sql = "select date(trackersql.tanggal) as tgl, trackersql.usere, " +
+                         "coalesce(pegawai.nama, '-') as nama_pegawai, " +
+                         "sum(case when lower(trackersql.sqle) like '% insert %' or lower(trackersql.sqle) like '%insert into%' then 1 else 0 end) as jml_insert, " +
+                         "sum(case when lower(trackersql.sqle) like '% update %' then 1 else 0 end) as jml_update, " +
+                         "sum(case when lower(trackersql.sqle) like '% delete %' or lower(trackersql.sqle) like '%delete from%' then 1 else 0 end) as jml_delete, " +
+                         "count(*) as total " +
+                         "from trackersql " +
+                         "left join pegawai on trackersql.usere = pegawai.nik " +
+                         "where trackersql.tanggal between ? and ? " +
+                         (TCari.getText().trim().equals("") ? "" : "and (trackersql.usere like ? or pegawai.nama like ?) ") +
+                         "group by date(trackersql.tanggal), trackersql.usere, pegawai.nama " +
+                         "order by tgl desc, total desc";
+            ps = koneksi.prepareStatement(sql);
+            try {
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                if (!TCari.getText().trim().equals("")) {
+                    ps.setString(3, "%" + TCari.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode3.addRow(new Object[]{
+                        rs.getString("tgl"),
+                        rs.getString("usere"),
+                        rs.getString("nama_pegawai"),
+                        rs.getInt("jml_insert"),
+                        rs.getInt("jml_update"),
+                        rs.getInt("jml_delete"),
+                        rs.getInt("total")
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
+        }
+        LCount.setText("" + tabMode3.getRowCount());
+    }
+
     public void isCek(){
-        BtnHapus.setEnabled(akses.gettracer_login());
+        BtnHapus.setEnabled(false);
     }
 
     private void runBackground(Runnable task) {
