@@ -51,10 +51,11 @@ CREATE TABLE IF NOT EXISTS `lembar_bukti_pelayanan_inacbg` (
   `kd_penunjang_sekunder2` varchar(30) DEFAULT NULL,
   `penunjang_sekunder3` text DEFAULT NULL,
   `kd_penunjang_sekunder3` varchar(30) DEFAULT NULL,
+  `penunjang_sekunder4` text DEFAULT NULL,
+  `kd_penunjang_sekunder4` varchar(30) DEFAULT NULL,
+  `penunjang_sekunder5` text DEFAULT NULL,
+  `kd_penunjang_sekunder5` varchar(30) DEFAULT NULL,
   `nama_pasien_keluarga` varchar(100) DEFAULT NULL,
   `tgl_input` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`no_rawat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Alter tabel admin untuk permission berkas_ina
-ALTER TABLE `user` ADD COLUMN IF NOT EXISTS `berkas_ina` enum('false','true') DEFAULT 'true';

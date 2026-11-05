@@ -12011,7 +12011,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             tbPetugas.requestFocus();
         }else{
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            DlgLembarBuktiINACBG form = new DlgLembarBuktiINACBG(null, false);
+            DlgLembarBuktiINACBG form = new DlgLembarBuktiINACBG((java.awt.Dialog) this, false);
             form.setNoRawat(TNoRw.getText().trim());
             form.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
             form.setLocationRelativeTo(internalFrame1);

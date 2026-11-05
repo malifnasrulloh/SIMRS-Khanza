@@ -23,4 +23,12 @@ edokter-next/
 /CompileReport.class
 /*.pdf
 *.jasper
-/Khanzauswatun/
+docs/
+test/
+tests/
+.claude
+ssrme/
+kyc/
+asesmen/
+Khanzauswatun/
+penyesuaian/
