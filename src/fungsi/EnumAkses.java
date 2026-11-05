@@ -1241,7 +1241,8 @@ public enum EnumAkses {
     satu_sehat_kirim_episodeofcare("[L]Kirim Episode of Care Satu Sehat"),
     satu_sehat_kirim_nutritionorder("[L]Kirim Nutrition Order Satu Sehat"),
     satu_sehat_rme("[L]Satu Sehat RME"),
-    satu_sehat_kyc("[L]Satu Sehat KYC");
+    satu_sehat_kyc("[L]Satu Sehat KYC"),
+    berkas_ina("[M]Lembar Bukti INACBG");
 
     private final String alias;
     private final String dbTableColumn;

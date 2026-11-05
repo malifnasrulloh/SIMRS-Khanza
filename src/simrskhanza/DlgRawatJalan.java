@@ -13,6 +13,7 @@
 package simrskhanza;
 
 import surat.SuratKontrol;
+import bridging.DlgLembarBuktiINACBG;
 import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 import inventory.DlgPemberianObat;
@@ -10387,6 +10388,20 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void MnCopySOAPActionPerformed(java.awt.event.ActionEvent evt) {
         copypastesoapralan.SetCatatanPasien(TKeluhan.getText(),TPemeriksaan.getText(),TPenilaian.getText(),TindakLanjut.getText(),TInstruksi.getText(),TEvaluasi.getText());
     }
+
+    private void MnGenerateBerkasINAActionPerformed(java.awt.event.ActionEvent evt) {
+        if(TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien...!!!");
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            DlgLembarBuktiINACBG form = new DlgLembarBuktiINACBG(null, false);
+            form.setNoRawat(TNoRw.getText().trim());
+            form.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }
     
     private void MnPasteSOAPActionPerformed(java.awt.event.ActionEvent evt) {
         TKeluhan.setText(copypastesoapralan.getDataSubjek());
@@ -11054,7 +11069,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                           BtnHasilPemeriksaanUSGAbdomen,BtnIntervensiNyeriFarmakologi,BtnIntervensiNyeriNonFarmakologi,BtnChecklistKriteriaMasukIsolasi,BtnSkriningTOLAC,BtnAdmisiSkoringTOLAC,BtnMonitoringTolac,
                           BtnHasilPersalinanTOLAC,BtnLaporanReaksiTranfusi,BtnPenilaianGRACEScore;   
     private widget.PopupMenu PopupSOAP,PopupPemeriksaan;
-    private widget.MenuItem MnSOAPDokter,MnSOAPPetugas,MnCopySOAP,MnPasteSOAP;
+    private widget.MenuItem MnSOAPDokter,MnSOAPPetugas,MnCopySOAP,MnPasteSOAP,MnGenerateBerkasINA;
     
     private void tampilDr() {
         Valid.tabelKosong(tabModeDr);
@@ -11357,6 +11372,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     
     public void isCek(){
         tinggi=0;
+        MnGenerateBerkasINA.setEnabled(akses.getberkas_ina());
         BtnSimpan.setEnabled(akses.gettindakan_ralan());
         BtnHapus.setEnabled(akses.gettindakan_ralan());
         BtnEdit.setEnabled(akses.gettindakan_ralan());
@@ -14487,6 +14503,22 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         PopupSOAP.add(MnSOAPDokter);
         PopupSOAP.add(MnSOAPPetugas);
         PopupSOAP.add(MnCopySOAP);
+
+        MnGenerateBerkasINA = new widget.MenuItem();
+        MnGenerateBerkasINA.setBackground(new java.awt.Color(255, 255, 254));
+        MnGenerateBerkasINA.setFont(new java.awt.Font("Tahoma", 0, 11));
+        MnGenerateBerkasINA.setForeground(new java.awt.Color(50, 50, 50));
+        MnGenerateBerkasINA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); 
+        MnGenerateBerkasINA.setText("Generate Berkas INA");
+        MnGenerateBerkasINA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnGenerateBerkasINA.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnGenerateBerkasINA.setName("MnGenerateBerkasINA");
+        MnGenerateBerkasINA.setPreferredSize(new java.awt.Dimension(210, 26));
+        MnGenerateBerkasINA.addActionListener(this::MnGenerateBerkasINAActionPerformed);
+        PopupSOAP.add(MnGenerateBerkasINA);
+        tbRawatDr.setComponentPopupMenu(PopupSOAP);
+        tbRawatPr.setComponentPopupMenu(PopupSOAP);
+        tbRawatDrPr.setComponentPopupMenu(PopupSOAP);
         PopupPemeriksaan.add(MnPasteSOAP);
         
         FormMenu.add(BtnRiwayat);

@@ -27,6 +27,7 @@ import bridging.DlgDataTB;
 import bridging.ICareRiwayatPerawatan;
 import bridging.ICareRiwayatPerawatanFKTP;
 import surat.SuratKontrol;
+import bridging.DlgLembarBuktiINACBG;
 import bridging.INACBGPerawatanCorona;
 import bridging.InhealthDataSJP;
 import bridging.PCareDataPendaftaran;
@@ -725,6 +726,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         MnPCare = new javax.swing.JMenuItem();
         MnRujukSisrute = new javax.swing.JMenuItem();
         ppPerawatanCorona = new javax.swing.JMenuItem();
+        MnGenerateBerkasINA = new javax.swing.JMenuItem();
         ppPasienCorona = new javax.swing.JMenuItem();
         MnTeridentifikasiTB = new javax.swing.JMenuItem();
         MnRiwayatPerawatanICareNIK = new javax.swing.JMenuItem();
@@ -3814,7 +3816,23 @@ public final class DlgIGD extends javax.swing.JDialog {
             }
         });
 
+        MnGenerateBerkasINA.setBackground(new java.awt.Color(255, 255, 254));
+        MnGenerateBerkasINA.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnGenerateBerkasINA.setForeground(new java.awt.Color(50, 50, 50));
+        MnGenerateBerkasINA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnGenerateBerkasINA.setText("Generate Berkas INA");
+        MnGenerateBerkasINA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnGenerateBerkasINA.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnGenerateBerkasINA.setName("MnGenerateBerkasINA"); // NOI18N
+        MnGenerateBerkasINA.setPreferredSize(new java.awt.Dimension(250, 26));
+        MnGenerateBerkasINA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnGenerateBerkasINAActionPerformed(evt);
+            }
+        });
+
         jPopupMenu1.add(MnBridging);
+        jPopupMenu1.add(MnGenerateBerkasINA);
 
         MenuInputData.setBackground(new java.awt.Color(255, 255, 254));
         MenuInputData.setForeground(new java.awt.Color(50, 50, 50));
@@ -8750,6 +8768,24 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         }
     }//GEN-LAST:event_ppPerawatanCoronaBtnPrintActionPerformed
 
+    private void MnGenerateBerkasINAActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, data IGD sudah habis...!!!!");
+            TNoRM.requestFocus();
+        }else if(TPasien.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
+            tbPetugas.requestFocus();
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            DlgLembarBuktiINACBG form = new DlgLembarBuktiINACBG(null, false);
+            form.setNoRawat(TNoRw.getText().trim());
+            form.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }
+
     private void ppPasienCoronaBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPasienCoronaBtnPrintActionPerformed
         if(tabMode.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, data pasien sudah habis...!!!!");
@@ -12963,6 +12999,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private javax.swing.JMenuItem ppMonitoringAsuhanGizi;
     private javax.swing.JMenuItem ppPasienCorona;
     private javax.swing.JMenuItem ppPerawatanCorona;
+    private javax.swing.JMenuItem MnGenerateBerkasINA;
     private javax.swing.JMenuItem ppProgramPRB;
     private javax.swing.JMenuItem ppResume;
     private javax.swing.JMenuItem ppRiwayat;
@@ -13318,6 +13355,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnCetakSuratSakit.setEnabled(akses.getsurat_sakit());
         ppPasienCorona.setEnabled(akses.getpasien_corona());
         ppPerawatanCorona.setEnabled(akses.getpasien_corona());
+        MnGenerateBerkasINA.setEnabled(akses.getberkas_ina());
         ppDeteksiDIniCorona.setEnabled(akses.getdeteksi_corona());
         MnCetakSuratHamil.setEnabled(akses.getsurat_hamil());
         MnCetakSuratCutiHamil.setEnabled(akses.getsurat_cuti_hamil());

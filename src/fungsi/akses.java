@@ -1380,4 +1380,5 @@ public final class akses {
     public static boolean gethasil_persalinan_tolac(){return hakAkses.get(EnumAkses.hasil_persalinan_tolac);}
     public static boolean getlaporan_reaksi_transfusi(){return hakAkses.get(EnumAkses.laporan_reaksi_transfusi);}
     public static boolean getpenilaian_grace_scor(){return hakAkses.get(EnumAkses.penilaian_grace_scor);}
+    public static boolean getberkas_ina(){return hakAkses.get(EnumAkses.berkas_ina);}
 }
